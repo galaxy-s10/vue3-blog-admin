@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "esModuleInterop": true, //ES 模块互操作,import React from 'react';react是module.exports导出的，因此需要设置该属性
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "forceConsistentCasingInFileNames": true //在文件名中强制使用一致的大小写
+    // "paths": {
+    //   "@/*": ["./src/*"] //这样写的话，@/不会提示路径，得使用baseUrl:'./'+paths:{"@/*": ["src/*"]}这样才的话@/才会提示路径
+    // }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+}
