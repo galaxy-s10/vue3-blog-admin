@@ -13,6 +13,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const { method } = route.params;
+    const { code } = route.query;
     let currentOauth = '';
     switch (method) {
       case 'qq_login':
@@ -23,6 +24,16 @@ export default defineComponent({
         break;
       default:
         currentOauth = '非法';
+    }
+    if (window.opener && ['qq_login', 'github_login'].includes(currentOauth)) {
+      window.opener.postMessage(
+        {
+          type: method === 'QQ' ? 'qq_login' : 'github_login',
+          data: code,
+        },
+        '*'
+      );
+      window.close();
     }
     return {
       currentOauth,
