@@ -11,12 +11,8 @@
       </div>
       <n-dropdown trigger="hover" :options="options" @select="handleSelect">
         <div class="user">
-          <img
-            class="avatar"
-            src="https://img.cdn.hsslive.cn/1613141138717Billd.jpg"
-            alt=""
-          />
-          <span class="name">admin</span>
+          <img class="avatar" :src="userInfo.avatar" alt="" />
+          <span class="name">{{ userInfo.username }}</span>
         </div>
       </n-dropdown>
       <div class="setting">
@@ -32,11 +28,18 @@
 import { defineComponent, ref } from 'vue';
 import { NIcon, NDropdown } from 'naive-ui';
 import { Language, SettingsOutline } from '@vicons/ionicons5';
+import { useRouter } from 'vue-router';
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
+import { useUserStore } from '@/store/user';
+import cache from '@/utils/cache';
 
 export default defineComponent({
   components: { BreadcrumbCpt, NIcon, Language, SettingsOutline, NDropdown },
   setup() {
+    const userStore = useUserStore();
+    const router = useRouter();
+    console.log(userStore.$state, 234);
+    const { userInfo } = userStore.$state;
     const options = ref([
       {
         label: '账号设置',
@@ -47,7 +50,16 @@ export default defineComponent({
         key: '2',
       },
     ]);
-    return { options };
+    const handleSelect = (v) => {
+      console.log(v);
+      if (v === '1') {
+        router.push('/');
+      } else if (v === '2') {
+        cache.clearStorage('token');
+        router.push('/login');
+      }
+    };
+    return { options, userInfo, handleSelect };
   },
 });
 </script>
@@ -82,7 +94,7 @@ export default defineComponent({
       }
       .name {
         margin-left: 6px;
-        font-size: 20px;
+        font-size: 14px;
       }
     }
     .lang,

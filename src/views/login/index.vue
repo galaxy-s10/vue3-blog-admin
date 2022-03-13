@@ -86,6 +86,7 @@ export default defineComponent({
     });
     const formRef = ref(null);
     const handleLogin = async () => {
+      // @ts-ignore
       const { data, message } = await fetchLogin({
         account: Number(loginForm.value.account),
         password: loginForm.value.password,
@@ -93,8 +94,7 @@ export default defineComponent({
       if (!data) {
         window.$message.error(message);
       } else {
-        cache.setCache('token', data);
-        await userStore.getUserInfo();
+        cache.setStorage('token', data);
         window.$message.success('登录成功!');
         router.push('/');
       }

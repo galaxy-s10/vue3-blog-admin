@@ -20,7 +20,6 @@ import {
   CloudyOutline,
 } from '@vicons/ionicons5';
 import Layout from '@/layout/index.vue';
-import localCache from '@/utils/cache';
 
 export const iconMap = (name) => {
   const ico = {
@@ -135,7 +134,7 @@ export const defaultRoutes: RouteRecordRaw[] = [
 ];
 
 // 权限路由
-export const roleRoutes = [
+export const asyncRoutes = [
   {
     name: 'setting',
     path: '/setting',
@@ -431,7 +430,7 @@ export const roleRoutes = [
   },
 ];
 const router = createRouter({
-  // routes: [...defaultRoutes, ...roleRoutes],
+  // routes: [...defaultRoutes, ...asyncRoutes],
   routes: [...defaultRoutes],
   history: createWebHistory(),
 });

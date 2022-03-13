@@ -9,7 +9,7 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
-    const token = cache.getCache('token');
+    const token = cache.getStorage('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

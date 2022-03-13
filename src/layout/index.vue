@@ -38,7 +38,7 @@ import { NSpace, NIcon, NMenu, NLayout, NLayoutSider } from 'naive-ui';
 import { CaretDownOutline } from '@vicons/ionicons5';
 import type { RouteRecordRaw } from 'vue-router';
 import { useRouter, useRoute } from 'vue-router';
-import { defaultRoutes, iconMap, roleRoutes } from '@/router/index';
+import { defaultRoutes, iconMap, asyncRoutes } from '@/router/index';
 import { deepClone } from '@/utils/index';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
@@ -58,7 +58,7 @@ export default defineComponent({
     const appStore = useAppStore();
     const userStore = useUserStore();
 
-    const routes = deepClone([...defaultRoutes, ...roleRoutes]);
+    const routes = deepClone([...defaultRoutes, ...asyncRoutes]);
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {
@@ -100,12 +100,11 @@ export default defineComponent({
       }
     );
     appStore.setRoutes(menuOptions);
-    console.log(userStore.roles[0], menuOptions, 996);
     appStore.$patch((state) => {
       state.path = route.path;
     });
     console.log(route, menuOptions, 111);
-    const handleUpdateValue = (key: string, item) => {
+    const handleUpdateValue = (key: string) => {
       router.push(key);
     };
     return {
