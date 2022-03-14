@@ -10,7 +10,7 @@ export default defineComponent({
   components: {},
   setup() {
     const route = useRoute();
-    const { method } = route.params;
+    const { method }: any = route.params;
     const { code } = route.query;
     let currentOauth = '';
     switch (method) {
@@ -23,7 +23,7 @@ export default defineComponent({
       default:
         currentOauth = '非法';
     }
-    if (window.opener && ['qq_login', 'github_login'].includes(currentOauth)) {
+    if (window.opener && ['qq_login', 'github_login'].includes(method)) {
       console.log(window.opener, 11111111);
       window.opener.postMessage(
         {
