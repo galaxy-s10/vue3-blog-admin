@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.1...v0.0.2) (2022-03-14)
+
+
+### Docs
+
+* 新增更新日志 ([e17a2b8](https://github.com/galaxy-s10/vue3-blog-admin/commit/e17a2b878fc3bb0f5a1a9afa203ade9720799d0b))
+
 ### 0.0.1 (2022-03-14)
 
 
