@@ -11,6 +11,7 @@
     "lint:fix": "eslint --config ./.eslintrc.js --fix . --ext .js,.jsx,.ts,.tsx,.vue",
     "prepare": "husky install",
     "prettier": "prettier --write .",
+    "push": "cz && standard-version",
     "release": "standard-version",
     "start": "cross-env webpack serve --config ./config/webpack.common.js --env development",
     "start:stats": "cross-env BundleAnalyzerPluginSwitch=true webpack serve --config ./config/webpack.common.js --env development"
