@@ -29,16 +29,6 @@ export default defineComponent({
       default:
         currentOauth = '非法';
     }
-    if (window.opener && ['qq_login', 'github_login'].includes(method)) {
-      window.opener.postMessage(
-        {
-          type: method === 'QQ' ? 'qq_login' : 'github_login',
-          data: code,
-        },
-        '*'
-      );
-      window.close();
-    }
     window.addEventListener('message', async (e) => {
       const { type, data: code } = e.data;
       if (type === 'qq_login') {
@@ -56,6 +46,17 @@ export default defineComponent({
         }
       }
     });
+    if (window.opener && ['qq_login', 'github_login'].includes(method)) {
+      window.opener.postMessage(
+        {
+          type: method,
+          data: code,
+        },
+        '*'
+      );
+      window.close();
+    }
+
     return {
       currentOauth,
     };
