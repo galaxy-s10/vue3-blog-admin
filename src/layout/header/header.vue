@@ -26,7 +26,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { NIcon, NDropdown } from 'naive-ui';
 import { Language, SettingsOutline } from '@vicons/ionicons5';
 import { useRouter } from 'vue-router';
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
@@ -34,7 +33,7 @@ import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
 export default defineComponent({
-  components: { BreadcrumbCpt, NIcon, Language, SettingsOutline, NDropdown },
+  components: { BreadcrumbCpt, Language, SettingsOutline },
   setup() {
     const userStore = useUserStore();
     const router = useRouter();
@@ -51,9 +50,8 @@ export default defineComponent({
       },
     ]);
     const handleSelect = (v) => {
-      console.log(v);
       if (v === '1') {
-        router.push('/');
+        router.push('/setting/account');
       } else if (v === '2') {
         cache.clearStorage('token');
         router.push('/login');

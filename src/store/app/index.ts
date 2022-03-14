@@ -3,17 +3,20 @@ import { defineStore } from 'pinia';
 export const useAppStore = defineStore('app', {
   state: () => {
     return {
-      version: 1,
-      routes: null,
       path: null,
+      routes: null,
+      tagbarList: {},
     };
   },
   actions: {
-    increment() {
-      this.version += 1;
+    setPath(res) {
+      this.path = res;
     },
-    setRoutes(v) {
-      this.routes = v;
+    setRoutes(res) {
+      this.routes = res;
+    },
+    setTagbarList(res) {
+      this.tagbarList = res;
     },
   },
 });

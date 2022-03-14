@@ -1,7 +1,5 @@
 <template>
-  <div>
-    {{ currentOauth }}登录{{ currentOauth !== '非法' ? '成功！' : '！' }}
-  </div>
+  <div>{{ currentOauth }}登录{{ currentOauth !== '非法' && '成功！' }}</div>
 </template>
 
 <script lang="ts">
@@ -26,6 +24,7 @@ export default defineComponent({
         currentOauth = '非法';
     }
     if (window.opener && ['qq_login', 'github_login'].includes(currentOauth)) {
+      console.log(window.opener, 11111111);
       window.opener.postMessage(
         {
           type: method === 'QQ' ? 'qq_login' : 'github_login',

@@ -1,5 +1,5 @@
 <template>
-  <n-space vertical class="layout">
+  <n-space vertical class="layout-wrap">
     <n-layout position="absolute" has-sider>
       <n-layout-sider
         bordered
@@ -12,6 +12,7 @@
         @expand="collapsed = false"
       >
         <n-menu
+          v-model:value="currentPath"
           :collapsed="collapsed"
           :collapsed-width="64"
           :collapsed-icon-size="22"
@@ -24,7 +25,8 @@
       </n-layout-sider>
       <n-layout>
         <HeaderCpt></HeaderCpt>
-        <div class="main">
+        <TagBarCpt></TagBarCpt>
+        <div class="main-wrap">
           <router-view></router-view>
         </div>
       </n-layout>
@@ -34,31 +36,30 @@
 
 <script lang="ts">
 import { h, ref, watch, defineComponent } from 'vue';
-import { NSpace, NIcon, NMenu, NLayout, NLayoutSider } from 'naive-ui';
 import { CaretDownOutline } from '@vicons/ionicons5';
 import type { RouteRecordRaw } from 'vue-router';
 import { useRouter, useRoute } from 'vue-router';
+import Cookies from 'js-cookie';
 import { defaultRoutes, iconMap, asyncRoutes } from '@/router/index';
 import { deepClone } from '@/utils/index';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import HeaderCpt from './header/index.vue';
+import HeaderCpt from './header/header.vue';
+import TagBarCpt from './tagbar/tagbar.vue';
+import { fetchQQLogin } from '@/api/user';
 
 export default defineComponent({
   components: {
-    NSpace,
-    NMenu,
-    NLayout,
-    NLayoutSider,
     HeaderCpt,
+    TagBarCpt,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
     const userStore = useUserStore();
-
     const routes = deepClone([...defaultRoutes, ...asyncRoutes]);
+
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {
@@ -91,25 +92,47 @@ export default defineComponent({
     const menuOptions = handleRoutes(routes).filter(
       (v) => v.meta && !v.meta.hidden
     );
+    const path = ref(route.path);
     watch(
       () => route.path,
       () => {
-        appStore.$patch((state) => {
-          state.path = route.path;
-        });
+        appStore.setPath(route.path);
       }
     );
     appStore.setRoutes(menuOptions);
-    appStore.$patch((state) => {
-      state.path = route.path;
-    });
-    console.log(route, menuOptions, 111);
-    const handleUpdateValue = (key: string) => {
+    appStore.setPath(route.path);
+    appStore.setTagbarList({ [route.path]: route.meta.title });
+
+    const handleUpdateValue = (key: string, item) => {
+      if (!appStore.tagbarList[key]) {
+        appStore.setTagbarList({
+          ...appStore.tagbarList,
+          [key]: item.meta.title,
+        });
+      }
       router.push(key);
     };
+    window.addEventListener('message', async (e) => {
+      const { type, data: code } = e.data;
+      if (type === 'qq_login') {
+        if (code) {
+          try {
+            await fetchQQLogin(code);
+            const token = Cookies.get('token');
+            if (token) {
+              userStore.setToken(token);
+              router.push('/');
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    });
     return {
       collapsed: ref(false),
       menuOptions,
+      currentPath: path,
       handleUpdateValue,
       renderMenuLabel(option) {
         return option.label;
@@ -119,7 +142,7 @@ export default defineComponent({
         return vn ? h(iconMap(vn)) : false;
       },
       expandIcon() {
-        return h(NIcon, null, { default: () => h(CaretDownOutline) });
+        return h('n-icon', null, { default: () => h(CaretDownOutline) });
       },
     };
   },
@@ -127,8 +150,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.layout {
-  .main {
+.layout-wrap {
+  .main-wrap {
     padding: 10px;
   }
 }

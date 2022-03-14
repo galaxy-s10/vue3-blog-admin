@@ -20,6 +20,10 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       const { roles } = await userStore.getUserInfo();
+      if (!roles) {
+        next('/login');
+        return;
+      }
       const routeRes = userStore.generateAsyncRoutes(roles);
       routeRes.forEach((v) => {
         router.addRoute(v);

@@ -32,10 +32,8 @@
             </template>
           </n-input>
         </n-form-item>
-        <n-form-item>
-          <n-button type="primary" block @click="handleSubmit">登录</n-button>
-        </n-form-item>
       </n-form>
+      <n-button type="info" block @click="handleSubmit">登录</n-button>
       <div class="other-login">
         <span>合作账号登录：</span>
         <img
@@ -50,12 +48,12 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { NInput, NForm, NFormItem, NIcon, NButton } from 'naive-ui';
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
 import { useRouter } from 'vue-router';
 import cache from '@/utils/cache';
 import { fetchLogin } from '@/api/user';
 import { useUserStore } from '@/store/user';
+import { qqOauthUrl, qqClientId, redirectUri } from '@/constant';
 
 const rules = {
   account: { required: true, message: '请输入账号', trigger: 'blur' },
@@ -63,11 +61,6 @@ const rules = {
 };
 export default defineComponent({
   components: {
-    NInput,
-    NForm,
-    NFormItem,
-    NIcon,
-    NButton,
     PersonOutline,
     LockClosedOutline,
   },
@@ -75,10 +68,14 @@ export default defineComponent({
     const router = useRouter();
     const userStore = useUserStore();
     const qqLogin = () => {
-      window.location.href =
-        'https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101934585&redirect_uri=https://admin.hsslive.cn/oauth/qq_login&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info';
-      // window.location.href =
-      //   'https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101999560&redirect_uri=https://admin.hsslive.cn/oauth/qq_login&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info';
+      const url =
+        `${qqOauthUrl}client_id=${qqClientId}&redirect_uri=${redirectUri}qq_login` +
+        `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
+      window.open(
+        url,
+        'qq_login_window',
+        'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
+      );
     };
     const loginForm = ref({
       account: '',
@@ -86,15 +83,11 @@ export default defineComponent({
     });
     const formRef = ref(null);
     const handleLogin = async () => {
-      // @ts-ignore
-      const { data, message } = await fetchLogin({
+      const { token } = await userStore.login({
         account: Number(loginForm.value.account),
         password: loginForm.value.password,
       });
-      if (!data) {
-        window.$message.error(message);
-      } else {
-        cache.setStorage('token', data);
+      if (token) {
         window.$message.success('登录成功!');
         router.push('/');
       }

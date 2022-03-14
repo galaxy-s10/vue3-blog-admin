@@ -3,7 +3,7 @@ class CacheModel {
    * 获取缓存
    * @param {*} key
    */
-  getStorage = (key) => {
+  getStorage = (key: string) => {
     try {
       return localStorage.getItem(key);
     } catch (error) {
@@ -16,7 +16,7 @@ class CacheModel {
    * @param {*} key
    * @param {*} value
    */
-  setStorage = (key, value) => {
+  setStorage = (key: string, value: any) => {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
@@ -28,7 +28,7 @@ class CacheModel {
    * 清除缓存
    * @param {*} key
    */
-  clearStorage = (key) => {
+  clearStorage = (key: string) => {
     localStorage.removeItem(key);
   };
 
@@ -36,7 +36,7 @@ class CacheModel {
    * 获取缓存，如果缓存已过期，会清除该缓存并返回null
    * @param {*} key
    */
-  getStorageExp = (key) => {
+  getStorageExp = (key: string) => {
     try {
       const storage = JSON.parse(localStorage.getItem(key));
       if (storage) {
@@ -60,7 +60,7 @@ class CacheModel {
    * @param {*} value
    * @param {*} expires 缓存时长，单位：毫秒
    */
-  setStorageExp = (key, value, expires) => {
+  setStorageExp = (key: string, value: any, expires: number) => {
     try {
       const params = { key, value, expires };
       if (!expires) {

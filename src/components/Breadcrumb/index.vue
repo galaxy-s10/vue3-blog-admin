@@ -8,11 +8,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive, toRefs, watch } from 'vue';
-import { NBreadcrumb, NBreadcrumbItem } from 'naive-ui';
 import { useAppStore } from '@/store/app';
 
 export default defineComponent({
-  components: { NBreadcrumb, NBreadcrumbItem },
   setup() {
     const appStore = useAppStore();
     const { path, routes } = toRefs(appStore.$state);

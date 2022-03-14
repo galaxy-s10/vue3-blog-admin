@@ -1,5 +1,8 @@
 <template>
-  <div>log-list</div>
+  <div>
+    <n-button>11</n-button>
+    log-list
+  </div>
 </template>
 
 <script lang="ts">

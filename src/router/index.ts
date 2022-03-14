@@ -69,7 +69,7 @@ export const defaultRoutes: RouteRecordRaw[] = [
       title: '授权页面',
       hidden: true,
     },
-    component: () => import('@/views/oauth/index.vue'),
+    component: () => import('@/views/oauth/oauth.vue'),
   },
   {
     name: 'error',

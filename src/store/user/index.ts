@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { fetchUserInfo } from '@/api/user';
+import { fetchLogin, fetchUserInfo } from '@/api/user';
 import { asyncRoutes } from '@/router';
+import cache from '@/utils/cache';
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -15,10 +16,28 @@ export const useUserStore = defineStore('user', {
       this.userInfo = res;
     },
     setToken(res) {
+      cache.setStorage('token', res);
       this.token = res;
     },
     setRoles(res) {
       this.roles = res;
+    },
+    async login({ account, password }) {
+      try {
+        // @ts-ignore
+        const { data, message } = await fetchLogin({
+          account,
+          password,
+        });
+        if (data) {
+          this.setToken(data);
+          return { token: data };
+        }
+        window.$message.error(message);
+        return { token: null };
+      } catch (error) {
+        return { token: null };
+      }
     },
     async getUserInfo() {
       try {
@@ -28,7 +47,7 @@ export const useUserStore = defineStore('user', {
         return data;
       } catch (error) {
         console.log(error);
-        return [];
+        return error;
       }
     },
     generateAsyncRoutes(roles) {
@@ -56,7 +75,6 @@ export const useUserStore = defineStore('user', {
           });
           return newRoutes;
         };
-
         return deepFind(roleRoutes);
       };
       return handleAsyncRoutes(asyncRoutes);
