@@ -73,6 +73,7 @@ export default defineComponent({
         `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
       window.open(
         url,
+        // 'http://localhost:8000/oauth/qq_login?code=8CDE3D8B50934C88F1949D6F1FCF7C6F&state=99',
         'qq_login_window',
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );

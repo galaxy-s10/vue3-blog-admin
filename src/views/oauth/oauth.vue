@@ -13,8 +13,6 @@ export default defineComponent({
   components: {},
   setup() {
     const route = useRoute();
-    const router = useRouter();
-    const userStore = useUserStore();
 
     const { method }: any = route.params;
     const { code } = route.query;
@@ -29,23 +27,7 @@ export default defineComponent({
       default:
         currentOauth = '非法';
     }
-    window.addEventListener('message', async (e) => {
-      const { type, data: code } = e.data;
-      if (type === 'qq_login') {
-        if (code) {
-          try {
-            await fetchQQLogin(code);
-            const token = Cookies.get('token');
-            if (token) {
-              userStore.setToken(token);
-              router.push('/');
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      }
-    });
+    console.log(method, code, window.opener, 22222);
     if (window.opener && ['qq_login', 'github_login'].includes(method)) {
       window.opener.postMessage(
         {

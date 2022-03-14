@@ -6,16 +6,31 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Cookies from 'js-cookie';
+import { useRoute, useRouter } from 'vue-router';
+import { fetchLogin, fetchQQLogin } from '@/api/user';
+import { useUserStore } from '@/store/user';
 
-// import Cookies from 'js-cookie';
 export default defineComponent({
   components: {},
   setup() {
+    const router = useRouter();
+    const userStore = useUserStore();
     window.addEventListener('message', async (e) => {
       const { type, data: code } = e.data;
+      console.log('收到消息', type, code);
       if (type === 'qq_login') {
         if (code) {
-          console.log('收到code', code);
+          try {
+            await fetchQQLogin(code);
+            const token = Cookies.get('token');
+            if (token) {
+              userStore.setToken(token);
+              router.push('/');
+            }
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
     });
