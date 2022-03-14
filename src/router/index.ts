@@ -161,7 +161,6 @@ export const asyncRoutes = [
         meta: {
           title: '账号设置',
           icon: 'KeyOutline',
-          roles: ['SUPER_ADMIN'],
         },
       },
     ],
