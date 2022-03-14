@@ -4,12 +4,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
+import { fetchLogin, fetchQQLogin } from '@/api/user';
+import { useUserStore } from '@/store/user';
 
 export default defineComponent({
   components: {},
   setup() {
     const route = useRoute();
+    const router = useRouter();
+    const userStore = useUserStore();
+
     const { method }: any = route.params;
     const { code } = route.query;
     let currentOauth = '';
@@ -33,6 +39,23 @@ export default defineComponent({
       );
       window.close();
     }
+    window.addEventListener('message', async (e) => {
+      const { type, data: code } = e.data;
+      if (type === 'qq_login') {
+        if (code) {
+          try {
+            await fetchQQLogin(code);
+            const token = Cookies.get('token');
+            if (token) {
+              userStore.setToken(token);
+              router.push('/');
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    });
     return {
       currentOauth,
     };
