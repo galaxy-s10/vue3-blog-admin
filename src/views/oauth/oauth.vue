@@ -24,7 +24,6 @@ export default defineComponent({
         currentOauth = '非法';
     }
     if (window.opener && ['qq_login', 'github_login'].includes(method)) {
-      console.log(window.opener, 11111111);
       window.opener.postMessage(
         {
           type: method === 'QQ' ? 'qq_login' : 'github_login',

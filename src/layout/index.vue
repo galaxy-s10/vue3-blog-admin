@@ -39,14 +39,12 @@ import { h, ref, watch, defineComponent } from 'vue';
 import { CaretDownOutline } from '@vicons/ionicons5';
 import type { RouteRecordRaw } from 'vue-router';
 import { useRouter, useRoute } from 'vue-router';
-import Cookies from 'js-cookie';
 import { defaultRoutes, iconMap, asyncRoutes } from '@/router/index';
 import { deepClone } from '@/utils/index';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import HeaderCpt from './header/header.vue';
 import TagBarCpt from './tagbar/tagbar.vue';
-import { fetchQQLogin } from '@/api/user';
 
 export default defineComponent({
   components: {
@@ -112,23 +110,7 @@ export default defineComponent({
       }
       router.push(key);
     };
-    window.addEventListener('message', async (e) => {
-      const { type, data: code } = e.data;
-      if (type === 'qq_login') {
-        if (code) {
-          try {
-            await fetchQQLogin(code);
-            const token = Cookies.get('token');
-            if (token) {
-              userStore.setToken(token);
-              router.push('/');
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      }
-    });
+
     return {
       collapsed: ref(false),
       menuOptions,

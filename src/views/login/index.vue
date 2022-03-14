@@ -50,8 +50,9 @@
 import { defineComponent, ref } from 'vue';
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
 import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
 import cache from '@/utils/cache';
-import { fetchLogin } from '@/api/user';
+import { fetchLogin, fetchQQLogin } from '@/api/user';
 import { useUserStore } from '@/store/user';
 import { qqOauthUrl, qqClientId, redirectUri } from '@/constant';
 
@@ -100,7 +101,23 @@ export default defineComponent({
         }
       });
     };
-
+    window.addEventListener('message', async (e) => {
+      const { type, data: code } = e.data;
+      if (type === 'qq_login') {
+        if (code) {
+          try {
+            await fetchQQLogin(code);
+            const token = Cookies.get('token');
+            if (token) {
+              userStore.setToken(token);
+              router.push('/');
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    });
     return { qqLogin, rules, loginForm, handleSubmit, formRef };
   },
 });
