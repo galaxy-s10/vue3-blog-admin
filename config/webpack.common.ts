@@ -309,7 +309,7 @@ const commonConfig = (isProduction) => {
       }),
       new DefinePlugin({
         // 定义全局变量
-        BASE_URL: `"${JSON.stringify(outputStaticUrl())}"`, // public下的index.html里面的icon的路径
+        BASE_URL: `${JSON.stringify(outputStaticUrl())}`, // public下的index.html里面的icon的路径
         'process.env': {
           // process.env里面的键值对，值必须是字符串，否则会报错！
           NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
