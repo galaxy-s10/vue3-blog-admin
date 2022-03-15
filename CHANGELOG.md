@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.2...v0.0.3) (2022-03-15)
+
+
+### Features
+
+* 优化webpack配置 ([d7d6315](https://github.com/galaxy-s10/vue3-blog-admin/commit/d7d63153db20c156729c2c47669dbf4071f72aad))
+
 ### [0.0.2](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.1...v0.0.2) (2022-03-14)
 
 
