@@ -1,24 +1,26 @@
-import type { RouteRecordRaw } from 'vue-router';
-import { createRouter, createWebHistory } from 'vue-router';
 import {
+  BugOutline,
   ChatbubbleEllipsesOutline,
+  CloudyOutline,
   CodeSlashOutline,
   ColorPaletteOutline,
   FolderOpenOutline,
+  KeyOutline,
   LinkOutline,
-  PawOutline,
   LockClosedOutline,
   MusicalNotesOutline,
+  PawOutline,
   PeopleOutline,
   PricetagsOutline,
   SettingsOutline,
-  KeyOutline,
   ShieldOutline,
   SpeedometerOutline,
   StarOutline,
-  BugOutline,
-  CloudyOutline,
 } from '@vicons/ionicons5';
+import { createRouter, createWebHistory } from 'vue-router';
+
+import type { RouteRecordRaw } from 'vue-router';
+
 import Layout from '@/layout/index.vue';
 
 export const iconMap = (name) => {

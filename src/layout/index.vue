@@ -35,16 +35,19 @@
 </template>
 
 <script lang="ts">
-import { h, ref, watch, defineComponent } from 'vue';
 import { CaretDownOutline } from '@vicons/ionicons5';
-import type { RouteRecordRaw } from 'vue-router';
-import { useRouter, useRoute } from 'vue-router';
-import { defaultRoutes, iconMap, asyncRoutes } from '@/router/index';
-import { deepClone } from '@/utils/index';
-import { useAppStore } from '@/store/app';
-import { useUserStore } from '@/store/user';
+import { defineComponent, h, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import HeaderCpt from './header/header.vue';
 import TagBarCpt from './tagbar/tagbar.vue';
+
+import type { RouteRecordRaw } from 'vue-router';
+
+import { asyncRoutes, defaultRoutes, iconMap } from '@/router/index';
+import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
+import { deepClone } from '@/utils/index';
 
 export default defineComponent({
   components: {

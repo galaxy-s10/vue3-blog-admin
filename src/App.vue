@@ -5,9 +5,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import Cookies from 'js-cookie';
+import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
 import { fetchLogin, fetchQQLogin } from '@/api/user';
 import { useUserStore } from '@/store/user';
 

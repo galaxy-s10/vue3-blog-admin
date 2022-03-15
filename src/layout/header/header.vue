@@ -25,9 +25,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
 import { Language, SettingsOutline } from '@vicons/ionicons5';
+import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';

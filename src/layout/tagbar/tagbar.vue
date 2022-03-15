@@ -37,11 +37,12 @@
 </template>
 
 <script lang="ts">
+import { ChevronDownOutline, CloseOutline } from '@vicons/ionicons5';
 import { defineComponent, reactive, ref, toRefs, VueElement, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { CloseOutline, ChevronDownOutline } from '@vicons/ionicons5';
-import { useAppStore } from '@/store/app';
+import { useRoute, useRouter } from 'vue-router';
+
 import router from '@/router';
+import { useAppStore } from '@/store/app';
 
 export default defineComponent({
   components: {

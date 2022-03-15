@@ -47,13 +47,14 @@
 </template>
 
 <script lang="ts">
+import { LockClosedOutline, PersonOutline } from '@vicons/ionicons5';
 import { defineComponent, ref } from 'vue';
-import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
 import { useRouter } from 'vue-router';
-import cache from '@/utils/cache';
+
 import { fetchLogin, fetchQQLogin } from '@/api/user';
+import { qqClientId, qqOauthUrl, redirectUri } from '@/constant';
 import { useUserStore } from '@/store/user';
-import { qqOauthUrl, qqClientId, redirectUri } from '@/constant';
+import cache from '@/utils/cache';
 
 const rules = {
   account: { required: true, message: '请输入账号', trigger: 'blur' },

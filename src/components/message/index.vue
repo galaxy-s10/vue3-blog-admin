@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import { NMessageProvider } from 'naive-ui';
+import { defineComponent } from 'vue';
+
 import ContentCpt from './content/index.vue';
 
 export default defineComponent({

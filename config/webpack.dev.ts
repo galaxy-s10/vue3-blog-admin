@@ -1,21 +1,21 @@
-const path = require('path');
-const portfinder = require('portfinder');
-const outputStaticUrl = require('./utils/outputStaticUrl');
+import path from 'path';
 
-const { chalkINFO, emoji } = require('./utils/chalkTip');
+import portfinder from 'portfinder';
+
+import { chalkINFO, emoji } from './utils/chalkTip';
+import { outputStaticUrl } from './utils/outputStaticUrl';
 
 console.log(
-  chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
+  chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`),
   emoji.get('white_check_mark')
 );
 
-module.exports = new Promise((resolve) => {
+export default new Promise((resolve) => {
   // 默认端口8000，如果被占用了，会自动递增+1
-  const port = 8000;
-  portfinder.basePort = port;
+  const defaultPort = 8000;
   portfinder
     .getPortPromise({
-      port,
+      port: defaultPort,
       stopPort: 9000,
     })
     .then((port) => {
@@ -24,10 +24,6 @@ module.exports = new Promise((resolve) => {
         mode: 'development',
         devtool: 'source-map',
         stats: 'errors-warnings', // 只显示警告和错误信息（webpack-dev-server4.x后变了）
-        cache: {
-          // type: 'filesystem', // 长缓存，如果是内存缓存的话，下次启动就没了
-          type: 'memory',
-        },
         devServer: {
           client: {
             logging: 'none', // https://webpack.js.org/configuration/dev-server/#devserverclient
@@ -80,7 +76,7 @@ module.exports = new Promise((resolve) => {
         plugins: [],
       });
     })
-    .catch((err) => {
-      console.log(err);
+    .catch((error) => {
+      console.log(error);
     });
 });

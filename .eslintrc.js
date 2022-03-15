@@ -1,18 +1,23 @@
-const { chalkINFO, emoji } = require('./config/utils/chalkTip');
+const chalk = require('chalk');
 
 console.log(
-  chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
-  emoji.get('white_check_mark')
+  `${chalk.bgBlueBright.black(' INFO ')} ${chalk.blueBright(
+    `读取了: ${__filename.slice(__dirname.length + 1)}`
+  )}`
 );
 
 module.exports = {
-  settings: {},
+  settings: {
+    // 'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+  },
   env: {
     browser: true,
+    node: true,
   },
   extends: [
-    'airbnb-base', // airbnb的eslint规范，它会对import和require进行排序，挺好的。如果不用它的话，需要在env添加node:true
+    // 'airbnb-base', // airbnb的eslint规范，它会对import和require进行排序，挺好的。如果不用它的话，需要在env添加node:true
     'eslint:recommended',
+    'plugin:import/recommended',
     'plugin:vue/vue3-recommended',
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier',
@@ -20,7 +25,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
   },
-  plugins: [],
+  plugins: ['import'],
   /**
    * overrides可共享配置中的配置不再覆盖.eslintrc文件中的用户设置
    * 在 ESLint v6.0.0 中，父配置始终优先于扩展配置，即使是overrides块。
@@ -28,7 +33,29 @@ module.exports = {
    * https://eslint.org/docs/user-guide/migrating-to-6.0.0#overrides-in-a-config-file-can-now-match-dotfiles
    * https://github.com/eslint/rfcs/pull/13
    */
-  overrides: [],
+  overrides: [
+    // {
+    //   files: ['*.ts', '*.tsx'],
+    //   parser: '@typescript-eslint/parser',
+    //   /**
+    //    * babel-eslint插件能动态import。默认的eslint解析器不能理解第三阶段的建议。https://github.com/import-js/eslint-plugin-import/issues/890
+    //    * babel-eslint@10.1.0: babel-eslint is now @babel/eslint-parser. This package will no longer receive updates.
+    //    * 好像不用它也行。
+    //    * parser: '@babel/eslint-parser',
+    //    */
+    //   parserOptions: {},
+    //   extends: [
+    //     // 'airbnb-base', // airbnb的eslint规范，它会对import和require进行排序，挺好的。如果不用它的话，需要在env添加node:true
+    //     'eslint:recommended',
+    //     'plugin:import/recommended',
+    //     'plugin:vue/vue3-recommended',
+    //     '@vue/eslint-config-typescript',
+    //     '@vue/eslint-config-prettier',
+    //   ],
+    //   plugins: ['import'],
+    //   rules: {},
+    // },
+  ],
   // rules优先级最高，会覆盖上面的
   rules: {
     /**
@@ -36,18 +63,37 @@ module.exports = {
      * 1 => warn
      * 2 => error
      */
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          ['sibling', 'parent'],
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'always', //强制或禁止导入组之间的新行：
+        //根据导入路径按字母顺序对每个组内的顺序进行排序
+        alphabetize: {
+          order: 'asc' /* 按升序排序。选项：['ignore', 'asc', 'desc'] */,
+          caseInsensitive: true /* 忽略大小写。选项：[true, false] */,
+        },
+      },
+    ],
+
     'vue/multi-word-component-names': 0,
     'no-shadow': 0, // https://eslint.org/docs/rules/no-shadow
     'import/no-extraneous-dependencies': 0, // 开发/生产依赖混乱
     'no-console': 0, // 此规则不允许调用console对象的方法。
     'import/prefer-default-export': 0, // 当模块只有一个导出时，更喜欢使用默认导出而不是命名导出。
     'import/extensions': 0, // 确保在导入路径中一致使用文件扩展名
-    'react/react-in-jsx-scope': 0,
     'import/no-unresolved': 0, // 不能解析带别名的路径的模块，但实际上是不影响代码运行的。找不到解决办法，只能关掉了。
     'no-param-reassign': 0, // 禁止重新分配函数参数，https://eslint.org/docs/rules/no-param-reassign
     'class-methods-use-this': 0, // 类方法如果不使用this的话会报错
     // 'class-methods-use-this': 0, // 类方法如果不使用this的话会报错
-    // 'react/prop-types': 0,
     // 'no-restricted-syntax': [
     //   // airbnb默认禁用了一些语法
     //   1,

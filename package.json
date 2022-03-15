@@ -5,16 +5,19 @@
   "license": "MIT",
   "author": "shuisheng <2274751790@qq.com>",
   "scripts": {
-    "build": "webpack --config ./config/webpack.common.js --env production",
+    "build": "webpack --config ./config/webpack.common.ts --env production",
     "commit": "cz",
     "lint": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue",
-    "lint:fix": "eslint --config ./.eslintrc.js --fix . --ext .js,.jsx,.ts,.tsx,.vue",
+    "lint:fix": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue --fix",
     "prepare": "husky install",
     "prettier": "prettier --write .",
     "push": "cz && standard-version",
     "release": "standard-version",
-    "start": "cross-env webpack serve --config ./config/webpack.common.js --env development",
-    "start:stats": "cross-env BundleAnalyzerPluginSwitch=true webpack serve --config ./config/webpack.common.js --env development"
+    "start": "cross-env webpack serve --config ./config/webpack.common.ts --env development",
+    "start:beta": "cross-env VUE_APP_RELEASE_ENV=beta VUE_APP_RELEASE_PUBLICPATH=vue3-blog-admin webpack serve --config ./config/webpack.common.ts --env development",
+    "start:preview": "cross-env VUE_APP_RELEASE_ENV=preview VUE_APP_RELEASE_PUBLICPATH=vue3-blog-admin webpack serve --config ./config/webpack.common.ts --env development",
+    "start:prod": "cross-env VUE_APP_RELEASE_ENV=prod VUE_APP_RELEASE_PUBLICPATH=vue3-blog-admin webpack serve --config ./config/webpack.common.ts --env production",
+    "start:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack serve --config ./config/webpack.common.ts --env development"
   },
   "config": {
     "commitizen": {
@@ -35,7 +38,6 @@
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.2",
-    "@babel/preset-typescript": "^7.16.7",
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "@rushstack/eslint-patch": "^1.1.0",
@@ -45,7 +47,6 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^10.0.0",
     "babel-loader": "^8.2.2",
-    "babel-plugin-import": "^1.13.3",
     "clean-webpack-plugin": "^4.0.0",
     "commitizen": "^4.2.4",
     "compression-webpack-plugin": "^7.1.2",
@@ -55,8 +56,7 @@
     "css-minimizer-webpack-plugin": "^3.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-vue": "^8.5.0",
     "eslint-webpack-plugin": "^3.1.1",
     "file-loader": "^6.2.0",
@@ -76,7 +76,6 @@
     "sass": "^1.45.2",
     "sass-loader": "^12.4.0",
     "standard-version": "^9.3.2",
-    "style-loader": "^2.0.0",
     "terser": "^5.7.0",
     "ts-loader": "^9.2.7",
     "typescript": "^4.6.2",

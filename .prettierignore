@@ -6,5 +6,4 @@
 .eslintignore
 .browserlistrc
 .editorconfig
-*.sh
-*.lock
+build.sh

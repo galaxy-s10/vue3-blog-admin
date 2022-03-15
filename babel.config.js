@@ -1,8 +1,9 @@
-const { chalkINFO, emoji } = require('./config/utils/chalkTip');
+const chalk = require('chalk');
 
 console.log(
-  chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
-  emoji.get('white_check_mark')
+  `${chalk.bgBlueBright.black(' INFO ')} ${chalk.blueBright(
+    `读取了: ${__filename.slice(__dirname.length + 1)}`
+  )}`
 );
 
 module.exports = {
@@ -18,15 +19,9 @@ module.exports = {
          */
         useBuiltIns: 'usage',
         corejs: 3,
+        modules: 'commonjs', // https://github.com/vuejs/vue-cli/blob/HEAD/packages/@vue/babel-preset-app/index.js#L226
       },
     ],
   ],
-  plugins: [
-    // [
-    //   '@babel/plugin-transform-runtime', // 和@babel/preset-env的useBuiltIns二选一。
-    //   {
-    //     corejs: 3,
-    //   },
-    // ],
-  ],
+  plugins: [],
 };

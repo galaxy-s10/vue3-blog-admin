@@ -1,9 +1,9 @@
-const CompressionPlugin = require('compression-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin'); // 注入script或link
-const TerserPlugin = require('terser-webpack-plugin');
+import CompressionPlugin from 'compression-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import HtmlWebpackTagsPlugin from 'html-webpack-tags-plugin'; // 注入script或link
+import TerserPlugin from 'terser-webpack-plugin';
 
-const { chalkINFO, emoji } = require('./utils/chalkTip');
+import { chalkINFO, emoji } from './utils/chalkTip';
 
 // const PurgeCssPlugin = require('purgecss-webpack-plugin');// css的Tree Shaking
 // const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'); // 弃用，使用html-webpack-tags-plugin代替
@@ -15,7 +15,7 @@ console.log(
   emoji.get('white_check_mark')
 );
 
-module.exports = {
+export default {
   mode: 'production',
   devtool: false,
   externals: {},
@@ -134,7 +134,7 @@ module.exports = {
     new HtmlWebpackTagsPlugin({
       append: false,
       publicPath: '', // 默认会拼上output.publicPath，因为我们引入的是cdn的地址，因此不需要拼上output.publicPath，直接publicPath:''，这样就约等于拼上空字符串''
-      // links: ['https://cdn.jsdelivr.net/npm/iview@3.5.4/dist/styles/iview.css'],
+      links: [],
       scripts: [],
     }),
     // new webpack.optimize.ModuleConcatenationPlugin(), //作用域提升。！！！在使用cdn时，axios和iview有问题，先不用！！！

@@ -4,7 +4,7 @@
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-16 04:15:31
-# LastEditTime: 2022-01-16 17:33:03
+# LastEditTime: 2022-03-15 19:57:52
 # Description:
 ###
 
@@ -55,4 +55,4 @@ else
   echo 开始构建$ENV环境:
 fi
 
-npx cross-env REACT_APP_RELEASE_PUBLICPATH=$JOBNAME REACT_APP_RELEASE_ENV=$ENV webpack --config ./config/webpack.common.js --env production
+npx cross-env VUE_APP_RELEASE_PUBLICPATH=$JOBNAME VUE_APP_RELEASE_ENV=$ENV webpack --config ./config/webpack.common.ts --env production

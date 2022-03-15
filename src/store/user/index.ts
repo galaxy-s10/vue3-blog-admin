@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+
 import { fetchLogin, fetchUserInfo } from '@/api/user';
 import { asyncRoutes } from '@/router';
 import cache from '@/utils/cache';

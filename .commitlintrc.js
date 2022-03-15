@@ -1,8 +1,9 @@
-const { chalkINFO, emoji } = require('./config/utils/chalkTip');
+const chalk = require('chalk');
 
 console.log(
-  chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
-  emoji.get('white_check_mark')
+  `${chalk.bgBlueBright.black(' INFO ')} ${chalk.blueBright(
+    `读取了: ${__filename.slice(__dirname.length + 1)}`
+  )}`
 );
 
 module.exports = {

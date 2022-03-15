@@ -1,21 +1,22 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer'); // bundle分析
-const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 默认情况下，这个插件会删除webpack.outout中的所有文件
-const { DefinePlugin } = require('webpack');
-const { merge } = require('webpack-merge');
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // 将已存在的单个文件或整个目录复制到构建目录。
-const ESLintPlugin = require('eslint-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin'); // 自动生成index.html文件(并引入打包的js)
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
-const WebpackBar = require('webpackbar');
-const { VueLoaderPlugin } = require('vue-loader');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
-const outputStaticUrl = require('./utils/outputStaticUrl');
+import path from 'path';
 
-const { chalkINFO, chalkSUCCESS, emoji } = require('./utils/chalkTip');
-const devConfig = require('./webpack.dev');
-const prodConfig = require('./webpack.prod');
+import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'; // 默认情况下，这个插件会删除webpack.outout中的所有文件
+import CopyWebpackPlugin from 'copy-webpack-plugin'; // 将已存在的单个文件或整个目录复制到构建目录。
+import ESLintPlugin from 'eslint-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin'; // 自动生成index.html文件(并引入打包的js)
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
+import { DefinePlugin } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'; // bundle分析
+import { merge } from 'webpack-merge';
+import WebpackBar from 'webpackbar';
+
+import { chalkINFO, chalkSUCCESS, emoji } from './utils/chalkTip';
+import { APP_ENV, APP_NAME, outputStaticUrl } from './utils/outputStaticUrl';
+import devConfig from './webpack.dev';
+import prodConfig from './webpack.prod';
 
 console.log(
   chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
@@ -23,8 +24,7 @@ console.log(
 );
 
 const commonConfig = (isProduction) => {
-  console.log('isProduction', isProduction);
-  const res = {
+  const result = {
     entry: {
       main: {
         import: './src/main.ts',
@@ -46,9 +46,9 @@ const commonConfig = (isProduction) => {
        * 如果一个模块既被同步引了，又被异步引入了，不管顺序（即不管是先同步引入再异步引入，还是先异步引入在同步引入），
        * 这个模块会打包进bundle.js，而不会单独抽离出来。
        */
-      chunkFilename: 'js/[name]-[fullhash:6]-bundle-chunk.js',
+      chunkFilename: 'js/[name]-[hash:6]-bundle-chunk.js',
       path: path.resolve(__dirname, '../dist'),
-      assetModuleFilename: 'assets/[name]-[fullhash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
+      assetModuleFilename: 'assets/[name]-[hash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
       /**
        * output的publicPath建议(或者绝大部分情况下必须)与devServer的publicPath一致。
        * 不管开发模式还是生产模式，output.publicPath都会生效，如果不设置publicPath，
@@ -69,7 +69,7 @@ const commonConfig = (isProduction) => {
     },
     resolve: {
       // 解析路径
-      extensions: ['.js', '.jsx', '.ts', 'tsx', '.vue'], // 解析扩展名
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'], // 解析扩展名
       alias: {
         // 如果不设置这个alias，webpack就会解析不到import xxx '@/xxx'中的@
         '@': path.resolve(__dirname, '../src'), // 设置路径别名
@@ -79,7 +79,15 @@ const commonConfig = (isProduction) => {
       // 用于解析webpack的loader
       modules: ['node_modules'],
     },
-
+    cache: {
+      // type: 'memory', // filesystem长缓存，如果是memory缓存的话，下次启动就没了
+      type: 'filesystem', // filesystem长缓存，如果是memory缓存的话，下次启动就没了
+      buildDependencies: {
+        // https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
+        // 建议cache.buildDependencies.config: [__filename]在您的 webpack 配置中设置以获取最新配置和所有依赖项。
+        config: [__filename],
+      },
+    },
     module: {
       // loader执行顺序：从下往上，从右往左
       rules: [
@@ -135,7 +143,7 @@ const commonConfig = (isProduction) => {
             {
               loader: 'ts-loader',
               options: {
-                appendTsSuffixTo: [/\.vue$/],
+                appendTsSuffixTo: ['\\.vue$'],
                 // If you want to speed up compilation significantly you can set this flag. https://www.npmjs.com/package/ts-loader#transpileonly
                 transpileOnly: true,
               },
@@ -207,7 +215,7 @@ const commonConfig = (isProduction) => {
           test: /\.(svg|eot|ttf|woff2?)$/,
           type: 'asset/resource',
           generator: {
-            filename: 'font/[name]-[fullhash:6][ext]',
+            filename: 'font/[name]-[hash:6][ext]',
           },
         },
       ],
@@ -243,6 +251,11 @@ const commonConfig = (isProduction) => {
          * 但是控制台还是会打印错误。
          */
         devServer: false,
+        /**
+         * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
+         * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
+         */
+        async: true,
       }),
       new ESLintPlugin({
         extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
@@ -260,7 +273,7 @@ const commonConfig = (isProduction) => {
         filename: 'index.html',
         title: 'vue-webpack-template',
         template: './public/index.html',
-        fullhash: true,
+        hash: true,
         minify: isProduction
           ? {
               collapseWhitespace: true, // 折叠空白
@@ -296,15 +309,22 @@ const commonConfig = (isProduction) => {
       }),
       new DefinePlugin({
         // 定义全局变量
-        BASE_URL: "'./'", // public下的index.html里面的icon的路径
+        BASE_URL: `"${JSON.stringify(outputStaticUrl())}"`, // public下的index.html里面的icon的路径
         'process.env': {
+          // process.env里面的键值对，值必须是字符串，否则会报错！
           NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
           PUBLIC_PATH: JSON.stringify(outputStaticUrl()),
+          VUE_APP_RELEASE_PUBLICPATH: JSON.stringify(
+            APP_NAME === undefined ? '/' : APP_NAME
+          ),
+          VUE_APP_RELEASE_ENV: JSON.stringify(
+            APP_ENV === undefined ? '/' : APP_ENV
+          ),
         },
         __VUE_OPTIONS_API__: 'true',
         __VUE_PROD_DEVTOOLS__: 'false',
       }),
-      process.env.BundleAnalyzerPluginSwitch &&
+      process.env.WEBPACK_ANALYZER_SWITCH &&
         new BundleAnalyzerPlugin({
           analyzerMode: 'server',
           generateStatsFile: true,
@@ -312,14 +332,13 @@ const commonConfig = (isProduction) => {
         }), // configuration.plugins should be one of these object { apply, … } | function
     ].filter(Boolean),
   };
-  return res;
+  return result;
 };
 
 // eslint-disable-next-line
-module.exports = (env) => {
+export default (env) => {
   return new Promise((resolve) => {
     const isProduction = env.production;
-    const isProductionMin = env.productionMin;
     /**
      * 注意：在node环境下，给process.env这个对象添加的所有属性，都会默认转成字符串,
      * 如果给process.env.NODE_ENV = undefined，赋值的时候node会将undefined转成"undefined"再赋值
@@ -331,12 +350,11 @@ module.exports = (env) => {
     // 改进：process.env.production = isProduction?true:false,这样的话，process.env.production就要么是字符串"true"，要么是字符串"false"
     // 这里要先判断isProduction,判断完再将字符串赋值给process.env.NODE_ENV，就万无一失了
     process.env.NODE_ENV = isProduction ? 'production' : 'development';
-    process.env.isProductionMin = !!isProductionMin;
     // prodConfig返回的是普通对象，devConfig返回的是promise，使用Promise.resolve进行包装
     const configPromise = Promise.resolve(
       isProduction ? prodConfig : devConfig
     );
-    configPromise.then((config) => {
+    configPromise.then((config: any) => {
       // 根据当前环境，合并配置文件
       const mergeConfig = merge(commonConfig(isProduction), config);
       console.log(chalkSUCCESS(`当前是：${process.env.NODE_ENV}环境`));

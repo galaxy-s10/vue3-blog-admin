@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, watch } from 'vue';
+import { defineComponent, reactive, ref, toRefs, watch } from 'vue';
+
 import { useAppStore } from '@/store/app';
 
 export default defineComponent({

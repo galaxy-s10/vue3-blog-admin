@@ -1,3 +1,11 @@
+const chalk = require('chalk');
+
+console.log(
+  `${chalk.bgBlueBright.black(' INFO ')} ${chalk.blueBright(
+    `读取了: ${__filename.slice(__dirname.length + 1)}`
+  )}`
+);
+
 module.exports = {
   bracketSpacing: true, // 默认为true,即{ foo: bar }；可改为false，即{foo: bar}
   singleQuote: true, // 默认为false,即{foo:"bar"}，可改为true，即{foo:'bar'}
