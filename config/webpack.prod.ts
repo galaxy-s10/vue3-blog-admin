@@ -70,17 +70,17 @@ export default {
         defaultVendors: {
           // 重写默认的defaultVendors
           chunks: 'initial',
-          // minSize: 50 * 1024,
-          // maxSize: 50 * 1024,
+          minSize: 100 * 1024,
+          maxSize: 200 * 1024,
           test: /[\\/]node_modules[\\/]/,
           // filename: 'js/[name]-defaultVendors.js',
-          filename: 'js/[chunkhash:6]-defaultVendors.js',
+          filename: 'js/[name]-[contenthash:6]-defaultVendors.js',
           priority: -10,
         },
         default: {
           // 重写默认的default
           chunks: 'all',
-          filename: 'js/[name]-default.js',
+          filename: 'js/[name]-[contenthash:6]-default.js',
           minChunks: 2, // 至少被minChunks个入口文件引入了minChunks次。
           priority: -20,
         },

@@ -39,16 +39,16 @@ const commonConfig = (isProduction) => {
       // },
     },
     output: {
-      filename: 'js/[name]-bundle.js', // 入口文件打包生成后的文件的文件名
+      filename: 'js/[name]-[contenthash:6]-bundle.js', // 入口文件打包生成后的文件的文件名
       /**
        * 入口文件中，符合条件的代码，被抽离出来后生成的文件的文件名
        * 如：动态(即异步)导入，默认不管大小，是一定会被单独抽离出来的。
        * 如果一个模块既被同步引了，又被异步引入了，不管顺序（即不管是先同步引入再异步引入，还是先异步引入在同步引入），
        * 这个模块会打包进bundle.js，而不会单独抽离出来。
        */
-      chunkFilename: 'js/[name]-[hash:6]-bundle-chunk.js',
+      chunkFilename: 'js/[name]-[contenthash:6]-bundle-chunk.js',
       path: path.resolve(__dirname, '../dist'),
-      assetModuleFilename: 'assets/[name]-[hash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
+      assetModuleFilename: 'assets/[name]-[contenthash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
       /**
        * output的publicPath建议(或者绝大部分情况下必须)与devServer的publicPath一致。
        * 不管开发模式还是生产模式，output.publicPath都会生效，如果不设置publicPath，
@@ -202,7 +202,7 @@ const commonConfig = (isProduction) => {
           test: /\.(jpg|jpeg|png|gif)$/,
           type: 'asset',
           generator: {
-            filename: 'img/[name]-[hash:6][ext]',
+            filename: 'img/[name]-[contenthash:6][ext]',
           },
           parser: {
             dataUrlCondition: {
@@ -215,7 +215,7 @@ const commonConfig = (isProduction) => {
           test: /\.(svg|eot|ttf|woff2?)$/,
           type: 'asset/resource',
           generator: {
-            filename: 'font/[name]-[hash:6][ext]',
+            filename: 'font/[name]-[contenthash:6][ext]',
           },
         },
       ],
@@ -229,34 +229,34 @@ const commonConfig = (isProduction) => {
            * Options similar to the same options in webpackOptions.output
            * all options are optional
            */
-          filename: 'css/[name]-[fullhash:6].css',
+          filename: 'css/[name]-[contenthash:6].css',
           chunkFilename: 'css/[id].css',
           ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
       new WebpackBar(), // 构建进度条
       new FriendlyErrorsWebpackPlugin(),
       new VueLoaderPlugin(),
-      new ForkTsCheckerWebpackPlugin({
-        // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
-        typescript: {
-          extensions: {
-            vue: {
-              enabled: true,
-              compiler: '@vue/compiler-sfc',
-            },
-          },
-        },
-        /**
-         * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
-         * 但是控制台还是会打印错误。
-         */
-        devServer: false,
-        /**
-         * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
-         * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
-         */
-        async: true,
-      }),
+      // new ForkTsCheckerWebpackPlugin({
+      //   // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
+      //   typescript: {
+      //     extensions: {
+      //       vue: {
+      //         enabled: true,
+      //         compiler: '@vue/compiler-sfc',
+      //       },
+      //     },
+      //   },
+      //   /**
+      //    * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
+      //    * 但是控制台还是会打印错误。
+      //    */
+      //   devServer: false,
+      //   /**
+      //    * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
+      //    * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
+      //    */
+      //   async: true,
+      // }),
       new ESLintPlugin({
         extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
         emitError: false, // 发现的错误将始终发出，禁用设置为false.
@@ -335,7 +335,6 @@ const commonConfig = (isProduction) => {
   return result;
 };
 
-// eslint-disable-next-line
 export default (env) => {
   return new Promise((resolve) => {
     const isProduction = env.production;
