@@ -12,7 +12,7 @@
         @expand="collapsed = false"
       >
         <n-menu
-          v-model:value="currentPath"
+          :value="currentPath"
           :collapsed="collapsed"
           :collapsed-width="64"
           :collapsed-icon-size="22"
@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import { CaretDownOutline } from '@vicons/ionicons5';
+import { NIcon } from 'naive-ui';
 import { defineComponent, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -93,11 +94,13 @@ export default defineComponent({
     const menuOptions = handleRoutes(routes).filter(
       (v) => v.meta && !v.meta.hidden
     );
-    const path = ref(route.path);
+    let path = ref(route.path);
     watch(
       () => route.path,
       () => {
+        console.log('route.path变了', route.path);
         appStore.setPath(route.path);
+        path.value = route.path;
       }
     );
     appStore.setRoutes(menuOptions);
@@ -105,6 +108,8 @@ export default defineComponent({
     appStore.setTagbarList({ [route.path]: route.meta.title });
 
     const handleUpdateValue = (key: string, item) => {
+      console.log('handleUpdateValue', key);
+      path.value = key;
       if (!appStore.tagbarList[key]) {
         appStore.setTagbarList({
           ...appStore.tagbarList,
@@ -127,7 +132,7 @@ export default defineComponent({
         return vn ? h(iconMap(vn)) : false;
       },
       expandIcon() {
-        return h('n-icon', null, { default: () => h(CaretDownOutline) });
+        return h(NIcon, null, { default: () => h(CaretDownOutline) });
       },
     };
   },

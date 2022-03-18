@@ -13,6 +13,7 @@ service.interceptors.request.use(
   (config) => {
     const token = cache.getStorage('token');
     if (token) {
+      // @ts-ignore
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

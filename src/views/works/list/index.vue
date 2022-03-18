@@ -20,7 +20,7 @@
 import { NButton, useMessage, DataTableColumns } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
-import { fetchList } from '@/api/comment';
+import { fetchList } from '@/api/works';
 type ILog = {
   id: number;
   user_id: number;
@@ -49,69 +49,39 @@ const createColumns = ({
       align: 'center',
     },
     {
-      title: '文章id',
-      key: 'article_id',
+      title: '名称',
+      key: 'name',
       width: '100',
       align: 'center',
     },
     {
-      title: '父评论id',
-      key: 'parent_comment_id',
+      title: '简介',
+      key: 'desc',
       width: '100',
       align: 'center',
     },
     {
-      title: '回复id',
-      key: 'reply_comment_id',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '留言的用户id',
-      key: 'from_user_id',
+      title: '背景图',
+      key: 'bg_url',
       width: '200',
       align: 'center',
     },
     {
-      title: '被回复的用户id',
-      key: 'to_user_id',
+      title: '线上地址',
+      key: 'url',
       width: '200',
       align: 'center',
     },
     {
-      title: '内容',
-      key: 'content',
+      title: '权重',
+      key: 'priority',
       width: '100',
       align: 'center',
     },
     {
-      title: '子评论数',
-      key: 'children_comment_total',
+      title: '状态',
+      key: 'status',
       width: '100',
-      align: 'center',
-    },
-    {
-      title: '获赞数',
-      key: 'star_total',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: 'ua',
-      key: 'ua',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: 'ip',
-      key: 'ip',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: 'ip_data',
-      key: 'ip_data',
-      width: '200',
       align: 'center',
     },
     {
@@ -140,6 +110,7 @@ export default defineComponent({
   setup() {
     let logData = ref([]);
     let total = ref(0);
+
     let isLoading = ref(false);
     const params = reactive({
       nowPage: 1,
@@ -167,6 +138,7 @@ export default defineComponent({
           isLoading.value = false;
           logData.value = res.data.rows;
           total.value = res.data.count;
+
           paginationReactive.page = params.nowPage;
           paginationReactive.pageCount = Math.ceil(
             res.data.count / params.pageSize

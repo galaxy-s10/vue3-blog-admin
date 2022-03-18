@@ -57,9 +57,7 @@ export default new Promise((resolve) => {
           },
           proxy: {
             '/api': {
-              // target: 'https://www.zhengbeining.com/api/',  //默认：/api/type/pageList ===>https://www.zhengbeining.com/api/api/type/pageList
-              // target: 'http://42.193.157.44/api', // 默认：/api/type/pageList ===>https://www.zhengbeining.com/api/api/type/pageList
-              target: 'http://localhost:3200', // 默认：/api/type/pageList ===>https://www.zhengbeining.com/api/api/type/pageList
+              target: 'http://localhost:3200',
               secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
               /**
                * changeOrigin，是否修改请求地址的源
@@ -68,9 +66,26 @@ export default new Promise((resolve) => {
                */
               changeOrigin: true,
               pathRewrite: {
-                '^/api': '', // 重写后：/api/type/pageList ===>https://www.zhengbeining.com/api/type/pageList
+                // '^/api': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
+                '^/api': '/admin', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
+                // '^/api': 'admin', // 和/admin效果一样：/api/link/list ==> http://localhost:3200/admin/link/list
               },
             },
+            // '/api': {
+            //   // target: 'https://www.zhengbeining.com/api/',
+            //   // target: 'http://42.193.157.44/api',
+            //   target: 'http://localhost:3200',
+            //   secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+            //   /**
+            //    * changeOrigin，是否修改请求地址的源
+            //    * 默认changeOrigin: false，即发请求即使用devServer的localhost:port发起的，如果后端服务器有校验源，就会有问题
+            //    * 设置changeOrigin: true，就会修改发起请求的源，将原本的localhost:port修改为target，这样就可以通过后端服务器对源的校验
+            //    */
+            //   changeOrigin: true,
+            //   pathRewrite: {
+            //     '^/api': '', // 重写后：
+            //   },
+            // },
           },
         },
         plugins: [],

@@ -21,3 +21,10 @@ export function fetchUserInfo() {
     method: 'get',
   });
 }
+export function fetchUserList(params) {
+  return request({
+    url: '/api/user/list',
+    method: 'get',
+    params,
+  });
+}

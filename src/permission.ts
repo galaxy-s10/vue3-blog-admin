@@ -14,7 +14,8 @@ router.beforeEach(async (to, from, next) => {
   // 先判断有没有登录
   if (hasToken) {
     if (to.path === '/login') {
-      next();
+      console.log(1);
+      next('/');
     }
     // 判断用户有没有角色
     if (roles && roles.length) {
@@ -26,6 +27,7 @@ router.beforeEach(async (to, from, next) => {
         return;
       }
       const routeRes = userStore.generateAsyncRoutes(roles);
+      console.log(routeRes, 33333);
       routeRes.forEach((v) => {
         router.addRoute(v);
       });

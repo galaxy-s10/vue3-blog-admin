@@ -16,6 +16,10 @@ import {
   ShieldOutline,
   SpeedometerOutline,
   StarOutline,
+  ServerOutline,
+  TimeOutline,
+  RocketOutline,
+  BuildOutline,
 } from '@vicons/ionicons5';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -42,6 +46,10 @@ export const iconMap = (name) => {
     StarOutline,
     BugOutline,
     CloudyOutline,
+    ServerOutline,
+    TimeOutline,
+    RocketOutline,
+    BuildOutline,
   };
   return ico[name];
 };
@@ -197,7 +205,7 @@ export const asyncRoutes = [
       {
         name: 'starList',
         path: '/star/list',
-        component: () => import('@/views/setting/theme/index.vue'),
+        component: () => import('@/views/star/list/index.vue'),
         meta: {
           title: '点赞列表',
           icon: 'StarOutline',
@@ -347,6 +355,34 @@ export const asyncRoutes = [
     ],
   },
   {
+    name: 'works',
+    path: '/works',
+    component: Layout,
+    meta: {
+      title: '作品管理',
+      icon: 'RocketOutline',
+    },
+    children: [
+      {
+        name: 'worksList',
+        path: '/works/list',
+        component: () => import('@/views/works/list/index.vue'),
+        meta: {
+          title: '作品列表',
+        },
+      },
+      {
+        name: 'addWorks',
+        path: '/works/add',
+        component: () => import('@/views/works/add/index.vue'),
+        meta: {
+          title: '添加作品',
+          roles: ['SUPER_ADMIN'],
+        },
+      },
+    ],
+  },
+  {
     name: 'user',
     path: '/user',
     component: Layout,
@@ -429,21 +465,40 @@ export const asyncRoutes = [
       },
     ],
   },
+  {
+    name: 'schedule',
+    path: '/schedule',
+    component: Layout,
+    meta: {
+      title: '定时任务',
+      icon: 'TimeOutline',
+    },
+    children: [
+      {
+        name: 'scheduleOther',
+        path: '/schedule/other',
+        component: () => import('@/views/schedule/other/other.vue'),
+        meta: {
+          title: '其他任务',
+          icon: 'BuildOutline',
+        },
+      },
+      {
+        name: 'scheduleBackups',
+        path: '/schedule/backups',
+        component: () => import('@/views/schedule/backups/backups.vue'),
+        meta: {
+          title: '备份任务',
+          icon: 'ServerOutline',
+        },
+      },
+    ],
+  },
 ];
 const router = createRouter({
   // routes: [...defaultRoutes, ...asyncRoutes],
   routes: [...defaultRoutes],
   history: createWebHistory(),
 });
-
-// eslint-disable-next-line consistent-return
-// router.beforeEach((to) => {
-//   if (to.name !== 'login' && to.name !== 'oauth') {
-//     const token = localCache.getCache('token');
-//     if (!token) {
-//       return '/login';
-//     }
-//   }
-// });
 
 export default router;

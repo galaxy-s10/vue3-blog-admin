@@ -9,32 +9,37 @@ import Cookies from 'js-cookie';
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import { APP_ENV } from '../config/utils/outputStaticUrl';
+
 import { fetchLogin, fetchQQLogin } from '@/api/user';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/user/index';
+// import { useUserStore } from '@/store/user';
 
 export default defineComponent({
   components: {},
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
-    window.addEventListener('message', async (e) => {
-      const { type, data: code } = e.data;
-      console.log('收到消息', type, code);
-      if (type === 'qq_login') {
-        if (code) {
-          try {
-            await fetchQQLogin(code);
-            const token = Cookies.get('token');
-            if (token) {
-              userStore.setToken(token);
-              router.push('/');
+    if (process.env.NODE_ENV !== 'development') {
+      window.addEventListener('message', async (e) => {
+        const { type, data: code } = e.data;
+        console.log('收到消息', type, code);
+        if (type === 'qq_login') {
+          if (code) {
+            try {
+              await fetchQQLogin(code);
+              const token = Cookies.get('token');
+              if (token) {
+                userStore.setToken(token);
+                router.push('/');
+              }
+            } catch (error) {
+              console.log(error);
             }
-          } catch (error) {
-            console.log(error);
           }
         }
-      }
-    });
+      });
+    }
     return {};
   },
 });

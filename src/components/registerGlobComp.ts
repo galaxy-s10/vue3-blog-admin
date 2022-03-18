@@ -13,6 +13,8 @@ import {
   NMenu,
   NMessageProvider,
   NSpace,
+  NDataTable,
+  NSpin,
 } from 'naive-ui';
 
 const components = [
@@ -29,6 +31,8 @@ const components = [
   NInput,
   NForm,
   NFormItem,
+  NDataTable,
+  NSpin,
 ];
 
 export const naive = create({

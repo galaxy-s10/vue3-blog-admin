@@ -87,7 +87,7 @@ export default defineComponent({
     watch(
       () => route.path,
       () => {
-        const halfOfWindowWidth = Math.floor(listRef.value.clientWidth / 2); // 父容器宽度的一半（即父容器的居中位置）
+        const halfOfWindowWidth = Math.ceil(listRef.value.clientWidth / 2); // 父容器宽度的一半（即父容器的居中位置）
         list1.value.forEach((v, i) => {
           if (v.key === route.path) {
             const parentEle = listRef.value;
