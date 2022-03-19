@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function fetchList(params) {
   return request({
-    url: '/api/comment/list',
+    url: '/admin/comment/list',
     method: 'get',
     params,
   });

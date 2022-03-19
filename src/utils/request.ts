@@ -4,7 +4,7 @@ import router from '@/router';
 import cache from '@/utils/cache';
 
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? undefined : '/admin/',
+  // baseURL: process.env.NODE_ENV === 'development' ? undefined : '/admin/',
   timeout: 5000,
 });
 

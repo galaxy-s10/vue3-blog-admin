@@ -56,7 +56,7 @@ export default new Promise((resolve) => {
             publicPath: outputStaticUrl(),
           },
           proxy: {
-            '/api': {
+            '/admin': {
               target: 'http://localhost:3200',
               secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
               /**
@@ -66,14 +66,11 @@ export default new Promise((resolve) => {
                */
               changeOrigin: true,
               pathRewrite: {
-                // '^/api': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
-                '^/api': '/admin', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
-                // '^/api': 'admin', // 和/admin效果一样：/api/link/list ==> http://localhost:3200/admin/link/list
+                // '^/admin': '', // 效果：/admin/link/list ==> http://localhost:3200/link/list
+                '^/admin': '/admin/', // 效果：/admin/link/list ==> http://localhost:3200/admin/link/list
               },
             },
             // '/api': {
-            //   // target: 'https://www.zhengbeining.com/api/',
-            //   // target: 'http://42.193.157.44/api',
             //   target: 'http://localhost:3200',
             //   secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
             //   /**
@@ -83,7 +80,9 @@ export default new Promise((resolve) => {
             //    */
             //   changeOrigin: true,
             //   pathRewrite: {
-            //     '^/api': '', // 重写后：
+            //     // '^/api': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
+            //     '^/api': '/admin', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
+            //     // '^/api': 'admin', // 和/admin效果一样：/api/link/list ==> http://localhost:3200/admin/link/list
             //   },
             // },
           },
