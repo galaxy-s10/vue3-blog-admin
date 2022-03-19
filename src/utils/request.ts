@@ -4,7 +4,7 @@ import router from '@/router';
 import cache from '@/utils/cache';
 
 const service = axios.create({
-  // baseURL: 'http://localhost:3100',
+  baseURL: process.env.NODE_ENV === 'development' ? undefined : '/admin/',
   timeout: 5000,
 });
 
@@ -31,10 +31,6 @@ service.interceptors.response.use(
   },
   // eslint-disable-next-line consistent-return
   (error) => {
-    console.log(error, 3333);
-    console.log(error.message, 1);
-    console.log(error.response, 1);
-
     if (error.response && error.response.status) {
       const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
       if (!whiteList.includes(`${error.response.status}`)) {
@@ -58,7 +54,7 @@ service.interceptors.response.use(
         return Promise.reject(error.response.data);
       }
     } else {
-      console.log(error.message, 1);
+      console.log(error.message, 100);
       if (error.response) {
         window.$message.error(error.response.message);
         return Promise.reject(error.response);

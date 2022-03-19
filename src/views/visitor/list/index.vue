@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
     <n-data-table
       ref="table"
       remote
@@ -12,7 +11,6 @@
       :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
@@ -20,7 +18,7 @@
 import { NButton, useMessage, DataTableColumns } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
-import { fetchList } from '@/api/article';
+import { fetchList } from '@/api/visitor';
 type ILog = {
   id: number;
   user_id: number;
@@ -49,70 +47,29 @@ const createColumns = ({
       align: 'center',
     },
     {
-      title: '标题',
-      key: 'title',
+      title: 'user_id',
+      key: 'user_id',
       width: '100',
       align: 'center',
     },
     {
-      title: '简介',
-      key: 'desc',
+      title: 'ip',
+      key: 'ip',
       width: '200',
       align: 'center',
     },
     {
-      title: '是否开启评论',
-      key: 'is_comment',
-      width: '120',
-      align: 'center',
-      render(row) {
-        return h('b', null, row.is_comment === 1 ? '开启' : '关闭');
-      },
-    },
-    {
-      title: '状态',
-      key: 'status',
-      width: '100',
-      align: 'center',
-      render(row) {
-        return h('b', null, row.status === 1 ? '审核通过' : '未审核');
-      },
-    },
-    {
-      title: '封面图',
-      key: 'head_img',
+      title: 'ip_data',
+      key: 'ip_data',
       width: '200',
       align: 'center',
     },
     {
-      title: '点击量',
-      key: 'click',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: '获赞数',
-      key: 'star_total',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: '评论数',
-      key: 'comment_total',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
+      title: 'created_at',
       key: 'created_at',
       width: '200',
       align: 'center',
-    },
-    {
-      title: '最后更新',
-      key: 'updated_at',
-      width: '200',
-      align: 'center',
+      ellipsis: true,
     },
     {
       title: 'Action',

@@ -127,10 +127,11 @@ const createColumns = ({
       ellipsis: true,
     },
     {
-      title: 'Length',
-      key: 'length',
-      width: '100',
+      title: 'created_at',
+      key: 'created_at',
+      width: '200',
       align: 'center',
+      ellipsis: true,
     },
     {
       title: 'Action',

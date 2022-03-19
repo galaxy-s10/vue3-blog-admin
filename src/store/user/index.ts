@@ -42,12 +42,12 @@ export const useUserStore = defineStore('user', {
     },
     async getUserInfo() {
       try {
-        const { data } = await fetchUserInfo();
+        const { code, data }: any = await fetchUserInfo();
         this.setUserInfo(data);
         this.setRoles(data.roles);
-        return data;
+        console.log(code, data);
+        return { code, data };
       } catch (error) {
-        console.log(error);
         return error;
       }
     },

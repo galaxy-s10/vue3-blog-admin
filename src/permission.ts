@@ -14,21 +14,24 @@ router.beforeEach(async (to, from, next) => {
   // 先判断有没有登录
   if (hasToken) {
     if (to.path === '/login') {
-      console.log(1);
       next('/');
     }
     // 判断用户有没有角色
     if (roles && roles.length) {
       next();
     } else {
-      const { roles } = await userStore.getUserInfo();
-      if (!roles) {
-        next('/login');
+      const { code, data }: any = await userStore.getUserInfo();
+      if (code !== 200) {
+        next(false);
         return;
       }
-      const routeRes = userStore.generateAsyncRoutes(roles);
-      console.log(routeRes, 33333);
+      if (!data.roles) {
+        next(`/login`);
+        return;
+      }
+      const routeRes = userStore.generateAsyncRoutes(data.roles);
       routeRes.forEach((v) => {
+        console.log(v);
         router.addRoute(v);
       });
       next({ ...to, replace: true });
