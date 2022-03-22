@@ -4,7 +4,7 @@
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-16 04:15:31
-# LastEditTime: 2022-03-16 04:00:39
+# LastEditTime: 2022-03-23 01:11:08
 # Description:
 ###
 
@@ -56,4 +56,4 @@ else
 fi
 
 npx cross-env webpack --config ./config/webpack.common.ts --env production
-# npx cross-env VUE_APP_RELEASE_PUBLICPATH=$JOBNAME VUE_APP_RELEASE_ENV=$ENV webpack --config ./config/webpack.common.ts --env production
+# npx cross-env VUE_APP_RELEASE_PROJECT_NAME=$JOBNAME VUE_APP_RELEASE_PROJECT_ENV=$ENV webpack --config ./config/webpack.common.ts --env production

@@ -311,14 +311,13 @@ const commonConfig = (isProduction) => {
         // 定义全局变量
         BASE_URL: `${JSON.stringify(outputStaticUrl())}`, // public下的index.html里面的icon的路径
         'process.env': {
-          // process.env里面的键值对，值必须是字符串，否则会报错！
           NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
           PUBLIC_PATH: JSON.stringify(outputStaticUrl()),
-          VUE_APP_RELEASE_PUBLICPATH: JSON.stringify(
-            APP_NAME === undefined ? '/' : APP_NAME
+          VUE_APP_RELEASE_PROJECT_NAME: JSON.stringify(
+            process.env.VUE_APP_RELEASE_PROJECT_NAME
           ),
-          VUE_APP_RELEASE_ENV: JSON.stringify(
-            APP_ENV === undefined ? '/' : APP_ENV
+          VUE_APP_RELEASE_PROJECT_ENV: JSON.stringify(
+            process.env.VUE_APP_RELEASE_PROJECT_ENV
           ),
         },
         __VUE_OPTIONS_API__: 'true',
