@@ -56,7 +56,7 @@ export default new Promise((resolve) => {
             publicPath: outputStaticUrl(),
           },
           proxy: {
-            '/admin': {
+            '/api': {
               target: 'http://localhost:3200',
               secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
               /**
@@ -66,8 +66,8 @@ export default new Promise((resolve) => {
                */
               changeOrigin: true,
               pathRewrite: {
-                // '^/admin': '', // 效果：/admin/link/list ==> http://localhost:3200/link/list
-                '^/admin': '/admin/', // 效果：/admin/link/list ==> http://localhost:3200/admin/link/list
+                // '^/admin': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
+                '^/api': '/admin/', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
               },
             },
             // '/api': {

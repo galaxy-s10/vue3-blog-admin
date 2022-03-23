@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function fetchList(params) {
   return request({
-    url: '/admin/music/list',
+    url: '/api//music/list',
     method: 'get',
     params,
   });
