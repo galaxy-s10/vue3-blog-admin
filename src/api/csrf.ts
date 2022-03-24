@@ -1,9 +1,8 @@
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchCsrf() {
   return request({
-    url: '/api/link/list',
+    url: '/api/csrf/get',
     method: 'get',
-    params,
   });
 }

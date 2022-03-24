@@ -11,6 +11,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { APP_ENV } from '../config/utils/outputStaticUrl';
 
+import { fetchCsrf } from '@/api/csrf';
 import { fetchLogin, fetchQQLogin } from '@/api/user';
 import { useUserStore } from '@/store/user/index';
 // import { useUserStore } from '@/store/user';
@@ -20,6 +21,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
+    fetchCsrf();
     if (process.env.NODE_ENV !== 'development') {
       window.addEventListener('message', async (e) => {
         const { type, data: code } = e.data;

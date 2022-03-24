@@ -1,8 +1,8 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import router from '@/router';
 import cache from '@/utils/cache';
-
 const service = axios.create({
   // baseURL: process.env.NODE_ENV === 'development' ? undefined : '/admin/',
   timeout: 5000,
@@ -12,6 +12,9 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     const token = cache.getStorage('token');
+    // @ts-ignore
+    config.headers['csrf-token'] = Cookies.get('csrf-token');
+    console.log(Cookies.get('csrf-token'));
     if (token) {
       // @ts-ignore
       config.headers.Authorization = `Bearer ${token}`;
