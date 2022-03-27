@@ -7,6 +7,7 @@ console.log(
 );
 
 module.exports = {
+  root: true,
   settings: {
     // 'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
   },

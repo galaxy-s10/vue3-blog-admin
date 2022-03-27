@@ -143,6 +143,15 @@ export const defaultRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/login/index.vue'),
   },
+  {
+    path: '/register',
+    name: 'register',
+    meta: {
+      title: '注册',
+      hidden: true,
+    },
+    component: () => import('@/views/register/index.vue'),
+  },
 ];
 
 // 权限路由

@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 
-import { fetchLogin, fetchUserInfo } from '@/api/user';
+import {
+  fetchCodeLogin,
+  fetchLogin,
+  fetchRegister,
+  fetchUserInfo,
+} from '@/api/user';
 import { asyncRoutes } from '@/router';
 import cache from '@/utils/cache';
 
@@ -23,13 +28,27 @@ export const useUserStore = defineStore('user', {
     setRoles(res) {
       this.roles = res;
     },
-    async login({ account, password }) {
+    async login({ email, password, code }): Promise<{
+      code: number;
+      data?: string;
+      message: string;
+    }> {
       try {
         // @ts-ignore
-        const { data, message } = await fetchLogin({
-          account,
-          password,
-        });
+        const {
+          code: resCode,
+          data,
+          message,
+        } = code
+          ? await fetchCodeLogin({
+              email,
+              code,
+            })
+          : await fetchLogin({
+              email,
+              password,
+            });
+        console.log(data, message, 222);
         if (data) {
           this.setToken(data);
           return { token: data };
@@ -37,7 +56,21 @@ export const useUserStore = defineStore('user', {
         window.$message.error(message);
         return { token: null };
       } catch (error) {
-        return { token: null };
+        console.log(error, 21);
+        return error;
+      }
+    },
+    async register({ email, code }) {
+      try {
+        // @ts-ignore
+        const { message } = await fetchRegister({
+          email,
+          code,
+        });
+        window.$message.success(message);
+      } catch (error: any) {
+        console.log(error);
+        window.$message.error(error.message);
       }
     },
     async getUserInfo() {

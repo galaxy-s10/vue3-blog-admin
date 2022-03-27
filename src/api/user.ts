@@ -1,10 +1,34 @@
 import request from '@/utils/request';
 
-export function fetchLogin({ account, password }) {
+/** 邮箱+密码登录 */
+export function fetchLogin({ email, password }) {
   return request({
     url: '/api/user/login',
     method: 'post',
-    data: { id: account, password },
+    data: { email, password },
+  });
+}
+
+/** 邮箱+验证码登录 */
+export function fetchCodeLogin({ email, code }) {
+  return request({
+    url: '/api/user/code_login',
+    method: 'post',
+    data: {
+      email,
+      code,
+    },
+  });
+}
+
+export function fetchRegister({ email, code }) {
+  return request({
+    url: '/api/user/register',
+    method: 'post',
+    data: {
+      email,
+      code,
+    },
   });
 }
 

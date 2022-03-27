@@ -34,6 +34,7 @@ service.interceptors.response.use(
   },
   // eslint-disable-next-line consistent-return
   (error) => {
+    console.log(error, 22);
     if (error.response && error.response.status) {
       const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
       if (!whiteList.includes(`${error.response.status}`)) {
@@ -41,9 +42,7 @@ service.interceptors.response.use(
         window.$message.error(error.message);
         return Promise.reject(error);
       }
-      const message =
-        error.response.data.error.message || error.response.data.message;
-      window.$message.error(message);
+      console.log(error.response, 1);
       if (error.response.status === 400) {
         // 400错误不返回data
         return Promise.reject(error.response.data);
