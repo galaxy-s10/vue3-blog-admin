@@ -7,3 +7,10 @@ export function fetchList(params) {
     params,
   });
 }
+
+export function fetchQQLogin(code: any) {
+  return request({
+    url: `/api/qq_user/login?code=${code}`,
+    method: 'get',
+  });
+}

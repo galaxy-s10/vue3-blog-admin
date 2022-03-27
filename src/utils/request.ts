@@ -41,6 +41,7 @@ service.interceptors.response.use(
       }
       if (error.response.status === 400) {
         // 400错误不返回data
+        window.$message.error(error.response.data.message);
         return Promise.reject(error.response.data);
       }
       if (error.response.status === 401) {
@@ -50,6 +51,7 @@ service.interceptors.response.use(
         return Promise.reject(error.response.data);
       }
       if (error.response.status === 403) {
+        window.$message.error(error.response.data.message);
         return Promise.reject(error.response.data);
       }
     } else {
