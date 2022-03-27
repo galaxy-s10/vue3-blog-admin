@@ -108,13 +108,10 @@ export default defineComponent({
     );
     watch(
       () => list1,
-      (newVal) => {
-        console.log(newVal, 'list1list1');
-      }
+      (newVal) => {}
     );
     // const route = reactive(route);
     const close = (item) => {
-      console.log(item);
       const list = { ...tagbarList.value };
       if (Object.keys(list).length <= 1) {
         window.$message.warning('不能删了');

@@ -14,7 +14,7 @@ import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
 import { chalkINFO, chalkSUCCESS, emoji } from './utils/chalkTip';
-import { APP_ENV, APP_NAME, outputStaticUrl } from './utils/outputStaticUrl';
+import { outputStaticUrl } from './utils/outputStaticUrl';
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
 
@@ -236,27 +236,30 @@ const commonConfig = (isProduction) => {
       new WebpackBar(), // 构建进度条
       new FriendlyErrorsWebpackPlugin(),
       new VueLoaderPlugin(),
-      // new ForkTsCheckerWebpackPlugin({
-      //   // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
-      //   typescript: {
-      //     extensions: {
-      //       vue: {
-      //         enabled: true,
-      //         compiler: '@vue/compiler-sfc',
-      //       },
-      //     },
-      //   },
-      //   /**
-      //    * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
-      //    * 但是控制台还是会打印错误。
-      //    */
-      //   devServer: false,
-      //   /**
-      //    * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
-      //    * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
-      //    */
-      //   async: true,
-      // }),
+      new ForkTsCheckerWebpackPlugin({
+        // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
+        typescript: {
+          extensions: {
+            vue: {
+              enabled: true,
+              compiler: '@vue/compiler-sfc',
+            },
+          },
+        },
+        /**
+         * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
+         * 但是控制台还是会打印错误。
+         */
+        // devServer: false, //7.x版本，7.x版本有毛病，会报错：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
+        logger: {
+          devServer: false, //fork-ts-checker-webpack-plugin6.x版本
+        },
+        /**
+         * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
+         * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
+         */
+        async: true,
+      }),
       new ESLintPlugin({
         extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
         emitError: false, // 发现的错误将始终发出，禁用设置为false.

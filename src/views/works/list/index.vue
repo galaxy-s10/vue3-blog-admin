@@ -21,6 +21,7 @@ import { NButton, useMessage, DataTableColumns } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import { fetchList } from '@/api/works';
+import { imgCdnUrl } from '@/constant';
 type ILog = {
   id: number;
   user_id: number;
@@ -65,6 +66,12 @@ const createColumns = ({
       key: 'bg_url',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.bg_url,
+          width: 100,
+        });
+      },
     },
     {
       title: '线上地址',

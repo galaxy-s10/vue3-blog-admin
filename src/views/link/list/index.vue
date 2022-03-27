@@ -65,6 +65,12 @@ const createColumns = ({
       key: 'avatar',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.avatar,
+          width: 100,
+        });
+      },
     },
     {
       title: '简介',

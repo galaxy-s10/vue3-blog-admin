@@ -61,16 +61,22 @@ const createColumns = ({
       align: 'center',
     },
     {
-      title: '点赞的用户id',
+      title: '点赞的用户',
       key: 'from_user_id',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('div', {}, row.from_user.username);
+      },
     },
     {
-      title: '被点赞的用户id',
+      title: '被点赞的用户',
       key: 'to_user_id',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('div', {}, row.to_user?.username || '-');
+      },
     },
     {
       title: 'Action',

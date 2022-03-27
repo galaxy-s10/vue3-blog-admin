@@ -51,13 +51,13 @@ const createColumns = ({
     {
       title: 'client_id',
       key: 'client_id',
-      width: '100',
+      width: '200',
       align: 'center',
     },
     {
       title: 'openid',
       key: 'openid',
-      width: '100',
+      width: '200',
       align: 'center',
     },
     {
@@ -77,59 +77,84 @@ const createColumns = ({
       key: 'figureurl',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.figureurl,
+        });
+      },
     },
     {
       title: 'figureurl_1',
       key: 'figureurl_1',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.figureurl_1,
+        });
+      },
     },
     {
       title: 'figureurl_2',
       key: 'figureurl_2',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.figureurl_2,
+        });
+      },
     },
     {
       title: 'figureurl_qq_1',
       key: 'figureurl_qq_1',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.figureurl_qq_1,
+        });
+      },
     },
     {
       title: 'figureurl_qq_2',
       key: 'figureurl_qq_2',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.figureurl_qq_2,
+        });
+      },
     },
     {
       title: '星座',
       key: 'constellation',
-      width: '200',
+      width: '100',
       align: 'center',
     },
     {
       title: 'gender',
       key: '性别',
-      width: '200',
+      width: '100',
       align: 'center',
     },
     {
       title: '市/区',
       key: 'city',
-      width: '200',
+      width: '100',
       align: 'center',
     },
     {
       title: '省',
       key: 'province',
-      width: '200',
+      width: '100',
       align: 'center',
     },
     {
       title: 'year',
       key: 'year',
-      width: '200',
+      width: '100',
       align: 'center',
     },
     {

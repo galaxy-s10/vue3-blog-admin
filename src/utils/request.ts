@@ -13,8 +13,6 @@ service.interceptors.request.use(
   (config) => {
     const token = cache.getStorage('token');
     // @ts-ignore
-    config.headers['csrf-token'] = Cookies.get('csrf-token');
-    console.log(Cookies.get('csrf-token'));
     if (token) {
       // @ts-ignore
       config.headers.Authorization = `Bearer ${token}`;
@@ -34,7 +32,6 @@ service.interceptors.response.use(
   },
   // eslint-disable-next-line consistent-return
   (error) => {
-    console.log(error, 22);
     if (error.response && error.response.status) {
       const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
       if (!whiteList.includes(`${error.response.status}`)) {
@@ -42,12 +39,12 @@ service.interceptors.response.use(
         window.$message.error(error.message);
         return Promise.reject(error);
       }
-      console.log(error.response, 1);
       if (error.response.status === 400) {
         // 400错误不返回data
         return Promise.reject(error.response.data);
       }
       if (error.response.status === 401) {
+        window.$message.error(error.response.data.message);
         cache.clearStorage('token');
         router.push('/login');
         return Promise.reject(error.response.data);
@@ -56,7 +53,6 @@ service.interceptors.response.use(
         return Promise.reject(error.response.data);
       }
     } else {
-      console.log(error.message, 100);
       if (error.response) {
         window.$message.error(error.response.message);
         return Promise.reject(error.response);

@@ -21,6 +21,7 @@ import { NButton, useMessage, DataTableColumns } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import { fetchList } from '@/api/music';
+import { imgCdnUrl } from '@/constant';
 type ILog = {
   id: number;
   user_id: number;
@@ -59,6 +60,12 @@ const createColumns = ({
       key: 'cover_pic',
       width: '100',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: imgCdnUrl + row.cover_pic,
+          width: 100,
+        });
+      },
     },
     {
       title: '作者',

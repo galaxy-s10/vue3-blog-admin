@@ -59,6 +59,12 @@ const createColumns = ({
       key: 'avatar',
       width: '100',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: row.avatar,
+          width: 100,
+        });
+      },
     },
     {
       title: 'Title',

@@ -21,6 +21,7 @@ import {
   RocketOutline,
   BuildOutline,
   FootstepsOutline,
+  PersonOutline,
 } from '@vicons/ionicons5';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -52,6 +53,7 @@ export const iconMap = (name) => {
     RocketOutline,
     BuildOutline,
     FootstepsOutline,
+    PersonOutline,
   };
   return ico[name];
 };
@@ -142,15 +144,6 @@ export const defaultRoutes: RouteRecordRaw[] = [
       hidden: true,
     },
     component: () => import('@/views/login/index.vue'),
-  },
-  {
-    path: '/register',
-    name: 'register',
-    meta: {
-      title: '注册',
-      hidden: true,
-    },
-    component: () => import('@/views/register/index.vue'),
   },
 ];
 
@@ -418,7 +411,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '用户管理',
-      icon: 'PeopleOutline',
+      icon: 'PersonOutline',
     },
     children: [
       {
@@ -426,15 +419,42 @@ export const asyncRoutes = [
         path: '/user/list',
         component: () => import('@/views/user/list/index.vue'),
         meta: {
-          title: '站内用户',
+          title: '用户列表',
+        },
+      },
+    ],
+  },
+  {
+    name: 'thirdUser',
+    path: '/thirdUser',
+    component: Layout,
+    meta: {
+      title: '第三方用户',
+      icon: 'PeopleOutline',
+    },
+    children: [
+      {
+        name: 'thirdUserQQ',
+        path: '/thirdUser/qq',
+        component: () => import('@/views/thirdUser/qq/index.vue'),
+        meta: {
+          title: 'qq',
         },
       },
       {
-        name: 'userQQList',
-        path: '/user/qqlist',
-        component: () => import('@/views/user/qqlist/index.vue'),
+        name: 'thirdUserGithubList',
+        path: '/thirdUser/github',
+        component: () => import('@/views/thirdUser/github/index.vue'),
         meta: {
-          title: 'qq用户',
+          title: 'github',
+        },
+      },
+      {
+        name: 'thirdUserEmailList',
+        path: '/thirdUser/email',
+        component: () => import('@/views/thirdUser/email/index.vue'),
+        meta: {
+          title: '邮箱',
         },
       },
     ],

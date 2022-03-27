@@ -3,6 +3,7 @@
     <div class="content">
       <n-card>
         <n-tabs
+          :value="currentTab"
           :default-value="currentTab"
           size="large"
           :on-update:value="tabChange"
@@ -83,6 +84,7 @@
                     type="primary"
                     ghost
                     :disabled="downCount !== 0"
+                    :loading="sendCodeLoading"
                     @click="sendCode()"
                   >
                     发送{{ downCount !== 0 ? `(${downCount})` : '' }}
@@ -131,6 +133,7 @@
                     type="primary"
                     ghost
                     :disabled="downCount !== 0"
+                    :loading="sendCodeLoading"
                     @click="sendCode()"
                   >
                     发送{{ downCount !== 0 ? `(${downCount})` : '' }}
@@ -168,11 +171,9 @@ import { LockClosedOutline, MailOutline } from '@vicons/ionicons5';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { fetchSendCode } from '@/api/email';
-import { fetchLogin, fetchQQLogin } from '@/api/user';
+import { fetchSendCode } from '@/api/other';
 import { qqClientId, qqOauthUrl, redirectUri } from '@/constant';
 import { useUserStore } from '@/store/user';
-import cache from '@/utils/cache';
 
 const loginRules = {
   email: { required: true, message: '请输入邮箱', trigger: 'blur' },
@@ -190,6 +191,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
+    /** qq登录 */
     const qqLogin = () => {
       const url =
         `${qqOauthUrl}client_id=${qqClientId}&redirect_uri=${redirectUri}qq_login` +
@@ -201,7 +203,9 @@ export default defineComponent({
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );
     };
+    /** github登录 */
     const githubLogin = () => {
+      return;
       const url =
         `${qqOauthUrl}client_id=${qqClientId}&redirect_uri=${redirectUri}qq_login` +
         `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
@@ -212,12 +216,15 @@ export default defineComponent({
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );
     };
+    /** 发送验证码 */
     const sendCode = async () => {
       if (registerForm.value.email === '')
         return window.$message.warning('请输入邮箱!');
       try {
+        sendCodeLoading.value = true;
         // @ts-ignore
         const { message } = await fetchSendCode(registerForm.value.email);
+        sendCodeLoading.value = false;
         window.$message.success(message);
         downCount.value = 60;
         const timer = setInterval(() => {
@@ -227,6 +234,7 @@ export default defineComponent({
           }
         }, 1000);
       } catch (error: any) {
+        sendCodeLoading.value = false;
         window.$message.error(error.message);
       }
     };
@@ -241,8 +249,9 @@ export default defineComponent({
     const loginFormRef = ref(null);
     const registerFormRef = ref(null);
     const currentTab = ref('register');
+    const sendCodeLoading = ref(false);
+
     const handleLogin = async () => {
-      console.log(currentTab.value, 3235212);
       const { token } = await userStore.login({
         email:
           currentTab.value === 'codelogin'
@@ -254,6 +263,18 @@ export default defineComponent({
       if (token) {
         window.$message.success('登录成功!');
         router.push('/');
+      }
+    };
+    const handleRegister = async () => {
+      const { token } = await userStore.register({
+        email: registerForm.value.email,
+        code: registerForm.value.code,
+      });
+      if (token) {
+        window.$message.success('注册成功!');
+        router.push('/');
+        // currentTab.value = 'codelogin';
+        // registerForm.value.code = '';
       }
     };
     const handleLoginSubmit = (e) => {
@@ -272,10 +293,7 @@ export default defineComponent({
       registerFormRef.value.validate(async (errors) => {
         if (!errors) {
           if (currentTab.value === 'register') {
-            await userStore.register({
-              email: registerForm.value.email,
-              code: registerForm.value.code,
-            });
+            handleRegister();
           } else {
             handleLogin();
           }
@@ -302,6 +320,7 @@ export default defineComponent({
       downCount,
       currentTab,
       tabChange,
+      sendCodeLoading,
     };
   },
 });

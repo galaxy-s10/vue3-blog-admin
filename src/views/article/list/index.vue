@@ -21,6 +21,7 @@ import { NButton, useMessage, DataTableColumns } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import { fetchList } from '@/api/article';
+import { imgCdnUrl } from '@/constant';
 type ILog = {
   id: number;
   user_id: number;
@@ -59,6 +60,9 @@ const createColumns = ({
       key: 'desc',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('div', {}, row.desc || '-');
+      },
     },
     {
       title: '是否开启评论',
@@ -83,6 +87,12 @@ const createColumns = ({
       key: 'head_img',
       width: '200',
       align: 'center',
+      render(row) {
+        return h('img', {
+          src: imgCdnUrl + row.head_img,
+          width: 100,
+        });
+      },
     },
     {
       title: '点击量',

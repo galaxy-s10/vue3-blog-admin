@@ -29,17 +29,11 @@ export const useUserStore = defineStore('user', {
       this.roles = res;
     },
     async login({ email, password, code }): Promise<{
-      code: number;
-      data?: string;
-      message: string;
+      token?: string;
     }> {
       try {
         // @ts-ignore
-        const {
-          code: resCode,
-          data,
-          message,
-        } = code
+        const { data: token } = code
           ? await fetchCodeLogin({
               email,
               code,
@@ -48,29 +42,25 @@ export const useUserStore = defineStore('user', {
               email,
               password,
             });
-        console.log(data, message, 222);
-        if (data) {
-          this.setToken(data);
-          return { token: data };
-        }
-        window.$message.error(message);
-        return { token: null };
-      } catch (error) {
-        console.log(error, 21);
+        this.setToken(token);
+        return { token };
+      } catch (error: any) {
+        // 错误返回401，全局的响应拦截会打印报错信息
         return error;
       }
     },
     async register({ email, code }) {
       try {
         // @ts-ignore
-        const { message } = await fetchRegister({
+        const { data: token } = await fetchRegister({
           email,
           code,
         });
-        window.$message.success(message);
+        this.setToken(token);
+        return { token };
       } catch (error: any) {
-        console.log(error);
         window.$message.error(error.message);
+        return error;
       }
     },
     async getUserInfo() {

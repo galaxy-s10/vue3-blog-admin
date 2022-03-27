@@ -108,7 +108,6 @@ export default defineComponent({
     appStore.setTagbarList({ [route.path]: route.meta.title });
 
     const handleUpdateValue = (key: string, item) => {
-      console.log('handleUpdateValue', key);
       path.value = key;
       if (!appStore.tagbarList[key]) {
         appStore.setTagbarList({
