@@ -20,6 +20,8 @@ import {
   NTab,
   NTabPane,
   NTabs,
+  NList,
+  NListItem,
 } from 'naive-ui';
 
 const components = [
@@ -43,6 +45,8 @@ const components = [
   NTab,
   NTabPane,
   NTabs,
+  NList,
+  NListItem,
 ];
 
 export const naive = create({

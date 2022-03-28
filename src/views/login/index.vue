@@ -248,7 +248,7 @@ export default defineComponent({
     });
     const loginFormRef = ref(null);
     const registerFormRef = ref(null);
-    const currentTab = ref('register');
+    const currentTab = ref('pwdlogin');
     const sendCodeLoading = ref(false);
 
     const handleLogin = async () => {

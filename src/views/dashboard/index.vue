@@ -1,19 +1,21 @@
 <template>
   <div class="dashboard-wrap">
-    <div>账号id: {{ userInfo.id }}</div>
-    <div>用户名: {{ userInfo.username }}</div>
+    <div>用户id: {{ userInfo.id }}</div>
+    <div>用户昵称: {{ userInfo.username }}</div>
     <div>
       用户头像:
       <img class="avatar" :src="userInfo.avatar" alt="" />
     </div>
     <div>title: {{ userInfo.title }}</div>
-    <div>roles: {{ userInfo.roles.map((v) => v.role_description) }}</div>
-    <div @click="aaa">2222</div>
+    <div>权限: {{ userInfo.roles.map((v) => v.role_description) }}</div>
+    <div>累计发出点赞: {{ userInfo.send_stars_total }}</div>
+    <div>累计收到点赞: {{ userInfo.receive_stars_total }}</div>
+    <div>累计发出评论: {{ userInfo.send_comments_total }}</div>
+    <div>累计收到回复: {{ userInfo.receive_comments_total }}</div>
   </div>
 </template>
 
 <script lang="ts">
-import axios from 'axios';
 import { defineComponent } from 'vue';
 
 import { useUserStore } from '@/store/user';
@@ -23,20 +25,7 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const { userInfo } = userStore;
-    const aaa = () => {
-      console.log('aaa');
-      axios
-        .get('https://lsyboy.cn/music/api/getRecommend', {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-            Referer: '1423525',
-          },
-        })
-        .then((res) => {
-          console.log(res, 444);
-        });
-    };
-    return { userInfo, aaa };
+    return { userInfo };
   },
 });
 </script>
