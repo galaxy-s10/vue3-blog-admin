@@ -21,7 +21,7 @@ import { NButton, useMessage, DataTableColumns } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import { fetchList } from '@/api/works';
-import { imgCdnUrl } from '@/constant';
+import { IMG_CDN_URL } from '@/constant';
 type ILog = {
   id: number;
   user_id: number;

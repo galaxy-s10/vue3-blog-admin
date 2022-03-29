@@ -7,3 +7,10 @@ export function fetchList(params) {
     params,
   });
 }
+
+export function fetchGithubLogin(code: any) {
+  return request({
+    url: `/api/github_user/login?code=${code}`,
+    method: 'get',
+  });
+}

@@ -172,7 +172,13 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { fetchSendCode } from '@/api/other';
-import { qqClientId, qqOauthUrl, redirectUri } from '@/constant';
+import {
+  GITHUB_CLIENT_ID,
+  GITHUB_OAUTH_URL,
+  QQ_CLIENT_ID,
+  QQ_OAUTH_URL,
+  REDIRECT_URI,
+} from '@/constant';
 import { useUserStore } from '@/store/user';
 
 const loginRules = {
@@ -194,7 +200,7 @@ export default defineComponent({
     /** qq登录 */
     const qqLogin = () => {
       const url =
-        `${qqOauthUrl}client_id=${qqClientId}&redirect_uri=${redirectUri}qq_login` +
+        `${QQ_OAUTH_URL}client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
         `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
       window.open(
         url,
@@ -205,14 +211,17 @@ export default defineComponent({
     };
     /** github登录 */
     const githubLogin = () => {
-      return;
       const url =
-        `${qqOauthUrl}client_id=${qqClientId}&redirect_uri=${redirectUri}qq_login` +
-        `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
+        GITHUB_OAUTH_URL +
+        'client_id=' +
+        GITHUB_CLIENT_ID +
+        '&redirect_uri=' +
+        REDIRECT_URI +
+        'github_login' +
+        '&scope=user';
       window.open(
         url,
-        // 'http://localhost:8000/oauth/qq_login?code=8CDE3D8B50934C88F1949D6F1FCF7C6F&state=99',
-        'qq_login_window',
+        'github_login_window',
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );
     };

@@ -33,7 +33,9 @@ export default defineComponent({
         },
         '*'
       );
-      window.close();
+      setTimeout(() => {
+        window.close();
+      }, 3000);
     }
 
     return {

@@ -35,6 +35,20 @@ export default defineComponent({
             }
           }
         }
+        if (type === 'github_login') {
+          if (code) {
+            try {
+              await fetchQQLogin(code);
+              const token = Cookies.get('token');
+              if (token) {
+                userStore.setToken(token);
+                router.push('/');
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        }
       });
     }
     return {};
