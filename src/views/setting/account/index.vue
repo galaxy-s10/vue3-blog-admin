@@ -12,7 +12,9 @@
     <div class="item">
       <div class="label">Github</div>
       <div class="content">
-        {{ userInfo.github_users[0] ? userInfo.github_users[0] : '未绑定' }}
+        {{
+          userInfo.github_users[0] ? userInfo.github_users[0].name : '未绑定'
+        }}
       </div>
       <n-button text type="info">
         {{ userInfo.github_users[0] ? '解绑' : '绑定' }}
@@ -21,7 +23,7 @@
     <div class="item">
       <div class="label">QQ</div>
       <div class="content">
-        {{ userInfo.qq_users.map((v) => v.nickname) }}
+        {{ userInfo.qq_users[0] ? userInfo.qq_users[0].nickname : '未绑定' }}
       </div>
       <n-button text type="info">
         {{ userInfo.qq_users[0] ? '解绑' : '绑定' }}
@@ -30,7 +32,7 @@
     <div class="item">
       <div class="label">密码</div>
       <div class="content"></div>
-      <n-button text type="info"> 重置 </n-button>
+      <n-button text type="info">重置</n-button>
     </div>
   </div>
 </template>
