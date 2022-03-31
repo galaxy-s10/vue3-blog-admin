@@ -13,11 +13,15 @@ const whiteList = [
 
 // eslint-disable-next-line consistent-return
 router.beforeEach(async (to, from, next) => {
+  if (to.name === 'oauth') {
+    cache.clearStorage('token');
+  }
   const userStore = useUserStore();
   const { roles } = userStore.$state;
   const hasToken = cache.getStorage('token');
   // 先判断有没有登录
   if (hasToken) {
+    userStore.setToken(hasToken);
     if (to.path === '/login') {
       next('/');
     }

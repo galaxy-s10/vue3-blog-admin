@@ -225,28 +225,7 @@ export default defineComponent({
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );
     };
-    /** 发送验证码 */
-    const sendCode = async () => {
-      if (registerForm.value.email === '')
-        return window.$message.warning('请输入邮箱!');
-      try {
-        sendCodeLoading.value = true;
-        // @ts-ignore
-        const { message } = await fetchSendCode(registerForm.value.email);
-        sendCodeLoading.value = false;
-        window.$message.success(message);
-        downCount.value = 60;
-        const timer = setInterval(() => {
-          downCount.value -= 1;
-          if (downCount.value === 0) {
-            clearInterval(timer);
-          }
-        }, 1000);
-      } catch (error: any) {
-        sendCodeLoading.value = false;
-        window.$message.error(error.message);
-      }
-    };
+
     const loginForm = ref({
       email: '',
       password: '',
@@ -259,6 +238,7 @@ export default defineComponent({
     const registerFormRef = ref(null);
     const currentTab = ref('pwdlogin');
     const sendCodeLoading = ref(false);
+    const downCount = ref(0);
 
     const handleLogin = async () => {
       const { token } = await userStore.login({
@@ -309,7 +289,28 @@ export default defineComponent({
         }
       });
     };
-    const downCount = ref(0);
+    /** 发送验证码 */
+    const sendCode = async () => {
+      if (registerForm.value.email === '')
+        return window.$message.warning('请输入邮箱!');
+      try {
+        sendCodeLoading.value = true;
+        // @ts-ignore
+        const { message } = await fetchSendCode(registerForm.value.email);
+        sendCodeLoading.value = false;
+        window.$message.success(message);
+        downCount.value = 60;
+        const timer = setInterval(() => {
+          downCount.value -= 1;
+          if (downCount.value === 0) {
+            clearInterval(timer);
+          }
+        }, 1000);
+      } catch (error: any) {
+        sendCodeLoading.value = false;
+        window.$message.error(error.message);
+      }
+    };
     const tabChange = (v) => {
       console.log(v, 22);
       currentTab.value = v;

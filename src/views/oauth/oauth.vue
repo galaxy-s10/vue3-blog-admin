@@ -1,5 +1,5 @@
 <template>
-  <div>{{ currentOauth }}登录{{ currentOauth !== '非法' && '成功！' }}</div>
+  <div>{{ currentOauth }}登录{{ currentOauth === '非法' ? '' : '...' }}</div>
 </template>
 
 <script lang="ts">
@@ -33,9 +33,9 @@ export default defineComponent({
         },
         '*'
       );
-      setTimeout(() => {
-        window.close();
-      }, 1000);
+      // setTimeout(() => {
+      // window.close();
+      // }, 1000);
     }
 
     return {

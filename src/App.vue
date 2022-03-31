@@ -9,8 +9,8 @@ import Cookies from 'js-cookie';
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { fetchGithubLogin } from '@/api/githubUser';
-import { fetchQQLogin } from '@/api/qqUser';
+import { fetchGithubLogin, fetchBindGithub } from '@/api/githubUser';
+import { fetchQQLogin, fetchBindQQ } from '@/api/qqUser';
 import { useUserStore } from '@/store/user/index';
 // import { useUserStore } from '@/store/user';
 
@@ -19,40 +19,42 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
-    if (process.env.NODE_ENV !== 'development') {
-      window.addEventListener('message', async (e) => {
-        console.log('收到消息', e.data);
-        const { type, data: code } = e.data;
-        if (type === 'qq_login') {
-          if (code) {
-            try {
+    // if (process.env.NODE_ENV !== 'development') {
+    window.addEventListener('message', async (e) => {
+      console.log('收到消息', e.data);
+      const { type, data: code } = e.data;
+      let token = null;
+      if (!code) return;
+      try {
+        switch (type) {
+          case 'qq_login':
+            if (userStore.userInfo) {
+              await fetchBindQQ(code);
+              userStore.getUserInfo();
+            } else {
               await fetchQQLogin(code);
-              const token = Cookies.get('token');
-              if (token) {
-                userStore.setToken(token);
-                router.push('/');
-              }
-            } catch (error) {
-              console.log(error);
             }
-          }
-        }
-        if (type === 'github_login') {
-          if (code) {
-            try {
+            break;
+          case 'github_login':
+            if (userStore.userInfo) {
+              await fetchBindGithub(code);
+              userStore.getUserInfo();
+            } else {
               await fetchGithubLogin(code);
-              const token = Cookies.get('token');
-              if (token) {
-                userStore.setToken(token);
-                router.push('/');
-              }
-            } catch (error) {
-              console.log(error);
             }
-          }
+            break;
+          default:
+            break;
         }
-      });
-    }
+      } catch (error) {
+        console.log(error);
+      }
+      if (token) {
+        userStore.setToken(token);
+        router.push('/');
+      }
+    });
+    // }
     return {};
   },
 });

@@ -24,8 +24,8 @@ export default defineComponent({
   components: {},
   setup() {
     const userStore = useUserStore();
-    const { userInfo } = userStore;
-    return { userInfo };
+    const { userInfo, token } = userStore;
+    return { userInfo, token };
   },
 });
 </script>
