@@ -1,11 +1,7 @@
 import { defineStore } from 'pinia';
 
-import {
-  fetchCodeLogin,
-  fetchLogin,
-  fetchRegister,
-  fetchUserInfo,
-} from '@/api/user';
+import { fetchEmailCodeLogin, fetchRegister } from '@/api/emailUser';
+import { fetchLogin, fetchUserInfo } from '@/api/user';
 import { asyncRoutes } from '@/router';
 import cache from '@/utils/cache';
 
@@ -28,25 +24,36 @@ export const useUserStore = defineStore('user', {
     setRoles(res) {
       this.roles = res;
     },
-    async login({ email, password, code }): Promise<{
-      token?: string;
-    }> {
+    logout() {
+      cache.clearStorage('token');
+      this.token = null;
+      this.userInfo = null;
+      this.roles = null;
+    },
+    async pwdLogin({ id, password }) {
       try {
-        // @ts-ignore
-        const { data: token } = code
-          ? await fetchCodeLogin({
-              email,
-              code,
-            })
-          : await fetchLogin({
-              email,
-              password,
-            });
+        const { data: token } = await fetchLogin({
+          id,
+          password,
+        });
         this.setToken(token);
-        return { token };
+        return token;
       } catch (error: any) {
         // 错误返回401，全局的响应拦截会打印报错信息
-        return error;
+        return null;
+      }
+    },
+    async codeLogin({ email, code }) {
+      try {
+        const { data: token } = await fetchEmailCodeLogin({
+          email,
+          code,
+        });
+        this.setToken(token);
+        return token;
+      } catch (error: any) {
+        // 错误返回401，全局的响应拦截会打印报错信息
+        return null;
       }
     },
     async register({ email, code }) {

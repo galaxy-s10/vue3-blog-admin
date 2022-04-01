@@ -16,7 +16,7 @@
         <div class="label">Github</div>
         <div class="content">
           {{
-            userInfo.github_users[0] ? userInfo.github_users[0].name : '未绑定'
+            userInfo.github_users[0] ? userInfo.github_users[0].login : '未绑定'
           }}
         </div>
         <n-button text type="info" @click="handleBindThird('github')">
@@ -87,7 +87,6 @@
         </n-form-item>
       </n-form>
     </n-modal>
-    <div @click="aa">aa</div>
   </div>
 </template>
 

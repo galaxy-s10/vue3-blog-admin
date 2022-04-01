@@ -19,9 +19,11 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
+    console.log('routerrouter', router);
+
     // if (process.env.NODE_ENV !== 'development') {
     window.addEventListener('message', async (e) => {
-      console.log('收到消息', e.data);
+      // console.log('收到消息', e.data);
       const { type, data: code } = e.data;
       let token = null;
       if (!code) return;
@@ -33,6 +35,7 @@ export default defineComponent({
               userStore.getUserInfo();
             } else {
               await fetchQQLogin(code);
+              token = Cookies.get('token');
             }
             break;
           case 'github_login':
@@ -41,6 +44,7 @@ export default defineComponent({
               userStore.getUserInfo();
             } else {
               await fetchGithubLogin(code);
+              token = Cookies.get('token');
             }
             break;
           default:

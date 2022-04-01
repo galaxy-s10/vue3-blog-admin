@@ -274,7 +274,7 @@ const commonConfig = (isProduction) => {
       }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
-        title: 'vue-webpack-template',
+        title: '自然博客后台',
         template: './public/index.html',
         hash: true,
         minify: isProduction

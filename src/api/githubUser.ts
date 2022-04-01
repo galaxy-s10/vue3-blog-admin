@@ -13,7 +13,7 @@ export function fetchList(params) {
 export function fetchGithubLogin(code: any) {
   return request({
     url: `/api/github_user/login?code=${code}`,
-    method: 'get',
+    method: 'post',
   });
 }
 
@@ -21,7 +21,7 @@ export function fetchGithubLogin(code: any) {
 export function fetchBindGithub(code: any) {
   return request({
     url: `/api/github_user/bind_user?code=${code}`,
-    method: 'get',
+    method: 'post',
   });
 }
 
@@ -29,6 +29,6 @@ export function fetchBindGithub(code: any) {
 export function fetchCancelBindGithub() {
   return request({
     url: `/api/github_user/cancel_bind_user`,
-    method: 'get',
+    method: 'post',
   });
 }

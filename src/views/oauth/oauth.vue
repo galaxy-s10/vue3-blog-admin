@@ -6,11 +6,12 @@
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import cache from '@/utils/cache';
+
 export default defineComponent({
   components: {},
   setup() {
     const route = useRoute();
-
     const { method }: any = route.params;
     const { code } = route.query;
     let currentOauth = '';
@@ -34,7 +35,7 @@ export default defineComponent({
         '*'
       );
       // setTimeout(() => {
-      // window.close();
+      window.close();
       // }, 1000);
     }
 

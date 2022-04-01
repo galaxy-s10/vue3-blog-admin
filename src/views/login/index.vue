@@ -16,14 +16,15 @@
               :model="loginForm"
               :rules="loginRules"
             >
-              <n-form-item path="email">
+              <n-form-item path="id">
                 <n-input
-                  v-model:value="loginForm.email"
-                  placeholder="请输入邮箱"
+                  v-model:value="loginForm.id"
+                  type="number"
+                  placeholder="请输入账号"
                 >
                   <template #prefix>
                     <n-icon size="20" class="lang">
-                      <MailOutline></MailOutline>
+                      <PersonOutline></PersonOutline>
                     </n-icon>
                   </template>
                 </n-input>
@@ -167,11 +168,15 @@
 </template>
 
 <script lang="ts">
-import { LockClosedOutline, MailOutline } from '@vicons/ionicons5';
+import {
+  LockClosedOutline,
+  MailOutline,
+  PersonOutline,
+} from '@vicons/ionicons5';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { fetchSendCode } from '@/api/other';
+import { fetchSendLoginCode, fetchSendRegisterCode } from '@/api/emailUser';
 import {
   GITHUB_CLIENT_ID,
   GITHUB_OAUTH_URL,
@@ -182,7 +187,7 @@ import {
 import { useUserStore } from '@/store/user';
 
 const loginRules = {
-  email: { required: true, message: '请输入邮箱', trigger: 'blur' },
+  id: { required: true, message: '请输入账号', trigger: 'blur' },
   password: { required: true, message: '请输入密码', trigger: 'blur' },
 };
 const registerRules = {
@@ -193,6 +198,7 @@ export default defineComponent({
   components: {
     MailOutline,
     LockClosedOutline,
+    PersonOutline,
   },
   setup() {
     const router = useRouter();
@@ -227,7 +233,7 @@ export default defineComponent({
     };
 
     const loginForm = ref({
-      email: '',
+      id: '',
       password: '',
     });
     const registerForm = ref({
@@ -241,14 +247,18 @@ export default defineComponent({
     const downCount = ref(0);
 
     const handleLogin = async () => {
-      const { token } = await userStore.login({
-        email:
-          currentTab.value === 'codelogin'
-            ? registerForm.value.email
-            : loginForm.value.email,
-        password: currentTab.value === 'pwdlogin' && loginForm.value.password,
-        code: currentTab.value === 'codelogin' && registerForm.value.code,
-      });
+      let token = null;
+      if (currentTab.value === 'codelogin') {
+        token = await userStore.codeLogin({
+          email: registerForm.value.email,
+          code: registerForm.value.code,
+        });
+      } else {
+        token = await userStore.pwdLogin({
+          id: +loginForm.value.id,
+          password: loginForm.value.password,
+        });
+      }
       if (token) {
         window.$message.success('登录成功!');
         router.push('/');
@@ -295,10 +305,13 @@ export default defineComponent({
         return window.$message.warning('请输入邮箱!');
       try {
         sendCodeLoading.value = true;
-        // @ts-ignore
-        const { message } = await fetchSendCode(registerForm.value.email);
+        if (currentTab.value === 'codelogin') {
+          await fetchSendLoginCode(registerForm.value.email);
+        } else {
+          await fetchSendRegisterCode(registerForm.value.email);
+        }
         sendCodeLoading.value = false;
-        window.$message.success(message);
+        window.$message.success('发送成功!');
         downCount.value = 60;
         const timer = setInterval(() => {
           downCount.value -= 1;

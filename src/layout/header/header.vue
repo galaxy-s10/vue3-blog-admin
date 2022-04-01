@@ -38,7 +38,6 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const router = useRouter();
-    console.log(userStore.$state, 234);
     const { userInfo } = userStore.$state;
     const options = ref([
       {
@@ -54,7 +53,7 @@ export default defineComponent({
       if (v === '1') {
         router.push('/setting/account');
       } else if (v === '2') {
-        cache.clearStorage('token');
+        userStore.logout();
         router.push('/login');
       }
     };
