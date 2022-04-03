@@ -11,7 +11,7 @@ import { chalkINFO, emoji } from './utils/chalkTip';
 // const webpack = require('webpack');
 
 console.log(
-  chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
+  chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`),
   emoji.get('white_check_mark')
 );
 
@@ -70,8 +70,8 @@ export default {
         defaultVendors: {
           // 重写默认的defaultVendors
           chunks: 'initial',
-          minSize: 100 * 1024,
-          maxSize: 200 * 1024,
+          // minSize: 100 * 1024,
+          // maxSize: 200 * 1024,
           test: /[\\/]node_modules[\\/]/,
           // filename: 'js/[name]-defaultVendors.js',
           filename: 'js/[name]-[contenthash:6]-defaultVendors.js',

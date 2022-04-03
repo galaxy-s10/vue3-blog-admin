@@ -1,5 +1,6 @@
 import path from 'path';
 
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import portfinder from 'portfinder';
 
 import { chalkINFO, emoji } from './utils/chalkTip';
@@ -87,7 +88,36 @@ export default new Promise((resolve) => {
             // },
           },
         },
-        plugins: [],
+        plugins: [
+          new ForkTsCheckerWebpackPlugin({
+            // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
+            typescript: {
+              extensions: {
+                vue: {
+                  enabled: true,
+                  compiler: '@vue/compiler-sfc',
+                },
+              },
+              diagnosticOptions: {
+                semantic: true,
+                syntactic: false,
+              },
+            },
+            /**
+             * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
+             * 但是控制台还是会打印错误。
+             */
+            // devServer: false, //7.x版本，7.x版本有毛病，会报错：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
+            logger: {
+              devServer: false, //fork-ts-checker-webpack-plugin6.x版本
+            },
+            /**
+             * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
+             * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
+             */
+            async: true,
+          }),
+        ],
       });
     })
     .catch((error) => {

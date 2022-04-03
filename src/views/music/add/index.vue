@@ -1,5 +1,5 @@
 <template>
-  <div>music-add</div>
+  <div>musicaddmusicaddmusicaddmusicadd</div>
 </template>
 
 <script lang="ts">

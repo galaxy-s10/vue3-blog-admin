@@ -4,7 +4,6 @@ import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'; // 默认情况下，这个插件会删除webpack.outout中的所有文件
 import CopyWebpackPlugin from 'copy-webpack-plugin'; // 将已存在的单个文件或整个目录复制到构建目录。
 import ESLintPlugin from 'eslint-webpack-plugin';
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin'; // 自动生成index.html文件(并引入打包的js)
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
@@ -19,7 +18,7 @@ import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
 
 console.log(
-  chalkINFO(`读取：${__filename.slice(__dirname.length + 1)}`),
+  chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`),
   emoji.get('white_check_mark')
 );
 
@@ -73,6 +72,7 @@ const commonConfig = (isProduction) => {
       alias: {
         // 如果不设置这个alias，webpack就会解析不到import xxx '@/xxx'中的@
         '@': path.resolve(__dirname, '../src'), // 设置路径别名
+        vue$: 'vue/dist/vue.runtime.esm-bundler.js', // 设置vue的路径别名
       },
     },
     resolveLoader: {
@@ -89,6 +89,7 @@ const commonConfig = (isProduction) => {
       },
     },
     module: {
+      noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
       // loader执行顺序：从下往上，从右往左
       rules: [
         {
@@ -236,30 +237,6 @@ const commonConfig = (isProduction) => {
       new WebpackBar(), // 构建进度条
       new FriendlyErrorsWebpackPlugin(),
       new VueLoaderPlugin(),
-      new ForkTsCheckerWebpackPlugin({
-        // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
-        typescript: {
-          extensions: {
-            vue: {
-              enabled: true,
-              compiler: '@vue/compiler-sfc',
-            },
-          },
-        },
-        /**
-         * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
-         * 但是控制台还是会打印错误。
-         */
-        // devServer: false, //7.x版本，7.x版本有毛病，会报错：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
-        logger: {
-          devServer: false, //fork-ts-checker-webpack-plugin6.x版本
-        },
-        /**
-         * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
-         * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
-         */
-        async: true,
-      }),
       new ESLintPlugin({
         extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
         emitError: false, // 发现的错误将始终发出，禁用设置为false.
@@ -358,7 +335,7 @@ export default (env) => {
     configPromise.then((config: any) => {
       // 根据当前环境，合并配置文件
       const mergeConfig = merge(commonConfig(isProduction), config);
-      console.log(chalkSUCCESS(`当前是：${process.env.NODE_ENV}环境`));
+      console.log(chalkINFO(`当前是: ${process.env.NODE_ENV}环境`));
       resolve(mergeConfig);
     });
   });

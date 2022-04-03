@@ -47,7 +47,7 @@ export function fetchRegister({ email, code }) {
 // 绑定邮箱
 export function fetchBindEmail({ email, code }) {
   return request({
-    url: '/api/email_user/bind_user',
+    url: '/api/email_user/bind_email',
     method: 'post',
     data: { email, code },
   });
@@ -65,7 +65,7 @@ export function fetchSendBindEmailCode(email) {
 // 取消绑定邮箱
 export function fetchCancelBindEmail(code) {
   return request({
-    url: '/api/email_user/cancel_bind_user',
+    url: '/api/email_user/cancel_bind_email',
     method: 'post',
     data: { code },
   });

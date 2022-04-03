@@ -1,5 +1,6 @@
 import router from './router';
 
+import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
@@ -14,6 +15,7 @@ const whiteList = [
 // eslint-disable-next-line consistent-return
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
+  const appStore = useAppStore();
   const { roles } = userStore.$state;
   const hasToken = cache.getStorage('token');
   // 先判断有没有登录
@@ -36,11 +38,14 @@ router.beforeEach(async (to, from, next) => {
         return;
       }
       const routeRes = userStore.generateAsyncRoutes(data.roles);
+      console.log('routeResrouteRes', routeRes);
       routeRes.forEach((v) => {
         console.log(v);
         router.addRoute(v);
       });
+      appStore.setRoutes(routeRes);
       next({ ...to, replace: true });
+      return;
     }
   } else {
     // 没登录的话，判断跳转的页面在不在白名单内

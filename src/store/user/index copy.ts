@@ -91,26 +91,48 @@ export const useUserStore = defineStore('user', {
       const myRole = roles.map((v) => v.role_name);
       const handleAsyncRoutes = (roleRoutes) => {
         console.log('roleRoutes', myRole, roleRoutes);
-        const deepFind = (route) => {
-          const res: any[] = [];
-          route.forEach((v) => {
-            const t = { ...v };
-            if (t.meta && t.meta.roles) {
-              const hasRole = hasMixin(t.meta.roles, myRole);
-              hasRole && res.push(t);
-            } else {
-              res.push(t);
-            }
-            if (t.children) {
-              t.children = deepFind(t.children);
-            }
-          });
-          return res;
+        const res: any[] = [];
+        const deepFind = (tree) => {
+          console.log(tree, 3332);
+          const obj = { ...tree };
+          const digui = () => {
+            tree.forEach((v: any) => {
+              const t = v;
+              console.log('tt', t);
+              // 先看路由的meta是否有权限
+              if (t.meta) {
+                if (t.meta.roles) {
+                  // if (t.meta.roles.length) {
+                  //   console.log('有t.meta.roles', t.meta.roles);
+                  //   const hasRole = hasMixin(t.meta.roles, myRole);
+                  //   console.log(998, hasRole, t.meta.roles, myRole);
+                  //   if (hasRole) {
+                  //     // 如果路由有子路由，递归
+                  //     if (t.children) {
+                  //       t.children = deepFind(t.children);
+                  //     }
+                  //     res.push(t);
+                  //   } else {
+                  //     return;
+                  //   }
+                  // } else {
+                  //   console.log('t.meta.roles是空数组');
+                  //   res.push(t);
+                  //   return;
+                  // }
+                } else {
+                  console.log('没有t.meta.roles', t);
+                  if (t.children) {
+                    t.children = deepFind(t.children);
+                  }
+                  res.push(t);
+                }
+              }
+            });
+            return res;
+          };
         };
-        const res = deepFind(roleRoutes);
-        console.log(res, 2221);
-
-        return res;
+        return deepFind(roleRoutes);
       };
       const a = handleAsyncRoutes(asyncRoutes);
       console.log(a, 'aaaaaaaaaaaa');

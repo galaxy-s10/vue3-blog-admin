@@ -30,6 +30,7 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
+import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
@@ -37,6 +38,7 @@ export default defineComponent({
   components: { BreadcrumbCpt, Language, SettingsOutline },
   setup() {
     const userStore = useUserStore();
+    const appStore = useAppStore();
     const router = useRouter();
     const { userInfo } = userStore.$state;
     const options = ref([
@@ -54,6 +56,7 @@ export default defineComponent({
         router.push('/setting/account');
       } else if (v === '2') {
         userStore.logout();
+        appStore.setRoutes([]);
         router.push('/login');
       }
     };
