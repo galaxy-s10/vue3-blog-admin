@@ -11,8 +11,8 @@
       </div>
       <n-dropdown trigger="hover" :options="options" @select="handleSelect">
         <div class="user">
-          <img class="avatar" :src="userInfo.avatar" alt="" />
-          <span class="name">{{ userInfo.username }}</span>
+          <img class="avatar" :src="userInfo?.avatar" alt="" />
+          <span class="name">{{ userInfo?.username }}</span>
         </div>
       </n-dropdown>
       <div class="setting">
@@ -32,7 +32,6 @@ import { useRouter } from 'vue-router';
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import cache from '@/utils/cache';
 
 export default defineComponent({
   components: { BreadcrumbCpt, Language, SettingsOutline },

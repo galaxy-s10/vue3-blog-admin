@@ -1,47 +1,45 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
     <n-data-table
       ref="table"
       remote
       :loading="isLoading"
       :columns="columns"
-      :data="logData"
+      :data="listData"
       :pagination="pagination"
       :bordered="false"
       :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
 <script lang="ts">
-import { NButton, useMessage, DataTableColumns } from 'naive-ui';
+import { NButton } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+
+import type { DataTableColumns } from 'naive-ui';
 
 import { fetchList } from '@/api/article';
 import { IMG_CDN_URL } from '@/constant';
-type ILog = {
+type IProp = {
   id: number;
-  user_id: number;
-  api_sql_duration: number;
-  api_user_agent: string;
-  api_from: number;
-  api_ip: string;
-  api_hostname: string;
-  api_method: string;
-  api_path: string;
-  api_query: string;
-  api_body: string;
-  api_err_msg: string;
-  api_err_stack: string;
+  title: string;
+  desc: any;
+  is_comment: number;
+  status: number;
+  head_img: string;
+  click: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: any;
+  types: any[];
+  users: any[];
+  tags: any[];
+  star_total: number;
+  comment_total: number;
 };
-const createColumns = ({
-  play,
-}: {
-  play: (row: ILog) => void;
-}): DataTableColumns<ILog> => {
+const createColumns = (): DataTableColumns<IProp> => {
   return [
     {
       title: 'id',
@@ -129,16 +127,15 @@ const createColumns = ({
       key: 'actions',
       width: '100',
       align: 'center',
-      render(row) {
+      render() {
         return h(
           NButton,
           {
             strong: true,
             tertiary: true,
             size: 'small',
-            onClick: () => play(row),
           },
-          { default: () => 'Play' }
+          'Action'
         );
       },
     },
@@ -148,7 +145,7 @@ const createColumns = ({
 export default defineComponent({
   components: {},
   setup() {
-    let logData = ref([]);
+    let listData = ref([]);
     let total = ref(0);
 
     let isLoading = ref(false);
@@ -163,7 +160,7 @@ export default defineComponent({
       pageCount: 0, //总页数
       pageSize: 0, //分页大小
       prefix() {
-        return `Total is ${total.value}.`;
+        return `一共${total.value}条数据`;
       },
     });
 
@@ -176,7 +173,7 @@ export default defineComponent({
         const res: any = await fetchList(params);
         if (res.code === 200) {
           isLoading.value = false;
-          logData.value = res.data.rows;
+          listData.value = res.data.rows;
           total.value = res.data.count;
 
           paginationReactive.page = params.nowPage;
@@ -201,12 +198,8 @@ export default defineComponent({
     return {
       handlePageChange,
       isLoading: isLoading,
-      logData,
-      columns: createColumns({
-        play(row: Song) {
-          // message.info(`Play ${row.title}`);
-        },
-      }),
+      listData,
+      columns: createColumns(),
       pagination: paginationReactive,
     };
   },

@@ -2,9 +2,33 @@ import { defineStore } from 'pinia';
 
 import { fetchEmailCodeLogin, fetchRegister } from '@/api/emailUser';
 import { fetchLogin, fetchUserInfo } from '@/api/user';
+import { IRole } from '@/interface';
 import { asyncRoutes } from '@/router';
-import { deepClone } from '@/utils';
 import cache from '@/utils/cache';
+
+type RootState = {
+  userInfo: {
+    id: number;
+    username: string;
+    status: number;
+    avatar: string;
+    title: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: any;
+    send_comments_total: number;
+    receive_comments_total: number;
+    send_stars_total: number;
+    receive_stars_total: number;
+    articles_total: number;
+    qq_users: any[];
+    github_users: any[];
+    email_users: any[];
+    roles: IRole[];
+  } | null;
+  token: string | null;
+  roles: string[] | null;
+};
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -12,7 +36,7 @@ export const useUserStore = defineStore('user', {
       userInfo: null,
       token: null,
       roles: null,
-    };
+    } as RootState;
   },
   actions: {
     setUserInfo(res) {
@@ -83,14 +107,12 @@ export const useUserStore = defineStore('user', {
       }
     },
     generateAsyncRoutes(roles) {
-      console.log('generateAsyncRoutesgenerateAsyncRoutes', asyncRoutes, roles);
       // 比较两数组是否有交集(返回true代表有交集)
       const hasMixin = (a, b) => {
         return a.length + b.length !== new Set([...a, ...b]).size;
       };
       const myRole = roles.map((v) => v.role_name);
       const handleAsyncRoutes = (roleRoutes) => {
-        console.log('roleRoutes', myRole, roleRoutes);
         const deepFind = (route) => {
           const res: any[] = [];
           route.forEach((v) => {

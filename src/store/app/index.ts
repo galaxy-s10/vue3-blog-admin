@@ -4,8 +4,8 @@ export const useAppStore = defineStore('app', {
   state: () => {
     return {
       path: null,
-      routes: null,
-      tagbarList: {},
+      routes: [],
+      tabList: {},
     };
   },
   actions: {
@@ -15,8 +15,8 @@ export const useAppStore = defineStore('app', {
     setRoutes(res) {
       this.routes = res;
     },
-    setTagbarList(res) {
-      this.tagbarList = res;
+    setTabList(res) {
+      this.tabList = res;
     },
   },
 });

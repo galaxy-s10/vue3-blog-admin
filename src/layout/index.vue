@@ -25,7 +25,7 @@
       </n-layout-sider>
       <n-layout>
         <HeaderCpt></HeaderCpt>
-        <TagBarCpt></TagBarCpt>
+        <TabListCpt></TabListCpt>
         <div class="main-wrap">
           <router-view></router-view>
         </div>
@@ -35,39 +35,35 @@
 </template>
 
 <script lang="ts">
-import { Apps, CaretDownOutline } from '@vicons/ionicons5';
+import { CaretDownOutline } from '@vicons/ionicons5';
 import { NIcon } from 'naive-ui';
-import { defineComponent, h, ref, toRef, watch } from 'vue';
+import { defineComponent, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import HeaderCpt from './header/header.vue';
-import TagBarCpt from './tagbar/tagbar.vue';
+import TabListCpt from './tabList/tabList.vue';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { asyncRoutes, iconMap } from '@/router/index';
+import { defaultRoutes, iconMap } from '@/router/index';
 import { useAppStore } from '@/store/app';
-import { useUserStore } from '@/store/user';
-import { deepClone } from '@/utils/index';
 
 export default defineComponent({
   components: {
     HeaderCpt,
-    TagBarCpt,
+    TabListCpt,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
-    const userStore = useUserStore();
-    const token = toRef(userStore, 'token');
 
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {
           v.meta = {
-            title: v.children[0].meta.title,
-            icon: v.children[0].meta.icon,
+            title: v.children[0].meta?.title,
+            icon: v.children[0].meta?.icon,
           };
           // @ts-ignore
           v.label = v.children[0].meta.title;
@@ -81,7 +77,7 @@ export default defineComponent({
           v.key = v.path;
           handleRoutes(v.children);
         } else if (!v.children) {
-          if (!v.meta.hidden) {
+          if (!v.meta?.hidden) {
             // @ts-ignore
             v.label = v.meta && v.meta.title;
             // @ts-ignore
@@ -91,32 +87,32 @@ export default defineComponent({
       });
       return routes;
     };
-    const menuOptions = handleRoutes(appStore.routes || []).filter(
-      (v) => v.meta && !v.meta.hidden
-    );
+    const menuOptions = handleRoutes([
+      ...defaultRoutes,
+      ...appStore.routes,
+    ]).filter((v) => v.meta && !v.meta.hidden);
+
+    const handleUpdateValue = (key: string, item) => {
+      path.value = key;
+      if (!appStore.tabList[key]) {
+        appStore.setTabList({
+          ...appStore.tabList,
+          [key]: item.meta.title,
+        });
+      }
+      router.push(key);
+    };
     let path = ref(route.path);
     watch(
       () => route.path,
       () => {
-        console.log('route.path变了', route.path);
         appStore.setPath(route.path);
         path.value = route.path;
       }
     );
     appStore.setRoutes(menuOptions);
     appStore.setPath(route.path);
-    appStore.setTagbarList({ [route.path]: route.meta.title });
-
-    const handleUpdateValue = (key: string, item) => {
-      path.value = key;
-      if (!appStore.tagbarList[key]) {
-        appStore.setTagbarList({
-          ...appStore.tagbarList,
-          [key]: item.meta.title,
-        });
-      }
-      router.push(key);
-    };
+    appStore.setTabList({ [route.path]: route.meta.title });
 
     return {
       collapsed: ref(false),

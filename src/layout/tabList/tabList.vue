@@ -13,18 +13,6 @@
           <CloseOutline></CloseOutline>
         </n-icon>
       </div>
-      <!-- <div
-        v-for="item in [1, 2, 3, 4, 5, 6, 7, 8, 9, 87, 78, 46, 23]"
-        :key="item"
-        class="aaa"
-        @click="scrollFn(item)"
-      >
-        <i class="dot" :class="{ curr: item.key === path ? true : false }"></i>
-        <span>1111111</span>
-        <n-icon size="18" @click="close(item)">
-          <CloseOutline></CloseOutline>
-        </n-icon>
-      </div> -->
     </div>
     <div class="action">
       <n-dropdown trigger="hover" :options="options" @select="closeTag">
@@ -38,8 +26,8 @@
 
 <script lang="ts">
 import { ChevronDownOutline, CloseOutline } from '@vicons/ionicons5';
-import { defineComponent, reactive, ref, toRefs, VueElement, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { defineComponent, ref, toRefs, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 import router from '@/router';
 import { useAppStore } from '@/store/app';
@@ -52,12 +40,12 @@ export default defineComponent({
   setup() {
     const appStore = useAppStore();
     const route = useRoute();
-    const { tagbarList, path } = toRefs(appStore.$state);
-    const list1 = ref([]);
-    const listRef = ref<HTMLElement>(null);
-    const res = [];
-    Object.keys(tagbarList.value).forEach((v) => {
-      res.push({ key: v, value: tagbarList.value[v] });
+    const { tabList, path } = toRefs(appStore.$state);
+    const list1: any = ref([]);
+    const listRef = ref<HTMLElement>();
+    const res: { key: string; value: string }[] = [];
+    Object.keys(tabList.value).forEach((v) => {
+      res.push({ key: v, value: tabList.value[v] });
     });
     list1.value = res;
     const options = [
@@ -75,9 +63,9 @@ export default defineComponent({
       },
     ];
     watch(
-      () => tagbarList.value,
+      () => tabList.value,
       (newVal) => {
-        const res = [];
+        const res: any[] = [];
         Object.keys(newVal).forEach((v) => {
           res.push({ key: v, value: newVal[v] });
         });
@@ -87,13 +75,14 @@ export default defineComponent({
     watch(
       () => route.path,
       () => {
-        const halfOfWindowWidth = Math.ceil(listRef.value.clientWidth / 2); // 父容器宽度的一半（即父容器的居中位置）
+        const dom = listRef.value!;
+        const halfOfWindowWidth = Math.ceil(dom.clientWidth / 2); // 父容器宽度的一半（即父容器的居中位置）
         list1.value.forEach((v, i) => {
           if (v.key === route.path) {
-            const parentEle = listRef.value;
-            const currentEle = listRef.value.children[i];
+            const parentEle = dom;
+            const currentEle = dom.children[i];
             // @ts-ignore
-            const currentEleOffsetLeft = listRef.value.children[i].offsetLeft;
+            const currentEleOffsetLeft = dom.children[i].offsetLeft;
             parentEle.scrollTo({
               left:
                 currentEleOffsetLeft -
@@ -106,19 +95,14 @@ export default defineComponent({
         });
       }
     );
-    watch(
-      () => list1,
-      (newVal) => {}
-    );
-    // const route = reactive(route);
     const close = (item) => {
-      const list = { ...tagbarList.value };
+      const list = { ...tabList.value };
       if (Object.keys(list).length <= 1) {
         window.$message.warning('不能删了');
         return;
       }
       delete list[item.key];
-      appStore.setTagbarList(list);
+      appStore.setTabList(list);
     };
     const pushPath = (item) => {
       // console.log(item, listRef);

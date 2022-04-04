@@ -1,9 +1,8 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 import router from '@/router';
 import cache from '@/utils/cache';
-const service = axios.create({
+const service: any = axios.create({
   // baseURL: process.env.NODE_ENV === 'development' ? undefined : '/admin/',
   timeout: 5000,
 });

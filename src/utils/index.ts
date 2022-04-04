@@ -1,11 +1,7 @@
-/**
- * 使用json进行深克隆
- */
+/** 使用json进行深克隆 */
 export const deepCloneByJson = (T) => JSON.parse(JSON.stringify(T));
 
-/**
- * 手写的深拷贝，解决循环引用
- */
+/** 手写的深拷贝，解决循环引用 */
 export const deepClone = (obj) => {
   function clone(obj, hash) {
     const newobj = Array.isArray(obj) ? [] : {};

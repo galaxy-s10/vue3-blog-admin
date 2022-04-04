@@ -7,6 +7,7 @@ class CacheModel {
     try {
       return localStorage.getItem(key);
     } catch (error) {
+      // @ts-ignore
       throw new Error(error);
     }
   };
@@ -20,6 +21,7 @@ class CacheModel {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
+      // @ts-ignore
       throw new Error(error);
     }
   };
@@ -38,6 +40,7 @@ class CacheModel {
    */
   getStorageExp = (key: string) => {
     try {
+      // @ts-ignore
       const storage = JSON.parse(localStorage.getItem(key));
       if (storage) {
         // 如果缓存的startTime加上expires小于或等于当前时间戳，则代表还没过期
@@ -50,6 +53,7 @@ class CacheModel {
       }
       return null;
     } catch (error) {
+      // @ts-ignore
       throw new Error(error);
     }
   };
@@ -69,6 +73,7 @@ class CacheModel {
       const assignParams = Object.assign(params, { startTime: +new Date() });
       localStorage.setItem(key, JSON.stringify(assignParams));
     } catch (error) {
+      // @ts-ignore
       throw new Error(error);
     }
   };

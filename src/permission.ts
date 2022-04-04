@@ -16,7 +16,7 @@ const whiteList = [
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   const appStore = useAppStore();
-  const { roles } = userStore.$state;
+  const { roles } = userStore;
   const hasToken = cache.getStorage('token');
   // 先判断有没有登录
   if (hasToken) {
@@ -25,6 +25,7 @@ router.beforeEach(async (to, from, next) => {
       next('/');
     }
     // 判断用户有没有角色
+    // @ts-ignore
     if (roles && roles.length) {
       next();
     } else {
@@ -38,9 +39,7 @@ router.beforeEach(async (to, from, next) => {
         return;
       }
       const routeRes = userStore.generateAsyncRoutes(data.roles);
-      console.log('routeResrouteRes', routeRes);
       routeRes.forEach((v) => {
-        console.log(v);
         router.addRoute(v);
       });
       appStore.setRoutes(routeRes);

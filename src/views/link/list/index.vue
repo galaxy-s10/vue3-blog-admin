@@ -17,30 +17,25 @@
 </template>
 
 <script lang="ts">
-import { NButton, useMessage, DataTableColumns } from 'naive-ui';
+import { NButton } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
+import type { DataTableColumns } from 'naive-ui';
+
 import { fetchList } from '@/api/link';
-type ILog = {
+type IProp = {
   id: number;
-  user_id: number;
-  api_sql_duration: number;
-  api_user_agent: string;
-  api_from: number;
-  api_ip: string;
-  api_hostname: string;
-  api_method: string;
-  api_path: string;
-  api_query: string;
-  api_body: string;
-  api_err_msg: string;
-  api_err_stack: string;
+  email: string;
+  name: string;
+  avatar: string;
+  desc: string;
+  url: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: any;
 };
-const createColumns = ({
-  play,
-}: {
-  play: (row: ILog) => void;
-}): DataTableColumns<ILog> => {
+const createColumns = (): DataTableColumns<IProp> => {
   return [
     {
       title: 'id',
@@ -95,16 +90,15 @@ const createColumns = ({
       key: 'actions',
       width: '100',
       align: 'center',
-      render(row) {
+      render() {
         return h(
           NButton,
           {
             strong: true,
             tertiary: true,
             size: 'small',
-            onClick: () => play(row),
           },
-          { default: () => 'Play' }
+          'Action'
         );
       },
     },
@@ -129,7 +123,7 @@ export default defineComponent({
       pageCount: 0, //总页数
       pageSize: 0, //分页大小
       prefix() {
-        return `Total is ${total.value}.`;
+        return `一共${total.value}条数据`;
       },
     });
 
@@ -167,11 +161,7 @@ export default defineComponent({
       handlePageChange,
       isLoading: isLoading,
       logData,
-      columns: createColumns({
-        play(row: Song) {
-          // message.info(`Play ${row.title}`);
-        },
-      }),
+      columns: createColumns(),
       pagination: paginationReactive,
     };
   },

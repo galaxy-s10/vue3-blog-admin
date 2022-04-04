@@ -46,7 +46,6 @@
       positive-text="确认"
       negative-text="取消"
       @positive-click="submitCallback"
-      @negative-click="cancelCallback"
     >
       <n-form
         ref="bindEmailFormRef"
@@ -78,8 +77,8 @@
               type="primary"
               ghost
               :disabled="downCount !== 0"
-              :loading="sendCodeLoading"
-              @click="sendCode()"
+              :loading="loading"
+              @click="sendBindEmailCode()"
             >
               发送{{ downCount !== 0 ? `(${downCount})` : '' }}
             </n-button>
@@ -92,16 +91,16 @@
 
 <script lang="ts">
 import { MailOutline } from '@vicons/ionicons5';
-import { defineComponent, ref, toRef, watch } from 'vue';
+import { defineComponent, ref, toRef } from 'vue';
 
 import {
-  fetchBindEmail,
   fetchSendBindEmailCode,
-  fetchCancelBindEmail,
   fetchCancelSendBindEmailCode,
+  fetchBindEmail,
+  fetchCancelBindEmail,
 } from '@/api/emailUser';
-import { fetchCancelBindGithub, fetchBindGithub } from '@/api/githubUser';
-import { fetchCancelBindQQ, fetchBindQQ } from '@/api/qqUser';
+import { fetchCancelBindGithub } from '@/api/githubUser';
+import { fetchCancelBindQQ } from '@/api/qqUser';
 import {
   GITHUB_CLIENT_ID,
   GITHUB_OAUTH_URL,
@@ -110,26 +109,30 @@ import {
   REDIRECT_URI,
 } from '@/constant';
 import { useUserStore } from '@/store/user';
-const bindEmailRules = {
-  email: { required: true, message: '请输入邮箱', trigger: 'blur' },
-  code: { required: true, message: '请输入验证码', trigger: 'blur' },
-};
+
 export default defineComponent({
   components: { MailOutline },
   setup() {
+    const bindEmailRules = {
+      email: { required: true, message: '请输入邮箱', trigger: 'blur' },
+      code: { required: true, message: '请输入验证码', trigger: 'blur' },
+    };
     const userStore = useUserStore();
-    // const { userInfo } = userStore;
-    const userInfo = toRef(userStore, 'userInfo');
-    const sendCodeLoading = ref(false);
+    const userInfo: any = toRef(userStore, 'userInfo');
+    const loading = ref(false);
     const showModal = ref(false);
     const downCount = ref(0);
     const bindEmailFormRef = ref(null);
-    /** 发送验证码 */
-    const sendCode = async () => {
+    const bindEmailForm = ref({
+      email: '',
+      code: '',
+    });
+    /** 发送绑定/取消绑定邮箱验证码 */
+    const sendBindEmailCode = async () => {
       if (bindEmailForm.value.email === '')
         return window.$message.warning('请输入邮箱!');
       try {
-        sendCodeLoading.value = true;
+        loading.value = true;
         let message = '';
         if (userInfo.value.email_users[0]) {
           const res = await fetchCancelSendBindEmailCode(
@@ -140,7 +143,7 @@ export default defineComponent({
           const res = await fetchSendBindEmailCode(bindEmailForm.value.email);
           message = res.message;
         }
-        sendCodeLoading.value = false;
+        loading.value = false;
         window.$message.success(message);
         downCount.value = 60;
         const timer = setInterval(() => {
@@ -150,18 +153,12 @@ export default defineComponent({
           }
         }, 1000);
       } catch (error: any) {
-        sendCodeLoading.value = false;
+        loading.value = false;
         window.$message.error(error.message);
       }
     };
-    const bindEmailForm = ref({
-      email: '',
-      code: '',
-    });
 
-    /**
-     * platform: github, qq
-     */
+    /** platform: github, qq */
     const handleBindThird = async (platform) => {
       const devUrl =
         'http://localhost:8000/oauth/qq_login?code=8CDE3D8B50934C88F1949D6F1FCF7C6F';
@@ -202,14 +199,9 @@ export default defineComponent({
       userStore.getUserInfo();
     };
 
-    watch(userStore, (a, b) => {
-      console.log(a, b, 9888);
-    });
-
     const ajaxBindEmailForm = async () => {
       const res = await fetchBindEmail(bindEmailForm.value);
       window.$message.success(res.message);
-      // showModal.value = false;
       bindEmailForm.value = {
         email: '',
         code: '',
@@ -219,15 +211,10 @@ export default defineComponent({
     const ajaxCancelBindEmailForm = async () => {
       const res = await fetchCancelBindEmail(bindEmailForm.value.code);
       window.$message.success(res.message);
-      // showModal.value = false;
       bindEmailForm.value = {
         email: '',
         code: '',
       };
-    };
-
-    const aa = () => {
-      userStore.getUserInfo();
     };
 
     const submitCallback = () => {
@@ -236,6 +223,7 @@ export default defineComponent({
         bindEmailFormRef.value.validate(async (errors) => {
           if (!errors) {
             try {
+              // @ts-ignore
               if (userStore.userInfo.email_users[0]) {
                 await ajaxCancelBindEmailForm();
               } else {
@@ -254,24 +242,25 @@ export default defineComponent({
       });
     };
     const handleBindEmail = () => {
+      // @ts-ignore
       if (userInfo.value.email_users[0]) {
+        // @ts-ignore
         bindEmailForm.value.email = userInfo.value.email_users[0].email;
       }
       showModal.value = true;
     };
-    const cancelCallback = () => {};
+
     return {
       userInfo,
-      sendCode,
       bindEmailRules,
       bindEmailForm,
       bindEmailFormRef,
       showModal,
       downCount,
-      cancelCallback,
+      loading,
+      sendBindEmailCode,
       submitCallback,
       handleBindEmail,
-      aa,
       handleBindThird,
     };
   },
