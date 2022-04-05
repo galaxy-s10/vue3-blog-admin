@@ -1,14 +1,35 @@
 <template>
-  <div>roleaddroleaddroleaddroleaddroleadd</div>
+  <n-tree
+    block-line
+    checkable
+    cascade
+    :data="data"
+    :default-expanded-keys="defaultExpandedKeys"
+    key-field="role_description"
+    label-field="role_description"
+    children-field="children"
+    selectable
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+
+import { fetchRoleAuth, fetchTreeList } from '@/api/role';
 
 export default defineComponent({
-  components: {},
-  setup() {},
+  setup() {
+    let data = ref([]);
+    onMounted(async () => {
+      // const res = await fetchRoleAuth(1);
+      const res = await fetchTreeList();
+      console.log(res, 4354);
+      data.value = res.data;
+    });
+    return {
+      data: data,
+      defaultExpandedKeys: ref([]),
+    };
+  },
 });
 </script>
-
-<style lang="scss" scoped></style>

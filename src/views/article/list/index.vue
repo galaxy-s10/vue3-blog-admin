@@ -174,11 +174,11 @@ export default defineComponent({
         if (res.code === 200) {
           isLoading.value = false;
           listData.value = res.data.rows;
-          total.value = res.data.count;
+          total.value = res.data.total;
 
           paginationReactive.page = params.nowPage;
           paginationReactive.pageCount = Math.ceil(
-            res.data.count / params.pageSize
+            res.data.total / params.pageSize
           );
           paginationReactive.pageSize = params.pageSize;
         } else {

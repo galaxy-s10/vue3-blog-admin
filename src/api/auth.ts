@@ -7,3 +7,12 @@ export function fetchList(params) {
     params,
   });
 }
+
+/** 获取树型权限 */
+export function fetchTreeList(id?: number) {
+  return request({
+    url: `/api/auth/tree_list`,
+    method: 'get',
+    params: { id },
+  });
+}

@@ -23,6 +23,7 @@ import {
   NList,
   NListItem,
   NModal,
+  NTree,
 } from 'naive-ui';
 
 const components = [
@@ -49,6 +50,7 @@ const components = [
   NList,
   NListItem,
   NModal,
+  NTree,
 ];
 
 export const naive = create({
