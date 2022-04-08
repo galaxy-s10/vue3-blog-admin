@@ -20,11 +20,13 @@ import { defineComponent, toRef } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 export default defineComponent({
   components: {},
   setup() {
     const router = useRouter();
+    const userStore = useUserStore();
     const appStore = useAppStore();
     const env = toRef(appStore, 'env');
     const hasEnv = cache.getStorageExp('env');
@@ -59,7 +61,9 @@ export default defineComponent({
           appStore.setEnv('development');
           break;
       }
-      router.push('/');
+      window.$message.success('切换成功!');
+      userStore.logout();
+      router.push('/login');
     };
     return { env, isDev, switchEnv, parseEnv };
   },

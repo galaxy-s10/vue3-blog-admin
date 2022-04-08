@@ -64,7 +64,7 @@ const commonConfig = (isProduction) => {
        * 访问http://localhost:8080/logManage/logList，引入的资源就是：http://localhost:8080/js/bundle.js，就不会报错。
        * 此外，output.publicPath还可设置cdn地址。
        */
-      publicPath: outputStaticUrl(),
+      publicPath: outputStaticUrl(isProduction),
     },
     resolve: {
       // 解析路径
@@ -289,10 +289,10 @@ const commonConfig = (isProduction) => {
       }),
       new DefinePlugin({
         // 定义全局变量
-        BASE_URL: `${JSON.stringify(outputStaticUrl())}`, // public下的index.html里面的icon的路径
+        BASE_URL: `${JSON.stringify(outputStaticUrl(isProduction))}`, // public下的index.html里面的icon的路径
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-          PUBLIC_PATH: JSON.stringify(outputStaticUrl()),
+          PUBLIC_PATH: JSON.stringify(outputStaticUrl(isProduction)),
           VUE_APP_RELEASE_PROJECT_NAME: JSON.stringify(
             process.env.VUE_APP_RELEASE_PROJECT_NAME
           ),

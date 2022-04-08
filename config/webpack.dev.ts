@@ -38,7 +38,7 @@ export default new Promise((resolve) => {
             rewrites: [
               // 如果publicPath设置了/abc，就不能直接设置historyApiFallback: true，这样会重定向到react-webpack-template根目录下的index.html
               // publicPath设置了/abc，就重定向到/abc，这样就可以了
-              { from: outputStaticUrl(), to: outputStaticUrl() },
+              { from: outputStaticUrl(false), to: outputStaticUrl(false) },
             ],
           },
           /**
@@ -54,7 +54,7 @@ export default new Promise((resolve) => {
             // （webpack-dev-server4.x后变了）
             directory: path.resolve(__dirname, '../public'),
             watch: true,
-            publicPath: outputStaticUrl(),
+            publicPath: outputStaticUrl(false),
           },
           proxy: {
             '/api': {
