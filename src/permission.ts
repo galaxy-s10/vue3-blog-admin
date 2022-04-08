@@ -17,10 +17,10 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   const appStore = useAppStore();
   const { roles } = userStore;
-  const hasToken = cache.getStorage('token');
+  const hasToken = cache.getStorageExp('token');
   // 先判断有没有登录
   if (hasToken) {
-    userStore.setToken(hasToken);
+    // userStore.setToken(hasToken);
     if (to.path === '/login') {
       next('/');
     }

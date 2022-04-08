@@ -4,14 +4,15 @@
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-16 04:15:31
-# LastEditTime: 2022-03-23 01:11:08
+# LastEditTime: 2022-04-09 01:31:11
 # Description:
 ###
 
-# 约定$1为任务名, $2为环境, $3为Jenkins工作区
+# 约定$1为任务名, $2为环境, $3为Jenkins工作区, $4为端口号
 JOBNAME=$1 # 注意: JOBNAME=$1,这个等号左右不能有空格！
 ENV=$2
 WORKSPACE=$3
+PORT=$4
 PUBLICDIR=/node
 
 echo 删除node_modules:
@@ -55,5 +56,4 @@ else
   echo 开始构建$ENV环境:
 fi
 
-npx cross-env webpack --config ./config/webpack.common.ts --env production
-# npx cross-env VUE_APP_RELEASE_PROJECT_NAME=$JOBNAME VUE_APP_RELEASE_PROJECT_ENV=$ENV webpack --config ./config/webpack.common.ts --env production
+npx cross-env VUE_APP_RELEASE_PROJECT_NAME=$JOBNAME VUE_APP_RELEASE_PROJECT_ENV=$ENV webpack --config ./config/webpack.common.ts --env production

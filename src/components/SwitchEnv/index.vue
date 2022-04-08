@@ -3,8 +3,14 @@
     <div v-if="env === 'beta'">
       <div class="beta-watermark">欢迎体验测试服~</div>
     </div>
-    <div class="switch-env" @click="switchEnv">
-      点击切换{{ env === 'beta' ? '正式服' : '测试服' }}
+    <div class="switch-env">
+      <div @click="switchEnv(env === 'beta' ? 'prod' : 'beta')">
+        <span>当前是{{ parseEnv(env) }}，</span>
+        <span>点击切换{{ env === 'beta' ? '正式服' : '测试服' }}</span>
+      </div>
+      <div v-if="isDev" @click="switchEnv('development')">
+        点击切换本地开发环境
+      </div>
     </div>
   </div>
 </template>
@@ -15,7 +21,6 @@ import { useRouter } from 'vue-router';
 
 import { useAppStore } from '@/store/app';
 import cache from '@/utils/cache';
-
 export default defineComponent({
   components: {},
   setup() {
@@ -23,6 +28,18 @@ export default defineComponent({
     const appStore = useAppStore();
     const env = toRef(appStore, 'env');
     const hasEnv = cache.getStorageExp('env');
+    const isDev = process.env.NODE_ENV === 'development';
+
+    const parseEnv = (env) => {
+      switch (env) {
+        case 'beta':
+          return '测试服';
+        case 'prod':
+          return '正式服';
+        default:
+          return '本地开发环境';
+      }
+    };
 
     if (hasEnv) {
       appStore.setEnv(hasEnv);
@@ -30,15 +47,21 @@ export default defineComponent({
       cache.setStorageExp('env', env.value, 24);
     }
 
-    const switchEnv = () => {
-      if (env.value === 'beta') {
-        appStore.setEnv('prod');
-      } else {
-        appStore.setEnv('beta');
+    const switchEnv = (env) => {
+      switch (env) {
+        case 'beta':
+          appStore.setEnv('beta');
+          break;
+        case 'prod':
+          appStore.setEnv('prod');
+          break;
+        case 'development':
+          appStore.setEnv('development');
+          break;
       }
       router.push('/');
     };
-    return { env, switchEnv };
+    return { env, isDev, switchEnv, parseEnv };
   },
 });
 </script>
@@ -65,7 +88,6 @@ export default defineComponent({
   right: 0;
   color: red;
   z-index: 9999;
-  display: flex;
   font-size: 20px;
   cursor: pointer;
 }

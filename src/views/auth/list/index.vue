@@ -155,8 +155,7 @@ export default defineComponent({
       }
     );
 
-    const updateShow = (newVal, oldVal) => {
-      console.log('updateShow', newVal, oldVal);
+    const updateShow = (newVal) => {
       showModal.value = newVal;
       newVal === false && (currentAuth.value = undefined);
     };
@@ -249,7 +248,6 @@ export default defineComponent({
                 {
                   size: 'small',
                   onClick: async () => {
-                    console.log('click', row);
                     const treeList = await fetchTreeList();
                     const allList = await fetchAllList();
                     modalTitle.value = '编辑角色';
@@ -275,7 +273,6 @@ export default defineComponent({
                   size: 'small',
                   type: 'primary',
                   onClick: async () => {
-                    console.log('click', row);
                     const treeList = await fetchTreeList();
                     const allList = await fetchAllList();
                     modalTitle.value = '新增角色';
@@ -377,7 +374,6 @@ export default defineComponent({
     };
 
     const modalConfirm = async () => {
-      console.log('=====');
       if (isEdit.value) {
         await update();
       } else {
@@ -386,11 +382,8 @@ export default defineComponent({
     };
     const modalCancel = () => {
       showModal.value = false;
-      console.log('first');
     };
-    const updateCheckedKeys = (keys) => {
-      console.log('updateCheckedKeys', keys);
-    };
+    const updateCheckedKeys = (keys) => {};
     return {
       updateShow,
       handlePageChange,

@@ -99,7 +99,7 @@ const createColumns = (): DataTableColumns<ILog> => {
             tertiary: true,
             size: 'small',
           },
-          'Action'
+          () => 'Action'
         );
       },
     },

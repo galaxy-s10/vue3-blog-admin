@@ -173,8 +173,7 @@ export default defineComponent({
       }
     );
 
-    const updateShow = (newVal, oldVal) => {
-      console.log('updateShow', newVal, oldVal);
+    const updateShow = (newVal) => {
       showModal.value = newVal;
       newVal === false && (currentRole.value = undefined);
     };
@@ -263,7 +262,6 @@ export default defineComponent({
                 {
                   size: 'small',
                   onClick: async () => {
-                    console.log('click', row);
                     const allAuth = await fetchTreeList();
                     const allRole = await fetchAllList();
                     const auth = await fetchRoleAuth(row.id);
@@ -292,7 +290,6 @@ export default defineComponent({
                   size: 'small',
                   type: 'primary',
                   onClick: async () => {
-                    console.log('click', row);
                     const allAuth = await fetchTreeList();
                     const allRole = await fetchAllList();
                     const auth = await fetchRoleAuth(row.id);
@@ -398,7 +395,6 @@ export default defineComponent({
     };
 
     const modalConfirm = async () => {
-      console.log('=====');
       if (isEdit.value) {
         await update();
       } else {
@@ -407,10 +403,8 @@ export default defineComponent({
     };
     const modalCancel = () => {
       showModal.value = false;
-      console.log('first');
     };
     const updateCheckedKeys = (keys) => {
-      console.log('updateCheckedKeys', keys);
       defaultCheckedKeys.value = keys;
       formValue.value.role_auths = keys;
     };

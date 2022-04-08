@@ -44,7 +44,6 @@ export const useUserStore = defineStore('user', {
       this.userInfo = res;
     },
     setToken(res) {
-      console.log(res, 23236);
       Cookies.remove('token');
       cache.setStorageExp('token', res, 24);
       this.token = res;
@@ -54,7 +53,7 @@ export const useUserStore = defineStore('user', {
     },
     logout() {
       cache.clearStorage('token');
-      // Cookies.remove('token');
+      Cookies.remove('token');
       this.token = null;
       this.userInfo = null;
       this.roles = null;
@@ -104,7 +103,6 @@ export const useUserStore = defineStore('user', {
         const { code, data }: any = await fetchUserInfo();
         this.setUserInfo(data);
         this.setRoles(data.roles);
-        console.log(code, data);
         return { code, data };
       } catch (error) {
         return error;
@@ -134,13 +132,10 @@ export const useUserStore = defineStore('user', {
           return res;
         };
         const res = deepFind(roleRoutes);
-        console.log(res, 2221);
 
         return res;
       };
-      const a = handleAsyncRoutes(asyncRoutes);
-      console.log(a, 'aaaaaaaaaaaa');
-      return a;
+      return handleAsyncRoutes(asyncRoutes);
     },
   },
 });

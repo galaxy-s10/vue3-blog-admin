@@ -185,7 +185,7 @@ const createColumns = (): DataTableColumns<IProp> => {
             tertiary: true,
             size: 'small',
           },
-          'Action'
+          () => 'Action'
         );
       },
     },

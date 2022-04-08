@@ -25,7 +25,6 @@
     }
   },
   "dependencies": {
-    "@types/js-cookie": "^3.0.1",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^0.26.0",
     "core-js": "^3.17.2",
@@ -44,6 +43,7 @@
     "@commitlint/config-conventional": "^16.0.0",
     "@rushstack/eslint-patch": "^1.1.0",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
+    "@types/js-cookie": "^3.0.1",
     "@typescript-eslint/parser": "^5.8.1",
     "@vue/compiler-sfc": "^3.2.31",
     "@vue/eslint-config-prettier": "^7.0.0",

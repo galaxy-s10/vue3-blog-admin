@@ -105,16 +105,10 @@ export default defineComponent({
       appStore.setTabList(list);
     };
     const pushPath = (item) => {
-      // console.log(item, listRef);
-      // console.log(listRef.value.clientWidth);
       router.push(item.key);
     };
-    const closeTag = (v) => {
-      console.log(v);
-    };
-    const scrollFn = (v) => {
-      console.log(v);
-    };
+    const closeTag = (v) => {};
+    const scrollFn = (v) => {};
     return {
       route,
       path,

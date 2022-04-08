@@ -1,39 +1,37 @@
 <template>
-  <div>
-    <n-space vertical class="layout-wrap">
-      <n-layout position="absolute" has-sider>
-        <n-layout-sider
-          bordered
-          collapse-mode="width"
-          :collapsed-width="64"
-          :width="240"
+  <n-space class="layout-wrap">
+    <n-layout position="absolute" has-sider>
+      <n-layout-sider
+        bordered
+        collapse-mode="width"
+        :collapsed-width="64"
+        :width="240"
+        :collapsed="collapsed"
+        show-trigger
+        @collapse="collapsed = true"
+        @expand="collapsed = false"
+      >
+        <n-menu
+          :value="currentPath"
           :collapsed="collapsed"
-          show-trigger
-          @collapse="collapsed = true"
-          @expand="collapsed = false"
-        >
-          <n-menu
-            :value="currentPath"
-            :collapsed="collapsed"
-            :collapsed-width="64"
-            :collapsed-icon-size="22"
-            :options="menuOptions"
-            :render-label="renderMenuLabel"
-            :render-icon="renderMenuIcon"
-            :expand-icon="expandIcon"
-            @update:value="handleUpdateValue"
-          />
-        </n-layout-sider>
-        <n-layout>
-          <HeaderCpt></HeaderCpt>
-          <TabListCpt></TabListCpt>
-          <div class="main-wrap">
-            <router-view></router-view>
-          </div>
-        </n-layout>
+          :collapsed-width="64"
+          :collapsed-icon-size="22"
+          :options="menuOptions"
+          :render-label="renderMenuLabel"
+          :render-icon="renderMenuIcon"
+          :expand-icon="expandIcon"
+          @update:value="handleUpdateValue"
+        />
+      </n-layout-sider>
+      <n-layout>
+        <HeaderCpt></HeaderCpt>
+        <TabListCpt></TabListCpt>
+        <div class="main-wrap">
+          <router-view></router-view>
+        </div>
       </n-layout>
-    </n-space>
-  </div>
+    </n-layout>
+  </n-space>
 </template>
 
 <script lang="ts">
@@ -138,6 +136,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .layout-wrap {
+  height: 100vh;
   .main-wrap {
     padding: 10px;
   }

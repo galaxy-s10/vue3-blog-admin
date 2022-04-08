@@ -546,9 +546,6 @@ export const asyncRoutes = [
   },
 ];
 
-console.log('权限路由', asyncRoutes);
-console.log('默认路由', defaultRoutes);
-
 const router = createRouter({
   routes: [...defaultRoutes],
   history: createWebHistory(),

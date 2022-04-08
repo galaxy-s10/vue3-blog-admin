@@ -12,7 +12,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'; // bundle分析
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
-import { chalkINFO, chalkSUCCESS, emoji } from './utils/chalkTip';
+import { chalkINFO, emoji } from './utils/chalkTip';
 import { outputStaticUrl } from './utils/outputStaticUrl';
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';

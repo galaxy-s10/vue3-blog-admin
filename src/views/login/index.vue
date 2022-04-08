@@ -198,6 +198,7 @@ import {
   QQ_OAUTH_URL,
   REDIRECT_URI,
 } from '@/constant';
+import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 
 const loginRules = {
@@ -217,6 +218,8 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
+    const appStore = useAppStore();
+
     /** qq登录 */
     const qqLogin = () => {
       const url =
@@ -228,6 +231,7 @@ export default defineComponent({
         'qq_login_window',
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );
+      appStore.setLoading(true);
     };
     /** github登录 */
     const githubLogin = () => {
@@ -244,6 +248,7 @@ export default defineComponent({
         'github_login_window',
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
       );
+      appStore.setLoading(true);
     };
 
     const loginForm = ref({
@@ -299,7 +304,6 @@ export default defineComponent({
     };
     const handleRegisterSubmit = (e) => {
       e.preventDefault();
-      console.log(currentTab.value, 32352);
       // @ts-ignore
       registerFormRef.value.validate(async (errors) => {
         if (!errors) {
@@ -337,7 +341,6 @@ export default defineComponent({
       }
     };
     const tabChange = (v) => {
-      console.log(v, 22);
       currentTab.value = v;
     };
     const focus = ref(false);

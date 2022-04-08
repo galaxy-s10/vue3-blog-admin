@@ -25,7 +25,6 @@ export default defineComponent({
       default:
         currentOauth = '非法';
     }
-    console.log(method, code, window.opener, 22222);
     if (window.opener && ['qq_login', 'github_login'].includes(method)) {
       window.opener.postMessage(
         {

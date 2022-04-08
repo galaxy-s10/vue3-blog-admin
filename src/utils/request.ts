@@ -13,8 +13,17 @@ const service: any = axios.create(config);
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
-    config.baseURL =
-      cache.getStorageExp('env') === 'prod' ? '/prodapi/' : '/betaapi/';
+    switch (cache.getStorageExp('env')) {
+      case 'prod':
+        config.baseURL = '/prodapi/';
+        break;
+      case 'beta':
+        config.baseURL = '/betaapi/';
+        break;
+      case 'development':
+        config.baseURL = '/api/';
+        break;
+    }
     const token = cache.getStorageExp('token');
     // @ts-ignore
     if (token) {

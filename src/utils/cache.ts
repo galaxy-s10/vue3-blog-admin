@@ -42,10 +42,9 @@ class CacheModel {
     try {
       // @ts-ignore
       const storage = JSON.parse(localStorage.getItem(key));
-      console.log(storage, 332232);
       if (storage) {
-        // 如果缓存的startTime加上expires小于或等于当前时间戳，则代表还没过期
-        const isExpires = storage.startTime + storage.expires <= +new Date();
+        // 如果缓存的expireTime小于当前时间，则代表已过期
+        const isExpires = storage.expireTime < +new Date();
         if (isExpires) {
           this.clearStorage(key);
           return null;
@@ -70,8 +69,10 @@ class CacheModel {
       if ([key, value, expires].includes(undefined)) {
         throw new Error('请检查传入的参数!');
       }
-      const params = { key, value, expires: expires * 60 * 60 * 1000 };
-      const assignParams = Object.assign(params, { startTime: +new Date() });
+      const createTime = +new Date();
+      const expireTime = createTime + expires * 60 * 60 * 1000;
+      const params = { key, value };
+      const assignParams = Object.assign(params, { createTime, expireTime });
       localStorage.setItem(key, JSON.stringify(assignParams));
     } catch (error) {
       // @ts-ignore
