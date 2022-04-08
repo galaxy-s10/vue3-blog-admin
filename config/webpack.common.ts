@@ -200,7 +200,7 @@ const commonConfig = (isProduction) => {
           sideEffects: true,
         },
         {
-          test: /\.(jpg|jpeg|png|gif)$/,
+          test: /\.(jpg|jpeg|png|gif|svg)$/,
           type: 'asset',
           generator: {
             filename: 'img/[name]-[contenthash:6][ext]',
@@ -212,8 +212,8 @@ const commonConfig = (isProduction) => {
           },
         },
         {
-          // test: /\.(svg|eot|ttf|woff2?)\??.*$/,
-          test: /\.(svg|eot|ttf|woff2?)$/,
+          // test: /\.(eot|ttf|woff2?)\??.*$/,
+          test: /\.(eot|ttf|woff2?)$/,
           type: 'asset/resource',
           generator: {
             filename: 'font/[name]-[contenthash:6][ext]',

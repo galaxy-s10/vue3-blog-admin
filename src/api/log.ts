@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function fetchList(params) {
   return request({
-    url: '/api/log/list',
+    url: '/log/list',
     method: 'get',
     params,
   });

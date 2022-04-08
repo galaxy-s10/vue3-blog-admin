@@ -22,3 +22,17 @@ export const deepClone = (obj) => {
   }
   return clone(obj, undefined);
 };
+
+export const mockAjax = async (time = 1000) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        code: 0,
+        data: {
+          name: '张三',
+          age: 18,
+        },
+      });
+    }, time);
+  });
+};

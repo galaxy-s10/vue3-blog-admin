@@ -25,6 +25,7 @@
     }
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.1",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^0.26.0",
     "core-js": "^3.17.2",

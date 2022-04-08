@@ -1,27 +1,26 @@
 <template>
   <div>
     <router-view></router-view>
+    <SwitchEnvCpt></SwitchEnvCpt>
   </div>
 </template>
 
 <script lang="ts">
 import Cookies from 'js-cookie';
 import { defineComponent } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import { fetchGithubLogin, fetchBindGithub } from '@/api/githubUser';
 import { fetchQQLogin, fetchBindQQ } from '@/api/qqUser';
-import { useUserStore } from '@/store/user/index';
-// import { useUserStore } from '@/store/user';
+import SwitchEnvCpt from '@/components/SwitchEnv/index.vue';
+import { useUserStore } from '@/store/user';
 
 export default defineComponent({
-  components: {},
+  components: { SwitchEnvCpt },
   setup() {
     const router = useRouter();
     const userStore = useUserStore();
-    console.log('routerrouter', router);
 
-    // if (process.env.NODE_ENV !== 'development') {
     window.addEventListener('message', async (e) => {
       // console.log('收到消息', e.data);
       const { type, data: code } = e.data;
@@ -58,7 +57,7 @@ export default defineComponent({
         router.push('/');
       }
     });
-    // }
+
     return {};
   },
 });

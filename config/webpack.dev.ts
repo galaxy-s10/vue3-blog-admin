@@ -58,7 +58,7 @@ export default new Promise((resolve) => {
           },
           proxy: {
             '/api': {
-              target: 'http://localhost:3200',
+              target: 'http://localhost:3300',
               secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
               /**
                * changeOrigin，是否修改请求地址的源
@@ -69,6 +69,34 @@ export default new Promise((resolve) => {
               pathRewrite: {
                 // '^/admin': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
                 '^/api': '/admin/', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
+              },
+            },
+            '/prodapi': {
+              target: 'http://42.193.157.44:3200',
+              secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+              /**
+               * changeOrigin，是否修改请求地址的源
+               * 默认changeOrigin: false，即发请求即使用devServer的localhost:port发起的，如果后端服务器有校验源，就会有问题
+               * 设置changeOrigin: true，就会修改发起请求的源，将原本的localhost:port修改为target，这样就可以通过后端服务器对源的校验
+               */
+              changeOrigin: true,
+              pathRewrite: {
+                // '^/admin': '', // 效果：/api/link/list ==> http://42.193.157.44:3200/link/list
+                '^/prodapi': '/admin/', // 效果：/api/link/list ==> http://42.193.157.44:3200/admin/link/list
+              },
+            },
+            '/betaapi': {
+              target: 'http://42.193.157.44:3300',
+              secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+              /**
+               * changeOrigin，是否修改请求地址的源
+               * 默认changeOrigin: false，即发请求即使用devServer的localhost:port发起的，如果后端服务器有校验源，就会有问题
+               * 设置changeOrigin: true，就会修改发起请求的源，将原本的localhost:port修改为target，这样就可以通过后端服务器对源的校验
+               */
+              changeOrigin: true,
+              pathRewrite: {
+                // '^/admin': '', // 效果：/api/link/list ==> http://42.193.157.44:3300/link/list
+                '^/betaapi': '/admin/', // 效果：/api/link/list ==> http://42.193.157.44:3300/admin/link/list
               },
             },
             // '/api': {

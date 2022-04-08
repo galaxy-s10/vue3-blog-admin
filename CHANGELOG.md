@@ -4,36 +4,32 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.3](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.2...v0.0.3) (2022-03-15)
 
-
 ### Features
 
-* 优化webpack配置 ([d7d6315](https://github.com/galaxy-s10/vue3-blog-admin/commit/d7d63153db20c156729c2c47669dbf4071f72aad))
+- 优化 webpack 配置 ([d7d6315](https://github.com/galaxy-s10/vue3-blog-admin/commit/d7d63153db20c156729c2c47669dbf4071f72aad))
 
 ### [0.0.2](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.1...v0.0.2) (2022-03-14)
 
-
 ### Docs
 
-* 新增更新日志 ([e17a2b8](https://github.com/galaxy-s10/vue3-blog-admin/commit/e17a2b878fc3bb0f5a1a9afa203ade9720799d0b))
+- 新增更新日志 ([e17a2b8](https://github.com/galaxy-s10/vue3-blog-admin/commit/e17a2b878fc3bb0f5a1a9afa203ade9720799d0b))
 
 ### 0.0.1 (2022-03-14)
 
-
 ### Features
 
-* 初始化项目 ([24cdaf5](https://github.com/galaxy-s10/vue3-blog-admin/commit/24cdaf51894e9947ab323e6c237335668c7bb537))
-* 添加权限验证 ([fa2a334](https://github.com/galaxy-s10/vue3-blog-admin/commit/fa2a334ba937afd387612684db6b5d3ac47fb79b))
-
+- 初始化项目 ([24cdaf5](https://github.com/galaxy-s10/vue3-blog-admin/commit/24cdaf51894e9947ab323e6c237335668c7bb537))
+- 添加权限验证 ([fa2a334](https://github.com/galaxy-s10/vue3-blog-admin/commit/fa2a334ba937afd387612684db6b5d3ac47fb79b))
 
 ### Bug Fixes
 
-* 阶段性提交 ([3d4436f](https://github.com/galaxy-s10/vue3-blog-admin/commit/3d4436f0f59e73f43b8114c5d7a67d05323c79a1))
-* 删除.DS_Store文件 ([136f9f4](https://github.com/galaxy-s10/vue3-blog-admin/commit/136f9f4dfe18dc5a628fa5c5f7992bdacdfd2238))
-* 完成permission ([e01d9dd](https://github.com/galaxy-s10/vue3-blog-admin/commit/e01d9dd6de42484eecdb2a042bc286b201c7f43f))
-* 修复bug ([b557b64](https://github.com/galaxy-s10/vue3-blog-admin/commit/b557b64b5e27e27d055517b81f9a924238cfa652))
-* 修复bug-1 ([663dac8](https://github.com/galaxy-s10/vue3-blog-admin/commit/663dac8e21e18866765888a4001eabaf34ddbf21))
-* 修复oauth判断 ([020efcf](https://github.com/galaxy-s10/vue3-blog-admin/commit/020efcf3216cb4ee8783a7ae988c66fcad2f764b))
-* 修复qq登录 ([57572c5](https://github.com/galaxy-s10/vue3-blog-admin/commit/57572c50d8e89382728fa0ec530bd96622578b47))
-* 修改忽略文件 ([e5e3b56](https://github.com/galaxy-s10/vue3-blog-admin/commit/e5e3b56bebe802a9c8aa58cb9ba2e33fef8e8342))
-* 修改路由 ([0ccd324](https://github.com/galaxy-s10/vue3-blog-admin/commit/0ccd324ca1cd17b45dca68df8adeb90d91028878))
-* 修改bug ([5c6493b](https://github.com/galaxy-s10/vue3-blog-admin/commit/5c6493bbd2014bae14f7c2fc6b56a6547b5ca7a3))
+- 阶段性提交 ([3d4436f](https://github.com/galaxy-s10/vue3-blog-admin/commit/3d4436f0f59e73f43b8114c5d7a67d05323c79a1))
+- 删除.DS_Store 文件 ([136f9f4](https://github.com/galaxy-s10/vue3-blog-admin/commit/136f9f4dfe18dc5a628fa5c5f7992bdacdfd2238))
+- 完成 permission ([e01d9dd](https://github.com/galaxy-s10/vue3-blog-admin/commit/e01d9dd6de42484eecdb2a042bc286b201c7f43f))
+- 修复 bug ([b557b64](https://github.com/galaxy-s10/vue3-blog-admin/commit/b557b64b5e27e27d055517b81f9a924238cfa652))
+- 修复 bug-1 ([663dac8](https://github.com/galaxy-s10/vue3-blog-admin/commit/663dac8e21e18866765888a4001eabaf34ddbf21))
+- 修复 oauth 判断 ([020efcf](https://github.com/galaxy-s10/vue3-blog-admin/commit/020efcf3216cb4ee8783a7ae988c66fcad2f764b))
+- 修复 qq 登录 ([57572c5](https://github.com/galaxy-s10/vue3-blog-admin/commit/57572c50d8e89382728fa0ec530bd96622578b47))
+- 修改忽略文件 ([e5e3b56](https://github.com/galaxy-s10/vue3-blog-admin/commit/e5e3b56bebe802a9c8aa58cb9ba2e33fef8e8342))
+- 修改路由 ([0ccd324](https://github.com/galaxy-s10/vue3-blog-admin/commit/0ccd324ca1cd17b45dca68df8adeb90d91028878))
+- 修改 bug ([5c6493b](https://github.com/galaxy-s10/vue3-blog-admin/commit/5c6493bbd2014bae14f7c2fc6b56a6547b5ca7a3))

@@ -2,15 +2,20 @@ import axios from 'axios';
 
 import router from '@/router';
 import cache from '@/utils/cache';
-const service: any = axios.create({
-  // baseURL: process.env.NODE_ENV === 'development' ? undefined : '/admin/',
+
+const config = {
+  // baseURL: '/api/', // 本地开发：/api/，线上正式服：/prodapi/，线上测试服：/betaapi/
   timeout: 5000,
-});
+};
+
+const service: any = axios.create(config);
 
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
-    const token = cache.getStorage('token');
+    config.baseURL =
+      cache.getStorageExp('env') === 'prod' ? '/prodapi/' : '/betaapi/';
+    const token = cache.getStorageExp('token');
     // @ts-ignore
     if (token) {
       // @ts-ignore

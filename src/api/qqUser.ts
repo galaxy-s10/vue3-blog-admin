@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function fetchList(params) {
   return request({
-    url: '/api/qq_user/list',
+    url: '/qq_user/list',
     method: 'get',
     params,
   });
@@ -11,7 +11,7 @@ export function fetchList(params) {
 // qq登录
 export function fetchQQLogin(code: any) {
   return request({
-    url: `/api/qq_user/login`,
+    url: `/qq_user/login`,
     method: 'post',
     data: { code },
   });
@@ -20,7 +20,7 @@ export function fetchQQLogin(code: any) {
 // 绑定qq
 export function fetchBindQQ(code: any) {
   return request({
-    url: `/api/qq_user/bind_qq`,
+    url: `/qq_user/bind_qq`,
     method: 'post',
     data: { code },
   });
@@ -28,7 +28,7 @@ export function fetchBindQQ(code: any) {
 // 取消绑定qq
 export function fetchCancelBindQQ() {
   return request({
-    url: `/api/qq_user/cancel_bind_qq`,
+    url: `/qq_user/cancel_bind_qq`,
     method: 'post',
   });
 }

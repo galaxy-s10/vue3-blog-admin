@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
     <n-data-table
       ref="table"
       remote
@@ -12,7 +11,6 @@
       :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
@@ -120,7 +118,7 @@ export default defineComponent({
     });
     const paginationReactive = reactive({
       page: 0, //当前页
-      pageCount: 0, //总页数
+      itemCount: 0, //总条数
       pageSize: 0, //分页大小
       prefix() {
         return `一共${total.value}条数据`;
@@ -139,9 +137,7 @@ export default defineComponent({
           logData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
-          paginationReactive.pageCount = Math.ceil(
-            res.data.total / params.pageSize
-          );
+          paginationReactive.itemCount = res.data.total;
           paginationReactive.pageSize = params.pageSize;
         } else {
           Promise.reject(res);

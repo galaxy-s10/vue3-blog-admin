@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { defineStore } from 'pinia';
 
 import { fetchEmailCodeLogin, fetchRegister } from '@/api/emailUser';
@@ -43,7 +44,9 @@ export const useUserStore = defineStore('user', {
       this.userInfo = res;
     },
     setToken(res) {
-      cache.setStorage('token', res);
+      console.log(res, 23236);
+      Cookies.remove('token');
+      cache.setStorageExp('token', res, 24);
       this.token = res;
     },
     setRoles(res) {
@@ -51,6 +54,7 @@ export const useUserStore = defineStore('user', {
     },
     logout() {
       cache.clearStorage('token');
+      // Cookies.remove('token');
       this.token = null;
       this.userInfo = null;
       this.roles = null;

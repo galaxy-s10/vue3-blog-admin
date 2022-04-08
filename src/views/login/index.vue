@@ -1,6 +1,18 @@
 <template>
   <div class="login-warp">
     <div class="content">
+      <img
+        v-if="!focus"
+        class="top"
+        src="@/assets/img/juejin-open-eye.svg"
+        alt=""
+      />
+      <img
+        v-else
+        class="top close"
+        src="@/assets/img/juejin-close-eye.svg"
+        alt=""
+      />
       <n-card>
         <n-tabs
           :value="currentTab"
@@ -34,6 +46,8 @@
                   v-model:value="loginForm.password"
                   type="password"
                   placeholder="请输入密码"
+                  @focus="onFocus"
+                  @blur="onBlur"
                   @keyup.enter="handleLoginSubmit"
                 >
                   <template #prefix>
@@ -272,8 +286,6 @@ export default defineComponent({
       if (token) {
         window.$message.success('注册成功!');
         router.push('/');
-        // currentTab.value = 'codelogin';
-        // registerForm.value.code = '';
       }
     };
     const handleLoginSubmit = (e) => {
@@ -321,12 +333,19 @@ export default defineComponent({
         }, 1000);
       } catch (error: any) {
         sendCodeLoading.value = false;
-        window.$message.error(error.message);
+        console.log(error);
       }
     };
     const tabChange = (v) => {
       console.log(v, 22);
       currentTab.value = v;
+    };
+    const focus = ref(false);
+    const onFocus = () => {
+      focus.value = true;
+    };
+    const onBlur = () => {
+      focus.value = false;
     };
     return {
       qqLogin,
@@ -344,6 +363,9 @@ export default defineComponent({
       currentTab,
       tabChange,
       sendCodeLoading,
+      onFocus,
+      onBlur,
+      focus,
     };
   },
 });
@@ -353,7 +375,7 @@ export default defineComponent({
 .login-warp {
   position: relative;
   min-height: 100vh;
-  background-color: #293146;
+  background-color: #f5f7f9;
   .content {
     background-color: #fff;
     border-radius: 5px;
@@ -362,27 +384,42 @@ export default defineComponent({
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    .top {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -90%);
+      z-index: 100;
+      width: 120px;
+      &.close {
+        transform: translate(-50%, -99%);
+        z-index: 0;
+      }
+    }
+
     .title {
       text-align: center;
       margin: 10px 0;
     }
-  }
-  .other-login {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 5px 0;
-    .logo-wrap {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #f4f8fb;
-      display: flex;
-      cursor: pointer;
 
-      .qq-logo {
-        width: 25px;
-        margin: 0 auto;
+    .other-login {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin: 5px 0;
+      .logo-wrap {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f4f8fb;
+        display: flex;
+        cursor: pointer;
+
+        .qq-logo {
+          width: 25px;
+          margin: 0 auto;
+        }
       }
     }
   }

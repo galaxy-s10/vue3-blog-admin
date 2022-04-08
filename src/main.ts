@@ -2,21 +2,19 @@ import { createApp } from 'vue';
 
 import App from './App.vue';
 
-import Message from '@/components/message/index.vue';
-import { naive } from '@/components/registerGlobComp';
+import Message from '@/components/Message/index.vue';
+import { naive } from '@/components/registerNaive';
 import router from '@/router/index';
-import { store } from '@/store/index';
-
+import store from '@/store/index';
 import '@/assets/css/index.scss';
-import './permission';
+import '@/permission';
 
-const message = createApp(Message);
 const app = createApp(App);
+const message = createApp(Message);
 
 app.use(store);
+app.use(router);
 app.use(naive);
 
-app.use(router);
-
-message.mount('#message');
 app.mount('#app');
+message.mount('#message');
