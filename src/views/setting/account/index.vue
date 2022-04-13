@@ -161,7 +161,8 @@ export default defineComponent({
     /** platform: github, qq */
     const handleBindThird = async (platform) => {
       const devUrl =
-        'http://localhost:8000/oauth/qq_login?code=8CDE3D8B50934C88F1949D6F1FCF7C6F';
+        `http://localhost:8000/?client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
+        `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
       if (platform === 'qq') {
         if (userInfo.value.qq_users[0]) {
           console.log('解绑qq');
@@ -190,7 +191,7 @@ export default defineComponent({
             'github_login' +
             '&scope=user';
           window.open(
-            bind_github_url,
+            devUrl,
             'github_login_window',
             'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
           );

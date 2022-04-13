@@ -44,6 +44,7 @@ export const useUserStore = defineStore('user', {
       this.userInfo = res;
     },
     setToken(res) {
+      console.log('first setToken', res);
       Cookies.remove('token');
       cache.setStorageExp('token', res, 24);
       this.token = res;

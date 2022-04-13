@@ -15,13 +15,13 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 
-import { fetchTreeList } from '@/api/role';
+import { fetchTreeRole } from '@/api/role';
 
 export default defineComponent({
   setup() {
     let data = ref([]);
     onMounted(async () => {
-      const res = await fetchTreeList();
+      const res = await fetchTreeRole();
       data.value = res.data;
     });
     return {

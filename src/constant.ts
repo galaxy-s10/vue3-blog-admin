@@ -8,3 +8,5 @@ export const GITHUB_CLIENT_ID = '8c2c07b574ae70ecfa9d';
 export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 
 export const IMG_CDN_URL = 'https://img.cdn.hsslive.cn';
+
+export const POSTMESSAGE_TYPE = ['qq_login', 'github_login', 'login_expired'];

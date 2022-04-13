@@ -350,6 +350,7 @@ export default defineComponent({
     const onBlur = () => {
       focus.value = false;
     };
+
     return {
       qqLogin,
       githubLogin,

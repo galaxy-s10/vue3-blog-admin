@@ -8,7 +8,7 @@ interface IAuth {
 }
 
 /** 权限列表(分页) */
-export function fetchList(params) {
+export function fetchAuthList(params) {
   return request({
     url: '/auth/list',
     method: 'get',

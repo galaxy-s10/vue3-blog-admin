@@ -7,7 +7,7 @@
       <img class="avatar" :src="userInfo?.avatar" alt="" />
     </div>
     <div>title: {{ userInfo?.title }}</div>
-    <div>权限: {{ userInfo?.roles.map((v) => v.role_description) }}</div>
+    <div>权限: {{ userInfo?.roles.map((v) => v.role_name) }}</div>
     <div>累计发出点赞: {{ userInfo?.send_stars_total }}</div>
     <div>累计收到点赞: {{ userInfo?.receive_stars_total }}</div>
     <div>累计发出评论: {{ userInfo?.send_comments_total }}</div>

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <n-button @click="handleAssginRole">批量分配角色</n-button>
+    <n-button @click="handleAssginRole">批量新增角色</n-button>
     <n-data-table
       ref="table"
       remote
-      :row-key="(row) => row.id"
       :loading="tableLoading"
       :columns="columns"
       :data="roleData"
+      :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
     />
@@ -20,11 +20,7 @@
       @confirm="modalConfirm"
       @cancel="modalCancel"
     >
-      <div
-        v-if="
-          modalType === ModalTypeEnum.ADD || modalType === ModalTypeEnum.EDIT
-        "
-      >
+      <div v-if="modalType !== ModalTypeEnum.ASSING">
         <n-form
           ref="formRef"
           :inline="false"
@@ -73,6 +69,35 @@
               placeholder="请输入角色权重"
             />
           </n-form-item>
+          <!-- <n-form-item label="子角色" path="c_roles">
+            <n-tree
+              style="width: 100%"
+              checkable
+              cascade
+              :data="childRoleData"
+              :default-checked-keys="formValue.c_roles"
+              key-field="id"
+              label-field="role_value"
+              children-field="children"
+              check-strategy="parent"
+              selectable
+              @update:checked-keys="updateCheckedKeys"
+            />
+          </n-form-item> -->
+          <!-- <n-form-item label="角色权限" path="role_auths">
+            <n-tree
+              style="width: 100%"
+              checkable
+              cascade
+              :data="authTreeList"
+              :default-checked-keys="formValue.role_auths"
+              key-field="id"
+              label-field="auth_description"
+              children-field="children"
+              selectable
+              @update:checked-keys="updateCheckedKeys"
+            />
+          </n-form-item> -->
         </n-form>
       </div>
       <div v-else>
@@ -89,7 +114,6 @@
               v-model:value="formValue.id"
               clearable
               :options="selectList"
-              :disabled="modalType === ModalTypeEnum.DELETE_CHILD"
             />
           </n-form-item>
           <n-form-item label="子角色" path="c_roles">
@@ -97,21 +121,18 @@
               style="width: 100%"
               checkable
               cascade
-              selectable
               :data="childRoleData"
               :default-checked-keys="formValue.c_roles"
               key-field="id"
               label-field="role_name"
               children-field="children"
+              check-strategy="child"
+              selectable
               @update:checked-keys="updateCheckedKeys"
             />
           </n-form-item>
         </n-form>
-        {{
-          modalType === ModalTypeEnum.DELETE_CHILD
-            ? '注意：会删除选中的角色以及它关联的所有角色'
-            : ''
-        }}
+        ps:给角色新增的子角色需要是同一个父级
       </div>
     </HModal>
   </div>
@@ -128,7 +149,6 @@ import {
   fetchRoleList,
   fetchTreeRole,
   fetchTreeChildRole,
-  fetchGetChildRole,
   fetchSetAddChildRole,
   fetchAllChildRole,
   fetchRoleAuth,
@@ -257,22 +277,6 @@ export default defineComponent({
       modalVisiable.value = true;
     };
 
-    const handleDeleteChildRoles = async (row) => {
-      const treeRole = await fetchGetChildRole(row.id); //子角色树
-      const allRole = await fetchAllList(); //父级角色下拉框
-      childRoleData.value = treeRole.data;
-      selectList.value = allRole.data.rows.map((v) => {
-        return {
-          ...v,
-          label: v.role_name,
-          value: v.id,
-        };
-      });
-      modalType.value = ModalTypeEnum.ASSING;
-      modalTitle.value = '批量新增角色';
-      modalVisiable.value = true;
-    };
-
     const setAddChildRole = async () => {
       try {
         modalConfirmLoading.value = true;
@@ -289,15 +293,27 @@ export default defineComponent({
       }
     };
 
+    const paginationReactive = reactive({
+      page: 0, //当前页
+      itemCount: 0, //总条数
+      pageSize: 0, //分页大小
+      prefix() {
+        return `一共${total.value}条数据`;
+      },
+    });
+
     /** ajaxfetchRoleList */
     const ajaxFetchRoleList = async (params) => {
       try {
         tableLoading.value = true;
-        const res: any = await fetchTreeRole(1);
+        const res: any = await fetchTreeRole();
         if (res.code === 200) {
           tableLoading.value = false;
-          roleData.value = res.data;
+          roleData.value = res.data.rows;
           total.value = res.data.total;
+          paginationReactive.page = params.nowPage;
+          paginationReactive.itemCount = res.data.total;
+          paginationReactive.pageSize = params.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -333,26 +349,22 @@ export default defineComponent({
         {
           title: 'id',
           key: 'id',
-          width: 200,
           align: 'center',
         },
         {
           title: '角色名称',
           key: 'role_name',
-          width: 200,
           align: 'center',
         },
         {
           title: '角色标识',
           key: 'role_value',
-          width: 200,
           align: 'center',
         },
         {
           title: '角色类型',
           key: 'type',
           align: 'center',
-          width: 200,
           render(row) {
             return row.type === 1 ? '默认角色' : '自定义';
           },
@@ -360,21 +372,18 @@ export default defineComponent({
         {
           title: '角色权重',
           key: 'priority',
-          width: 100,
           align: 'center',
         },
         {
           title: 'p_id',
           key: 'p_id',
-          width: 100,
           align: 'center',
         },
         {
           title: '操作',
           key: 'actions',
-          width: 500,
+          width: '200',
           align: 'center',
-          fixed: 'right',
           render(row) {
             return h(NSpace, {}, () => [
               h(
@@ -449,56 +458,8 @@ export default defineComponent({
                       },
                       () => '删除' //用箭头函数返回性能更好。
                     ),
-                  default: () => '会删除底下关联的所有子角色，确定吗?',
+                  default: () => '确定删除吗',
                 }
-              ),
-              h(
-                NButton,
-                {
-                  size: 'small',
-                  type: 'info',
-                  onClick: async () => {
-                    const treeRole = await fetchGetChildRole(row.id!); //子角色树
-                    const allRole = await fetchAllList(); //父级角色下拉框
-                    childRoleData.value = treeRole.data;
-                    selectList.value = allRole.data.rows.map((v) => {
-                      return {
-                        ...v,
-                        label: v.role_name,
-                        value: v.id,
-                      };
-                    });
-                    formValue.value.id = row.id;
-                    modalTitle.value = '批量删除子角色';
-                    modalType.value = ModalTypeEnum.DELETE_CHILD;
-                    modalVisiable.value = true;
-                  },
-                },
-                () => '批量删除子角色' //用箭头函数返回性能更好。
-              ),
-              h(
-                NButton,
-                {
-                  size: 'small',
-                  type: 'warning',
-                  onClick: async () => {
-                    const treeRole = await fetchGetChildRole(row.id!); //子角色树
-                    const allRole = await fetchAllList(); //父级角色下拉框
-                    childRoleData.value = treeRole.data;
-                    selectList.value = allRole.data.rows.map((v) => {
-                      return {
-                        ...v,
-                        label: v.role_name,
-                        value: v.id,
-                      };
-                    });
-                    formValue.value.id = row.id;
-                    modalTitle.value = '批量新增子角色';
-                    modalType.value = ModalTypeEnum.DELETE_CHILD;
-                    modalVisiable.value = true;
-                  },
-                },
-                () => '批量新增子角色' //用箭头函数返回性能更好。
               ),
             ]);
           },
@@ -511,7 +472,7 @@ export default defineComponent({
         modalConfirmLoading.value = true;
         await fetchUpdateRole({
           ...formValue.value,
-          priority: Number(formValue.value.priority || 1),
+          priority: Number(formValue.value.priority || 0),
         });
         modalVisiable.value = false;
         window.$message.success('修改成功!');
@@ -529,7 +490,7 @@ export default defineComponent({
         modalConfirmLoading.value = true;
         await fetchCreateRole({
           ...formValue.value,
-          priority: Number(formValue.value.priority || 1),
+          priority: Number(formValue.value.priority || 0),
         });
         modalVisiable.value = false;
         window.$message.success('新增成功!');
@@ -606,6 +567,7 @@ export default defineComponent({
       formRef,
       roleData,
       columns: createColumns(),
+      pagination: paginationReactive,
       rules,
       selectList,
       modalType,

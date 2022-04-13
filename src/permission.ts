@@ -30,12 +30,16 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       const { code, data }: any = await userStore.getUserInfo();
+      console.log(code, data, 33222);
       if (code !== 200) {
         next(false);
         return;
       }
-      if (!data.roles) {
-        next(`/login`);
+      console.log(data.roles, !data.roles, 111111);
+      if (!data.roles || !data.roles.length) {
+        // next(`/login`);
+        next(false);
+        window.$message.error('你没有角色');
         return;
       }
       const routeRes = userStore.generateAsyncRoutes(data.roles);

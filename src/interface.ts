@@ -9,11 +9,23 @@ export interface IUser {
   deleted_at: null;
 }
 export interface IRole {
-  id: number;
-  role_name: string;
-  role_description: string;
-  p_id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: null;
+  id?: number;
+  role_name?: string;
+  role_value?: string;
+  type?: number;
+  priority?: number | string;
+  p_id?: number | null;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: null;
+  role_auths?: number[];
+  c_roles?: number[];
+}
+
+export enum ModalTypeEnum {
+  EDIT = 1,
+  ADD = 2,
+  ASSING = 3,
+  DELETE_CHILD = 4,
+  ADD_CHILD = 5,
 }

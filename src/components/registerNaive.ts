@@ -25,6 +25,8 @@ import {
   NModal,
   NTree,
   NSelect,
+  NRadio,
+  NRadioGroup,
 } from 'naive-ui';
 
 const components = [
@@ -53,6 +55,8 @@ const components = [
   NModal,
   NTree,
   NSelect,
+  NRadio,
+  NRadioGroup,
 ];
 
 export const naive = create({

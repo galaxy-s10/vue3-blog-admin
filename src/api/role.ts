@@ -1,15 +1,8 @@
+import { IRole } from '@/interface';
 import request from '@/utils/request';
 
-interface IRole {
-  id: number;
-  role_name: string;
-  role_description: string;
-  p_id: number;
-  role_auths: number[];
-}
-
 /** 角色列表(分页) */
-export function fetchList(params) {
+export function fetchRoleList(params) {
   return request({
     url: '/role/list',
     method: 'get',
@@ -26,11 +19,42 @@ export function fetchAllList() {
 }
 
 /** 获取树型角色 */
-export function fetchTreeList(id?: number) {
+export function fetchTreeRole(id?: number) {
   return request({
-    url: `/role/tree_list`,
+    url: `/role/get_tree_role`,
     method: 'get',
     params: { id },
+  });
+}
+
+/** 获取除了父级以外的所有角色（树型） */
+export function fetchTreeChildRole() {
+  return request({
+    url: `/role/get_tree_child_role`,
+    method: 'get',
+  });
+}
+/** 获取该角色的子角色（只找一层） */
+export function fetchGetChildRole(id: number) {
+  return request({
+    url: `/role/get_child_role/${id}`,
+    method: 'get',
+  });
+}
+
+export function fetchSetAddChildRole({ id, c_roles }: IRole) {
+  return request({
+    url: `/role/set_add_child_role`,
+    method: 'put',
+    data: { id, c_roles },
+  });
+}
+
+/** 获取该角色的子角色（递归查找所有） */
+export function fetchAllChildRole(id: number) {
+  return request({
+    url: `/role/get_all_child_role/${id}`,
+    method: 'get',
   });
 }
 
@@ -46,8 +70,9 @@ export function fetchRoleAuth(id) {
 export function fetchCreateRole({
   p_id,
   role_name,
-  role_description,
-  role_auths,
+  role_value,
+  type,
+  priority,
 }: IRole) {
   return request({
     url: `/role/create`,
@@ -55,8 +80,9 @@ export function fetchCreateRole({
     data: {
       p_id,
       role_name,
-      role_description,
-      role_auths,
+      role_value,
+      type,
+      priority,
     },
   });
 }
@@ -66,8 +92,9 @@ export function fetchUpdateRole({
   id,
   p_id,
   role_name,
-  role_description,
-  role_auths,
+  role_value,
+  type,
+  priority,
 }: IRole) {
   return request({
     url: `/role/update/${id}`,
@@ -75,8 +102,9 @@ export function fetchUpdateRole({
     data: {
       p_id,
       role_name,
-      role_description,
-      role_auths,
+      role_value,
+      type,
+      priority,
     },
   });
 }

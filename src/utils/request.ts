@@ -61,6 +61,14 @@ service.interceptors.response.use(
         window.$message.error(error.response.data.message);
         cache.clearStorage('token');
         router.push('/login');
+        window.close();
+        window.opener.postMessage(
+          {
+            type: 'login_expired',
+            data: null,
+          },
+          '*'
+        );
         return Promise.reject(error.response.data);
       }
       if (error.response.status === 403) {

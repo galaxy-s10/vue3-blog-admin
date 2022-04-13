@@ -69,7 +69,7 @@ import { h, defineComponent, onMounted, ref, watch, reactive } from 'vue';
 import type { DataTableColumns, FormInst } from 'naive-ui';
 
 import {
-  fetchList,
+  fetchAuthList,
   fetchAllList,
   fetchChildAuth,
   fetchTreeList,
@@ -169,11 +169,11 @@ export default defineComponent({
       },
     });
 
-    /** ajaxfetchList */
-    const ajaxFetchList = async (params) => {
+    /** ajaxfetchAuthList */
+    const ajaxFetchAuthList = async (params) => {
       try {
         tableLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchAuthList(params);
         if (res.code === 200) {
           tableLoading.value = false;
           authData.value = res.data.rows;
@@ -204,11 +204,11 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchAuthList(params);
       await ajaxFetchTreeList();
     });
     const handlePageChange = async (currentPage) => {
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      await ajaxFetchAuthList({ ...params, nowPage: currentPage });
     };
     const createColumns = (): DataTableColumns<ILog> => {
       return [
