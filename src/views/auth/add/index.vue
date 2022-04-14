@@ -1,33 +1,13 @@
 <template>
-  <n-tree
-    block-line
-    checkable
-    cascade
-    :data="data"
-    :default-expanded-keys="defaultExpandedKeys"
-    key-field="auth_description"
-    label-field="auth_description"
-    children-field="children"
-    selectable
-  />
+  <div></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-
-import { fetchTreeList } from '@/api/auth';
-
+import { defineComponent } from 'vue';
 export default defineComponent({
-  setup() {
-    let data = ref([]);
-    onMounted(async () => {
-      const res = await fetchTreeList();
-      data.value = res.data;
-    });
-    return {
-      data: data,
-      defaultExpandedKeys: ref([]),
-    };
-  },
+  components: {},
+  setup() {},
 });
 </script>
+
+<style lang="scss" scoped></style>

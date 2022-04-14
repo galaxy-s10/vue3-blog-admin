@@ -19,6 +19,14 @@ export function fetchAllList() {
 }
 
 /** 获取树型角色 */
+export function fetchUserRole(id: number) {
+  return request({
+    url: `/role/get_user_role/${id}`,
+    method: 'get',
+  });
+}
+
+/** 获取树型角色 */
 export function fetchTreeRole(id?: number) {
   return request({
     url: `/role/get_tree_role`,
@@ -34,6 +42,7 @@ export function fetchTreeChildRole() {
     method: 'get',
   });
 }
+
 /** 获取该角色的子角色（只找一层） */
 export function fetchGetChildRole(id: number) {
   return request({
@@ -42,26 +51,10 @@ export function fetchGetChildRole(id: number) {
   });
 }
 
-export function fetchSetAddChildRole({ id, c_roles }: IRole) {
-  return request({
-    url: `/role/set_add_child_role`,
-    method: 'put',
-    data: { id, c_roles },
-  });
-}
-
 /** 获取该角色的子角色（递归查找所有） */
 export function fetchAllChildRole(id: number) {
   return request({
     url: `/role/get_all_child_role/${id}`,
-    method: 'get',
-  });
-}
-
-/** 获取某个角色的权限 */
-export function fetchRoleAuth(id) {
-  return request({
-    url: `/role/get_role_auth/${id}`,
     method: 'get',
   });
 }
@@ -105,6 +98,30 @@ export function fetchUpdateRole({
       role_value,
       type,
       priority,
+    },
+  });
+}
+
+/** 批量删除子角色 */
+export function fetchBatchDeleteChildRoles({ id, c_roles }: IRole) {
+  return request({
+    url: `/role/batch_delete_child_roles`,
+    method: 'delete',
+    data: {
+      id,
+      c_roles,
+    },
+  });
+}
+
+/** 批量新增子角色 */
+export function fetchBatchAddChildRoles({ id, c_roles }: IRole) {
+  return request({
+    url: `/role/batch_add_child_roles`,
+    method: 'put',
+    data: {
+      id,
+      c_roles,
     },
   });
 }

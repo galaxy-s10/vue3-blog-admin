@@ -1,6 +1,5 @@
 <template>
   <div>
-    <n-button @click="handleAssginRole">批量分配角色</n-button>
     <n-data-table
       ref="table"
       remote
@@ -22,7 +21,7 @@
     >
       <div
         v-if="
-          modalType === ModalTypeEnum.ADD || modalType === ModalTypeEnum.EDIT
+          modalType === modalTypeEnum.ADD || modalType === modalTypeEnum.EDIT
         "
       >
         <n-form
@@ -75,7 +74,7 @@
           </n-form-item>
         </n-form>
       </div>
-      <div v-else>
+      <div v-else-if="modalType === modalTypeEnum.BATCH_DELETE">
         <n-form
           ref="formRef"
           :inline="false"
@@ -89,7 +88,7 @@
               v-model:value="formValue.id"
               clearable
               :options="selectList"
-              :disabled="modalType === ModalTypeEnum.DELETE_CHILD"
+              disabled
             />
           </n-form-item>
           <n-form-item label="子角色" path="c_roles">
@@ -107,11 +106,43 @@
             />
           </n-form-item>
         </n-form>
-        {{
-          modalType === ModalTypeEnum.DELETE_CHILD
-            ? '注意：会删除选中的角色以及它关联的所有角色'
-            : ''
-        }}
+        <p>注意：会删除选中的角色以及它关联的所有角色</p>
+      </div>
+      <div v-else-if="modalType === modalTypeEnum.BATCH_ADD">
+        <n-form
+          ref="formRef"
+          :inline="false"
+          :label-width="80"
+          :model="formValue"
+          :rules="rules"
+          label-placement="left"
+        >
+          <n-form-item label="角色" path="id">
+            <n-select
+              v-model:value="formValue.id"
+              clearable
+              :options="selectList"
+              disabled
+            />
+          </n-form-item>
+          <n-form-item label="子角色" path="c_roles">
+            <n-tree-select
+              multiple
+              cascade
+              checkable
+              check-strategy="child"
+              :options="batchAddOptions"
+              key-field="id"
+              label-field="role_name"
+              children-field="children"
+              @update:value="updateCheckedKeys"
+            />
+          </n-form-item>
+        </n-form>
+        <p>注意1：每次新增的子角色需要是同一个父级（但不是同一个祖先）。</p>
+        <p>
+          注意2：这里的新增其实并不是新增，而是修改当前的选中的角色的父级角色。
+        </p>
       </div>
     </HModal>
   </div>
@@ -123,22 +154,20 @@ import { h, defineComponent, onMounted, ref, watch, reactive } from 'vue';
 
 import type { DataTableColumns, FormInst } from 'naive-ui';
 
-import { fetchAuthList } from '@/api/auth';
 import {
-  fetchRoleList,
   fetchTreeRole,
-  fetchTreeChildRole,
   fetchGetChildRole,
-  fetchSetAddChildRole,
   fetchAllChildRole,
-  fetchRoleAuth,
   fetchAllList,
   fetchUpdateRole,
   fetchCreateRole,
   fetchDeleteRole,
+  fetchBatchDeleteChildRoles,
+  fetchBatchAddChildRoles,
 } from '@/api/role';
 import HModal from '@/components/HModal/index.vue';
-import { IRole, ModalTypeEnum } from '@/interface';
+import { IRole, modalTypeEnum } from '@/interface';
+import { deepCloneByJson } from '@/utils';
 
 const rules = {
   p_id: {
@@ -197,6 +226,7 @@ export default defineComponent({
     let selectList = ref([]);
     let roleTreeList = ref([]);
     let childRoleData = ref([]);
+    let batchAddOptions = ref([]);
     let roleTypes = ref([
       {
         value: 1,
@@ -207,7 +237,7 @@ export default defineComponent({
         label: '自定义',
       },
     ]);
-    let modalType = ref<ModalTypeEnum>(ModalTypeEnum.ADD);
+    let modalType = ref<modalTypeEnum>(modalTypeEnum.ADD);
     let isAssignRole = ref(false);
 
     let formValue = ref<IRole>({
@@ -241,56 +271,7 @@ export default defineComponent({
       newVal === false && (currentRole.value = undefined);
     };
 
-    const handleAssginRole = async () => {
-      const treeRole = await fetchTreeChildRole(); //子角色树
-      const allRole = await fetchAllList(); //父级角色下拉框
-      childRoleData.value = treeRole.data;
-      selectList.value = allRole.data.rows.map((v) => {
-        return {
-          ...v,
-          label: v.role_name,
-          value: v.id,
-        };
-      });
-      modalType.value = ModalTypeEnum.ASSING;
-      modalTitle.value = '批量新增角色';
-      modalVisiable.value = true;
-    };
-
-    const handleDeleteChildRoles = async (row) => {
-      const treeRole = await fetchGetChildRole(row.id); //子角色树
-      const allRole = await fetchAllList(); //父级角色下拉框
-      childRoleData.value = treeRole.data;
-      selectList.value = allRole.data.rows.map((v) => {
-        return {
-          ...v,
-          label: v.role_name,
-          value: v.id,
-        };
-      });
-      modalType.value = ModalTypeEnum.ASSING;
-      modalTitle.value = '批量新增角色';
-      modalVisiable.value = true;
-    };
-
-    const setAddChildRole = async () => {
-      try {
-        modalConfirmLoading.value = true;
-        await fetchSetAddChildRole({
-          id: formValue.value.id,
-          c_roles: formValue.value.c_roles,
-        });
-        modalVisiable.value = false;
-        window.$message.success('修改成功!');
-      } catch (error) {
-        console.log(error);
-      } finally {
-        modalConfirmLoading.value = false;
-      }
-    };
-
-    /** ajaxfetchRoleList */
-    const ajaxFetchRoleList = async (params) => {
+    const ajaxFetchRoleList = async () => {
       try {
         tableLoading.value = true;
         const res: any = await fetchTreeRole(1);
@@ -306,7 +287,6 @@ export default defineComponent({
       }
     };
 
-    /** ajaxFetchTreeRole */
     const ajaxFetchTreeRole = async () => {
       try {
         const res: any = await fetchTreeRole();
@@ -321,12 +301,12 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchRoleList(params);
+      await ajaxFetchRoleList();
       await ajaxFetchTreeRole();
     });
 
-    const handlePageChange = async (currentPage) => {
-      await ajaxFetchRoleList({ ...params, nowPage: currentPage });
+    const handlePageChange = async () => {
+      await ajaxFetchRoleList();
     };
     const createColumns = (): DataTableColumns<IRole> => {
       return [
@@ -384,7 +364,7 @@ export default defineComponent({
                   onClick: async () => {
                     const allRole = await fetchAllList(); //父级角色下拉框
                     modalTitle.value = '编辑角色';
-                    modalType.value = ModalTypeEnum.EDIT;
+                    modalType.value = modalTypeEnum.EDIT;
                     formValue.value = {
                       ...row,
                       priority: row.priority + '',
@@ -409,7 +389,7 @@ export default defineComponent({
                   onClick: async () => {
                     const allRole = await fetchAllList(); //父级角色下拉框
                     modalTitle.value = '新增角色';
-                    modalType.value = ModalTypeEnum.ADD;
+                    modalType.value = modalTypeEnum.ADD;
                     currentRole.value = { ...row };
                     Object.keys(formValue.value).forEach((v) => {
                       formValue.value[v] = undefined;
@@ -460,7 +440,7 @@ export default defineComponent({
                   onClick: async () => {
                     const treeRole = await fetchGetChildRole(row.id!); //子角色树
                     const allRole = await fetchAllList(); //父级角色下拉框
-                    childRoleData.value = treeRole.data;
+                    childRoleData.value = treeRole.data.result;
                     selectList.value = allRole.data.rows.map((v) => {
                       return {
                         ...v,
@@ -470,7 +450,7 @@ export default defineComponent({
                     });
                     formValue.value.id = row.id;
                     modalTitle.value = '批量删除子角色';
-                    modalType.value = ModalTypeEnum.DELETE_CHILD;
+                    modalType.value = modalTypeEnum.BATCH_DELETE;
                     modalVisiable.value = true;
                   },
                 },
@@ -482,9 +462,34 @@ export default defineComponent({
                   size: 'small',
                   type: 'warning',
                   onClick: async () => {
-                    const treeRole = await fetchGetChildRole(row.id!); //子角色树
+                    const allChildRole = await fetchAllChildRole(row.id!); //子角色树
+                    const allChildRoleIds = [
+                      row.id,
+                      ...allChildRole.data.result.map((v) => v.id),
+                    ];
                     const allRole = await fetchAllList(); //父级角色下拉框
-                    childRoleData.value = treeRole.data;
+                    // 递归禁用已有的角色
+                    const disableRole = (data) => {
+                      console.log(data, 32);
+                      data.forEach((v) => {
+                        console.log(v, 23223, allChildRoleIds.includes(v.id));
+                        if (allChildRoleIds.includes(v.id)) {
+                          v.disabled = true;
+                        }
+                        console.log(v.children);
+                        if (v.children) {
+                          disableRole(v.children);
+                        }
+                      });
+                      return data;
+                    };
+                    // console.log(
+                    //   disableRole(deepCloneByJson(roleData.value)),
+                    //   999
+                    // );
+                    batchAddOptions.value = disableRole(
+                      deepCloneByJson(roleData.value)
+                    );
                     selectList.value = allRole.data.rows.map((v) => {
                       return {
                         ...v,
@@ -494,7 +499,7 @@ export default defineComponent({
                     });
                     formValue.value.id = row.id;
                     modalTitle.value = '批量新增子角色';
-                    modalType.value = ModalTypeEnum.DELETE_CHILD;
+                    modalType.value = modalTypeEnum.BATCH_ADD;
                     modalVisiable.value = true;
                   },
                 },
@@ -519,7 +524,7 @@ export default defineComponent({
         console.log(error);
       } finally {
         modalConfirmLoading.value = false;
-        handlePageChange(1);
+        handlePageChange();
         ajaxFetchTreeRole();
       }
     };
@@ -537,7 +542,7 @@ export default defineComponent({
         console.log(error);
       } finally {
         modalConfirmLoading.value = false;
-        handlePageChange(1);
+        handlePageChange();
         ajaxFetchTreeRole();
       }
     };
@@ -552,7 +557,43 @@ export default defineComponent({
         console.log(error);
       } finally {
         modalConfirmLoading.value = false;
-        handlePageChange(1);
+        handlePageChange();
+        ajaxFetchTreeRole();
+      }
+    };
+
+    const batchDeleteChildRoles = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const { message } = await fetchBatchDeleteChildRoles({
+          id: formValue.value.id,
+          c_roles: formValue.value.c_roles,
+        });
+        modalVisiable.value = false;
+        window.$message.success(message);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+        handlePageChange();
+        ajaxFetchTreeRole();
+      }
+    };
+
+    const batchAddChildRoles = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const { message } = await fetchBatchAddChildRoles({
+          id: formValue.value.id,
+          c_roles: formValue.value.c_roles,
+        });
+        modalVisiable.value = false;
+        window.$message.success(message);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+        handlePageChange();
         ajaxFetchTreeRole();
       }
     };
@@ -561,17 +602,20 @@ export default defineComponent({
       formRef.value?.validate(async (errors) => {
         if (!errors) {
           switch (modalType.value) {
-            case ModalTypeEnum.ADD:
+            case modalTypeEnum.ADD:
               create();
               break;
-            case ModalTypeEnum.EDIT:
+            case modalTypeEnum.EDIT:
               update();
               break;
-            case ModalTypeEnum.ASSING:
-              setAddChildRole();
+            case modalTypeEnum.BATCH_DELETE:
+              batchDeleteChildRoles();
+              break;
+            case modalTypeEnum.BATCH_ADD:
+              batchAddChildRoles();
               break;
             default:
-              window.$message.success('错误的操作!');
+              window.$message.warning('错误的操作!');
               break;
           }
         }
@@ -581,14 +625,12 @@ export default defineComponent({
       modalVisiable.value = false;
     };
     const updateCheckedKeys = (keys) => {
-      console.log(keys, 33);
       defaultCheckedKeys.value = keys;
       formValue.value.c_roles = keys;
     };
     return {
-      ModalTypeEnum,
+      modalTypeEnum,
       roleTypes,
-      handleAssginRole,
       updateShow,
       handlePageChange,
       tableLoading,
@@ -612,6 +654,7 @@ export default defineComponent({
       isAssignRole,
       roleTreeList,
       childRoleData,
+      batchAddOptions,
     };
   },
 });

@@ -145,6 +145,12 @@ export const defaultRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/login/index.vue'),
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    // component: () => import('@/views/error/404/index.vue'),
+    redirect: '/error/404',
+  },
 ];
 
 // 权限路由
@@ -165,7 +171,7 @@ export const asyncRoutes = [
         meta: {
           title: '主题设置',
           icon: 'ColorPaletteOutline',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
       {
@@ -259,7 +265,7 @@ export const asyncRoutes = [
         component: () => import('@/views/link/add/index.vue'),
         meta: {
           title: '添加友链',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -287,7 +293,7 @@ export const asyncRoutes = [
         component: () => import('@/views/music/add/index.vue'),
         meta: {
           title: '添加音乐',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -316,7 +322,7 @@ export const asyncRoutes = [
         component: () => import('@/views/article/add/index.vue'),
         meta: {
           title: '添加文章',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -344,7 +350,7 @@ export const asyncRoutes = [
         component: () => import('@/views/tag/add/index.vue'),
         meta: {
           title: '添加标签',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -372,7 +378,7 @@ export const asyncRoutes = [
         component: () => import('@/views/type/add/index.vue'),
         meta: {
           title: '添加分类',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -400,7 +406,7 @@ export const asyncRoutes = [
         component: () => import('@/views/works/add/index.vue'),
         meta: {
           title: '添加作品',
-          roles: ['SUPER_ADMIN'],
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -420,6 +426,62 @@ export const asyncRoutes = [
         component: () => import('@/views/user/list/index.vue'),
         meta: {
           title: '用户列表',
+        },
+      },
+    ],
+  },
+  {
+    name: 'role',
+    path: '/role',
+    component: Layout,
+    meta: {
+      title: '角色管理',
+      icon: 'LockClosedOutline',
+    },
+    children: [
+      {
+        name: 'roleList',
+        path: '/role/list',
+        component: () => import('@/views/role/list/index.vue'),
+        meta: {
+          title: '角色列表',
+        },
+      },
+      {
+        name: 'addRole',
+        path: '/role/add',
+        component: () => import('@/views/role/add/index.vue'),
+        meta: {
+          title: '添加角色',
+          roles: ['ALL_ROLE'],
+        },
+      },
+    ],
+  },
+  {
+    name: 'auth',
+    path: '/auth',
+    component: Layout,
+    meta: {
+      title: '权限管理',
+      icon: 'ShieldOutline',
+    },
+    children: [
+      {
+        name: 'authList',
+        path: '/auth/list',
+        component: () => import('@/views/auth/list/index.vue'),
+        meta: {
+          title: '权限列表',
+        },
+      },
+      {
+        name: 'addAuth',
+        path: '/auth/add',
+        component: () => import('@/views/auth/add/index.vue'),
+        meta: {
+          title: '添加权限',
+          roles: ['ALL_ROLE'],
         },
       },
     ],
@@ -455,62 +517,6 @@ export const asyncRoutes = [
         component: () => import('@/views/thirdUser/email/index.vue'),
         meta: {
           title: '邮箱',
-        },
-      },
-    ],
-  },
-  {
-    name: 'role',
-    path: '/role',
-    component: Layout,
-    meta: {
-      title: '角色管理',
-      icon: 'LockClosedOutline',
-    },
-    children: [
-      {
-        name: 'roleList',
-        path: '/role/list',
-        component: () => import('@/views/role/list/index.vue'),
-        meta: {
-          title: '角色列表',
-        },
-      },
-      {
-        name: 'addRole',
-        path: '/role/add',
-        component: () => import('@/views/role/add/index.vue'),
-        meta: {
-          title: '添加角色',
-          roles: ['SUPER_ADMIN'],
-        },
-      },
-    ],
-  },
-  {
-    name: 'auth',
-    path: '/auth',
-    component: Layout,
-    meta: {
-      title: '权限管理',
-      icon: 'ShieldOutline',
-    },
-    children: [
-      {
-        name: 'authList',
-        path: '/auth/list',
-        component: () => import('@/views/auth/list/index.vue'),
-        meta: {
-          title: '权限列表',
-        },
-      },
-      {
-        name: 'addAuth',
-        path: '/auth/add',
-        component: () => import('@/views/auth/add/index.vue'),
-        meta: {
-          title: '添加权限',
-          roles: ['SUPER_ADMIN'],
         },
       },
     ],

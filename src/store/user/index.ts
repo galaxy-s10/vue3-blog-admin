@@ -114,7 +114,7 @@ export const useUserStore = defineStore('user', {
       const hasMixin = (a, b) => {
         return a.length + b.length !== new Set([...a, ...b]).size;
       };
-      const myRole = roles.map((v) => v.role_name);
+      const myRole = roles.map((v) => v.role_value);
       const handleAsyncRoutes = (roleRoutes) => {
         const deepFind = (route) => {
           const res: any[] = [];

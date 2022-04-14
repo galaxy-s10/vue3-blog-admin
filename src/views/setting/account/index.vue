@@ -191,7 +191,7 @@ export default defineComponent({
             'github_login' +
             '&scope=user';
           window.open(
-            devUrl,
+            bind_github_url,
             'github_login_window',
             'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
           );

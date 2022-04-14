@@ -265,23 +265,6 @@ const createColumns = (): DataTableColumns<ILog> => {
       width: '100',
       align: 'center',
     },
-    {
-      title: 'Action',
-      key: 'actions',
-      width: '100',
-      align: 'center',
-      render() {
-        return h(
-          NButton,
-          {
-            strong: true,
-            tertiary: true,
-            size: 'small',
-          },
-          () => 'Action'
-        );
-      },
-    },
   ];
 };
 
