@@ -1,140 +1,135 @@
 <template>
   <div>
+    <HSearch
+      :search-form-config="searchFormConfig"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="1200"
+      :loading="linkListLoading"
       :columns="columns"
-      :data="logData"
+      :data="linkListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
       @update:page="handlePageChange"
     />
+    <HModal
+      v-model:show="modalVisiable"
+      :title="modalTitle"
+      :loading="modalConfirmLoading"
+      @update:show="modalUpdateShow"
+      @confirm="modalConfirm"
+      @cancel="modalCancel"
+    >
+      <AddLink
+        ref="addLinkRef"
+        v-model="currRow"
+        :show-action="false"
+      ></AddLink>
+    </HModal>
   </div>
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { h, defineComponent, onMounted, ref } from 'vue';
+
+import AddLink from '../add/index.vue';
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/link';
-type IProp = {
-  id: number;
-  email: string;
-  name: string;
-  avatar: string;
-  desc: string;
-  url: string;
-  status: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-};
-const createColumns = (): DataTableColumns<IProp> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '邮箱',
-      key: 'email',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '名称',
-      key: 'name',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '头像',
-      key: 'avatar',
-      width: '200',
-      align: 'center',
-      render(row) {
-        return h('img', {
-          src: row.avatar,
-          width: 100,
-        });
-      },
-    },
-    {
-      title: '简介',
-      key: 'desc',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: '链接',
-      key: 'url',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: '状态',
-      key: 'status',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: 'Action',
-      key: 'actions',
-      width: '100',
-      align: 'center',
-      render() {
-        return h(
-          NButton,
-          {
-            strong: true,
-            tertiary: true,
-            size: 'small',
-          },
-          () => 'Action'
-        );
-      },
-    },
-  ];
-};
+import { fetchList, fetchUpdateLink, fetchDeleteLink } from '@/api/link';
+import HModal from '@/components/Base/Modal';
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { ILink, IList } from '@/interface';
+
+interface ISearch extends ILink, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch, HModal, AddLink },
   setup() {
-    let logData = ref([]);
-    let total = ref(0);
+    const linkListData = ref([]);
+    const total = ref(0);
+    let paginationReactive = usePage();
 
-    let isLoading = ref(false);
-    const params = reactive({
+    const modalConfirmLoading = ref(false);
+    const modalVisiable = ref(false);
+    const modalTitle = ref('编辑友链');
+    const linkListLoading = ref(false);
+    const currRow = ref({});
+    const addLinkRef = ref<any>(null);
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
-      orderName: 'id',
     });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
-    });
+    const createColumns = (): DataTableColumns<ILink> => {
+      const action: any = {
+        title: '操作',
+        key: 'actions',
+        width: 200,
+        align: 'center',
+        render(row) {
+          return h(
+            NSpace,
+            {
+              justify: 'center',
+            },
+            () => [
+              h(
+                NButton,
+                {
+                  size: 'small',
+                  onClick: async () => {
+                    modalVisiable.value = true;
+                    currRow.value = { ...row };
+                  },
+                },
+                () => '编辑' //用箭头函数返回性能更好。
+              ),
+              h(
+                NPopconfirm,
+                {
+                  'positive-text': '确定',
+                  'negative-text': '取消',
+                  'on-positive-click': async () => {
+                    await fetchDeleteLink(row.id!);
+                    await handlePageChange(1);
+                  },
+                  'on-negative-click': () => {
+                    window.$message.info('已取消!');
+                  },
+                },
+                {
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        size: 'small',
+                        type: 'error',
+                      },
+                      () => '删除' //用箭头函数返回性能更好。
+                    ),
+                  default: () => '确定删除吗?',
+                }
+              ),
+            ]
+          );
+        },
+      };
+      return [...columnsConfig(), action];
+    };
 
-    /**
-     * ajaxfetchList
-     */
     const ajaxFetchList = async (params) => {
       try {
-        isLoading.value = true;
+        linkListLoading.value = true;
         const res: any = await fetchList(params);
         if (res.code === 200) {
-          isLoading.value = false;
-          logData.value = res.data.rows;
+          linkListLoading.value = false;
+          linkListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -148,17 +143,62 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
+
     const handlePageChange = async (currentPage) => {
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
+
+    const handleSearch = (v) => {
+      params.value = { ...params.value, ...v };
+      handlePageChange(1);
+    };
+
+    const modalCancel = () => {
+      modalVisiable.value = false;
+    };
+
+    const modalConfirm = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const res = await addLinkRef.value.validateForm();
+        await fetchUpdateLink({
+          ...res,
+          created_at: undefined,
+          updated_at: undefined,
+          deleted_at: undefined,
+        });
+        window.$message.success('更新成功!');
+        modalVisiable.value = false;
+        handlePageChange(1);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+      }
+    };
+
+    const modalUpdateShow = (newVal) => {
+      modalVisiable.value = newVal;
+    };
+
     return {
+      modalConfirmLoading,
+      modalVisiable,
+      modalTitle,
+      modalConfirm,
+      modalCancel,
+      modalUpdateShow,
       handlePageChange,
-      isLoading: isLoading,
-      logData,
+      handleSearch,
+      currRow,
+      addLinkRef,
+      linkListData,
+      linkListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
+      searchFormConfig,
     };
   },
 });

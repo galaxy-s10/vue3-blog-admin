@@ -145,15 +145,9 @@ export const defaultRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@/views/login/index.vue'),
   },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    // component: () => import('@/views/error/404/index.vue'),
-    redirect: '/error/404',
-  },
 ];
 
-// 权限路由
+// 异步路由
 export const asyncRoutes = [
   {
     name: 'setting',
@@ -200,6 +194,34 @@ export const asyncRoutes = [
         meta: {
           title: '访客列表',
           icon: 'FootstepsOutline',
+        },
+      },
+    ],
+  },
+  {
+    name: 'article',
+    path: '/article',
+    component: Layout,
+    meta: {
+      title: '文章管理',
+      icon: 'CodeSlashOutline',
+    },
+    children: [
+      {
+        name: 'articleList',
+        path: '/article/list',
+        component: () => import('@/views/article/list/index.vue'),
+        meta: {
+          title: '文章列表',
+        },
+      },
+      {
+        name: 'addArticle',
+        path: '/article/add',
+        component: () => import('@/views/article/add/index.vue'),
+        meta: {
+          title: '添加文章',
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -299,34 +321,6 @@ export const asyncRoutes = [
     ],
   },
 
-  {
-    name: 'article',
-    path: '/article',
-    component: Layout,
-    meta: {
-      title: '文章管理',
-      icon: 'CodeSlashOutline',
-    },
-    children: [
-      {
-        name: 'articleList',
-        path: '/article/list',
-        component: () => import('@/views/article/list/index.vue'),
-        meta: {
-          title: '文章列表',
-        },
-      },
-      {
-        name: 'addArticle',
-        path: '/article/add',
-        component: () => import('@/views/article/add/index.vue'),
-        meta: {
-          title: '添加文章',
-          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
-        },
-      },
-    ],
-  },
   {
     name: 'tag',
     path: '/tag',
@@ -557,6 +551,12 @@ export const asyncRoutes = [
         },
       },
     ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    // component: () => import('@/views/error/404/index.vue'),
+    redirect: '/error/404',
   },
 ];
 

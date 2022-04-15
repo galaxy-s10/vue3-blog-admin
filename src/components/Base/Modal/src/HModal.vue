@@ -78,11 +78,9 @@ export default defineComponent({
     );
 
     return {
-      // loading,
       modalConfirm,
       modalCancel,
       showModal,
-      // title,
     };
   },
 });

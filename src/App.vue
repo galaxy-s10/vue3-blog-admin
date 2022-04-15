@@ -1,6 +1,8 @@
 <template>
-  <n-spin :show="show">
-    <router-view></router-view>
+  <n-spin :show="appLoading">
+    <div class="app-wrap">
+      <router-view></router-view>
+    </div>
     <SwitchEnvCpt></SwitchEnvCpt>
   </n-spin>
 </template>
@@ -24,11 +26,11 @@ export default defineComponent({
     const userStore = useUserStore();
     const appStore = useAppStore();
 
-    const show = toRef(appStore, 'loading');
+    const appLoading = toRef(appStore, 'loading');
 
     window.addEventListener('message', async (e) => {
       const { type, data: code } = e.data;
-      console.log('收到消息', type, code);
+      // console.log('收到消息', type, code);
       if (!POSTMESSAGE_TYPE.includes(type)) return;
       if (type === 'login_expired') {
         window.$message.error('登录错误，请重试~');
@@ -62,9 +64,13 @@ export default defineComponent({
       }
     });
 
-    return { show };
+    return { appLoading };
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.app-wrap {
+  min-height: 100vh;
+}
+</style>

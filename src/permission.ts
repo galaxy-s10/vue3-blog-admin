@@ -5,17 +5,13 @@ import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
 // 白名单，不需要登录即可跳转，如登录页
-const whiteList = [
-  '/login',
-  '/register',
-  '/oauth/qq_login',
-  '/oauth/github_login',
-];
+const whiteList = ['/login', '/oauth/qq_login', '/oauth/github_login'];
 
 // eslint-disable-next-line consistent-return
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   const appStore = useAppStore();
+  appStore.setLoading(true);
   const { roles } = userStore;
   const hasToken = cache.getStorageExp('token');
   // 先判断有没有登录
@@ -30,14 +26,11 @@ router.beforeEach(async (to, from, next) => {
       next();
     } else {
       const { code, data }: any = await userStore.getUserInfo();
-      console.log(code, data, 33222);
       if (code !== 200) {
         next(false);
         return;
       }
-      console.log(data.roles, !data.roles, 111111);
       if (!data.roles || !data.roles.length) {
-        // next(`/login`);
         next(false);
         window.$message.error('你没有角色');
         return;
@@ -57,4 +50,8 @@ router.beforeEach(async (to, from, next) => {
     }
     next(`/login?redirect=${to.path}`);
   }
+});
+router.afterEach((to, from) => {
+  const appStore = useAppStore();
+  appStore.setLoading(false);
 });

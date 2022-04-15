@@ -107,7 +107,7 @@ import {
   fetchUpdateUser,
   fetchUpdateUserRole,
 } from '@/api/user';
-import HModal from '@/components/HModal/index.vue';
+import HModal from '@/components/Base/Modal';
 import { IUser, modalUserTypeEnum } from '@/interface';
 
 const rules = {
@@ -203,7 +203,7 @@ export default defineComponent({
           fixed: 'right',
           align: 'center',
           render(row) {
-            return h(NSpace, {}, () => [
+            return h(NSpace, { justify: 'center' }, () => [
               h(
                 NButton,
                 {

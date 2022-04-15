@@ -57,7 +57,6 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
-
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {

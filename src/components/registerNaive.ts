@@ -30,6 +30,11 @@ import {
   NTreeSelect,
   NCheckboxGroup,
   NCheckbox,
+  NWatermark,
+  NSwitch,
+  NGrid,
+  NFormItemGi,
+  NInputNumber,
 } from 'naive-ui';
 
 const components = [
@@ -63,6 +68,11 @@ const components = [
   NTreeSelect,
   NCheckboxGroup,
   NCheckbox,
+  NWatermark,
+  NSwitch,
+  NGrid,
+  NFormItemGi,
+  NInputNumber,
 ];
 
 export const naive = create({

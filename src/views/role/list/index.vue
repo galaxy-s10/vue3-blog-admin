@@ -165,7 +165,7 @@ import {
   fetchBatchDeleteChildRoles,
   fetchBatchAddChildRoles,
 } from '@/api/role';
-import HModal from '@/components/HModal/index.vue';
+import HModal from '@/components/Base/Modal';
 import { IRole, modalTypeEnum } from '@/interface';
 import { deepCloneByJson } from '@/utils';
 
@@ -356,7 +356,7 @@ export default defineComponent({
           align: 'center',
           fixed: 'right',
           render(row) {
-            return h(NSpace, {}, () => [
+            return h(NSpace, { justify: 'center' }, () => [
               h(
                 NButton,
                 {

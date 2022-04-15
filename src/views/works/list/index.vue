@@ -1,145 +1,136 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
+    <HSearch
+      :search-form-config="searchFormConfig"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :loading="worksListLoading"
       :columns="columns"
-      :data="logData"
+      :data="worksListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
+    <HModal
+      v-model:show="modalVisiable"
+      :title="modalTitle"
+      :loading="modalConfirmLoading"
+      @update:show="modalUpdateShow"
+      @confirm="modalConfirm"
+      @cancel="modalCancel"
+    >
+      <AddWorks
+        ref="addWorksRef"
+        v-model="currRow"
+        :show-action="false"
+      ></AddWorks>
+    </HModal>
   </div>
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { h, defineComponent, onMounted, ref } from 'vue';
+
+import AddWorks from '../add/index.vue';
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/works';
+import { fetchList, fetchUpdateWorks, fetchDeleteWorks } from '@/api/works';
+import HModal from '@/components/Base/Modal';
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IWorks, IList } from '@/interface';
 
-type ILog = {
-  id: number;
-  name: string;
-  desc: string;
-  bg_url: string;
-  url: string;
-  priority: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-};
-const createColumns = (): DataTableColumns<ILog> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '名称',
-      key: 'name',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '简介',
-      key: 'desc',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '背景图',
-      key: 'bg_url',
-      width: '200',
-      align: 'center',
-      render(row) {
-        return h('img', {
-          src: row.bg_url,
-          width: 100,
-        });
-      },
-    },
-    {
-      title: '线上地址',
-      key: 'url',
-      width: '200',
-      align: 'center',
-    },
-    {
-      title: '权重',
-      key: 'priority',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: '状态',
-      key: 'status',
-      width: '100',
-      align: 'center',
-    },
-    {
-      title: 'Action',
-      key: 'actions',
-      width: '100',
-      align: 'center',
-      render() {
-        return h(
-          NButton,
-          {
-            strong: true,
-            tertiary: true,
-            size: 'small',
-          },
-          () => 'Action'
-        );
-      },
-    },
-  ];
-};
+interface ISearch extends IWorks, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch, HModal, AddWorks },
   setup() {
-    let logData = ref([]);
-    let total = ref(0);
+    const worksListData = ref([]);
+    const total = ref(0);
+    let paginationReactive = usePage();
 
-    let isLoading = ref(false);
-    const params = reactive({
+    const modalConfirmLoading = ref(false);
+    const modalVisiable = ref(false);
+    const modalTitle = ref('编辑标签');
+    const worksListLoading = ref(false);
+    const currRow = ref({});
+    const addWorksRef = ref<any>(null);
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
-      orderName: 'id',
     });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
-    });
+    const createColumns = (): DataTableColumns<IWorks> => {
+      const action: any = {
+        title: '操作',
+        key: 'actions',
+        width: 200,
+        align: 'center',
+        fixed: 'right',
+        render(row) {
+          return h(
+            NSpace,
+            {
+              justify: 'center',
+            },
+            () => [
+              h(
+                NButton,
+                {
+                  size: 'small',
+                  onClick: async () => {
+                    modalVisiable.value = true;
+                    currRow.value = { ...row };
+                  },
+                },
+                () => '编辑' //用箭头函数返回性能更好。
+              ),
+              h(
+                NPopconfirm,
+                {
+                  'positive-text': '确定',
+                  'negative-text': '取消',
+                  'on-positive-click': async () => {
+                    await fetchDeleteWorks(row.id!);
+                    await handlePageChange(1);
+                  },
+                  'on-negative-click': () => {
+                    window.$message.info('已取消!');
+                  },
+                },
+                {
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        size: 'small',
+                        type: 'error',
+                      },
+                      () => '删除' //用箭头函数返回性能更好。
+                    ),
+                  default: () => '确定删除吗?',
+                }
+              ),
+            ]
+          );
+        },
+      };
+      return [...columnsConfig(), action];
+    };
 
-    /**
-     * ajaxfetchList
-     */
     const ajaxFetchList = async (params) => {
       try {
-        isLoading.value = true;
+        worksListLoading.value = true;
         const res: any = await fetchList(params);
         if (res.code === 200) {
-          isLoading.value = false;
-          logData.value = res.data.rows;
+          worksListLoading.value = false;
+          worksListData.value = res.data.rows;
           total.value = res.data.total;
-
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
           paginationReactive.pageSize = params.pageSize;
@@ -152,17 +143,62 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
+
     const handlePageChange = async (currentPage) => {
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
+
+    const handleSearch = (v) => {
+      params.value = { ...params.value, ...v };
+      handlePageChange(1);
+    };
+
+    const modalCancel = () => {
+      modalVisiable.value = false;
+    };
+
+    const modalConfirm = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const res = await addWorksRef.value.validateForm();
+        await fetchUpdateWorks({
+          ...res,
+          created_at: undefined,
+          updated_at: undefined,
+          deleted_at: undefined,
+        });
+        window.$message.success('更新成功!');
+        modalVisiable.value = false;
+        handlePageChange(1);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+      }
+    };
+
+    const modalUpdateShow = (newVal) => {
+      modalVisiable.value = newVal;
+    };
+
     return {
+      modalConfirmLoading,
+      modalVisiable,
+      modalTitle,
+      modalConfirm,
+      modalCancel,
+      modalUpdateShow,
       handlePageChange,
-      isLoading: isLoading,
-      logData,
+      handleSearch,
+      currRow,
+      addWorksRef,
+      worksListData,
+      worksListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
+      searchFormConfig,
     };
   },
 });

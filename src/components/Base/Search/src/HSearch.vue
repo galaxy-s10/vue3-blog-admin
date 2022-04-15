@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <HForm v-bind="searchFormConfig" v-model="formData"></HForm>
+  <div class="search-wrap">
+    <HForm ref="formRef" v-bind="searchFormConfig" v-model="formData"></HForm>
     <n-space justify="end">
       <n-button type="info" @click="handleReset">重置</n-button>
       <n-button type="success" @click="handleSearch">搜索</n-button>
@@ -16,10 +16,6 @@ import HForm from '@/components/Base/Form';
 export default defineComponent({
   components: { HForm },
   props: {
-    // modelValue: {
-    //   type: Object,
-    //   required: true,
-    // },
     searchFormConfig: {
       type: Object,
       reuqired: true,
@@ -29,6 +25,7 @@ export default defineComponent({
   emits: ['clickReset', 'clickSearch'],
   setup(props, { emit }) {
     const formData = ref({});
+    const formRef = ref<any>(null);
 
     const handleReset = () => {
       for (const item in formData.value) {
@@ -37,11 +34,17 @@ export default defineComponent({
       emit('clickReset');
     };
 
-    const handleSearch = () => {
-      emit('clickSearch', formData.value);
+    const handleSearch = async () => {
+      try {
+        const res = await formRef.value.handleValidate();
+        emit('clickSearch', res);
+      } catch (error) {
+        console.log(error);
+      }
     };
     return {
       formData,
+      formRef,
       handleReset,
       handleSearch,
     };
@@ -49,4 +52,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.search-wrap {
+  margin-bottom: 10px;
+}
+</style>
