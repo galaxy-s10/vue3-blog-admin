@@ -28,6 +28,8 @@ import {
   NRadio,
   NRadioGroup,
   NTreeSelect,
+  NCheckboxGroup,
+  NCheckbox,
 } from 'naive-ui';
 
 const components = [
@@ -59,6 +61,8 @@ const components = [
   NRadio,
   NRadioGroup,
   NTreeSelect,
+  NCheckboxGroup,
+  NCheckbox,
 ];
 
 export const naive = create({

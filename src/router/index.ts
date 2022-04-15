@@ -171,7 +171,7 @@ export const asyncRoutes = [
         meta: {
           title: '主题设置',
           icon: 'ColorPaletteOutline',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
       {
@@ -265,7 +265,7 @@ export const asyncRoutes = [
         component: () => import('@/views/link/add/index.vue'),
         meta: {
           title: '添加友链',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -293,7 +293,7 @@ export const asyncRoutes = [
         component: () => import('@/views/music/add/index.vue'),
         meta: {
           title: '添加音乐',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -322,7 +322,7 @@ export const asyncRoutes = [
         component: () => import('@/views/article/add/index.vue'),
         meta: {
           title: '添加文章',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -350,7 +350,7 @@ export const asyncRoutes = [
         component: () => import('@/views/tag/add/index.vue'),
         meta: {
           title: '添加标签',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -378,7 +378,7 @@ export const asyncRoutes = [
         component: () => import('@/views/type/add/index.vue'),
         meta: {
           title: '添加分类',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -406,7 +406,7 @@ export const asyncRoutes = [
         component: () => import('@/views/works/add/index.vue'),
         meta: {
           title: '添加作品',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -426,6 +426,14 @@ export const asyncRoutes = [
         component: () => import('@/views/user/list/index.vue'),
         meta: {
           title: '用户列表',
+        },
+      },
+      {
+        name: 'userAdd',
+        path: '/user/add',
+        component: () => import('@/views/user/add/index.vue'),
+        meta: {
+          title: '新增用户',
         },
       },
     ],
@@ -453,7 +461,7 @@ export const asyncRoutes = [
         component: () => import('@/views/role/add/index.vue'),
         meta: {
           title: '添加角色',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],
@@ -481,7 +489,7 @@ export const asyncRoutes = [
         component: () => import('@/views/auth/add/index.vue'),
         meta: {
           title: '添加权限',
-          roles: ['ALL_ROLE'],
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],

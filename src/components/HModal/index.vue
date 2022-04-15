@@ -30,15 +30,7 @@
 
 <script lang="ts">
 import { CloseOutline } from '@vicons/ionicons5';
-import {
-  h,
-  defineComponent,
-  onMounted,
-  toRefs,
-  ref,
-  watch,
-  reactive,
-} from 'vue';
+import { defineComponent, toRefs, ref, watch } from 'vue';
 
 export default defineComponent({
   components: { CloseOutline },
