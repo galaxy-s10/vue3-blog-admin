@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
     <n-data-table
       ref="table"
       remote
@@ -9,15 +8,13 @@
       :data="logData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
+      :scroll-x="3500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
@@ -64,37 +61,31 @@ const createColumns = (): DataTableColumns<ILog> => {
     {
       title: 'id',
       key: 'id',
-      width: '100',
       align: 'center',
     },
     {
       title: 'client_id',
       key: 'client_id',
-      width: '100',
       align: 'center',
     },
     {
       title: 'login',
       key: 'login',
-      width: '100',
       align: 'center',
     },
     {
       title: 'github_id',
       key: 'github_id',
-      width: '100',
       align: 'center',
     },
     {
       title: 'node_id',
       key: 'node_id',
-      width: '100',
       align: 'center',
     },
     {
       title: 'avatar_url',
       key: 'avatar_url',
-      width: '100',
       align: 'center',
       render(row) {
         return h('img', {
@@ -106,163 +97,136 @@ const createColumns = (): DataTableColumns<ILog> => {
     {
       title: 'gravatar_id',
       key: 'gravatar_id',
-      width: '100',
       align: 'center',
     },
     {
       title: 'url',
       key: 'url',
-      width: '100',
       align: 'center',
     },
     {
       title: 'html_url',
       key: 'html_url',
-      width: '100',
       align: 'center',
     },
     {
       title: 'type',
       key: 'type',
-      width: '200',
       align: 'center',
     },
     {
       title: 'site_admin',
       key: 'site_admin',
-      width: '100',
       align: 'center',
     },
     {
       title: 'name',
       key: 'name',
-      width: '100',
       align: 'center',
     },
     {
       title: 'company',
       key: 'company',
-      width: '100',
       align: 'center',
     },
     {
       title: 'blog',
       key: 'blog',
-      width: '100',
       align: 'center',
     },
     {
       title: 'location',
       key: 'location',
-      width: '100',
       align: 'center',
     },
     {
       title: 'email',
       key: 'email',
-      width: '100',
       align: 'center',
     },
     {
       title: 'hireable',
       key: 'hireable',
-      width: '100',
       align: 'center',
     },
     {
       title: 'bio',
       key: 'bio',
-      width: '100',
       align: 'center',
     },
     {
       title: 'twitter_username',
       key: 'twitter_username',
-      width: '200',
       align: 'center',
     },
     {
       title: 'public_repos',
       key: 'public_repos',
-      width: '200',
       align: 'center',
     },
     {
       title: 'public_gists',
       key: 'public_gists',
-      width: '200',
       align: 'center',
     },
     {
       title: 'followers',
       key: 'followers',
-      width: '100',
       align: 'center',
     },
     {
       title: 'following',
       key: 'following',
-      width: '100',
       align: 'center',
     },
     {
       title: 'github_created_at',
       key: 'github_created_at',
-      width: '200',
       align: 'center',
     },
     {
       title: 'github_updated_at',
       key: 'github_updated_at',
-      width: '200',
       align: 'center',
     },
     {
       title: 'private_gists',
       key: 'private_gists',
-      width: '200',
       align: 'center',
     },
     {
       title: 'total_private_repos',
       key: 'total_private_repos',
-      width: '200',
       align: 'center',
     },
     {
       title: 'owned_private_repos',
       key: 'owned_private_repos',
-      width: '200',
       align: 'center',
     },
     {
       title: 'disk_usage',
       key: 'disk_usage',
-      width: '100',
       align: 'center',
     },
     {
       title: 'collaborators',
       key: 'collaborators',
-      width: '200',
       align: 'center',
     },
     {
       title: 'two_factor_authentication',
       key: 'two_factor_authentication',
-      width: '200',
       align: 'center',
     },
     {
       title: '创建时间',
       key: 'created_at',
-      width: '100',
       align: 'center',
     },
     {
       title: '更新时间',
       key: 'updated_at',
-      width: '100',
       align: 'center',
     },
   ];
@@ -317,6 +281,7 @@ export default defineComponent({
       await ajaxFetchList(params);
     });
     const handlePageChange = async (currentPage) => {
+      params.nowPage = currentPage;
       await ajaxFetchList({ ...params, nowPage: currentPage });
     };
     return {

@@ -22,6 +22,7 @@ export const columnsConfig = (): DataTableColumns<IMusic> => {
       render(row) {
         return h('img', {
           src: row.cover_pic,
+          width: 100,
         });
       },
     },

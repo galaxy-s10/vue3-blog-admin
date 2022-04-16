@@ -35,25 +35,21 @@ const createColumns = (): DataTableColumns<IProp> => {
     {
       title: 'id',
       key: 'id',
-      width: '100',
       align: 'center',
     },
     {
       title: '邮箱',
       key: 'email',
-      width: '100',
       align: 'center',
     },
     {
       title: '创建时间',
       key: 'created_at',
-      width: '100',
       align: 'center',
     },
     {
       title: '更新时间',
       key: 'updated_at',
-      width: '100',
       align: 'center',
     },
   ];
@@ -108,6 +104,7 @@ export default defineComponent({
       await ajaxFetchList(params);
     });
     const handlePageChange = async (currentPage) => {
+      params.nowPage = currentPage;
       await ajaxFetchList({ ...params, nowPage: currentPage });
     };
     return {

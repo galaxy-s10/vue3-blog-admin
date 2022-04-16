@@ -93,7 +93,7 @@ export default defineComponent({
                   'negative-text': '取消',
                   'on-positive-click': async () => {
                     await fetchDeleteTag(row.id!);
-                    await handlePageChange(1);
+                    await handlePageChange(params.value.nowPage);
                   },
                   'on-negative-click': () => {
                     window.$message.info('已取消!');
@@ -143,6 +143,7 @@ export default defineComponent({
     });
 
     const handlePageChange = async (currentPage) => {
+      params.value.nowPage = currentPage;
       await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
 
@@ -167,7 +168,7 @@ export default defineComponent({
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;
-        handlePageChange(1);
+        handlePageChange(params.value.nowPage);
       } catch (error) {
         console.log(error);
       } finally {

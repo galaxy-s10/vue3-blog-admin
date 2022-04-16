@@ -11,6 +11,44 @@ export interface IRole {
   role_auths?: number[];
   c_roles?: number[];
 }
+
+export interface IArticle {
+  id?: number;
+  title?: string;
+  desc?: string;
+  content?: string;
+  head_img?: string;
+  is_comment?: number;
+  status?: number;
+  click?: number;
+  tag_ids?: number[];
+  type_ids?: number[];
+  user_ids?: number[];
+  keyword?: string;
+}
+
+export interface ILog {
+  id?: number;
+  user_id?: number;
+  api_user_agent?: string;
+  api_sql_duration?: number;
+  api_from?: number;
+  api_ip?: string;
+  api_hostname?: string;
+  api_method?: string;
+  api_path?: string;
+  api_query?: string;
+  api_body?: string;
+  api_err_msg?: string;
+  api_err_stack?: string;
+}
+export interface IVisitor {
+  id?: number;
+  user_id?: number;
+  ip?: string;
+  status?: number;
+  ip_data?: string;
+}
 export interface IAuth {
   id?: number;
   auth_name?: string;

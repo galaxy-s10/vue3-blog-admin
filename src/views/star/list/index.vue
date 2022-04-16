@@ -44,25 +44,21 @@ const createColumns = (): DataTableColumns<ILog> => {
     {
       title: 'id',
       key: 'id',
-      width: '100',
       align: 'center',
     },
     {
       title: '文章id',
       key: 'article_id',
-      width: '100',
       align: 'center',
     },
     {
       title: '评论id',
       key: 'comment_id',
-      width: '100',
       align: 'center',
     },
     {
       title: '点赞的用户',
       key: 'from_user_id',
-      width: '200',
       align: 'center',
       render(row) {
         return h('div', {}, row.from_user.username);
@@ -71,7 +67,6 @@ const createColumns = (): DataTableColumns<ILog> => {
     {
       title: '被点赞的用户',
       key: 'to_user_id',
-      width: '200',
       align: 'center',
       render(row) {
         return h('div', {}, row.to_user?.username || '-');
@@ -80,7 +75,6 @@ const createColumns = (): DataTableColumns<ILog> => {
     {
       title: 'Action',
       key: 'actions',
-      width: '100',
       align: 'center',
       render() {
         return h(
@@ -146,6 +140,7 @@ export default defineComponent({
       await ajaxFetchList(params);
     });
     const handlePageChange = async (currentPage) => {
+      params.nowPage = currentPage;
       await ajaxFetchList({ ...params, nowPage: currentPage });
     };
     return {

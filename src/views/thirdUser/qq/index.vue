@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
     <n-data-table
       ref="table"
       remote
@@ -9,10 +8,9 @@
       :data="logData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
+      :scroll-x="2500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
@@ -48,128 +46,116 @@ const createColumns = (): DataTableColumns<IProp> => {
     {
       title: 'id',
       key: 'id',
-      width: '100',
       align: 'center',
     },
     {
       title: 'client_id',
       key: 'client_id',
-      width: '200',
       align: 'center',
     },
     {
       title: 'openid',
       key: 'openid',
-      width: '200',
       align: 'center',
     },
     {
       title: 'unionid',
       key: 'unionid',
-      width: '200',
       align: 'center',
     },
     {
       title: '昵称',
       key: 'nickname',
-      width: '200',
       align: 'center',
     },
     {
       title: 'figureurl',
       key: 'figureurl',
-      width: '200',
       align: 'center',
       render(row) {
         return h('img', {
           src: row.figureurl,
+          width: 100,
         });
       },
     },
     {
       title: 'figureurl_1',
       key: 'figureurl_1',
-      width: '200',
       align: 'center',
       render(row) {
         return h('img', {
           src: row.figureurl_1,
+          width: 100,
         });
       },
     },
     {
       title: 'figureurl_2',
       key: 'figureurl_2',
-      width: '200',
       align: 'center',
       render(row) {
         return h('img', {
           src: row.figureurl_2,
+          width: 100,
         });
       },
     },
     {
       title: 'figureurl_qq_1',
       key: 'figureurl_qq_1',
-      width: '200',
       align: 'center',
       render(row) {
         return h('img', {
           src: row.figureurl_qq_1,
+          width: 100,
         });
       },
     },
     {
       title: 'figureurl_qq_2',
       key: 'figureurl_qq_2',
-      width: '200',
       align: 'center',
       render(row) {
         return h('img', {
           src: row.figureurl_qq_2,
+          width: 100,
         });
       },
     },
     {
       title: '星座',
       key: 'constellation',
-      width: '100',
       align: 'center',
     },
     {
       title: 'gender',
       key: '性别',
-      width: '100',
       align: 'center',
     },
     {
       title: '市/区',
       key: 'city',
-      width: '100',
       align: 'center',
     },
     {
       title: '省',
       key: 'province',
-      width: '100',
       align: 'center',
     },
     {
       title: 'year',
       key: 'year',
-      width: '100',
       align: 'center',
     },
     {
       title: '创建时间',
       key: 'created_at',
-      width: '100',
       align: 'center',
     },
     {
       title: '更新时间',
       key: 'updated_at',
-      width: '100',
       align: 'center',
     },
   ];
@@ -222,6 +208,7 @@ export default defineComponent({
       await ajaxFetchList(params);
     });
     const handlePageChange = async (currentPage) => {
+      params.nowPage = currentPage;
       await ajaxFetchList({ ...params, nowPage: currentPage });
     };
     return {

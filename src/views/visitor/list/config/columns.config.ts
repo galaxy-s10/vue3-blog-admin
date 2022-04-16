@@ -10,14 +10,20 @@ export const columnsConfig = (): DataTableColumns<ITag> => {
       align: 'center',
     },
     {
-      title: '名称',
-      key: 'name',
+      title: '用户id',
+      key: 'user_id',
       align: 'center',
     },
     {
-      title: '颜色',
-      key: 'color',
+      title: 'ip',
+      key: 'ip',
       align: 'center',
+    },
+    {
+      title: 'id信息',
+      key: 'ip_data',
+      align: 'center',
+      width: 400,
     },
     {
       title: '创建时间',

@@ -145,19 +145,16 @@ export default defineComponent({
         {
           title: 'id',
           key: 'id',
-          width: '100',
           align: 'center',
         },
         {
           title: '用户名',
           key: 'username',
-          width: '100',
           align: 'center',
         },
         {
           title: '头像',
           key: 'avatar',
-          width: '100',
           align: 'center',
           render(row) {
             return h('img', {
@@ -169,7 +166,6 @@ export default defineComponent({
         {
           title: '简介',
           key: 'desc',
-          width: '100',
           align: 'center',
           ellipsis: {
             tooltip: true,
@@ -178,7 +174,6 @@ export default defineComponent({
         {
           title: '状态',
           key: 'status',
-          width: '100',
           align: 'center',
           render(row) {
             return row.status === 1 ? '正常' : '非法';
@@ -187,19 +182,16 @@ export default defineComponent({
         {
           title: '创建时间',
           key: 'created_at',
-          width: '100',
           align: 'center',
         },
         {
           title: '更新时间',
           key: 'updated_at',
-          width: '100',
           align: 'center',
         },
         {
           title: '操作',
           key: 'actions',
-          width: '100',
           fixed: 'right',
           align: 'center',
           render(row) {
@@ -312,6 +304,7 @@ export default defineComponent({
     });
 
     const handlePageChange = async (currentPage) => {
+      params.nowPage = currentPage;
       await ajaxFetchList({ ...params, nowPage: currentPage });
     };
     const modalUpdateShow = (newVal) => {
@@ -326,11 +319,11 @@ export default defineComponent({
         });
         modalVisiable.value = false;
         window.$message.success('修改成功!');
+        handlePageChange(params.nowPage);
       } catch (error) {
         console.log(error);
       } finally {
         modalConfirmLoading.value = false;
-        handlePageChange(1);
       }
     };
     const updateUserRole = async () => {
@@ -342,11 +335,11 @@ export default defineComponent({
         });
         modalVisiable.value = false;
         window.$message.success('修改成功!');
+        handlePageChange(params.nowPage);
       } catch (error) {
         console.log(error);
       } finally {
         modalConfirmLoading.value = false;
-        handlePageChange(1);
       }
     };
 
