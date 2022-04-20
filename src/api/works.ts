@@ -1,7 +1,7 @@
 import { IWorks } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchWorksList(params) {
   return request({
     url: '/works/list',
     method: 'get',

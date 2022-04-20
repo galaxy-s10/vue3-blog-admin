@@ -1,7 +1,7 @@
 import { ILog } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchLogList(params) {
   return request({
     url: '/log/list',
     method: 'get',

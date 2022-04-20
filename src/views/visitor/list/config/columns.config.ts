@@ -20,7 +20,7 @@ export const columnsConfig = (): DataTableColumns<ITag> => {
       align: 'center',
     },
     {
-      title: 'id信息',
+      title: 'ip信息',
       key: 'ip_data',
       align: 'center',
       width: 400,

@@ -1,7 +1,7 @@
 import { IVisitor } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchVisitorList(params) {
   return request({
     url: '/visitor_log/list',
     method: 'get',

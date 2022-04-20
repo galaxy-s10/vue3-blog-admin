@@ -18,7 +18,6 @@ import SwitchEnvCpt from '@/components/SwitchEnv/index.vue';
 import { POSTMESSAGE_TYPE } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-
 export default defineComponent({
   components: { SwitchEnvCpt },
   setup() {

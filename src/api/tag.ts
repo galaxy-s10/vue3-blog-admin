@@ -1,7 +1,7 @@
 import { ITag } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchTagList(params) {
   return request({
     url: '/tag/list',
     method: 'get',

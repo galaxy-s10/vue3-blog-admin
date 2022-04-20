@@ -22,7 +22,7 @@ import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/emailUser';
+import { fetchEmailUserList } from '@/api/emailUser';
 type IProp = {
   id: number;
   email: string;
@@ -78,12 +78,12 @@ export default defineComponent({
     });
 
     /**
-     * ajaxfetchList
+     * ajaxfetchEmailUserList
      */
     const ajaxFetchList = async (params) => {
       try {
         isLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchEmailUserList(params);
         if (res.code === 200) {
           isLoading.value = false;
           logData.value = res.data.rows;

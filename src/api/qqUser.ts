@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchQqUserList(params) {
   return request({
     url: '/qq_user/list',
     method: 'get',

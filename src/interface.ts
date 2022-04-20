@@ -11,7 +11,14 @@ export interface IRole {
   role_auths?: number[];
   c_roles?: number[];
 }
-
+export interface ITheme {
+  id?: number;
+  model?: number;
+  key?: string;
+  value?: string;
+  lang?: string;
+  desc?: string;
+}
 export interface IArticle {
   id?: number;
   title?: string;

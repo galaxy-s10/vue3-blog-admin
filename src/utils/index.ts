@@ -23,6 +23,7 @@ export const deepClone = (obj) => {
   return clone(obj, undefined);
 };
 
+/** 模拟ajax请求 */
 export const mockAjax = async (time = 1000) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -35,4 +36,17 @@ export const mockAjax = async (time = 1000) => {
       });
     }, time);
   });
+};
+
+/**
+ * 删除对象中值为: null, undefined, NaN, ''的属性
+ */
+export const deleteUselessObjectKey = <T>(obj: T): T => {
+  // @ts-ignore
+  Object.keys(obj).forEach((key) => {
+    if ([null, undefined, NaN, ''].includes(obj[key])) {
+      delete obj[key];
+    }
+  });
+  return obj;
 };

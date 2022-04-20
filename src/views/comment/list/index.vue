@@ -8,7 +8,7 @@
       :data="logData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
+      :scroll-x="2000"
       @update:page="handlePageChange"
     />
   </div>
@@ -20,7 +20,7 @@ import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/comment';
+import { fetchCommentList } from '@/api/comment';
 import { IUser } from '@/interface';
 
 type ILog = {
@@ -99,6 +99,7 @@ const createColumns = (): DataTableColumns<ILog> => {
       title: 'ua',
       key: 'ua',
       align: 'center',
+      width: 200,
     },
     {
       title: 'ip',
@@ -109,22 +110,17 @@ const createColumns = (): DataTableColumns<ILog> => {
       title: 'ip_data',
       key: 'ip_data',
       align: 'center',
+      width: 200,
     },
     {
-      title: 'Action',
-      key: 'actions',
+      title: '创建时间',
+      key: 'created_at',
       align: 'center',
-      render() {
-        return h(
-          NButton,
-          {
-            strong: true,
-            tertiary: true,
-            size: 'small',
-          },
-          () => 'Action'
-        );
-      },
+    },
+    {
+      title: '更新时间',
+      key: 'updated_at',
+      align: 'center',
     },
   ];
 };
@@ -151,12 +147,12 @@ export default defineComponent({
     });
 
     /**
-     * ajaxfetchList
+     * ajaxfetchCommentList
      */
     const ajaxFetchList = async (params) => {
       try {
         isLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchCommentList(params);
         if (res.code === 200) {
           isLoading.value = false;
           logData.value = res.data.rows;

@@ -1,7 +1,7 @@
 import { ILink } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchLinkList(params) {
   return request({
     url: '/link/list',
     method: 'get',

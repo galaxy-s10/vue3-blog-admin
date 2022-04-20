@@ -12,8 +12,9 @@
         <template v-for="item in formItems" :key="item.field">
           <n-form-item-gi
             v-if="!item.isHidden"
-            :span="gridSpan"
+            :span="item.gridSpan || gridSpan"
             :label="item.label"
+            :label-width="item.labelWidth"
             :path="item.field"
             :rule="item.rule"
             :style="item.style"
@@ -96,6 +97,12 @@
                 <template #unchecked>{{ item.unCheckedText }}</template>
               </n-switch>
             </template>
+            <template v-else-if="item.type === 'markdown'">
+              <MarkdownEditor
+                :model-value="modelValue[`${item.field}`]"
+                @update:value="handleValueChange($event, item.field)"
+              ></MarkdownEditor>
+            </template>
           </n-form-item-gi>
         </template>
       </n-grid>
@@ -120,8 +127,10 @@
 import { defineComponent, type PropType, ref } from 'vue';
 
 import { IFormItem } from '../types';
+
+import MarkdownEditor from '@/components/MarkdownEditor';
 export default defineComponent({
-  components: {},
+  components: { MarkdownEditor },
   props: {
     modelValue: {
       type: Object,

@@ -62,7 +62,7 @@ service.interceptors.response.use(
         cache.clearStorage('token');
         router.push('/login');
         window.close();
-        window.opener.postMessage(
+        window.opener?.postMessage(
           {
             type: 'login_expired',
             data: null,

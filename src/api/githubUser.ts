@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 // github列表
-export function fetchList(params) {
+export function fetchGithubUserList(params) {
   return request({
     url: '/github_user/list',
     method: 'get',

@@ -25,7 +25,7 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/log';
+import { fetchLogList } from '@/api/log';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { ILog, IList } from '@/interface';
@@ -53,7 +53,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         logListLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchLogList(params);
         if (res.code === 200) {
           logListLoading.value = false;
           logListData.value = res.data.rows;

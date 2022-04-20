@@ -41,7 +41,7 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList, fetchUpdateLink, fetchDeleteLink } from '@/api/link';
+import { fetchLinkList, fetchUpdateLink, fetchDeleteLink } from '@/api/link';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
@@ -98,6 +98,7 @@ export default defineComponent({
                   'negative-text': '取消',
                   'on-positive-click': async () => {
                     await fetchDeleteLink(row.id!);
+                    window.$message.success('已删除!');
                     await handlePageChange(params.value.nowPage);
                   },
                   'on-negative-click': () => {
@@ -127,7 +128,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         linkListLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchLinkList(params);
         if (res.code === 200) {
           linkListLoading.value = false;
           linkListData.value = res.data.rows;

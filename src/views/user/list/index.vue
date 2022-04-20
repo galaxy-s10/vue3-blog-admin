@@ -1,14 +1,18 @@
 <template>
   <div>
+    <HSearch
+      :search-form-config="searchFormConfig"
+      :init-value="params"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="1800"
+      :loading="userListLoading"
       :columns="columns"
       :data="userListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
       @update:page="handlePageChange"
     />
     <HModal
@@ -96,9 +100,12 @@
 
 <script lang="ts">
 import { NButton, NSpace } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { h, defineComponent, onMounted, ref } from 'vue';
 
-import type { DataTableColumns, FormInst } from 'naive-ui';
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
+
+import type { DataTableColumns } from 'naive-ui';
 
 import { fetchTreeRole, fetchUserRole } from '@/api/role';
 import {
@@ -108,21 +115,27 @@ import {
   fetchUpdateUserRole,
 } from '@/api/user';
 import HModal from '@/components/Base/Modal';
-import { IUser, modalUserTypeEnum } from '@/interface';
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IUser, modalUserTypeEnum, IList } from '@/interface';
 
-const rules = {
-  username: {
-    required: true,
-    message: '请输入用户名',
-    trigger: ['input', 'blur', 'change'],
-  },
-};
+interface ISearch extends IUser, IList {}
 
 export default defineComponent({
-  components: { HModal },
+  components: { HSearch, HModal },
   setup() {
-    let userListData = ref([]);
-    let total = ref(0);
+    const rules = {
+      username: {
+        required: true,
+        message: '请输入用户名',
+        trigger: ['input', 'blur', 'change'],
+      },
+    };
+    const userListData = ref([]);
+    const total = ref(0);
+    let paginationReactive = usePage();
+    let roleTreeList = ref([]);
+    let modalType = ref<modalUserTypeEnum>(modalUserTypeEnum.EDIT);
     let formValue = ref<IUser>({
       id: 1,
       username: '',
@@ -131,121 +144,19 @@ export default defineComponent({
       status: 1,
       user_roles: [],
     });
-    let modalConfirmLoading = ref(false);
-    let modalVisiable = ref(false);
-    let modalTitle = ref('');
-    let modalType = ref<modalUserTypeEnum>(modalUserTypeEnum.EDIT);
-    let isLoading = ref(false);
-    let roleTreeList = ref([]);
-    let defaultCheckedKeys = ref([]);
-
-    const formRef = ref<FormInst | null>(null);
-    const createColumns = (): DataTableColumns<IUser> => {
-      return [
-        {
-          title: 'id',
-          key: 'id',
-          align: 'center',
-        },
-        {
-          title: '用户名',
-          key: 'username',
-          align: 'center',
-        },
-        {
-          title: '头像',
-          key: 'avatar',
-          align: 'center',
-          render(row) {
-            return h('img', {
-              src: row.avatar,
-              width: 100,
-            });
-          },
-        },
-        {
-          title: '简介',
-          key: 'desc',
-          align: 'center',
-          ellipsis: {
-            tooltip: true,
-          },
-        },
-        {
-          title: '状态',
-          key: 'status',
-          align: 'center',
-          render(row) {
-            return row.status === 1 ? '正常' : '非法';
-          },
-        },
-        {
-          title: '创建时间',
-          key: 'created_at',
-          align: 'center',
-        },
-        {
-          title: '更新时间',
-          key: 'updated_at',
-          align: 'center',
-        },
-        {
-          title: '操作',
-          key: 'actions',
-          fixed: 'right',
-          align: 'center',
-          render(row) {
-            return h(NSpace, { justify: 'center' }, () => [
-              h(
-                NButton,
-                {
-                  size: 'small',
-                  onClick: async () => {
-                    const userInfo = await fetchUserDetail(row.id!);
-                    formValue.value = { ...userInfo.data };
-                    modalTitle.value = '编辑用户';
-                    modalType.value = modalUserTypeEnum.EDIT;
-                    modalVisiable.value = !modalVisiable.value;
-                  },
-                },
-                () => '编辑' //用箭头函数返回性能更好。
-              ),
-              h(
-                NButton,
-                {
-                  size: 'small',
-                  type: 'primary',
-                  onClick: async () => {
-                    const userInfo = await fetchUserDetail(row.id!);
-                    const userRole = await fetchUserRole(row.id!);
-                    await ajaxFetchTreeRole();
-
-                    formValue.value = {
-                      ...userInfo.data,
-                      user_roles: userRole.data.result.map((v) => v.id),
-                    };
-                    modalTitle.value = '编辑角色';
-                    modalType.value = modalUserTypeEnum.EDIT_ROLE;
-                    modalVisiable.value = !modalVisiable.value;
-                  },
-                },
-                () => '编辑角色' //用箭头函数返回性能更好。
-              ),
-            ]);
-          },
-        },
-      ];
-    };
-    const params = reactive({
+    const modalConfirmLoading = ref(false);
+    const modalVisiable = ref(false);
+    const modalTitle = ref('编辑文章');
+    const userListLoading = ref(false);
+    const currRow = ref({});
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
       orderName: 'id',
+      orderBy: 'desc',
     });
-    const updateCheckedKeys = (keys) => {
-      defaultCheckedKeys.value = keys;
-      formValue.value.user_roles = keys;
-    };
+    let defaultCheckedKeys = ref([]);
+    const formRef = ref<any>(null);
     let statusRadio = ref([
       {
         value: 1,
@@ -256,25 +167,68 @@ export default defineComponent({
         label: '禁用',
       },
     ]);
+    const updateCheckedKeys = (keys) => {
+      defaultCheckedKeys.value = keys;
+      formValue.value.user_roles = keys;
+    };
+    const createColumns = (): DataTableColumns<IUser> => {
+      const action: any = {
+        title: '操作',
+        key: 'actions',
+        fixed: 'right',
+        align: 'center',
+        render(row) {
+          return h(NSpace, { justify: 'center' }, () => [
+            h(
+              NButton,
+              {
+                size: 'small',
+                onClick: async () => {
+                  const userInfo = await fetchUserDetail(row.id!);
+                  console.log(userInfo, 333333);
+                  formValue.value = { ...userInfo.data };
+                  modalTitle.value = '编辑用户';
+                  modalType.value = modalUserTypeEnum.EDIT;
+                  modalVisiable.value = !modalVisiable.value;
+                },
+              },
+              () => '编辑' //用箭头函数返回性能更好。
+            ),
+            h(
+              NButton,
+              {
+                size: 'small',
+                type: 'primary',
+                onClick: async () => {
+                  const userInfo = await fetchUserDetail(row.id!);
+                  const userRole = await fetchUserRole(row.id!);
+                  await ajaxFetchTreeRole();
 
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
-    });
+                  formValue.value = {
+                    ...userInfo.data,
+                    user_roles: userRole.data.result.map((v) => v.id),
+                  };
+                  modalTitle.value = '编辑角色';
+                  modalType.value = modalUserTypeEnum.EDIT_ROLE;
+                  modalVisiable.value = !modalVisiable.value;
+                },
+              },
+              () => '编辑角色' //用箭头函数返回性能更好。
+            ),
+          ]);
+        },
+      };
+      return [...columnsConfig(), action];
+    };
 
     const ajaxFetchList = async (params) => {
       try {
-        isLoading.value = true;
+        userListLoading.value = true;
         const res: any = await fetchUserList(params);
         if (res.code === 200) {
-          isLoading.value = false;
+          userListLoading.value = false;
           userListData.value = res.data.rows;
           total.value = res.data.total;
-
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
           paginationReactive.pageSize = params.pageSize;
@@ -286,26 +240,13 @@ export default defineComponent({
       }
     };
 
-    const ajaxFetchTreeRole = async () => {
-      try {
-        const res: any = await fetchTreeRole();
-        if (res.code === 200) {
-          roleTreeList.value = res.data;
-        } else {
-          Promise.reject(res);
-        }
-      } catch (err) {
-        Promise.reject(err);
-      }
-    };
-
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
 
     const handlePageChange = async (currentPage) => {
-      params.nowPage = currentPage;
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      params.value.nowPage = currentPage;
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
     const modalUpdateShow = (newVal) => {
       modalVisiable.value = newVal;
@@ -319,7 +260,7 @@ export default defineComponent({
         });
         modalVisiable.value = false;
         window.$message.success('修改成功!');
-        handlePageChange(params.nowPage);
+        handlePageChange(params.value.nowPage);
       } catch (error) {
         console.log(error);
       } finally {
@@ -335,7 +276,7 @@ export default defineComponent({
         });
         modalVisiable.value = false;
         window.$message.success('修改成功!');
-        handlePageChange(params.nowPage);
+        handlePageChange(params.value.nowPage);
       } catch (error) {
         console.log(error);
       } finally {
@@ -365,6 +306,22 @@ export default defineComponent({
       modalVisiable.value = false;
     };
 
+    const ajaxFetchTreeRole = async () => {
+      try {
+        const res: any = await fetchTreeRole();
+        if (res.code === 200) {
+          roleTreeList.value = res.data;
+        } else {
+          Promise.reject(res);
+        }
+      } catch (err) {
+        Promise.reject(err);
+      }
+    };
+    const handleSearch = (v) => {
+      params.value = { ...params.value, ...v };
+      handlePageChange(1);
+    };
     return {
       modalConfirmLoading,
       modalType,
@@ -373,18 +330,22 @@ export default defineComponent({
       modalConfirm,
       modalCancel,
       modalUpdateShow,
-      rules,
-      formValue,
-      formRef,
-      handlePageChange,
-      isLoading: isLoading,
+      modalUserTypeEnum,
+      currRow,
       userListData,
+      userListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
-      modalUserTypeEnum,
-      statusRadio,
+      searchFormConfig,
       roleTreeList,
       updateCheckedKeys,
+      rules,
+      formRef,
+      handlePageChange,
+      handleSearch,
+      formValue,
+      statusRadio,
+      params,
     };
   },
 });

@@ -25,7 +25,7 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/visitor';
+import { fetchVisitorList } from '@/api/visitor';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IVisitor, IList } from '@/interface';
@@ -52,7 +52,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         visitorListLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchVisitorList(params);
         if (res.code === 200) {
           visitorListLoading.value = false;
           visitorListData.value = res.data.rows;

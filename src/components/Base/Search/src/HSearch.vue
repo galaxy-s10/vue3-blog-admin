@@ -19,14 +19,21 @@ export default defineComponent({
     searchFormConfig: {
       type: Object,
       reuqired: true,
-      default: () => {},
+      default: () => {
+        return {};
+      },
+    },
+    initValue: {
+      type: Object,
+      default: () => {
+        return {}; // 不能写成普通函数，不然会报类型错误。
+      },
     },
   },
   emits: ['clickReset', 'clickSearch'],
   setup(props, { emit }) {
-    const formData = ref({});
+    const formData = ref({ ...props.initValue });
     const formRef = ref<any>(null);
-
     const handleReset = () => {
       for (const item in formData.value) {
         formData.value[`${item}`] = null;

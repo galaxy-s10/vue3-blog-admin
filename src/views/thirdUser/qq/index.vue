@@ -20,7 +20,7 @@ import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/qqUser';
+import { fetchQqUserList } from '@/api/qqUser';
 type IProp = {
   id: number;
   client_id: number;
@@ -183,12 +183,12 @@ export default defineComponent({
     });
 
     /**
-     * ajaxfetchList
+     * ajaxfetchQqUserList
      */
     const ajaxFetchList = async (params) => {
       try {
         isLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchQqUserList(params);
         if (res.code === 200) {
           isLoading.value = false;
           logData.value = res.data.rows;

@@ -1,11 +1,18 @@
 import { IArticle } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchArticleList(params) {
   return request({
     url: '/article/list',
     method: 'get',
     params,
+  });
+}
+
+export function fetchArticleDetail(id: number) {
+  return request({
+    url: `/article/find/${id}`,
+    method: 'get',
   });
 }
 
@@ -16,7 +23,6 @@ export function fetchCreateArticle(data: IArticle) {
     data,
   });
 }
-
 export function fetchUpdateArticle(data: IArticle) {
   return request({
     url: `/article/update/${data.id}`,
@@ -24,7 +30,6 @@ export function fetchUpdateArticle(data: IArticle) {
     data,
   });
 }
-
 export function fetchDeleteArticle(id: number) {
   return request({
     url: `/article/delete/${id}`,

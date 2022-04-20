@@ -218,9 +218,18 @@ export const asyncRoutes = [
       {
         name: 'addArticle',
         path: '/article/add',
-        component: () => import('@/views/article/add/index.vue'),
+        component: () => import('@/views/article/add'),
         meta: {
           title: '添加文章',
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
+        },
+      },
+      {
+        name: 'updateArticle',
+        path: '/article/update',
+        component: () => import('@/views/article/update/index.vue'),
+        meta: {
+          title: '编辑文章',
           roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
@@ -260,6 +269,34 @@ export const asyncRoutes = [
         meta: {
           title: '点赞列表',
           icon: 'StarOutline',
+        },
+      },
+    ],
+  },
+  {
+    name: 'theme',
+    path: '/theme',
+    component: Layout,
+    meta: {
+      title: '主题管理',
+      icon: 'ColorPaletteOutline',
+    },
+    children: [
+      {
+        name: 'themeList',
+        path: '/theme/list',
+        component: () => import('@/views/theme/list/index.vue'),
+        meta: {
+          title: '主题列表',
+        },
+      },
+      {
+        name: 'addTheme',
+        path: '/theme/add',
+        component: () => import('@/views/theme/add/index.vue'),
+        meta: {
+          title: '添加主题',
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },
     ],

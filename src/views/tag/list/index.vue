@@ -36,7 +36,7 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList, fetchUpdateTag, fetchDeleteTag } from '@/api/tag';
+import { fetchTagList, fetchUpdateTag, fetchDeleteTag } from '@/api/tag';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
@@ -122,7 +122,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         tagListLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchTagList(params);
         if (res.code === 200) {
           tagListLoading.value = false;
           tagListData.value = res.data.rows;

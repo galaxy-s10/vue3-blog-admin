@@ -19,7 +19,7 @@ import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/githubUser';
+import { fetchGithubUserList } from '@/api/githubUser';
 type ILog = {
   id: number;
   client_id: string;
@@ -255,12 +255,12 @@ export default defineComponent({
     });
 
     /**
-     * ajaxfetchList
+     * ajaxfetchGithubUserList
      */
     const ajaxFetchList = async (params) => {
       try {
         isLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchGithubUserList(params);
         if (res.code === 200) {
           isLoading.value = false;
           logData.value = res.data.rows;

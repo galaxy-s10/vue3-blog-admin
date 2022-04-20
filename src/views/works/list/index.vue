@@ -40,7 +40,11 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList, fetchUpdateWorks, fetchDeleteWorks } from '@/api/works';
+import {
+  fetchWorksList,
+  fetchUpdateWorks,
+  fetchDeleteWorks,
+} from '@/api/works';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
@@ -126,7 +130,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         worksListLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchWorksList(params);
         if (res.code === 200) {
           worksListLoading.value = false;
           worksListData.value = res.data.rows;

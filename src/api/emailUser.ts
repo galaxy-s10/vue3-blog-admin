@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchEmailUserList(params) {
   return request({
     url: '/email_user/list',
     method: 'get',

@@ -22,7 +22,7 @@ import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList } from '@/api/star';
+import { fetchStarList } from '@/api/star';
 import { IUser } from '@/interface';
 
 type ILog = {
@@ -114,12 +114,12 @@ export default defineComponent({
     });
 
     /**
-     * ajaxfetchList
+     * ajaxfetchStarList
      */
     const ajaxFetchList = async (params) => {
       try {
         isLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchStarList(params);
         if (res.code === 200) {
           isLoading.value = false;
           logData.value = res.data.rows;

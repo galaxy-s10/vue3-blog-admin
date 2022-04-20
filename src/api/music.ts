@@ -1,7 +1,7 @@
 import { IMusic } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchMusicList(params) {
   return request({
     url: '/music/list',
     method: 'get',

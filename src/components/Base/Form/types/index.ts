@@ -8,12 +8,15 @@ type IFormType =
   | 'select'
   | 'radio'
   | 'checkbox'
+  | 'markdown'
   | 'switch';
 
 export interface IFormItem {
   field: string;
   type: IFormType;
   label: string;
+  gridSpan?: number;
+  labelWidth?: number;
   rule?: FormItemRule | Array<FormItemRule>;
   disabled?: boolean;
   path?: string;

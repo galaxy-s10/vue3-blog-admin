@@ -1,7 +1,7 @@
 import { IType } from '@/interface';
 import request from '@/utils/request';
 
-export function fetchList(params) {
+export function fetchTypeList(params) {
   return request({
     url: '/type/list',
     method: 'get',

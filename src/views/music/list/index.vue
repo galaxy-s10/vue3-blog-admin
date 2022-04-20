@@ -41,7 +41,11 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchList, fetchUpdateMusic, fetchDeleteMusic } from '@/api/music';
+import {
+  fetchMusicList,
+  fetchUpdateMusic,
+  fetchDeleteMusic,
+} from '@/api/music';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
@@ -127,7 +131,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         musicListLoading.value = true;
-        const res: any = await fetchList(params);
+        const res: any = await fetchMusicList(params);
         if (res.code === 200) {
           musicListLoading.value = false;
           musicListData.value = res.data.rows;
