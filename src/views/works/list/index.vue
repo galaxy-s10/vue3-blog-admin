@@ -11,6 +11,7 @@
       :data="worksListData"
       :pagination="pagination"
       :bordered="false"
+      :scroll-x="1500"
       @update:page="handlePageChange"
     />
     <HModal

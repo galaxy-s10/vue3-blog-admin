@@ -1,130 +1,114 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
+    <HSearch
+      :search-form-config="searchFormConfig"
+      :init-value="params"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="2500"
+      :loading="starListLoading"
       :columns="columns"
-      :data="logData"
+      :data="starListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { h, defineComponent, onMounted, ref } from 'vue';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchStarList } from '@/api/star';
-import { IUser } from '@/interface';
+import { fetchStarList, fetchUpdateStar } from '@/api/star';
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IStar, IList } from '@/interface';
 
-type ILog = {
-  id: number;
-  article_id: number;
-  comment_id: number;
-  from_user_id: number;
-  to_user_id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-  from_user: IUser;
-  to_user: IUser;
-  article: any;
-  comment: any;
-};
-const createColumns = (): DataTableColumns<ILog> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      align: 'center',
-    },
-    {
-      title: '文章id',
-      key: 'article_id',
-      align: 'center',
-    },
-    {
-      title: '评论id',
-      key: 'comment_id',
-      align: 'center',
-    },
-    {
-      title: '点赞的用户',
-      key: 'from_user_id',
-      align: 'center',
-      render(row) {
-        return h('div', {}, row.from_user.username);
-      },
-    },
-    {
-      title: '被点赞的用户',
-      key: 'to_user_id',
-      align: 'center',
-      render(row) {
-        return h('div', {}, row.to_user?.username || '-');
-      },
-    },
-    {
-      title: 'Action',
-      key: 'actions',
-      align: 'center',
-      render() {
-        return h(
-          NButton,
-          {
-            strong: true,
-            tertiary: true,
-            size: 'small',
-          },
-          () => 'Action'
-        );
-      },
-    },
-  ];
-};
+interface ISearch extends IStar, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch },
   setup() {
-    let logData = ref([]);
-    let total = ref(0);
+    const starListData = ref([]);
+    const total = ref(0);
+    let paginationReactive = usePage();
 
-    let isLoading = ref(false);
-    const params = reactive({
+    const modalConfirmLoading = ref(false);
+    const modalVisiable = ref(false);
+    const modalTitle = ref('编辑评论');
+    const starListLoading = ref(false);
+    const currRow = ref({});
+    const addStarRef = ref<any>(null);
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
       orderName: 'id',
+      orderBy: 'desc',
     });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
-    });
+    const createColumns = (): DataTableColumns<IStar> => {
+      const action: any = {
+        title: '操作',
+        key: 'actions',
+        width: 200,
+        align: 'center',
+        fixed: 'right',
+        render() {
+          return h(
+            NSpace,
+            {
+              justify: 'center',
+            },
+            () => [
+              h(
+                NPopconfirm,
+                {
+                  'positive-text': '确定',
+                  'negative-text': '取消',
+                  'on-positive-click': async () => {
+                    // await fetchDeleteStar(row.id!);
+                    window.$message.info('敬请期待!');
+                    // await handlePageChange(params.value.nowPage);
+                  },
+                  'on-negative-click': () => {
+                    window.$message.info('已取消!');
+                  },
+                },
+                {
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        size: 'small',
+                        type: 'error',
+                      },
+                      () => '删除' //用箭头函数返回性能更好。
+                    ),
+                  default: () => '确定删除吗?',
+                }
+              ),
+            ]
+          );
+        },
+      };
+      return [...columnsConfig(), action];
+    };
 
-    /**
-     * ajaxfetchStarList
-     */
     const ajaxFetchList = async (params) => {
       try {
-        isLoading.value = true;
+        starListLoading.value = true;
         const res: any = await fetchStarList(params);
         if (res.code === 200) {
-          isLoading.value = false;
-          logData.value = res.data.rows;
+          starListLoading.value = false;
+          starListData.value = res.data.rows;
           total.value = res.data.total;
-
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
           paginationReactive.pageSize = params.pageSize;
@@ -137,18 +121,64 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
+
     const handlePageChange = async (currentPage) => {
-      params.nowPage = currentPage;
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      params.value.nowPage = currentPage;
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
+
+    const handleSearch = (v) => {
+      params.value = { ...params.value, ...v };
+      handlePageChange(1);
+    };
+
+    const modalCancel = () => {
+      modalVisiable.value = false;
+    };
+
+    const modalConfirm = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const res = await addStarRef.value.validateForm();
+        await fetchUpdateStar({
+          ...res,
+          created_at: undefined,
+          updated_at: undefined,
+          deleted_at: undefined,
+        });
+        window.$message.success('更新成功!');
+        modalVisiable.value = false;
+        handlePageChange(params.value.nowPage);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+      }
+    };
+
+    const modalUpdateShow = (newVal) => {
+      modalVisiable.value = newVal;
+    };
+
     return {
+      modalConfirmLoading,
+      modalVisiable,
+      modalTitle,
+      modalConfirm,
+      modalCancel,
+      modalUpdateShow,
       handlePageChange,
-      isLoading: isLoading,
-      logData,
+      handleSearch,
+      currRow,
+      addStarRef,
+      starListData,
+      starListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
+      searchFormConfig,
+      params,
     };
   },
 });

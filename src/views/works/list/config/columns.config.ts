@@ -1,4 +1,4 @@
-import { type DataTableColumns } from 'naive-ui';
+import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 
 import { IWorks } from '@/interface';
@@ -19,6 +19,10 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       title: '简介',
       key: 'desc',
       align: 'center',
+      width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: '背景图',
@@ -35,6 +39,10 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       title: '线上地址',
       key: 'url',
       align: 'center',
+      width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: '权重',

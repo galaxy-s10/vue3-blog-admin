@@ -1,4 +1,4 @@
-import { type DataTableColumns } from 'naive-ui';
+import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 
 import { IMusic } from '@/interface';
@@ -35,6 +35,10 @@ export const columnsConfig = (): DataTableColumns<IMusic> => {
       title: '音频资源',
       key: 'audio_url',
       align: 'center',
+      width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: '状态',

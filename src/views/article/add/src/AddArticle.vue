@@ -34,7 +34,6 @@ export default defineComponent({
   },
   setup(props) {
     const formData = ref({ ...props.modelValue });
-    console.log(formData.value, 234235);
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
     const formConfigRes = ref();
@@ -46,15 +45,36 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        delete v.users;
-        delete v.is_star;
-        delete v.star_total;
-        delete v.comment_total;
         if (route.query.id) {
-          await fetchUpdateArticle(deleteUselessObjectKey(v));
+          await fetchUpdateArticle(
+            deleteUselessObjectKey({
+              title: v.title,
+              content: v.content,
+              desc: v.desc,
+              head_img: v.head_img,
+              id: v.id,
+              is_comment: v.is_comment,
+              status: v.status,
+              tags: v.tags,
+              types: v.types,
+              priority: v.priority,
+            })
+          );
           window.$message.success('更新成功');
         } else {
-          await fetchCreateArticle(deleteUselessObjectKey(v));
+          await fetchCreateArticle(
+            deleteUselessObjectKey({
+              title: v.title,
+              content: v.content,
+              desc: v.desc,
+              head_img: v.head_img,
+              is_comment: v.is_comment,
+              status: v.status,
+              tags: v.tags,
+              types: v.types,
+              priority: v.priority,
+            })
+          );
           window.$message.success('新增成功');
         }
       } catch (error) {

@@ -9,7 +9,7 @@
       >
         <i class="dot" :class="{ curr: item.key === path ? true : false }"></i>
         <span> {{ item.value }} </span>
-        <n-icon size="18" @click="close(item)">
+        <n-icon size="18" @click.stop="close(item)">
           <CloseOutline></CloseOutline>
         </n-icon>
       </div>
@@ -47,7 +47,6 @@ export default defineComponent({
     Object.keys(tabList.value).forEach((v) => {
       res.push({ key: v, value: tabList.value[v] });
     });
-    list1.value = res;
     const options = [
       {
         label: '关闭左侧标签',
@@ -62,6 +61,9 @@ export default defineComponent({
         key: '3',
       },
     ];
+    console.log(',,,,11');
+    list1.value = res;
+
     watch(
       () => tabList.value,
       (newVal) => {
@@ -69,7 +71,10 @@ export default defineComponent({
         Object.keys(newVal).forEach((v) => {
           res.push({ key: v, value: newVal[v] });
         });
+        console.log(',,,,11');
         list1.value = res;
+        console.log(res[res.length - 1], route.path, 2211);
+        // router.push({ path: res[res.length - 1].key });
       }
     );
     watch(
@@ -97,10 +102,26 @@ export default defineComponent({
     );
     const close = (item) => {
       const list = { ...tabList.value };
+      console.log(item, route.name, list, 111);
+
       if (Object.keys(list).length <= 1) {
         window.$message.warning('不能删了');
         return;
       }
+      let index = 0;
+      list1.value.forEach((v, i) => {
+        if (v.key === item.key) {
+          index = i;
+        }
+      });
+      if (item.key === route.path) {
+        router.push({
+          path: list1.value[
+            index + 1 >= list1.value.length ? list1.value.length - 2 : index + 1
+          ].key,
+        });
+      }
+
       delete list[item.key];
       appStore.setTabList(list);
     };
@@ -146,27 +167,6 @@ export default defineComponent({
       background-color: #fbf9fc;
       border: 1px solid #18a058;
       margin-right: 10px;
-      cursor: pointer;
-      .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-right: 4px;
-        background-color: #18a058;
-
-        &.curr {
-          background-color: #2080f0;
-        }
-      }
-    }
-    .aaa {
-      display: inline-flex;
-      flex-shrink: 0;
-      align-items: center;
-      padding: 2px 10px;
-      background-color: #fbf9fc;
-      border: 1px solid #18a058;
-
       cursor: pointer;
       .dot {
         width: 10px;

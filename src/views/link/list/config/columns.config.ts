@@ -1,4 +1,4 @@
-import { type DataTableColumns } from 'naive-ui';
+import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 
 import { ILink } from '@/interface';
@@ -35,6 +35,10 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       title: '简介',
       key: 'desc',
       align: 'center',
+      width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: '链接',

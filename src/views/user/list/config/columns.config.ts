@@ -1,4 +1,4 @@
-import { type DataTableColumns } from 'naive-ui';
+import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 
 import { IUser } from '@/interface';

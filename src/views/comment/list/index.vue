@@ -1,161 +1,113 @@
 <template>
   <div>
+    <HSearch
+      :search-form-config="searchFormConfig"
+      :init-value="params"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="2500"
+      :loading="commentListLoading"
       :columns="columns"
-      :data="logData"
+      :data="commentListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="2000"
       @update:page="handlePageChange"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { h, defineComponent, onMounted, ref } from 'vue';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchCommentList } from '@/api/comment';
-import { IUser } from '@/interface';
+import { fetchCommentList, fetchUpdateComment } from '@/api/comment';
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IComment, IList } from '@/interface';
 
-type ILog = {
-  id: number;
-  article_id: number;
-  parent_comment_id: number;
-  reply_comment_id: number;
-  from_user_id: number;
-  to_user_id: number;
-  content: string;
-  children_comment_total: number;
-  star_total: number;
-  ua: string;
-  ip: string;
-  ip_data: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-  from_user: IUser;
-  to_user: IUser | null;
-};
-const createColumns = (): DataTableColumns<ILog> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      align: 'center',
-    },
-    {
-      title: '文章id',
-      key: 'article_id',
-      align: 'center',
-    },
-    {
-      title: '父评论id',
-      key: 'parent_comment_id',
-      align: 'center',
-    },
-    {
-      title: '回复id',
-      key: 'reply_comment_id',
-      align: 'center',
-    },
-    {
-      title: '留言的用户',
-      key: 'from_user_id',
-      align: 'center',
-      render(row) {
-        return h('div', {}, row.from_user.username);
-      },
-    },
-    {
-      title: '被回复的用户',
-      key: 'to_user_id',
-      align: 'center',
-      render(row) {
-        return h('div', {}, row.to_user?.username || '-');
-      },
-    },
-    {
-      title: '内容',
-      key: 'content',
-      align: 'center',
-    },
-    {
-      title: '子评论数',
-      key: 'children_comment_total',
-      align: 'center',
-    },
-    {
-      title: '获赞数',
-      key: 'star_total',
-      align: 'center',
-    },
-    {
-      title: 'ua',
-      key: 'ua',
-      align: 'center',
-      width: 200,
-    },
-    {
-      title: 'ip',
-      key: 'ip',
-      align: 'center',
-    },
-    {
-      title: 'ip_data',
-      key: 'ip_data',
-      align: 'center',
-      width: 200,
-    },
-    {
-      title: '创建时间',
-      key: 'created_at',
-      align: 'center',
-    },
-    {
-      title: '更新时间',
-      key: 'updated_at',
-      align: 'center',
-    },
-  ];
-};
+interface ISearch extends IComment, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch },
   setup() {
-    let logData = ref([]);
-    let total = ref(0);
-    let isLoading = ref(false);
-    const params = reactive({
+    const commentListData = ref([]);
+    const total = ref(0);
+    let paginationReactive = usePage();
+
+    const modalConfirmLoading = ref(false);
+    const modalVisiable = ref(false);
+    const modalTitle = ref('编辑评论');
+    const commentListLoading = ref(false);
+    const currRow = ref({});
+    const addCommentRef = ref<any>(null);
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
       orderName: 'id',
+      orderBy: 'desc',
     });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
-    });
+    const createColumns = (): DataTableColumns<IComment> => {
+      const action: any = {
+        title: '操作',
+        key: 'actions',
+        width: 200,
+        align: 'center',
+        fixed: 'right',
+        render() {
+          return h(
+            NSpace,
+            {
+              justify: 'center',
+            },
+            () => [
+              h(
+                NPopconfirm,
+                {
+                  'positive-text': '确定',
+                  'negative-text': '取消',
+                  'on-positive-click': async () => {
+                    // await fetchDeleteComment(row.id!);
+                    window.$message.info('敬请期待!');
+                    // await handlePageChange(params.value.nowPage);
+                  },
+                  'on-negative-click': () => {
+                    window.$message.info('已取消!');
+                  },
+                },
+                {
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        size: 'small',
+                        type: 'error',
+                      },
+                      () => '删除' //用箭头函数返回性能更好。
+                    ),
+                  default: () => '确定删除吗?',
+                }
+              ),
+            ]
+          );
+        },
+      };
+      return [...columnsConfig(), action];
+    };
 
-    /**
-     * ajaxfetchCommentList
-     */
     const ajaxFetchList = async (params) => {
       try {
-        isLoading.value = true;
+        commentListLoading.value = true;
         const res: any = await fetchCommentList(params);
         if (res.code === 200) {
-          isLoading.value = false;
-          logData.value = res.data.rows;
+          commentListLoading.value = false;
+          commentListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -169,18 +121,64 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
+
     const handlePageChange = async (currentPage) => {
-      params.nowPage = currentPage;
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      params.value.nowPage = currentPage;
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
+
+    const handleSearch = (v) => {
+      params.value = { ...params.value, ...v };
+      handlePageChange(1);
+    };
+
+    const modalCancel = () => {
+      modalVisiable.value = false;
+    };
+
+    const modalConfirm = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const res = await addCommentRef.value.validateForm();
+        await fetchUpdateComment({
+          ...res,
+          created_at: undefined,
+          updated_at: undefined,
+          deleted_at: undefined,
+        });
+        window.$message.success('更新成功!');
+        modalVisiable.value = false;
+        handlePageChange(params.value.nowPage);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+      }
+    };
+
+    const modalUpdateShow = (newVal) => {
+      modalVisiable.value = newVal;
+    };
+
     return {
+      modalConfirmLoading,
+      modalVisiable,
+      modalTitle,
+      modalConfirm,
+      modalCancel,
+      modalUpdateShow,
       handlePageChange,
-      isLoading: isLoading,
-      logData,
+      handleSearch,
+      currRow,
+      addCommentRef,
+      commentListData,
+      commentListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
+      searchFormConfig,
+      params,
     };
   },
 });

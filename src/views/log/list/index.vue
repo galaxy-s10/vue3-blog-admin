@@ -2,6 +2,7 @@
   <div>
     <HSearch
       :search-form-config="searchFormConfig"
+      :init-value="params"
       @click-search="handleSearch"
     ></HSearch>
     <n-data-table
@@ -45,6 +46,8 @@ export default defineComponent({
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<ILog> => {
       return [...columnsConfig()];
@@ -93,6 +96,7 @@ export default defineComponent({
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,
+      params,
     };
   },
 });

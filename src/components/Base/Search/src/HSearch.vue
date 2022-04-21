@@ -18,7 +18,6 @@ export default defineComponent({
   props: {
     searchFormConfig: {
       type: Object,
-      reuqired: true,
       default: () => {
         return {};
       },

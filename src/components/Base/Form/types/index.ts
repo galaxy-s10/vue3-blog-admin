@@ -1,5 +1,5 @@
-import { type FormItemRule } from 'naive-ui';
-import { type StyleValue } from 'vue';
+import type { FormItemRule } from 'naive-ui';
+import type { StyleValue } from 'vue';
 
 type IFormType =
   | 'input'

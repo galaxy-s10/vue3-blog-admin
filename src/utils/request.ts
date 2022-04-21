@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import router from '@/router';
+import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
 const config = {
@@ -45,6 +46,7 @@ service.interceptors.response.use(
   },
   // eslint-disable-next-line consistent-return
   (error) => {
+    const userStore = useUserStore();
     if (error.response && error.response.status) {
       const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
       if (!whiteList.includes(`${error.response.status}`)) {
@@ -59,7 +61,7 @@ service.interceptors.response.use(
       }
       if (error.response.status === 401) {
         window.$message.error(error.response.data.message);
-        cache.clearStorage('token');
+        userStore.logout();
         router.push('/login');
         window.close();
         window.opener?.postMessage(

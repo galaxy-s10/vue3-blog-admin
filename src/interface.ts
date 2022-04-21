@@ -1,3 +1,36 @@
+export interface IStar {
+  id?: number;
+  article_id?: number;
+  comment_id?: number;
+  from_user_id?: number;
+  to_user_id?: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: any;
+  from_user?: IUser;
+  to_user?: IUser;
+  article?: any;
+  comment?: any;
+}
+export interface IComment {
+  id?: number;
+  article_id?: number;
+  parent_comment_id?: number;
+  reply_comment_id?: number;
+  from_user_id?: number;
+  to_user_id?: number;
+  content?: string;
+  children_comment_total?: number;
+  star_total?: number;
+  ua?: string;
+  ip?: string;
+  ip_data?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: any;
+  from_user?: IUser;
+  to_user?: IUser;
+}
 export interface IRole {
   id?: number;
   role_name?: string;
@@ -26,11 +59,12 @@ export interface IArticle {
   content?: string;
   head_img?: string;
   is_comment?: number;
+  priority?: number;
   status?: number;
   click?: number;
-  tag_ids?: number[];
-  type_ids?: number[];
-  user_ids?: number[];
+  tags?: number[];
+  types?: number[];
+  users?: number[];
   keyword?: string;
 }
 

@@ -124,8 +124,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, ref } from 'vue';
-
+import { defineComponent, ref } from 'vue';
+import type { PropType } from 'vue';
 import { IFormItem } from '../types';
 
 import MarkdownEditor from '@/components/MarkdownEditor';
