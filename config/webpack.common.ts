@@ -121,6 +121,7 @@ const commonConfig = (isProduction) => {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           use: [
+            'thread-loader',
             {
               loader: 'babel-loader',
               options: {
