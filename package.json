@@ -13,10 +13,10 @@
     "prettier": "prettier --write .",
     "push": "cz && standard-version",
     "release": "standard-version",
-    "start": "cross-env webpack serve --config ./config/webpack.common.ts --env development",
-    "start:beta": "cross-env VUE_APP_RELEASE_PROJECT_ENV=beta VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin webpack serve --config ./config/webpack.common.ts --env development",
-    "start:preview": "cross-env VUE_APP_RELEASE_PROJECT_ENV=preview VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin webpack serve --config ./config/webpack.common.ts --env development",
-    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_ENV=prod VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin webpack serve --config ./config/webpack.common.ts --env production",
+    "start": "webpack serve --config ./config/webpack.common.ts --env development",
+    "start:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack serve --config ./config/webpack.common.ts --env development",
+    "start:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack serve --config ./config/webpack.common.ts --env development",
+    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./config/webpack.common.ts --env production",
     "start:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack serve --config ./config/webpack.common.ts --env development"
   },
   "config": {
@@ -27,13 +27,13 @@
   "dependencies": {
     "@kangc/v-md-editor": "^2.3.15",
     "@vicons/ionicons5": "^0.12.0",
+    "@vue/preload-webpack-plugin": "^2.0.0",
     "axios": "^0.26.0",
     "core-js": "^3.17.2",
     "dayjs": "^1.11.0",
     "js-cookie": "^3.0.1",
     "naive-ui": "^2.26.3",
     "pinia": "^2.0.11",
-    "thread-loader": "^3.0.4",
     "vfonts": "^0.0.3",
     "vue": "^3.2.31",
     "vue-router": "^4.0.13"
@@ -81,6 +81,7 @@
     "sass-loader": "^12.4.0",
     "standard-version": "^9.3.2",
     "terser": "^5.7.0",
+    "thread-loader": "^3.0.4",
     "ts-loader": "^9.2.7",
     "typescript": "^4.6.2",
     "vue-loader": "^17.0.0",

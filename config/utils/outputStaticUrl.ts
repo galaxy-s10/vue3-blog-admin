@@ -3,6 +3,7 @@ export const APP_ENV = process.env.VUE_APP_RELEASE_PROJECT_ENV;
 export const NODE_ENV = process.env.NODE_ENV;
 
 export const outputStaticUrl = (isProduction) => {
+  console.table({ isProduction, APP_NAME, APP_ENV, NODE_ENV });
   if (isProduction) {
     // 生产环境是一定有APP_NAME的，APP_ENV可能是'null'字符串
     // if (APP_ENV === 'null') {
@@ -10,7 +11,6 @@ export const outputStaticUrl = (isProduction) => {
     // } else {
     //   return `/${APP_NAME}/${APP_ENV}/`;
     // }
-
     return '/'; //博客后台，直接放在服务器根目录
   } else {
     // 开发环境

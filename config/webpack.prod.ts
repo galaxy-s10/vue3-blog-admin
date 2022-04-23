@@ -1,6 +1,8 @@
+import PreloadPlugin from '@vue/preload-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackTagsPlugin from 'html-webpack-tags-plugin'; // 注入script或link
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 
 import { chalkINFO, emoji } from './utils/chalkTip';
@@ -18,7 +20,12 @@ console.log(
 export default {
   mode: 'production',
   devtool: false,
-  externals: {},
+  externals: {
+    vue: 'Vue',
+    'vue-router': 'VueRouter',
+    pinia: 'Pinia',
+    axios: 'axios',
+  },
   optimization: {
     /**
      * splitChunks属性，如果设置了mode: 'production'，会有默认行为，具体看官网
@@ -71,7 +78,7 @@ export default {
           // 重写默认的defaultVendors
           chunks: 'initial',
           // minSize: 100 * 1024,
-          // maxSize: 200 * 1024,
+          maxSize: 100 * 1024,
           test: /[\\/]node_modules[\\/]/,
           // filename: 'js/[name]-defaultVendors.js',
           filename: 'js/[name]-[contenthash:6]-defaultVendors.js',
@@ -80,6 +87,7 @@ export default {
         default: {
           // 重写默认的default
           chunks: 'all',
+          maxSize: 100 * 1024,
           filename: 'js/[name]-[contenthash:6]-default.js',
           minChunks: 2, // 至少被minChunks个入口文件引入了minChunks次。
           priority: -20,
@@ -131,11 +139,46 @@ export default {
     // }
   },
   plugins: [
+    new CompressionPlugin({
+      // http压缩
+      test: /\.(css|js)$/i,
+      threshold: 10 * 1024, // 大于10k的文件才进行压缩
+      minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
+      algorithm: 'gzip', // 压缩算法
+    }),
     new HtmlWebpackTagsPlugin({
       append: false,
       publicPath: '', // 默认会拼上output.publicPath，因为我们引入的是cdn的地址，因此不需要拼上output.publicPath，直接publicPath:''，这样就约等于拼上空字符串''
       links: [],
-      scripts: [],
+      scripts: [
+        'https://unpkg.com/vue@next/dist/vue.global.prod.js',
+        'https://unpkg.com/vue-router@next/dist/vue-router.global.prod.js',
+        'https://unpkg.com/axios/dist/axios.min.js',
+        // 'https://unpkg.com/@vue/composition-api',//不能用这个。
+        'https://unpkg.com/vue-demi',
+        'https://unpkg.com/pinia',
+      ],
+    }),
+    new MiniCssExtractPlugin({
+      /**
+       * 将 CSS 提取到单独的文件中
+       * Options similar to the same options in webpackOptions.output
+       * all options are optional
+       */
+      filename: 'css/[name]-[contenthash:6].css',
+      chunkFilename: 'css/[id].css',
+      ignoreOrder: false, // Enable to remove warnings about conflicting order
+    }),
+    new PreloadPlugin({
+      // 预加载
+      rel: 'preload',
+      include: 'initial',
+      fileBlacklist: [/\.map$/, /hot-update\.js$/],
+    }),
+    new PreloadPlugin({
+      // 预获取
+      rel: 'prefetch',
+      include: 'asyncChunks',
     }),
     // new webpack.optimize.ModuleConcatenationPlugin(), //作用域提升。！！！在使用cdn时，axios和iview有问题，先不用！！！
     // new PurgeCssPlugin({
@@ -149,24 +192,6 @@ export default {
     //       standard: ["body", "html"]
     //     }
     //   }
-    // }),
-    // new CompressionPlugin({
-    //   // http压缩
-    //   test: /\.(css|js)$/i,
-    //   threshold: 10 * 1024, // 大于10k的文件才进行压缩
-    //   minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
-    //   algorithm: 'gzip', // 压缩算法
-    // }),
-    // new PreloadWebpackPlugin({
-    //   // 预加载
-    //   rel: 'preload',
-    //   include: 'initial',
-    //   fileBlacklist: [/\.map$/, /hot-update\.js$/],
-    // }),
-    // new PreloadWebpackPlugin({
-    //   // 预获取
-    //   rel: 'prefetch',
-    //   include: 'asyncChunks',
     // }),
   ],
 };

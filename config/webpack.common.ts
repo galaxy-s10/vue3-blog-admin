@@ -31,6 +31,7 @@ const commonConfig = (isProduction) => {
         // filename: 'output-[name]-bundle.js', //默认情况下，入口 chunk 的输出文件名是从 output.filename 中提取出来的，但你可以为特定的入口指定一个自定义的输出文件名。
       },
     },
+
     // 输出
     output: {
       clean: true, // 在生成文件之前清空 output 目录。替代clean-webpack-plugin
@@ -220,22 +221,6 @@ const commonConfig = (isProduction) => {
       ],
     },
     plugins: [
-      /**
-       * https://github.com/johnagan/clean-webpack-plugin/issues/200
-       * CleanWebpackPlugin这插件不能放在webpack.prod.ts的plugins里，否则的话它不生效，可能是webpack和该插件的某些钩子问题
-       */
-      // isProduction && new CleanWebpackPlugin(),
-      isProduction &&
-        new MiniCssExtractPlugin({
-          /**
-           * 将 CSS 提取到单独的文件中
-           * Options similar to the same options in webpackOptions.output
-           * all options are optional
-           */
-          filename: 'css/[name]-[contenthash:6].css',
-          chunkFilename: 'css/[id].css',
-          ignoreOrder: false, // Enable to remove warnings about conflicting order
-        }),
       // 构建进度条
       new WebpackBar(),
       // 友好的显示错误信息在终端
@@ -299,7 +284,7 @@ const commonConfig = (isProduction) => {
       new DefinePlugin({
         BASE_URL: `${JSON.stringify(outputStaticUrl(isProduction))}`, // public下的index.html里面的icon的路径
         'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+          NODE_ENV: JSON.stringify(isProduction ? 'production' : 'development'),
           PUBLIC_PATH: JSON.stringify(outputStaticUrl(isProduction)),
           VUE_APP_RELEASE_PROJECT_NAME: JSON.stringify(
             process.env.VUE_APP_RELEASE_PROJECT_NAME
@@ -332,9 +317,9 @@ export default (env) => {
      * 如果是process.env.num = 123，最终就是：process.env.num = "123"。
      * 所以，尽量不要将非字符串赋值给process.env[属性名]！
      */
-    // 如果是process.env.production = isProduction,这样的话，process.env.production就要么是字符串"true"，要么是字符串"undefined"
+    // 如果是process.env.production = isProduction，这样的话，process.env.production就要么是字符串"true"，要么是字符串"undefined"
     // 改进：process.env.production = isProduction?true:false,这样的话，process.env.production就要么是字符串"true"，要么是字符串"false"
-    // 这里要先判断isProduction,判断完再将字符串赋值给process.env.NODE_ENV，就万无一失了
+    // 这里要先判断isProduction，判断完再将字符串赋值给process.env.NODE_ENV，就万无一失了
     process.env.NODE_ENV = isProduction ? 'production' : 'development';
     // prodConfig返回的是普通对象，devConfig返回的是promise，使用Promise.resolve进行包装
     const configPromise = Promise.resolve(
