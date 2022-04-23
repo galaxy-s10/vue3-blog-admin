@@ -61,7 +61,6 @@ export default defineComponent({
         key: '3',
       },
     ];
-    console.log(',,,,11');
     list1.value = res;
 
     watch(
@@ -71,10 +70,8 @@ export default defineComponent({
         Object.keys(newVal).forEach((v) => {
           res.push({ key: v, value: newVal[v] });
         });
-        console.log(',,,,11');
         list1.value = res;
         console.log(res[res.length - 1], route.path, 2211);
-        // router.push({ path: res[res.length - 1].key });
       }
     );
     watch(

@@ -1,5 +1,3 @@
-import path from 'path';
-
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import portfinder from 'portfinder';
 
@@ -28,32 +26,29 @@ export default new Promise((resolve) => {
         devServer: {
           client: {
             logging: 'none', // https://webpack.js.org/configuration/dev-server/#devserverclient
+            // progress: true, //在浏览器的控制台中以百分比形式打印编译进度。
           },
-          hot: true, // hrm，开启模块热替换
-          // hotOnly: true, // 默认情况下（hotOnly:false），如果编译失败会刷新页面。设置了true后就不会刷新整个页面
-          // hot: 'only', // 要在构建失败的情况下启用热模块替换而不刷新页面作为后备，请使用hot: 'only'在vue项目的话，使用only会导致ts文件没有热更，得使用true
-          compress: true, // 开启gizp压缩
-          port, // 默认端口号8080
+          hot: true, // 启用 webpack 的热模块替换功能
+          // hot: 'only', // 要在构建失败的情况下启用热模块替换而不刷新页面作为后备，请使用hot: 'only'。但在vue项目的话，使用only会导致ts文件没有热更，得使用true
+          compress: true, // 为所有服务启用gzip 压缩
+          port, // 开发服务器端口，默认8080
+          open: false, //告诉 dev-server 在服务器启动后打开浏览器。
           historyApiFallback: {
             rewrites: [
-              // 如果publicPath设置了/abc，就不能直接设置historyApiFallback: true，这样会重定向到react-webpack-template根目录下的index.html
-              // publicPath设置了/abc，就重定向到/abc，这样就可以了
+              /**
+               * 如果publicPath设置了/abc，就不能直接设置historyApiFallback: true，这样会重定向到vue3-blog-admin根目录下的index.html
+               * publicPath设置了/abc，就重定向到/abc，这样就可以了
+               */
               { from: outputStaticUrl(false), to: outputStaticUrl(false) },
             ],
           },
           /**
-           * contentBase默认为package.json文件所在的根目录，即react-webpack-template目录
-           * 打开localhost:8080/hss/demo.js,就会访问react-webpack-template目录下的hss目录下的demo.js。
-           * 设置contentBase: path.resolve(__dirname, '../hss')后，打开localhost:8080/demo.js,即可访问react-webpack-template目录下的hss目录下的demo.js
-           * 这个目录最好和copyWebpackPlugin插件目录一致
+           * devServer.static提供静态文件服务器，默认是 'public' 文件夹。static: false禁用
+           * 即访问localhost:8080/a.js，其实访问的是localhost:8080/public/a.js
+           * 因为CopyWebpackPlugin插件会复制public的文件，所以static: false后再访问localhost:8080/a.js，其实还是能访问到public目录的a.js
            */
-          // contentBase: path.resolve(__dirname, '../public'),
-          // watchContentBase: true, // 监听contenBase目录
-          // publicPath: '/', // devServer的publicPath建议与output的publicPath一致
           static: {
-            // （webpack-dev-server4.x后变了）
-            directory: path.resolve(__dirname, '../public'),
-            watch: true,
+            watch: true, //告诉 dev-server 监听文件。默认启用，文件更改将触发整个页面重新加载。可以通过将 watch 设置为 false 禁用。
             publicPath: outputStaticUrl(false),
           },
           proxy: {

@@ -1,10 +1,9 @@
 import path from 'path';
 
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin'; // 默认情况下，这个插件会删除webpack.outout中的所有文件
-import CopyWebpackPlugin from 'copy-webpack-plugin'; // 将已存在的单个文件或整个目录复制到构建目录。
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin'; // 自动生成index.html文件(并引入打包的js)
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import { DefinePlugin } from 'webpack';
@@ -24,20 +23,17 @@ console.log(
 
 const commonConfig = (isProduction) => {
   const result = {
+    // 入口，默认src/index.js
     entry: {
+      shared: ['vue', 'vue-router', 'pinia'],
       main: {
         import: './src/main.ts',
-        // filename: 'output-[name]-bundle.js'
+        // filename: 'output-[name]-bundle.js', //默认情况下，入口 chunk 的输出文件名是从 output.filename 中提取出来的，但你可以为特定的入口指定一个自定义的输出文件名。
       },
-      // main: [
-      //   './src/main.js'
-      // ]
-      // index: {
-      //   import: './src/index.js',
-      //   // filename: 'output-[name]-bundle.js'
-      // },
     },
+    // 输出
     output: {
+      clean: true, // 在生成文件之前清空 output 目录。替代clean-webpack-plugin
       filename: 'js/[name]-[contenthash:6]-bundle.js', // 入口文件打包生成后的文件的文件名
       /**
        * 入口文件中，符合条件的代码，被抽离出来后生成的文件的文件名
@@ -49,18 +45,19 @@ const commonConfig = (isProduction) => {
       path: path.resolve(__dirname, '../dist'),
       assetModuleFilename: 'assets/[name]-[contenthash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
       /**
+       * webpack-dev-server 也会默认从 publicPath 为基准，使用它来决定在哪个目录下启用服务，来访问 webpack 输出的文件。
+       * 所以不管开发模式还是生产模式，output.publicPath都会生效，
        * output的publicPath建议(或者绝大部分情况下必须)与devServer的publicPath一致。
-       * 不管开发模式还是生产模式，output.publicPath都会生效，如果不设置publicPath，
-       * 它默认就约等于output.publicPath:""，到时候不管开发还是生产模式，最终引入到
+       * 如果不设置publicPath，它默认就约等于output.publicPath:""，到时候不管开发还是生产模式，最终引入到
        * index.html的所有资源都会拼上这个路径，如果不设置output.publicPath，会有问题：
        * 比如vue的history模式下，如果不设置output.publicPath，如果路由全都是/foo,/bar,/baz这样的一级路由没有问题，
        * 因为引入的资源都是js/bundle.js，css/bundle.css等等，浏览器输入：http://localhost:8080/foo，回车访问，
-       * 引入的资源就是http://localhost:8080/js/bundle.js，http://localhost:8080/css/bundle.css,没有问题
-       * 但是如果有这些路由：/logManage/logList,/logManage/logList/editLog,等等超过一级的路由，就会有问题，
-       * 因为没有设置output.publicPath，所以它默认就是""，此时浏览器输入：http://localhost:8080/logManage/logList，
-       * 回车访问，引入的资源就是http://localhost:8080/logManage/logList/js/bundle.js，而很明显，我们
-       * 的http://localhost:8080/logManage/logList/js目录下没有bundle.js这个资源（至少默认情况下是没有，除非设置了其他属性）
-       * 找不到这个资源就会报错，但是这种情况的路由是很常见的，所以建议默认必须手动设置output.publicPath:"/"，这样的话，
+       * 引入的资源就是http://localhost:8080/js/bundle.js，http://localhost:8080/css/bundle.css，这些资源都
+       * 是在http://localhost:8080/根目录下的没问题，但是如果有这些路由：/logManage/logList,/logManage/logList/editLog，
+       * 等等超过一级的路由，就会有问题，因为没有设置output.publicPath，所以它默认就是""，此时浏览器输入：
+       * http://localhost:8080/logManage/logList回车访问，引入的资源就是http://localhost:8080/logManage/logList/js/bundle.js，
+       * 而很明显，我们的http://localhost:8080/logManage/logList/js目录下没有bundle.js这个资源（至少默认情况下是没有，除非设置了其他属性）
+       * 找不到这个资源就会报错，这种情况的路由是很常见的，所以建议默认必须手动设置output.publicPath:"/"，这样的话，
        * 访问http://localhost:8080/logManage/logList，引入的资源就是：http://localhost:8080/js/bundle.js，就不会报错。
        * 此外，output.publicPath还可设置cdn地址。
        */
@@ -80,8 +77,8 @@ const commonConfig = (isProduction) => {
       modules: ['node_modules'],
     },
     cache: {
-      // type: 'memory', // filesystem长缓存，如果是memory缓存的话，下次启动就没了
-      type: 'filesystem', // filesystem长缓存，如果是memory缓存的话，下次启动就没了
+      // type: 'memory',
+      type: 'filesystem',
       buildDependencies: {
         // https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
         // 建议cache.buildDependencies.config: [__filename]在您的 webpack 配置中设置以获取最新配置和所有依赖项。
@@ -223,7 +220,11 @@ const commonConfig = (isProduction) => {
       ],
     },
     plugins: [
-      isProduction && new CleanWebpackPlugin(), // CleanWebpackPlugin这插件不能放在webpack.prod.js的plugins里，否则的话它不生效，可能是webpack和该插件的某些钩子问题
+      /**
+       * https://github.com/johnagan/clean-webpack-plugin/issues/200
+       * CleanWebpackPlugin这插件不能放在webpack.prod.ts的plugins里，否则的话它不生效，可能是webpack和该插件的某些钩子问题
+       */
+      // isProduction && new CleanWebpackPlugin(),
       isProduction &&
         new MiniCssExtractPlugin({
           /**
@@ -235,9 +236,13 @@ const commonConfig = (isProduction) => {
           chunkFilename: 'css/[id].css',
           ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
-      new WebpackBar(), // 构建进度条
+      // 构建进度条
+      new WebpackBar(),
+      // 友好的显示错误信息在终端
       new FriendlyErrorsWebpackPlugin(),
+      // 解析vue
       new VueLoaderPlugin(),
+      // eslint
       new ESLintPlugin({
         extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
         emitError: false, // 发现的错误将始终发出，禁用设置为false.
@@ -250,6 +255,7 @@ const commonConfig = (isProduction) => {
           '../node_modules/.cache/.eslintcache'
         ),
       }),
+      // 该插件将为您生成一个HTML5文件，其中包含使用脚本标签的所有Webpack捆绑包
       new HtmlWebpackPlugin({
         filename: 'index.html',
         title: '自然博客后台',
@@ -271,13 +277,14 @@ const commonConfig = (isProduction) => {
               minifyJS: true, // 使用Terser插件优化
             }
           : false,
-        chunks: ['main'],
+        chunks: ['main'], // 要仅包含某些块，您可以限制正在使用的块
       }),
+      // 将已存在的单个文件或整个目录复制到构建目录。
       new CopyWebpackPlugin({
         patterns: [
           {
-            from: 'public', // 将public里面的文件
-            // to: 'assets'    //复制到output.path下的assets，不写默认就是output.path根目录
+            from: 'public', // 复制public目录的文件
+            // to: 'assets', //复制到output.path下的assets，不写默认就是output.path根目录
             globOptions: {
               ignore: [
                 // 复制到output.path时，如果output.paht已经存在重复的文件了，会报错：
@@ -288,8 +295,8 @@ const commonConfig = (isProduction) => {
           },
         ],
       }),
+      // 定义全局变量
       new DefinePlugin({
-        // 定义全局变量
         BASE_URL: `${JSON.stringify(outputStaticUrl(isProduction))}`, // public下的index.html里面的icon的路径
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),

@@ -150,13 +150,13 @@ export default {
     //     }
     //   }
     // }),
-    new CompressionPlugin({
-      // http压缩
-      test: /\.(css|js)$/i,
-      threshold: 10 * 1024, // 大于10k的文件才进行压缩
-      minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
-      algorithm: 'gzip', // 压缩算法
-    }),
+    // new CompressionPlugin({
+    //   // http压缩
+    //   test: /\.(css|js)$/i,
+    //   threshold: 10 * 1024, // 大于10k的文件才进行压缩
+    //   minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
+    //   algorithm: 'gzip', // 压缩算法
+    // }),
     // new PreloadWebpackPlugin({
     //   // 预加载
     //   rel: 'preload',
