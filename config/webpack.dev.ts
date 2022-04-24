@@ -26,7 +26,6 @@ export default new Promise((resolve) => {
         devServer: {
           client: {
             logging: 'none', // https://webpack.js.org/configuration/dev-server/#devserverclient
-            // progress: true, //在浏览器的控制台中以百分比形式打印编译进度。
           },
           hot: true, // 启用 webpack 的热模块替换功能
           // hot: 'only', // 要在构建失败的情况下启用热模块替换而不刷新页面作为后备，请使用hot: 'only'。但在vue项目的话，使用only会导致ts文件没有热更，得使用true
@@ -62,53 +61,26 @@ export default new Promise((resolve) => {
                */
               changeOrigin: true,
               pathRewrite: {
-                // '^/admin': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
-                '^/api': '/admin/', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
+                // '^/admin': '', // 效果：/api/link/list ==> http://localhost:3300/link/list
+                '^/api': '/admin/', // 效果：/api/link/list ==> http://localhost:3300/admin/link/list
               },
             },
             '/prodapi': {
               target: 'http://42.193.157.44:3200',
-              secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
-              /**
-               * changeOrigin，是否修改请求地址的源
-               * 默认changeOrigin: false，即发请求即使用devServer的localhost:port发起的，如果后端服务器有校验源，就会有问题
-               * 设置changeOrigin: true，就会修改发起请求的源，将原本的localhost:port修改为target，这样就可以通过后端服务器对源的校验
-               */
+              secure: false,
               changeOrigin: true,
               pathRewrite: {
-                // '^/admin': '', // 效果：/api/link/list ==> http://42.193.157.44:3200/link/list
-                '^/prodapi': '/admin/', // 效果：/api/link/list ==> http://42.193.157.44:3200/admin/link/list
+                '^/prodapi': '/admin/',
               },
             },
             '/betaapi': {
               target: 'http://42.193.157.44:3300',
-              secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
-              /**
-               * changeOrigin，是否修改请求地址的源
-               * 默认changeOrigin: false，即发请求即使用devServer的localhost:port发起的，如果后端服务器有校验源，就会有问题
-               * 设置changeOrigin: true，就会修改发起请求的源，将原本的localhost:port修改为target，这样就可以通过后端服务器对源的校验
-               */
+              secure: false,
               changeOrigin: true,
               pathRewrite: {
-                // '^/admin': '', // 效果：/api/link/list ==> http://42.193.157.44:3300/link/list
-                '^/betaapi': '/admin/', // 效果：/api/link/list ==> http://42.193.157.44:3300/admin/link/list
+                '^/betaapi': '/admin/',
               },
             },
-            // '/api': {
-            //   target: 'http://localhost:3200',
-            //   secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
-            //   /**
-            //    * changeOrigin，是否修改请求地址的源
-            //    * 默认changeOrigin: false，即发请求即使用devServer的localhost:port发起的，如果后端服务器有校验源，就会有问题
-            //    * 设置changeOrigin: true，就会修改发起请求的源，将原本的localhost:port修改为target，这样就可以通过后端服务器对源的校验
-            //    */
-            //   changeOrigin: true,
-            //   pathRewrite: {
-            //     // '^/api': '', // 效果：/api/link/list ==> http://localhost:3200/link/list
-            //     '^/api': '/admin', // 效果：/api/link/list ==> http://localhost:3200/admin/link/list
-            //     // '^/api': 'admin', // 和/admin效果一样：/api/link/list ==> http://localhost:3200/admin/link/list
-            //   },
-            // },
           },
         },
         plugins: [
@@ -130,9 +102,9 @@ export default new Promise((resolve) => {
              * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
              * 但是控制台还是会打印错误。
              */
-            devServer: false, //7.x版本，7.x版本有毛病，会报错：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
+            devServer: false, // 7.x版本：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
             // logger: {
-            //   devServer: false, //fork-ts-checker-webpack-plugin6.x版本
+            //   devServer: false, // fork-ts-checker-webpack-plugin6.x版本
             // },
             /**
              * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败

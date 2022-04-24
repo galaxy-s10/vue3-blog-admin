@@ -7,7 +7,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import { DefinePlugin } from 'webpack';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'; // bundle分析
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
@@ -23,16 +23,12 @@ console.log(
 
 const commonConfig = (isProduction) => {
   const result = {
-    // 入口，默认src/index.js
     entry: {
       shared: ['vue', 'vue-router', 'pinia'],
       main: {
         import: './src/main.ts',
-        // filename: 'output-[name]-bundle.js', //默认情况下，入口 chunk 的输出文件名是从 output.filename 中提取出来的，但你可以为特定的入口指定一个自定义的输出文件名。
       },
     },
-
-    // 输出
     output: {
       clean: true, // 在生成文件之前清空 output 目录。替代clean-webpack-plugin
       filename: 'js/[name]-[contenthash:6]-bundle.js', // 入口文件打包生成后的文件的文件名
@@ -68,7 +64,6 @@ const commonConfig = (isProduction) => {
       // 解析路径
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'], // 解析扩展名
       alias: {
-        // 如果不设置这个alias，webpack就会解析不到import xxx '@/xxx'中的@
         '@': path.resolve(__dirname, '../src'), // 设置路径别名
         vue$: 'vue/dist/vue.runtime.esm-bundler.js', // 设置vue的路径别名
       },
@@ -78,7 +73,6 @@ const commonConfig = (isProduction) => {
       modules: ['node_modules'],
     },
     cache: {
-      // type: 'memory',
       type: 'filesystem',
       buildDependencies: {
         // https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
@@ -93,25 +87,8 @@ const commonConfig = (isProduction) => {
         {
           test: /\.vue$/,
           use: [
-            // {
-            //   loader: 'cache-loader',
-            //   options: {
-            //     cacheDirectory: path.resolve(
-            //       __dirname,
-            //       '../node_modules/.cache/vue-loader'
-            //     ),
-            //     cacheIdentifier: '12345',
-            //   },
-            // },
             {
               loader: 'vue-loader',
-              // options: {
-              //   cacheDirectory: path.resolve(
-              //     __dirname,
-              //     '../node_modules/.cache/vue-loader'
-              //   ),
-              //   cacheIdentifier: '12345',
-              // },
             },
           ],
         },
@@ -211,7 +188,6 @@ const commonConfig = (isProduction) => {
           },
         },
         {
-          // test: /\.(eot|ttf|woff2?)\??.*$/,
           test: /\.(eot|ttf|woff2?)$/,
           type: 'asset/resource',
           generator: {
@@ -310,18 +286,7 @@ const commonConfig = (isProduction) => {
 export default (env) => {
   return new Promise((resolve) => {
     const isProduction = env.production;
-    /**
-     * 注意：在node环境下，给process.env这个对象添加的所有属性，都会默认转成字符串,
-     * 如果给process.env.NODE_ENV = undefined，赋值的时候node会将undefined转成"undefined"再赋值
-     * 即约等于：process.env.NODE_ENV = "undefined",
-     * 如果是process.env.num = 123，最终就是：process.env.num = "123"。
-     * 所以，尽量不要将非字符串赋值给process.env[属性名]！
-     */
-    // 如果是process.env.production = isProduction，这样的话，process.env.production就要么是字符串"true"，要么是字符串"undefined"
-    // 改进：process.env.production = isProduction?true:false,这样的话，process.env.production就要么是字符串"true"，要么是字符串"false"
-    // 这里要先判断isProduction，判断完再将字符串赋值给process.env.NODE_ENV，就万无一失了
     process.env.NODE_ENV = isProduction ? 'production' : 'development';
-    // prodConfig返回的是普通对象，devConfig返回的是promise，使用Promise.resolve进行包装
     const configPromise = Promise.resolve(
       isProduction ? prodConfig : devConfig
     );

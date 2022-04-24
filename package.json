@@ -6,6 +6,10 @@
   "author": "shuisheng <2274751790@qq.com>",
   "scripts": {
     "build": "webpack --config ./config/webpack.common.ts --env production",
+    "build:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack --config ./config/webpack.common.ts --env production",
+    "build:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack --config ./config/webpack.common.ts --env production",
+    "build:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack --config ./config/webpack.common.ts --env production",
+    "build:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack --config ./config/webpack.common.ts --env production",
     "commit": "cz",
     "lint": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue",
     "lint:fix": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue --fix",
@@ -16,8 +20,7 @@
     "start": "webpack serve --config ./config/webpack.common.ts --env development",
     "start:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack serve --config ./config/webpack.common.ts --env development",
     "start:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack serve --config ./config/webpack.common.ts --env development",
-    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./config/webpack.common.ts --env production",
-    "start:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack serve --config ./config/webpack.common.ts --env development"
+    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./config/webpack.common.ts --env production"
   },
   "config": {
     "commitizen": {
@@ -51,7 +54,6 @@
     "@vue/eslint-config-typescript": "^10.0.0",
     "@vue/preload-webpack-plugin": "^2.0.0",
     "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^4.0.0",
     "commitizen": "^4.2.4",
     "compression-webpack-plugin": "^7.1.2",
     "copy-webpack-plugin": "^8.1.0",
@@ -76,7 +78,6 @@
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.4.2",
     "prettier": "^2.5.1",
-    "purgecss-webpack-plugin": "^4.0.3",
     "sass": "^1.45.2",
     "sass-loader": "^12.4.0",
     "standard-version": "^9.3.2",

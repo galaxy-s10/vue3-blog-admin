@@ -1,16 +1,11 @@
 import PreloadPlugin from '@vue/preload-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-import HtmlWebpackTagsPlugin from 'html-webpack-tags-plugin'; // 注入script或link
+import HtmlWebpackTagsPlugin from 'html-webpack-tags-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 
 import { chalkINFO, emoji } from './utils/chalkTip';
-
-// const PurgeCssPlugin = require('purgecss-webpack-plugin');// css的Tree Shaking
-// const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'); // 弃用，使用html-webpack-tags-plugin代替
-// const glob = require('glob')
-// const webpack = require('webpack');
 
 console.log(
   chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`),
@@ -77,7 +72,7 @@ export default {
         defaultVendors: {
           // 重写默认的defaultVendors
           chunks: 'initial',
-          // minSize: 100 * 1024,
+          // minSize: 50 * 1024,
           maxSize: 100 * 1024,
           test: /[\\/]node_modules[\\/]/,
           // filename: 'js/[name]-defaultVendors.js',
@@ -92,13 +87,6 @@ export default {
           minChunks: 2, // 至少被minChunks个入口文件引入了minChunks次。
           priority: -20,
         },
-        // 这里动态代码会匹配到这里，会使用[id]-test.js作为文件名
-        // 注释了test缓存组后，动态代码就会使用output.chunkFilename或output.filename
-        // test: {
-        //   chunks: 'all',
-        //   filename: "[id]-test.js",
-        //   priority: -30
-        // },
       },
     },
     usedExports: true, // production模式或者不设置usedExports，它默认就是true。usedExports的目的是标注出来哪些函数是没有被使用 unused，会结合Terser进行处理
@@ -139,13 +127,14 @@ export default {
     // }
   },
   plugins: [
+    // http压缩
     new CompressionPlugin({
-      // http压缩
       test: /\.(css|js)$/i,
       threshold: 10 * 1024, // 大于10k的文件才进行压缩
       minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
       algorithm: 'gzip', // 压缩算法
     }),
+    // 注入script或link
     new HtmlWebpackTagsPlugin({
       append: false,
       publicPath: '', // 默认会拼上output.publicPath，因为我们引入的是cdn的地址，因此不需要拼上output.publicPath，直接publicPath:''，这样就约等于拼上空字符串''
@@ -154,14 +143,13 @@ export default {
         'https://unpkg.com/vue@next/dist/vue.global.prod.js',
         'https://unpkg.com/vue-router@next/dist/vue-router.global.prod.js',
         'https://unpkg.com/axios/dist/axios.min.js',
-        // 'https://unpkg.com/@vue/composition-api',//不能用这个。
         'https://unpkg.com/vue-demi',
         'https://unpkg.com/pinia',
       ],
     }),
+    // 将 CSS 提取到单独的文件中
     new MiniCssExtractPlugin({
       /**
-       * 将 CSS 提取到单独的文件中
        * Options similar to the same options in webpackOptions.output
        * all options are optional
        */
@@ -169,29 +157,33 @@ export default {
       chunkFilename: 'css/[id].css',
       ignoreOrder: false, // Enable to remove warnings about conflicting order
     }),
+    // Css TreeShaking
+    // new PurgeCssPlugin({
+    //   /**
+    //    * 实际测试有一些bug，比如html里面有ul这个元素，css里面的.ul{}，#ul{}，ul{}都会打包进去？？？
+    //    * 在js文件里如果有给元素添加类，但是注释了，如：// divEle.className='test123'，但是这个.test123一样会打包进去，得手动删除这行注释代码才行！
+    //    * 而且貌似不能对.vue文件进行treeShaking，而且构建出来的css文件会空白，没有任何内容，所以暂时不用这个插件了
+    //    */
+    //   paths: glob.sync(`${path.resolve(__dirname, '../src')}/**/*`, {
+    //     nodir: true,
+    //   }),
+    //   safelist: function () {
+    //     return {
+    //       standard: ['body', 'html'],
+    //     };
+    //   },
+    // }),
+    // 预加载
     new PreloadPlugin({
-      // 预加载
       rel: 'preload',
       include: 'initial',
       fileBlacklist: [/\.map$/, /hot-update\.js$/],
     }),
+    // 预获取
     new PreloadPlugin({
-      // 预获取
       rel: 'prefetch',
       include: 'asyncChunks',
     }),
-    // new webpack.optimize.ModuleConcatenationPlugin(), //作用域提升。！！！在使用cdn时，axios和iview有问题，先不用！！！
-    // new PurgeCssPlugin({
-    //   /**
-    //    * 实际测试很多bug,比如html里面有ul这个元素，css里面的.ul{}，#ul{}，ul{}都会打包进去？？？
-    //    * 在js文件里如果有给元素添加类，但是注释了，如：// divEle.className='test123'，但是这个.test123一样会打包进去，得手动删除这行代码才行！
-    //    */
-    //   paths: glob.sync(`${path.resolve(__dirname, '../src')}/**/*`, { nodir: true }),
-    //   safelist: function () {
-    //     return {
-    //       standard: ["body", "html"]
-    //     }
-    //   }
-    // }),
+    // new webpack.optimize.ModuleConcatenationPlugin(), //作用域提升。！！！在使用cdn时，axios有问题，先不用！
   ],
 };

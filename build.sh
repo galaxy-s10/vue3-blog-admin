@@ -4,7 +4,7 @@
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-16 04:15:31
-# LastEditTime: 2022-04-09 03:40:40
+# LastEditTime: 2022-04-24 01:50:58
 # Description:
 ###
 
@@ -56,4 +56,7 @@ else
   echo 开始构建$ENV环境:
 fi
 
-npx cross-env VUE_APP_RELEASE_PROJECT_NAME=$JOBNAME VUE_APP_RELEASE_PROJECT_ENV=$ENV webpack --config ./config/webpack.common.ts --env production
+# npx cross-env VUE_APP_RELEASE_PROJECT_NAME=$JOBNAME VUE_APP_RELEASE_PROJECT_ENV=$ENV webpack --config ./config/webpack.common.ts --env production
+
+# 博客后台，直接放服务器根目录
+npx webpack --config ./config/webpack.common.ts --env production
