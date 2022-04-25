@@ -470,23 +470,16 @@ export default defineComponent({
                     const allRole = await fetchAllList(); //父级角色下拉框
                     // 递归禁用已有的角色
                     const disableRole = (data) => {
-                      console.log(data, 32);
                       data.forEach((v) => {
-                        console.log(v, 23223, allChildRoleIds.includes(v.id));
                         if (allChildRoleIds.includes(v.id)) {
                           v.disabled = true;
                         }
-                        console.log(v.children);
                         if (v.children) {
                           disableRole(v.children);
                         }
                       });
                       return data;
                     };
-                    // console.log(
-                    //   disableRole(deepCloneByJson(roleData.value)),
-                    //   999
-                    // );
                     batchAddOptions.value = disableRole(
                       deepCloneByJson(roleData.value)
                     );

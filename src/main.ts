@@ -17,7 +17,8 @@ app.use(router);
 app.use(naive);
 
 const messageEle = document.createElement('div');
-document.body.appendChild(messageEle);
+const appEle = document.getElementById('app');
+appEle?.appendChild(messageEle);
 message.mount(messageEle);
 
 app.mount('#app');

@@ -185,7 +185,6 @@ export default defineComponent({
                 size: 'small',
                 onClick: async () => {
                   const userInfo = await fetchUserDetail(row.id!);
-                  console.log(userInfo, 333333);
                   formValue.value = { ...userInfo.data };
                   modalTitle.value = '编辑用户';
                   modalType.value = modalUserTypeEnum.EDIT;

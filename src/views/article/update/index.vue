@@ -22,7 +22,6 @@ export default defineComponent({
   setup() {
     const formData = ref({});
     const route = useRoute();
-    console.log(route.query, 33);
 
     onMounted(async () => {
       if (!route.query.id) return;

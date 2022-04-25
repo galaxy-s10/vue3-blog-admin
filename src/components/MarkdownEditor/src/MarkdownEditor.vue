@@ -16,9 +16,11 @@ import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import json from 'highlight.js/lib/languages/json';
+import typescript from 'highlight.js/lib/languages/typescript';
 import { defineComponent, ref, watch } from 'vue';
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
 
 VMdEditor.use(githubTheme, {
   Hljs: hljs,
@@ -53,5 +55,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mardown-wrap {
   width: 100%;
+  & :deep(.github-markdown-body) {
+    blockquote {
+      margin: 0;
+    }
+  }
 }
 </style>

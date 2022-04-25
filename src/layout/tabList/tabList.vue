@@ -71,7 +71,6 @@ export default defineComponent({
           res.push({ key: v, value: newVal[v] });
         });
         list1.value = res;
-        console.log(res[res.length - 1], route.path, 2211);
       }
     );
     watch(
@@ -99,8 +98,6 @@ export default defineComponent({
     );
     const close = (item) => {
       const list = { ...tabList.value };
-      console.log(item, route.name, list, 111);
-
       if (Object.keys(list).length <= 1) {
         window.$message.warning('不能删了');
         return;
