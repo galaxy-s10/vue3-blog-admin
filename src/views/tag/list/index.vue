@@ -161,10 +161,9 @@ export default defineComponent({
         modalConfirmLoading.value = true;
         const res = await addTagRef.value.validateForm();
         await fetchUpdateTag({
-          ...res,
-          created_at: undefined,
-          updated_at: undefined,
-          deleted_at: undefined,
+          color: res.color,
+          name: res.name,
+          id: res.id,
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;
