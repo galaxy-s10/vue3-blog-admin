@@ -171,9 +171,9 @@ export default defineComponent({
         const res = await addMusicRef.value.validateForm();
         await fetchUpdateMusic({
           ...res,
-          created_at: undefined,
-          updated_at: undefined,
-          deleted_at: undefined,
+          created_at: undefined, //删除无用属性
+          updated_at: undefined, //删除无用属性
+          deleted_at: undefined, //删除无用属性
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;
