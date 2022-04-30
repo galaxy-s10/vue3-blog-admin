@@ -170,10 +170,12 @@ export default defineComponent({
         modalConfirmLoading.value = true;
         const res = await addMusicRef.value.validateForm();
         await fetchUpdateMusic({
-          ...res,
-          created_at: undefined, //删除无用属性
-          updated_at: undefined, //删除无用属性
-          deleted_at: undefined, //删除无用属性
+          id: res.id,
+          author: res.author,
+          name: res.name,
+          audio_url: res.audio_url,
+          status: res.status,
+          cover_pic: res.cover_pic,
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;

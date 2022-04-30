@@ -39,7 +39,13 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        const { message } = await fetchCreateMusic(v);
+        const { message } = await fetchCreateMusic({
+          author: v.author,
+          name: v.name,
+          audio_url: v.audio_url,
+          status: v.status,
+          cover_pic: v.cover_pic,
+        });
         window.$message.success(message);
       } catch (error) {
         console.log(error);
