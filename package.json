@@ -38,7 +38,8 @@
     "pinia": "^2.0.11",
     "vfonts": "^0.0.3",
     "vue": "^3.2.31",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

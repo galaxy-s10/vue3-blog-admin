@@ -16,7 +16,7 @@ yarn install
 yarn start
 ```
 
-运行在http://localhost:8000/，可以模拟部署根目录的环境。
+运行在 http://localhost:8000/，可以模拟部署根目录的环境。
 
 ## 模拟非根目录
 
@@ -24,7 +24,7 @@ yarn start
 yarn start:beta
 ```
 
-运行在http://localhost:8000/vue3-blog-admin/beta/，可以模拟部署在/vue3-blog-admin/beta/目录的环境。
+运行在 http://localhost:8000/vue3-blog-admin/beta/，可以模拟部署在/vue3-blog-admin/beta/目录的环境。
 
 # 构建部署
 

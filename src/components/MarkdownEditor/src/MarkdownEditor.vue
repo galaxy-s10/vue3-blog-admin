@@ -53,7 +53,7 @@ export default defineComponent({
         if (val === null) text.value = '';
       }
     );
-    const handleChange = (str, html) => {
+    const handleChange = (str) => {
       text.value = str;
       emit('update:value', str);
     };

@@ -22,6 +22,7 @@ import {
   BuildOutline,
   FootstepsOutline,
   PersonOutline,
+  BagHandleOutline,
 } from '@vicons/ionicons5';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -56,6 +57,7 @@ export const iconMap = (name) => {
     BuildOutline,
     FootstepsOutline,
     PersonOutline,
+    BagHandleOutline,
   };
   return ico[name];
 };
@@ -160,6 +162,16 @@ export const asyncRoutes = [
       icon: 'SettingsOutline',
     },
     children: [
+      {
+        name: 'frontendSetting',
+        path: '/setting/frontend',
+        component: () => import('@/views/setting/frontend'),
+        meta: {
+          title: '前台设置',
+          icon: 'BagHandleOutline',
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
+        },
+      },
       {
         name: 'themeSetting',
         path: '/setting/theme',

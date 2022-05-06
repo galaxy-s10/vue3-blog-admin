@@ -8,6 +8,7 @@ import router from '@/router/index';
 import store from '@/store/index';
 import '@/assets/css/index.scss';
 import '@/permission';
+import '@/performance';
 
 const app = createApp(App);
 const message = createApp(Message);
