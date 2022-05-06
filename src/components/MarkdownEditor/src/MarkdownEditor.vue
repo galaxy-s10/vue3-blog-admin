@@ -11,20 +11,30 @@
 <script lang="ts">
 import '@kangc/v-md-editor/lib/style/base-editor.css';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
+import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+
 import VMdEditor from '@kangc/v-md-editor';
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import createTodoListPlugin from '@kangc/v-md-editor/lib/plugins/todo-list/index';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
-import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { defineComponent, ref, watch } from 'vue';
-hljs.registerLanguage('json', json);
-hljs.registerLanguage('javascript', javascript);
+
 hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('scss', scss);
+hljs.registerLanguage('bash', bash);
 
 VMdEditor.use(githubTheme, {
   Hljs: hljs,
 });
+
+VMdEditor.use(createTodoListPlugin()); //任务列表
+VMdEditor.use(createCopyCodePlugin()); //快捷复制代码
+
 export default defineComponent({
   components: { VMdEditor },
   props: {
