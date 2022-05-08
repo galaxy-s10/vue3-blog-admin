@@ -47,6 +47,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { defaultRoutes, iconMap } from '@/router/index';
 import { useAppStore } from '@/store/app';
+import { deepCloneExclude } from '@/utils';
 
 export default defineComponent({
   components: {
@@ -57,6 +58,10 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
+    const copyOriginDefaultRoutes = deepCloneExclude(
+      defaultRoutes,
+      'component'
+    );
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {
@@ -87,10 +92,9 @@ export default defineComponent({
       return routes;
     };
     const menuOptions = handleRoutes([
-      ...defaultRoutes,
+      ...copyOriginDefaultRoutes,
       ...appStore.routes,
     ]).filter((v) => v.meta && !v.meta.hidden);
-
     const handleUpdateValue = (key: string, item) => {
       path.value = key;
       if (!appStore.tabList[key]) {
