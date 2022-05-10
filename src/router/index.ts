@@ -26,7 +26,7 @@ import {
 } from '@vicons/ionicons5';
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { outputStaticUrl } from '../../config/utils/outputStaticUrl';
+import { outputStaticUrl, NODE_ENV } from '../../config/utils/outputStaticUrl';
 
 import type { RouteRecordRaw } from 'vue-router';
 
@@ -613,9 +613,7 @@ export const asyncRoutes = [
 
 const router = createRouter({
   routes: [...defaultRoutes],
-  history: createWebHistory(
-    outputStaticUrl(process.env.NODE_ENV === 'production')
-  ),
+  history: createWebHistory(outputStaticUrl(NODE_ENV === 'production')),
 });
 
 export default router;
