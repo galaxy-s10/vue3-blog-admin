@@ -23,6 +23,7 @@ import {
   FootstepsOutline,
   PersonOutline,
   BagHandleOutline,
+  WarningOutline,
 } from '@vicons/ionicons5';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -58,6 +59,7 @@ export const iconMap = (name) => {
     FootstepsOutline,
     PersonOutline,
     BagHandleOutline,
+    WarningOutline,
   };
   return ico[name];
 };
@@ -584,21 +586,30 @@ export const asyncRoutes = [
     },
     children: [
       {
-        name: 'scheduleOther',
-        path: '/schedule/other',
-        component: () => import('@/views/schedule/other/other.vue'),
-        meta: {
-          title: '其他任务',
-          icon: 'BuildOutline',
-        },
-      },
-      {
         name: 'scheduleBackups',
         path: '/schedule/backups',
         component: () => import('@/views/schedule/backups/backups.vue'),
         meta: {
           title: '备份任务',
           icon: 'ServerOutline',
+        },
+      },
+      {
+        name: 'scheduleCache',
+        path: '/schedule/cache',
+        component: () => import('@/views/schedule/cache/cache.vue'),
+        meta: {
+          title: '内存任务',
+          icon: 'WarningOutline',
+        },
+      },
+      {
+        name: 'scheduleOther',
+        path: '/schedule/other',
+        component: () => import('@/views/schedule/other/other.vue'),
+        meta: {
+          title: '其他任务',
+          icon: 'BuildOutline',
         },
       },
     ],
