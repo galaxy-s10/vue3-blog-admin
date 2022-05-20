@@ -67,7 +67,8 @@ export default defineComponent({
   width: 100%;
   & :deep(.github-markdown-body) {
     blockquote {
-      margin: 0;
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 }
