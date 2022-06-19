@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';

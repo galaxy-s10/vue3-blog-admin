@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard-wrap">
-    2251241
     <div>用户id: {{ userInfo?.id }}</div>
     <div>用户昵称: {{ userInfo?.username }}</div>
     <div>
@@ -17,9 +16,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
-import { useUserStore } from "@/store/user";
+import { useUserStore } from '@/store/user';
 
 export default defineComponent({
   components: {},

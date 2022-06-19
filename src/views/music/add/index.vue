@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from 'vue';
 
-import { formConfig } from "./config/form.config";
+import { formConfig } from './config/form.config';
 
-import { fetchCreateMusic } from "@/api/music";
-import HForm from "@/components/Base/Form";
+import { fetchCreateMusic } from '@/api/music';
+import HForm from '@/components/Base/Form';
 
 export default defineComponent({
   components: { HForm },

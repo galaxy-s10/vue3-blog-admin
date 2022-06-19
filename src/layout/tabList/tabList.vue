@@ -128,8 +128,8 @@ export default defineComponent({
     const pushPath = (item) => {
       router.push(item.key);
     };
-    const closeTag = (v) => {};
-    const scrollFn = (v) => {};
+    const closeTag = () => {};
+    const scrollFn = () => {};
     return {
       route,
       path,

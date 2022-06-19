@@ -1,20 +1,10 @@
 #!/usr/bin/env bash
-#!/usr/bin/env bash
-###
-# Author: shuisheng
-# LastEditors: shuisheng
-# LastEditTime: 2022-04-23 01:46:10
-# Github: https://github.com/galaxy-s10
-# Email: 2274751790@qq.com
-# Description:
-# Date: 2022-04-23 01:41:23
-###
 ###
 # Author: shuisheng
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-16 04:15:31
-# LastEditTime: 2022-04-09 03:40:40
+# LastEditTime: 2022-06-19 20:02:06
 # Description:
 ###
 

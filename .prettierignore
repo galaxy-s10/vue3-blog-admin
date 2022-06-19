@@ -1,0 +1,9 @@
+/dist/
+/public/
+/node_modules/
+.gitignore
+.prettierignore
+.eslintignore
+.browserlistrc
+.editorconfig
+build.sh

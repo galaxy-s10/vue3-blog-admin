@@ -125,8 +125,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import type { PropType } from 'vue';
+
 import { IFormItem } from '../types';
+
+import type { PropType } from 'vue';
 
 import MarkdownEditor from '@/components/MarkdownEditor';
 export default defineComponent({
