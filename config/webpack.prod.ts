@@ -7,10 +7,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 
 import { chalkINFO, emoji } from './utils/chalkTip';
 
-console.log(
-  chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`),
-  emoji.get('white_check_mark')
-);
+console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
 export default {
   mode: 'production',

@@ -11,15 +11,12 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
-import { chalkINFO, emoji } from './utils/chalkTip';
+import { chalkINFO, chalkWRAN, emoji } from './utils/chalkTip';
 import { outputStaticUrl } from './utils/outputStaticUrl';
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
 
-console.log(
-  chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`),
-  emoji.get('white_check_mark')
-);
+console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
 const commonConfig = (isProduction) => {
   const result = {
@@ -293,7 +290,11 @@ export default (env) => {
     configPromise.then((config: any) => {
       // 根据当前环境，合并配置文件
       const mergeConfig = merge(commonConfig(isProduction), config);
-      console.log(chalkINFO(`当前是: ${process.env.NODE_ENV}环境`));
+      console.log(
+        chalkWRAN(
+          `根据当前环境，合并配置文件，当前是: ${process.env.NODE_ENV}环境`
+        )
+      );
       resolve(mergeConfig);
     });
   });

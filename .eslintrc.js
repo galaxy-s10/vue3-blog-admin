@@ -122,7 +122,14 @@ module.exports = {
     // 'no-unused-vars': 1, // xxx is assigned a value but never used，此规则旨在消除未使用的变量、函数和函数参数
     // 'no-var': 1, // Unexpected var, use let or const instead，该规则旨在阻止使用var或鼓励使用const或let代替。
     // 'no-redeclare': 2, // 此规则旨在消除在同一范围内具有多个声明的变量。
-    // 'no-unused-expressions': [2, { allowShortCircuit: true }], // 期望一个赋值或函数调用，却看到了一个表达式，允许&&
+    'no-unused-expressions': [
+      2,
+      {
+        allowShortCircuit: true, //允许短路
+        allowTernary: true, //允许三元
+      },
+    ], // 禁止未使用的表达式
+    // 'no-unused-expressions': 2, // 期望一个赋值或函数调用，却看到了一个表达式，允许&&
     // 'array-callback-return': [2, { allowImplicit: false }], // expects a return value from arrow function.期望箭头函数的返回值。
   },
 };

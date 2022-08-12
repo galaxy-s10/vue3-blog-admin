@@ -17,6 +17,8 @@ app.use(store);
 app.use(router);
 app.use(naive);
 
+const a = 1;
+
 const messageEle = document.createElement('div');
 const appEle = document.getElementById('app');
 appEle?.appendChild(messageEle);

@@ -1,5 +1,6 @@
-import type { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
+
+import type { DataTableColumns } from 'naive-ui';
 
 import { IMusic } from '@/interface';
 
