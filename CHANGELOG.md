@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.4...v0.0.5) (2022-08-12)
+
+
+### Features
+
+* 新增内存任务 ([053daf7](https://github.com/galaxy-s10/vue3-blog-admin/commit/053daf7cc9c44f1b28ace885581ccbaefb26ed01))
+* 修改env相关配置 ([e7c542e](https://github.com/galaxy-s10/vue3-blog-admin/commit/e7c542e91dfbe399c3bca1730b6d13efa9a84d67))
+
+
+### Bug Fixes
+
+* 修改cdn配置 ([2b39d0f](https://github.com/galaxy-s10/vue3-blog-admin/commit/2b39d0fa9af699f66071a21843ed47003cf83c8f))
+* 重置chagnelog ([d308412](https://github.com/galaxy-s10/vue3-blog-admin/commit/d30841236c9d017b36412bec49c8341756dcc7c0))
+
 ## [0.0.4](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.3...v0.0.4) (2022-05-09)
 
 ### Bug Fixes
