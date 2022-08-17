@@ -2,6 +2,7 @@ import {
   BugOutline,
   ChatbubbleEllipsesOutline,
   CloudyOutline,
+  AlarmOutline,
   CodeSlashOutline,
   ColorPaletteOutline,
   FolderOpenOutline,
@@ -52,6 +53,7 @@ export const iconMap = (name) => {
     StarOutline,
     BugOutline,
     CloudyOutline,
+    AlarmOutline,
     ServerOutline,
     TimeOutline,
     RocketOutline,
@@ -138,6 +140,22 @@ export const defaultRoutes: RouteRecordRaw[] = [
         meta: {
           title: '日志列表',
           icon: 'CloudyOutline',
+        },
+      },
+    ],
+  },
+  {
+    path: '/monit',
+    component: Layout,
+    meta: { title: '监控管理' },
+    children: [
+      {
+        name: 'monitlist',
+        path: '/monit/list',
+        component: () => import('@/views/monit/list/index.vue'),
+        meta: {
+          title: '监控列表',
+          icon: 'AlarmOutline',
         },
       },
     ],

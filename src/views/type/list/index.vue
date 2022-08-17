@@ -152,7 +152,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 

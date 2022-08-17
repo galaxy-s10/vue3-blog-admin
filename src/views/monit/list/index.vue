@@ -7,10 +7,10 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1200"
-      :loading="visitorListLoading"
+      :scroll-x="1000"
+      :loading="logListLoading"
       :columns="columns"
-      :data="visitorListData"
+      :data="logListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -26,39 +26,40 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchVisitorList } from '@/api/visitor';
+import { fetchMonitList } from '@/api/monit';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
-import { IVisitor, IList } from '@/interface';
+import { IMonit, IList } from '@/interface';
 
-interface ISearch extends IVisitor, IList {}
+interface ISearch extends IMonit, IList {}
 
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const visitorListData = ref([]);
+    const logListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
 
-    const visitorListLoading = ref(false);
-    const addVisitorRef = ref<any>(null);
+    const logListLoading = ref(false);
+    const currRow = ref({});
+    const addLogRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
       orderName: 'id',
       orderBy: 'desc',
     });
-    const createColumns = (): DataTableColumns<IVisitor> => {
+    const createColumns = (): DataTableColumns<IMonit> => {
       return [...columnsConfig()];
     };
 
     const ajaxFetchList = async (params) => {
       try {
-        visitorListLoading.value = true;
-        const res: any = await fetchVisitorList(params);
+        logListLoading.value = true;
+        const res: any = await fetchMonitList(params);
         if (res.code === 200) {
-          visitorListLoading.value = false;
-          visitorListData.value = res.data.rows;
+          logListLoading.value = false;
+          logListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -93,9 +94,10 @@ export default defineComponent({
     return {
       handlePageChange,
       handleSearch,
-      addVisitorRef,
-      visitorListData,
-      visitorListLoading,
+      currRow,
+      addLogRef,
+      logListData,
+      logListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

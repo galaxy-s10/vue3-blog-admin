@@ -37,12 +37,14 @@ export default defineComponent({
       for (const item in formData.value) {
         formData.value[`${item}`] = null;
       }
+      console.log(formData, 22);
       emit('clickReset');
     };
 
     const handleSearch = async () => {
       try {
         const res = await formRef.value.handleValidate();
+        console.log(res, 111);
         emit('clickSearch', res);
       } catch (error) {
         console.log(error);

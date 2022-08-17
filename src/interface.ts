@@ -90,6 +90,13 @@ export interface IVisitor {
   status?: number;
   ip_data?: string;
 }
+
+export interface IMonit {
+  id?: number;
+  type?: number;
+  info?: string;
+}
+
 export interface IAuth {
   id?: number;
   auth_name?: string;
@@ -113,6 +120,26 @@ export interface IUser {
   created_at?: string;
   updated_at?: string;
   deleted_at?: any;
+}
+export interface IQqUser {
+  id: number;
+  client_id: number;
+  openid: string;
+  unionid: string;
+  nickname: string;
+  figureurl: string;
+  figureurl_1: string;
+  figureurl_2: string;
+  figureurl_qq_1: string;
+  figureurl_qq_2: string;
+  constellation: string;
+  gender: string;
+  city: string;
+  province: string;
+  year: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: any;
 }
 
 export interface ILink {

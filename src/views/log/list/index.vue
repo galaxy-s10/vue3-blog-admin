@@ -39,7 +39,6 @@ export default defineComponent({
     const logListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
-
     const logListLoading = ref(false);
     const currRow = ref({});
     const addLogRef = ref<any>(null);
@@ -82,7 +81,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
