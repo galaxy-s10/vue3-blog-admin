@@ -115,11 +115,15 @@ export const columnsConfig = (): DataTableColumns<IQqUser> => {
       title: '创建时间',
       key: 'created_at',
       align: 'center',
+      width: 200,
+      fixed: 'right',
     },
     {
       title: '更新时间',
       key: 'updated_at',
       align: 'center',
+      width: 200,
+      fixed: 'right',
     },
   ];
 };

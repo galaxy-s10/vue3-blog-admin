@@ -37,5 +37,17 @@ export const columnsConfig = (): DataTableColumns<IStar> => {
         return h('div', {}, row.to_user?.username || '-');
       },
     },
+    {
+      title: '创建时间',
+      key: 'created_at',
+      align: 'center',
+      width: 200,
+    },
+    {
+      title: '更新时间',
+      key: 'updated_at',
+      align: 'center',
+      width: 200,
+    },
   ];
 };

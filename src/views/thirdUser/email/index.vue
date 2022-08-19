@@ -1,6 +1,10 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
+    <HSearch
+      :search-form-config="searchFormConfig"
+      :init-value="params"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
       ref="table"
       remote
@@ -12,7 +16,6 @@
       :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
@@ -20,66 +23,31 @@
 import { NButton } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, reactive } from 'vue';
 
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
+
 import type { DataTableColumns } from 'naive-ui';
 
 import { fetchEmailUserList } from '@/api/emailUser';
-type IProp = {
-  id: number;
-  email: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-};
-const createColumns = (): DataTableColumns<IProp> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      align: 'center',
-    },
-    {
-      title: '邮箱',
-      key: 'email',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
-      key: 'created_at',
-      align: 'center',
-    },
-    {
-      title: '更新时间',
-      key: 'updated_at',
-      align: 'center',
-    },
-  ];
-};
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IEmailUser, IList } from '@/interface';
+interface ISearch extends IEmailUser, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch },
   setup() {
     let logData = ref([]);
     let total = ref(0);
 
     let isLoading = ref(false);
-    const params = reactive({
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
       orderName: 'id',
-    });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
+      orderBy: 'desc',
     });
 
-    /**
-     * ajaxfetchEmailUserList
-     */
     const ajaxFetchList = async (params) => {
       try {
         isLoading.value = true;
@@ -99,19 +67,35 @@ export default defineComponent({
         Promise.reject(err);
       }
     };
+    let paginationReactive = usePage();
 
+    const createColumns = (): DataTableColumns<IEmailUser> => {
+      return [...columnsConfig()];
+    };
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
     const handlePageChange = async (currentPage) => {
-      params.nowPage = currentPage;
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      params.value.nowPage = currentPage;
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
+    };
+    const handleSearch = (v) => {
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
+      handlePageChange(1);
     };
     return {
       handlePageChange,
       isLoading: isLoading,
       logData,
       columns: createColumns(),
+      params,
+      searchFormConfig,
+      handleSearch,
       pagination: paginationReactive,
     };
   },

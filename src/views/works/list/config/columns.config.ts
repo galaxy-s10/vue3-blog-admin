@@ -58,5 +58,17 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
         return row.status === 1 ? '已发布' : '未发布';
       },
     },
+    {
+      title: '创建时间',
+      key: 'created_at',
+      align: 'center',
+      width: 200,
+    },
+    {
+      title: '更新时间',
+      key: 'updated_at',
+      align: 'center',
+      width: 200,
+    },
   ];
 };

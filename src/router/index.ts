@@ -613,9 +613,9 @@ export const asyncRoutes = [
         },
       },
       {
-        name: 'scheduleCache',
-        path: '/schedule/cache',
-        component: () => import('@/views/schedule/cache/cache.vue'),
+        name: 'scheduleMemory',
+        path: '/schedule/memory',
+        component: () => import('@/views/schedule/memory/memory.vue'),
         meta: {
           title: '内存任务',
           icon: 'WarningOutline',

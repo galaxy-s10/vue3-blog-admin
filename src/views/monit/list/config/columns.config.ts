@@ -10,6 +10,7 @@ export const monitTypeMap = {
   4: '监控node进程',
   5: '重启pm2',
   6: '清除buff/cache',
+  7: '备份数据库',
 };
 export const columnsConfig = (): DataTableColumns<IMonit> => {
   return [
@@ -20,7 +21,7 @@ export const columnsConfig = (): DataTableColumns<IMonit> => {
       width: 100,
     },
     {
-      title: 'type',
+      title: '类型',
       key: 'type',
       align: 'center',
       width: 100,
