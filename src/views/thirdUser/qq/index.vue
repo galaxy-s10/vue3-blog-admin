@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, reactive } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';

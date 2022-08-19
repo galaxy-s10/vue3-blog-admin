@@ -150,7 +150,7 @@
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, watch, reactive } from 'vue';
+import { h, defineComponent, onMounted, ref, watch } from 'vue';
 
 import type { DataTableColumns, FormInst } from 'naive-ui';
 
@@ -251,13 +251,6 @@ export default defineComponent({
       c_roles: [],
     });
     const formRef = ref<FormInst | null>(null);
-
-    const params = reactive({
-      nowPage: 1,
-      pageSize: 10,
-      orderBy: 'asc',
-      orderName: 'id',
-    });
 
     watch(
       () => modalVisiable.value,

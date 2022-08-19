@@ -595,6 +595,34 @@ export const asyncRoutes = [
     ],
   },
   {
+    name: 'qiniu',
+    path: '/qiniu',
+    component: Layout,
+    meta: {
+      title: '七牛云管理',
+      icon: 'RocketOutline',
+    },
+    children: [
+      {
+        name: 'qiniuList',
+        path: '/qiniu/list',
+        component: () => import('@/views/qiniu/list/index.vue'),
+        meta: {
+          title: '文件列表',
+        },
+      },
+      {
+        name: 'addQiniu',
+        path: '/qiniu/add',
+        component: () => import('@/views/qiniu/add/index.vue'),
+        meta: {
+          title: '添加文件',
+          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
+        },
+      },
+    ],
+  },
+  {
     name: 'schedule',
     path: '/schedule',
     component: Layout,

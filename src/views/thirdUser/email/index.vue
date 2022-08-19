@@ -10,7 +10,7 @@
       remote
       :loading="isLoading"
       :columns="columns"
-      :data="logData"
+      :data="listData"
       :pagination="pagination"
       :bordered="false"
       :scroll-x="1500"
@@ -20,8 +20,7 @@
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
@@ -37,7 +36,7 @@ interface ISearch extends IEmailUser, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    let logData = ref([]);
+    let listData = ref([]);
     let total = ref(0);
 
     let isLoading = ref(false);
@@ -54,7 +53,7 @@ export default defineComponent({
         const res: any = await fetchEmailUserList(params);
         if (res.code === 200) {
           isLoading.value = false;
-          logData.value = res.data.rows;
+          listData.value = res.data.rows;
           total.value = res.data.total;
 
           paginationReactive.page = params.nowPage;
@@ -91,7 +90,7 @@ export default defineComponent({
     return {
       handlePageChange,
       isLoading: isLoading,
-      logData,
+      listData,
       columns: createColumns(),
       params,
       searchFormConfig,

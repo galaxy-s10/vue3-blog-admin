@@ -67,6 +67,19 @@ export interface IArticle {
   users?: number[];
   keyword?: string;
 }
+export interface IQiniuData {
+  id?: number;
+  user_id?: number;
+  qiniu_bucket?: string;
+  qiniu_key?: string;
+  qiniu_hash?: string;
+  qiniu_fsize?: number;
+  qiniu_mimeType?: string;
+  qiniu_putTime?: number;
+  qiniu_type?: number;
+  qiniu_status?: number;
+  qiniu_md5?: string;
+}
 
 export interface ILog {
   id?: number;

@@ -433,6 +433,7 @@ export default defineComponent({
                     const treeRole = await fetchGetChildAuth(row.id!); //子权限树
                     const allRole = await fetchAllList(); //父级权限下拉框
                     childRoleData.value = treeRole.data.result;
+                    console.log(treeRole.data, 111);
                     selectList.value = allRole.data.rows.map((v) => {
                       return {
                         ...v,
