@@ -2,9 +2,10 @@ import { h } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { ILink } from '@/interface';
+import { QINIU_CDN_URL } from '@/constant';
+import { IQiniuData } from '@/interface';
 
-export const columnsConfig = (): DataTableColumns<ILink> => {
+export const columnsConfig = (): DataTableColumns<IQiniuData> => {
   return [
     {
       title: 'id',
@@ -13,8 +14,8 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       width: 100,
     },
     {
-      title: 'qiniu_bucket',
-      key: 'qiniu_bucket',
+      title: 'bucket',
+      key: 'bucket',
       align: 'center',
       width: 150,
     },
@@ -23,6 +24,17 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       key: 'qiniu_key',
       align: 'center',
       width: 150,
+    },
+    {
+      title: '预览',
+      key: 'qiniu_key',
+      align: 'center',
+      render(row) {
+        return h('img', {
+          src: QINIU_CDN_URL + row.qiniu_key,
+          width: 100,
+        });
+      },
     },
     {
       title: 'qiniu_hash',

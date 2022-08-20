@@ -36,7 +36,7 @@
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
-import AddLink from '../add/index.vue';
+import AddLink from '../upload/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 

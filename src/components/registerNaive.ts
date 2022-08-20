@@ -35,6 +35,9 @@ import {
   NGrid,
   NFormItemGi,
   NInputNumber,
+  NText,
+  NUpload,
+  NUploadDragger,
 } from 'naive-ui';
 
 const components = [
@@ -73,6 +76,9 @@ const components = [
   NGrid,
   NFormItemGi,
   NInputNumber,
+  NText,
+  NUpload,
+  NUploadDragger,
 ];
 
 export const naive = create({

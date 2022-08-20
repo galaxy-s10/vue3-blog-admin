@@ -9,7 +9,8 @@ type IFormType =
   | 'radio'
   | 'checkbox'
   | 'markdown'
-  | 'switch';
+  | 'switch'
+  | 'upload';
 
 export interface IFormItem {
   field: string;

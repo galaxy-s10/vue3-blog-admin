@@ -604,19 +604,43 @@ export const asyncRoutes = [
     },
     children: [
       {
-        name: 'qiniuList',
-        path: '/qiniu/list',
-        component: () => import('@/views/qiniu/list/index.vue'),
+        name: 'qiniuImageList',
+        path: '/qiniu/imageList',
+        component: () => import('@/views/qiniu/imageList/index.vue'),
         meta: {
-          title: '文件列表',
+          title: '图片列表',
+        },
+      },
+      {
+        name: 'qiniuMediaList',
+        path: '/qiniu/mediaList',
+        component: () => import('@/views/qiniu/mediaList/index.vue'),
+        meta: {
+          title: '媒体列表',
+        },
+      },
+      {
+        name: 'qiniuBackupsDatabaseList',
+        path: '/qiniu/backupsDatabaseList',
+        component: () => import('@/views/qiniu/backupsDatabaseList/index.vue'),
+        meta: {
+          title: '数据库列表',
+        },
+      },
+      {
+        name: 'qiniuNuxtBlog',
+        path: '/qiniu/nuxtBlog',
+        component: () => import('@/views/qiniu/nuxtBlog/index.vue'),
+        meta: {
+          title: 'nuxt博客',
         },
       },
       {
         name: 'addQiniu',
-        path: '/qiniu/add',
-        component: () => import('@/views/qiniu/add/index.vue'),
+        path: '/qiniu/upload',
+        component: () => import('@/views/qiniu/upload/index.vue'),
         meta: {
-          title: '添加文件',
+          title: '上传文件',
           roles: ['ALL_ROLE', 'SUPER_ADMIN'],
         },
       },

@@ -97,6 +97,20 @@
                 <template #unchecked>{{ item.unCheckedText }}</template>
               </n-switch>
             </template>
+            <template v-else-if="item.type === 'upload'">
+              <n-upload
+                multiple
+                directory-dnd
+                :max="5"
+                :custom-request="customRequest"
+              >
+                <n-upload-dragger>
+                  <n-text style="font-size: 16px">
+                    点击或者拖动文件到该区域来上传
+                  </n-text>
+                </n-upload-dragger>
+              </n-upload>
+            </template>
             <template v-else-if="item.type === 'markdown'">
               <MarkdownEditor
                 :model-value="modelValue[`${item.field}`]"
@@ -128,6 +142,7 @@ import { defineComponent, ref } from 'vue';
 
 import { IFormItem } from '../types';
 
+import type { UploadCustomRequestOptions } from 'naive-ui';
 import type { PropType } from 'vue';
 
 import MarkdownEditor from '@/components/MarkdownEditor';
@@ -168,6 +183,19 @@ export default defineComponent({
   setup(props, { emit }) {
     const formRef = ref<any>(null);
 
+    const customRequest = ({
+      file,
+      data,
+      headers,
+      withCredentials,
+      action,
+      onFinish,
+      onError,
+      onProgress,
+    }: UploadCustomRequestOptions) => {
+      console.log(file.file);
+    };
+
     const handleValueChange = (value: any, field: string) => {
       emit('update:modelValue', { ...props.modelValue, [field]: value });
     };
@@ -203,6 +231,7 @@ export default defineComponent({
 
     return {
       formRef,
+      customRequest,
       handleValidate,
       handleReset,
       handleConfirm,
