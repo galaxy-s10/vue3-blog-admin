@@ -16,12 +16,14 @@ export const formConfig: IForm = {
       }),
       label: 'prefix',
       placeholder: '请选择前缀',
+      rule: { required: true, trigger: 'blur' },
     },
     {
-      field: 'file',
+      field: 'uploadFiles',
       type: 'upload',
       label: '文件',
       placeholder: '请选择文件',
+      rule: { required: true, trigger: 'blur', type: 'array' },
     },
   ],
 };

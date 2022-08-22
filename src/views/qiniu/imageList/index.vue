@@ -1,5 +1,20 @@
 <template>
   <div>
+    <n-button type="primary" @click="getDiff">获取差异</n-button>
+    <div v-if="diffRes" class="diffRes-warp">
+      <div>
+        <h3>officialDiff</h3>
+        <div v-for="(item, index) in diffRes.officialDiff" :key="index">
+          {{ item }}
+        </div>
+      </div>
+      <div>
+        <h3>qiniudataDiff</h3>
+        <div v-for="(item, index) in diffRes.qiniudataDiff" :key="index">
+          {{ item }}
+        </div>
+      </div>
+    </div>
     <HSearch
       :search-form-config="searchFormConfig"
       :init-value="params"
@@ -42,7 +57,7 @@ import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchQiniuDataList } from '@/api/qiniuData';
+import { fetchDiff, fetchQiniuDataList } from '@/api/qiniuData';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { QINIU_BUCKET, QINIU_PREFIX } from '@/constant';
@@ -63,6 +78,7 @@ export default defineComponent({
     const modalTitle = ref('编辑友链');
     const linkListLoading = ref(false);
     const currRow = ref({});
+    const diffRes = ref();
     const addLinkRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
@@ -129,6 +145,19 @@ export default defineComponent({
         },
       };
       return [...columnsConfig(), action];
+    };
+
+    const getDiff = async () => {
+      try {
+        const res: any = await fetchDiff({ prefix: params.value.prefix });
+        if (res.code === 200) {
+          diffRes.value = res.data;
+        } else {
+          console.error(res);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     const ajaxFetchList = async (params) => {
@@ -214,9 +243,15 @@ export default defineComponent({
       pagination: paginationReactive,
       searchFormConfig,
       params,
+      getDiff,
+      diffRes,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.diffRes-warp {
+  display: flex;
+}
+</style>

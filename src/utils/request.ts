@@ -1,15 +1,15 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import router from '@/router';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
-const config = {
+const config: AxiosRequestConfig = {
   // baseURL: '/api/', // 本地开发：/api/，线上正式服：/prodapi/，线上测试服：/betaapi/
   timeout: 5000,
 };
 
-const service: any = axios.create(config);
+const service = axios.create(config);
 
 // 请求拦截
 service.interceptors.request.use(

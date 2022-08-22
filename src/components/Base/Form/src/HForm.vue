@@ -98,18 +98,10 @@
               </n-switch>
             </template>
             <template v-else-if="item.type === 'upload'">
-              <n-upload
-                multiple
-                directory-dnd
-                :max="5"
-                :custom-request="customRequest"
-              >
-                <n-upload-dragger>
-                  <n-text style="font-size: 16px">
-                    点击或者拖动文件到该区域来上传
-                  </n-text>
-                </n-upload-dragger>
-              </n-upload>
+              <Upload
+                :model-value="modelValue[`${item.field}`]"
+                @update:value="handleValueChange($event, item.field)"
+              ></Upload>
             </template>
             <template v-else-if="item.type === 'markdown'">
               <MarkdownEditor
@@ -142,12 +134,16 @@ import { defineComponent, ref } from 'vue';
 
 import { IFormItem } from '../types';
 
-import type { UploadCustomRequestOptions } from 'naive-ui';
 import type { PropType } from 'vue';
 
+import Upload from '@/components/Base/Upload';
 import MarkdownEditor from '@/components/MarkdownEditor';
+
 export default defineComponent({
-  components: { MarkdownEditor },
+  components: {
+    MarkdownEditor,
+    Upload,
+  },
   props: {
     modelValue: {
       type: Object,
@@ -183,20 +179,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const formRef = ref<any>(null);
 
-    const customRequest = ({
-      file,
-      data,
-      headers,
-      withCredentials,
-      action,
-      onFinish,
-      onError,
-      onProgress,
-    }: UploadCustomRequestOptions) => {
-      console.log(file.file);
-    };
-
     const handleValueChange = (value: any, field: string) => {
+      // console.log(field, value, 12411);
       emit('update:modelValue', { ...props.modelValue, [field]: value });
     };
 
@@ -231,7 +215,6 @@ export default defineComponent({
 
     return {
       formRef,
-      customRequest,
       handleValidate,
       handleReset,
       handleConfirm,

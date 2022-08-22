@@ -24,6 +24,7 @@ import {
   FootstepsOutline,
   PersonOutline,
   BagHandleOutline,
+  CloudDownloadOutline,
   WarningOutline,
 } from '@vicons/ionicons5';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -57,6 +58,7 @@ export const iconMap = (name) => {
     ServerOutline,
     TimeOutline,
     RocketOutline,
+    CloudDownloadOutline,
     BuildOutline,
     FootstepsOutline,
     PersonOutline,
@@ -600,7 +602,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '七牛云管理',
-      icon: 'RocketOutline',
+      icon: 'CloudDownloadOutline',
     },
     children: [
       {

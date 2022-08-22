@@ -8,6 +8,22 @@ export function fetchQiniuDataList(params) {
     params,
   });
 }
+export function fetchDiff(params) {
+  return request({
+    url: '/qiniu_data/diff',
+    method: 'get',
+    params,
+  });
+}
+
+export function fetchUpload(data) {
+  return request({
+    url: '/qiniu_data/upload',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data;' },
+    data,
+  });
+}
 
 export function fetchCreateLink(data: ILink) {
   return request({
