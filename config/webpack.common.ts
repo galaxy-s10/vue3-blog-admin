@@ -291,7 +291,7 @@ const commonConfig = (isProduction) => {
           VUE_APP_RELEASE_PROJECT_PACKAGE: JSON.stringify({
             name: pkg.name,
             version: pkg.version,
-            repository: pkg.repository,
+            repository: pkg.repository.url,
           }),
           VUE_APP_RELEASE_PROJECT_GIT: JSON.stringify({
             commitHash,
