@@ -536,7 +536,7 @@ export default defineComponent({
     const deleteRole = async (id) => {
       try {
         modalConfirmLoading.value = true;
-        const { message } = await fetchDeleteRole(id);
+        const { message }: any = await fetchDeleteRole(id);
         modalVisiable.value = false;
         window.$message.success(message);
       } catch (error) {
@@ -551,7 +551,7 @@ export default defineComponent({
     const batchDeleteChildRoles = async () => {
       try {
         modalConfirmLoading.value = true;
-        const { message } = await fetchBatchDeleteChildRoles({
+        const { message }: any = await fetchBatchDeleteChildRoles({
           id: formValue.value.id,
           c_roles: formValue.value.c_roles,
         });
@@ -569,7 +569,7 @@ export default defineComponent({
     const batchAddChildRoles = async () => {
       try {
         modalConfirmLoading.value = true;
-        const { message } = await fetchBatchAddChildRoles({
+        const { message }: any = await fetchBatchAddChildRoles({
           id: formValue.value.id,
           c_roles: formValue.value.c_roles,
         });

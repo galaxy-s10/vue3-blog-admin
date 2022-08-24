@@ -39,7 +39,7 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        const { message } = await fetchCreateMusic({
+        const { message }: any = await fetchCreateMusic({
           author: v.author,
           name: v.name,
           audio_url: v.audio_url,

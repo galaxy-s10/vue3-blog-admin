@@ -20,7 +20,7 @@
     "start": "webpack serve --config ./config/webpack.common.ts --env development",
     "start:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack serve --config ./config/webpack.common.ts --env development",
     "start:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack serve --config ./config/webpack.common.ts --env development",
-    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./config/webpack.common.ts --env production"
+    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./config/webpack.common.ts --env development"
   },
   "config": {
     "commitizen": {

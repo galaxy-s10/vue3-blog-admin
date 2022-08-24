@@ -1,8 +1,10 @@
 <template>
   <div>
-    <n-button type="primary" @click="getDiff"
-      >获取nuxt-blog-client/差异</n-button
-    >
+    <div class="btn-warp">
+      <n-button type="primary" @click="getDiff">
+        获取nuxt-blog-client/差异
+      </n-button>
+    </div>
     <div v-if="diffRes" class="diffRes-warp">
       <div>
         <h3>officialDiff</h3>
@@ -281,8 +283,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.btn-warp {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
 .diffRes-warp {
   display: flex;
+  justify-content: center;
+
   & > div {
     margin: 0 30px;
   }

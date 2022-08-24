@@ -18,3 +18,14 @@ export const QINIU_PREFIX = {
   'media/': 'media/',
   'nuxt-blog-client/': 'nuxt-blog-client/',
 };
+
+export const MONIT_TYPE_MAP = {
+  1: '服务器内存日志',
+  2: '服务器内存达到阈值',
+  3: '监控七牛云',
+  4: '监控node进程',
+  5: '重启pm2',
+  6: '清除buff/cache',
+  7: '备份数据库成功',
+  8: '备份数据库失败',
+};

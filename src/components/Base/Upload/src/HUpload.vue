@@ -4,9 +4,7 @@
       v-model:file-list="list"
       multiple
       directory-dnd
-      :custom-request1="customRequest"
       @change="handleUploadChange"
-      @update:file-list="handleFileListChange"
     >
       <n-upload-dragger>
         <n-text style="font-size: 16px">
@@ -47,6 +45,7 @@ export default defineComponent({
       // },
     ]);
     watch(
+      // @ts-ignore
       () => props.modelValue,
       (val) => {
         if (val === null) list.value = [];
@@ -58,14 +57,9 @@ export default defineComponent({
       emit('update:value', list.value);
     };
 
-    const handleFileListChange = (data: UploadFileInfo[]) => {};
-    const customRequest = (data: UploadCustomRequestOptions) => {};
-
     return {
       list,
-      customRequest,
       handleUploadChange,
-      handleFileListChange,
     };
   },
 });

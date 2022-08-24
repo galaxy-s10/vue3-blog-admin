@@ -3,7 +3,7 @@ import portfinder from 'portfinder';
 import WebpackDevServer from 'webpack-dev-server';
 
 import ConsoleDebugPlugin from './consoleDebugPlugin';
-import { chalkINFO, emoji } from './utils/chalkTip';
+import { chalkINFO } from './utils/chalkTip';
 import { outputStaticUrl } from './utils/outputStaticUrl';
 
 const localIPv4 = WebpackDevServer.internalIPSync('v4');
@@ -119,8 +119,8 @@ export default new Promise((resolve) => {
           }),
           // 打印控制调试地址
           new ConsoleDebugPlugin({
-            local: `http://localhost:${port}`,
-            network: `http://${localIPv4}:${port}`,
+            local: `http://localhost:${port}${outputStaticUrl(false)}`,
+            network: `http://${localIPv4}:${port}${outputStaticUrl(false)}`,
           }),
         ],
       });

@@ -7,7 +7,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2500"
+      :scroll-x="2600"
       :loading="commentListLoading"
       :columns="columns"
       :data="commentListData"

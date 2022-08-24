@@ -534,7 +534,7 @@ export default defineComponent({
     const deleteRole = async (id) => {
       try {
         modalConfirmLoading.value = true;
-        const { message } = await fetchDeleteAuth(id);
+        const { message }: any = await fetchDeleteAuth(id);
         modalVisiable.value = false;
         window.$message.success(message);
       } catch (error) {
@@ -548,7 +548,7 @@ export default defineComponent({
     const batchDeleteChildRoles = async () => {
       try {
         modalConfirmLoading.value = true;
-        const { message } = await fetchBatchDeleteChildAuths({
+        const { message }: any = await fetchBatchDeleteChildAuths({
           id: formValue.value.id,
           c_auths: formValue.value.c_auths,
         });
@@ -565,7 +565,7 @@ export default defineComponent({
     const batchAddChildRoles = async () => {
       try {
         modalConfirmLoading.value = true;
-        const { message } = await fetchBatchAddChildAuths({
+        const { message }: any = await fetchBatchAddChildAuths({
           id: formValue.value.id,
           c_auths: formValue.value.c_auths,
         });

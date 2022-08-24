@@ -135,12 +135,14 @@ export default defineComponent({
         loading.value = true;
         let message = '';
         if (userInfo.value.email_users[0]) {
-          const res = await fetchCancelSendBindEmailCode(
+          const res: any = await fetchCancelSendBindEmailCode(
             bindEmailForm.value.email
           );
           message = res.message;
         } else {
-          const res = await fetchSendBindEmailCode(bindEmailForm.value.email);
+          const res: any = await fetchSendBindEmailCode(
+            bindEmailForm.value.email
+          );
           message = res.message;
         }
         loading.value = false;
@@ -201,7 +203,7 @@ export default defineComponent({
     };
 
     const ajaxBindEmailForm = async () => {
-      const res = await fetchBindEmail(bindEmailForm.value);
+      const res: any = await fetchBindEmail(bindEmailForm.value);
       window.$message.success(res.message);
       bindEmailForm.value = {
         email: '',
@@ -210,7 +212,7 @@ export default defineComponent({
     };
 
     const ajaxCancelBindEmailForm = async () => {
-      const res = await fetchCancelBindEmail(bindEmailForm.value.code);
+      const res: any = await fetchCancelBindEmail(bindEmailForm.value.code);
       window.$message.success(res.message);
       bindEmailForm.value = {
         email: '',

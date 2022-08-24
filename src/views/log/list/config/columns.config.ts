@@ -10,27 +10,20 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'id',
       key: 'id',
       align: 'center',
+      width: 100,
     },
     {
       title: 'user_id',
       key: 'user_id',
       align: 'center',
+      width: 100,
     },
-    {
-      title: 'api_sql_duration',
-      key: 'api_sql_duration',
-      align: 'center',
-    },
-    {
-      title: 'api_user_agent',
-      key: 'api_user_agent',
-      align: 'center',
-      width: 200,
-    },
+
     {
       title: 'api_from',
       key: 'api_from',
       align: 'center',
+      width: 100,
       render(row) {
         return h('b', null, row.api_from === 1 ? '前台' : '后台');
       },
@@ -39,26 +32,35 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_ip',
       key: 'api_ip',
       align: 'center',
+      width: 100,
     },
     {
       title: 'api_hostname',
       key: 'api_hostname',
       align: 'center',
+      width: 100,
     },
     {
       title: 'api_method',
       key: 'api_method',
       align: 'center',
+      width: 100,
     },
+
     {
       title: 'api_path',
       key: 'api_path',
       align: 'center',
+      width: 150,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: 'api_query',
       key: 'api_query',
       align: 'center',
+      width: 150,
       ellipsis: {
         tooltip: true,
       },
@@ -67,6 +69,31 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_body',
       key: 'api_body',
       align: 'center',
+      width: 150,
+      ellipsis: {
+        tooltip: true,
+      },
+    },
+    {
+      title: 'api_sql_duration',
+      key: 'api_sql_duration',
+      align: 'center',
+      width: 150,
+    },
+    {
+      title: 'api_user_agent',
+      key: 'api_user_agent',
+      align: 'center',
+      width: 150,
+      ellipsis: {
+        tooltip: true,
+      },
+    },
+    {
+      title: 'api_err_stack',
+      key: 'api_err_stack',
+      align: 'center',
+      width: 200,
       ellipsis: {
         tooltip: true,
       },
@@ -75,14 +102,8 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_err_msg',
       key: 'api_err_msg',
       align: 'center',
-    },
-    {
-      title: 'api_err_stack',
-      key: 'api_err_stack',
-      align: 'center',
-      ellipsis: {
-        tooltip: true,
-      },
+      width: 200,
+      fixed: 'right',
     },
     {
       title: '创建时间',
@@ -92,7 +113,7 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       fixed: 'right',
     },
     {
-      title: '更新时间',
+      title: '最后更新',
       key: 'updated_at',
       align: 'center',
       width: 200,

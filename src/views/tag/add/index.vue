@@ -39,7 +39,7 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        const { message } = await fetchCreateTag({
+        const { message }: any = await fetchCreateTag({
           color: v.color,
           name: v.name,
         });

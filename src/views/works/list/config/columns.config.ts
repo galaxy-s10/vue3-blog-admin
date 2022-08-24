@@ -65,7 +65,7 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       width: 200,
     },
     {
-      title: '更新时间',
+      title: '最后更新',
       key: 'updated_at',
       align: 'center',
       width: 200,

@@ -1,6 +1,7 @@
-import { columnsConfig, monitTypeMap } from './columns.config';
+import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
+import { MONIT_TYPE_MAP } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
 
 export const searchFormConfig: IForm = {
@@ -21,8 +22,8 @@ export const searchFormConfig: IForm = {
       type: 'select',
       label: 'type',
       placeholder: '选择类型',
-      options: Object.keys(monitTypeMap).map((v) => {
-        return { label: monitTypeMap[v], value: +v };
+      options: Object.keys(MONIT_TYPE_MAP).map((v) => {
+        return { label: MONIT_TYPE_MAP[v], value: +v };
       }),
     },
     {

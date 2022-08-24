@@ -7,7 +7,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2000"
+      :scroll-x="2600"
       :loading="logListLoading"
       :columns="columns"
       :data="logListData"

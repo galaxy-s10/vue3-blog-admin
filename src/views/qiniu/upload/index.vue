@@ -29,7 +29,6 @@ import { defineComponent, ref } from 'vue';
 
 import { formConfig } from './config/form.config';
 
-import { fetchCreateLink } from '@/api/link';
 import { fetchUpload } from '@/api/qiniuData';
 import HForm from '@/components/Base/Form';
 import { useUserStore } from '@/store/user';
@@ -51,12 +50,9 @@ export default defineComponent({
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
     const uploadRes = ref();
-    const { userInfo } = useUserStore();
 
     const handleConfirm = async (v) => {
-      console.log(v.uploadFiles[0], v, userInfo, 124);
-      // console.log(JSON.parse(JSON.stringify(v.uploadFiles)));
-      const formVal = { ...v, use_id: userInfo!.id };
+      const formVal = { ...v };
       const files = formVal.uploadFiles;
       try {
         const formData = new FormData();
@@ -64,14 +60,11 @@ export default defineComponent({
           key !== 'uploadFiles' && formData.append(key, formVal[key]);
         });
         files.forEach((item) => {
-          console.log(item, 12);
           formData.append('uploadFiles', item.file);
         });
-        console.log(formData);
         confirmLoading.value = true;
         let { message, data }: any = await fetchUpload(formData);
         window.$message.success(message);
-        console.log('data,', data);
         uploadRes.value = data;
       } catch (error) {
         console.log(error);

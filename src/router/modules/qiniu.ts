@@ -22,7 +22,7 @@ export const routes: RouteRecordRaw[] = [
         path: '/qiniu/imageList',
         component: () => import('@/views/qiniu/imageList/index.vue'),
         meta: {
-          title: '图片列表',
+          title: '图片资源',
         },
       },
       {
@@ -30,7 +30,7 @@ export const routes: RouteRecordRaw[] = [
         path: '/qiniu/mediaList',
         component: () => import('@/views/qiniu/mediaList/index.vue'),
         meta: {
-          title: '媒体列表',
+          title: '媒体资源',
         },
       },
       {
@@ -38,15 +38,15 @@ export const routes: RouteRecordRaw[] = [
         path: '/qiniu/backupsDatabaseList',
         component: () => import('@/views/qiniu/backupsDatabaseList/index.vue'),
         meta: {
-          title: '数据库列表',
+          title: '备份数据库资源',
         },
       },
       {
-        name: 'qiniuNuxtBlog',
-        path: '/qiniu/nuxtBlog',
-        component: () => import('@/views/qiniu/nuxtBlog/index.vue'),
+        name: 'qiniuNuxtBlogClient',
+        path: '/qiniu/nuxtBlogClient',
+        component: () => import('@/views/qiniu/nuxtBlogClient/index.vue'),
         meta: {
-          title: 'nuxt博客',
+          title: '博客前台资源',
         },
       },
       {
