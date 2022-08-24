@@ -23,7 +23,9 @@ export const columnsConfig = (): DataTableColumns<IGithubUser> => {
       key: 'login',
       align: 'center',
       width: 200,
-      ellipsis: true,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: 'github_id',

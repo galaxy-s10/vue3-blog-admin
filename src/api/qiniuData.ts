@@ -1,4 +1,4 @@
-import { ILink } from '@/interface';
+import { IQiniuData } from '@/interface';
 import request from '@/utils/request';
 
 export function fetchQiniuDataList(params) {
@@ -25,21 +25,22 @@ export function fetchUpload(data) {
   });
 }
 
-export function fetchCreateLink(data: ILink) {
+export function fetchCreateLink(data: IQiniuData) {
   return request({
     url: '/qiniu_data/create',
     method: 'post',
     data,
   });
 }
-export function fetchUpdateLink(data: ILink) {
+export function fetchUpdateQiniuData(data: IQiniuData) {
   return request({
     url: `/qiniu_data/update/${data.id}`,
     method: 'put',
     data,
   });
 }
-export function fetchDeleteLink(id: number) {
+
+export function fetchDeleteQiniuData(id: number) {
   return request({
     url: `/qiniu_data/delete/${id}`,
     method: 'delete',

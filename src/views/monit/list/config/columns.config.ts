@@ -34,7 +34,6 @@ export const columnsConfig = (): DataTableColumns<IMonit> => {
       key: 'info',
       align: 'center',
       width: 600,
-      // ellipsis: true,
     },
     {
       title: '创建时间',

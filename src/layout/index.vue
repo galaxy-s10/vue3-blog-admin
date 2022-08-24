@@ -25,7 +25,7 @@
       </n-layout-sider>
       <n-layout>
         <HeaderCpt></HeaderCpt>
-        <TabListCpt></TabListCpt>
+        <openTabCpt></openTabCpt>
         <div class="main-wrap">
           <router-view></router-view>
         </div>
@@ -41,27 +41,27 @@ import { defineComponent, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import HeaderCpt from './header/header.vue';
-import TabListCpt from './tabList/tabList.vue';
+import openTabCpt from './openTab/openTab.vue';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { defaultRoutes, iconMap } from '@/router/index';
+import { defaultRoutes } from '@/router/index';
 import { useAppStore } from '@/store/app';
-import { deepCloneExclude } from '@/utils';
+// import { deepCloneExclude } from '@/utils';
 
 export default defineComponent({
   components: {
     HeaderCpt,
-    TabListCpt,
+    openTabCpt,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
-    const copyOriginDefaultRoutes = deepCloneExclude(
-      defaultRoutes,
-      'component'
-    );
+    // const copyOriginDefaultRoutes = deepCloneExclude(
+    //   defaultRoutes,
+    //   'component'
+    // );
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {
@@ -92,7 +92,7 @@ export default defineComponent({
       return routes;
     };
     const menuOptions = handleRoutes([
-      ...copyOriginDefaultRoutes,
+      ...defaultRoutes,
       ...appStore.routes,
     ]).filter((v) => v.meta && !v.meta.hidden);
     const handleUpdateValue = (key: string, item) => {
@@ -127,7 +127,7 @@ export default defineComponent({
       },
       renderMenuIcon(option) {
         const vn = option.meta && option.meta.icon;
-        return vn ? h(iconMap(vn)) : false;
+        return vn ? h(vn) : false;
       },
       expandIcon() {
         return h(NIcon, null, { default: () => h(CaretDownOutline) });

@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { fetchEmailCodeLogin, fetchRegister } from '@/api/emailUser';
 import { fetchLogin, fetchUserInfo } from '@/api/user';
 import { IRole } from '@/interface';
-import { asyncRoutes } from '@/router';
+import { asyncRoutes } from '@/router/index';
 import cache from '@/utils/cache';
 
 type RootState = {

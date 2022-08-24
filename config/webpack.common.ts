@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import path from 'path';
 
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
@@ -11,11 +12,30 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
-import { chalkINFO, chalkWRAN, emoji } from './utils/chalkTip';
+import pkg from '../package.json';
+import { chalkINFO, chalkWRAN } from './utils/chalkTip';
 import { outputStaticUrl } from './utils/outputStaticUrl';
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
 
+let commitHash;
+let commitUserName;
+let commitDate;
+let commitMessage;
+try {
+  // commit哈希
+  commitHash = execSync('git show -s --format=%H').toString().trim();
+  // commit用户名
+  commitUserName = execSync('git show -s --format=%cn').toString().trim();
+  // commit日期
+  commitDate = new Date(
+    execSync(`git show -s --format=%cd`).toString()
+  ).toLocaleString();
+  // commit消息
+  commitMessage = execSync('git show -s --format=%s').toString().trim();
+} catch (error) {
+  console.log(error);
+}
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
 const commonConfig = (isProduction) => {
@@ -265,6 +285,20 @@ const commonConfig = (isProduction) => {
           VUE_APP_RELEASE_PROJECT_ENV: JSON.stringify(
             process.env.VUE_APP_RELEASE_PROJECT_ENV
           ),
+          VUE_APP_RELEASE_PROJECT_LASTBUILD: JSON.stringify(
+            new Date().toLocaleString()
+          ),
+          VUE_APP_RELEASE_PROJECT_PACKAGE: JSON.stringify({
+            name: pkg.name,
+            version: pkg.version,
+            repository: pkg.repository,
+          }),
+          VUE_APP_RELEASE_PROJECT_GIT: JSON.stringify({
+            commitHash,
+            commitDate,
+            commitUserName,
+            commitMessage,
+          }),
         },
         __VUE_OPTIONS_API__: 'true',
         __VUE_PROD_DEVTOOLS__: 'false',

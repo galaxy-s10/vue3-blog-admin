@@ -4,7 +4,7 @@ export const PUBLIC_PATH = process.env.PUBLIC_PATH;
 export const NODE_ENV = process.env.NODE_ENV;
 
 export const outputStaticUrl = (isProduction: boolean) => {
-  console.table({ isProduction, APP_NAME, APP_ENV, NODE_ENV, PUBLIC_PATH });
+  // console.table({ isProduction, APP_NAME, APP_ENV, NODE_ENV, PUBLIC_PATH });
   // console.log(process.env);
 
   if (APP_ENV === undefined && APP_NAME === undefined) {

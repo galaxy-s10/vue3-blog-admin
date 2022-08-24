@@ -1,5 +1,38 @@
 <template>
   <div>
+    <n-button type="primary" @click="getDiff"
+      >获取nuxt-blog-client/差异</n-button
+    >
+    <div v-if="diffRes" class="diffRes-warp">
+      <div>
+        <h3>officialDiff</h3>
+        {{
+          diffRes.officialDiff.length
+            ? '差异数量：' + diffRes.officialDiff.length
+            : ''
+        }}
+        <div v-if="diffRes.officialDiff.length" class="list">
+          <div v-for="(item, index) in diffRes.officialDiff" :key="index">
+            {{ item }}
+          </div>
+        </div>
+        <div v-else>无差异</div>
+      </div>
+      <div>
+        <h3>qiniudataDiff</h3>
+        {{
+          diffRes.qiniudataDiff.length
+            ? '差异数量：' + diffRes.qiniudataDiff.length
+            : ''
+        }}
+        <div v-if="diffRes.qiniudataDiff.length" class="list">
+          <div v-for="(item, index) in diffRes.qiniudataDiff" :key="index">
+            {{ item }}
+          </div>
+        </div>
+        <div v-else>无差异</div>
+      </div>
+    </div>
     <HSearch
       :search-form-config="searchFormConfig"
       :init-value="params"
@@ -7,7 +40,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2200"
+      :scroll-x="2500"
       :loading="linkListLoading"
       :columns="columns"
       :data="linkListData"
@@ -23,11 +56,11 @@
       @confirm="modalConfirm"
       @cancel="modalCancel"
     >
-      <AddLink
+      <EditQiniuData
         ref="addLinkRef"
         v-model="currRow"
         :show-action="false"
-      ></AddLink>
+      ></EditQiniuData>
     </HModal>
   </div>
 </template>
@@ -36,22 +69,28 @@
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
-import AddLink from '../upload/index.vue';
+import EditQiniuData from '../edit/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { fetchQiniuDataList } from '@/api/qiniuData';
+import {
+  fetchDeleteQiniuData,
+  fetchDiff,
+  fetchQiniuDataList,
+  fetchUpdateQiniuData,
+} from '@/api/qiniuData';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
+import { QINIU_BUCKET, QINIU_PREFIX } from '@/constant';
 import { usePage } from '@/hooks/use-page';
 import { IQiniuData, IList } from '@/interface';
 
 interface ISearch extends IQiniuData, IList {}
 
 export default defineComponent({
-  components: { HSearch, HModal, AddLink },
+  components: { HSearch, HModal, EditQiniuData },
   setup() {
     const linkListData = ref([]);
     const total = ref(0);
@@ -59,73 +98,95 @@ export default defineComponent({
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
-    const modalTitle = ref('编辑友链');
+    const modalTitle = ref('编辑文件');
     const linkListLoading = ref(false);
     const currRow = ref({});
+    const diffRes = ref();
     const addLinkRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderName: 'id',
+      orderName: 'qiniu_putTime',
       orderBy: 'desc',
+      prefix: QINIU_PREFIX['nuxt-blog-client/'],
+      bucket: QINIU_BUCKET,
     });
     const createColumns = (): DataTableColumns<IQiniuData> => {
-      const action: any = {
-        title: '操作',
-        key: 'actions',
-        width: 200,
-        align: 'center',
-        fixed: 'right',
-        render(row) {
-          return h(
-            NSpace,
-            {
-              justify: 'center',
-            },
-            () => [
-              h(
-                NButton,
-                {
-                  size: 'small',
-                  onClick: async () => {
-                    modalVisiable.value = true;
-                    currRow.value = { ...row };
+      const action: DataTableColumns<IQiniuData> = [
+        {
+          title: '操作',
+          key: 'actions',
+          width: 200,
+          align: 'center',
+          fixed: 'right',
+          render(row) {
+            return h(
+              NSpace,
+              {
+                justify: 'center',
+              },
+              () => [
+                h(
+                  NButton,
+                  {
+                    size: 'small',
+                    onClick: async () => {
+                      modalVisiable.value = true;
+                      currRow.value = { ...row };
+                    },
                   },
-                },
-                () => '编辑' //用箭头函数返回性能更好。
-              ),
-              h(
-                NPopconfirm,
-                {
-                  'positive-text': '确定',
-                  'negative-text': '取消',
-                  'on-positive-click': async () => {
-                    await fetchDeleteLink(row.id!);
-                    window.$message.success('已删除!');
-                    await handlePageChange(params.value.nowPage);
+                  () => '编辑' //用箭头函数返回性能更好。
+                ),
+                h(
+                  NPopconfirm,
+                  {
+                    'positive-text': '确定',
+                    'negative-text': '取消',
+                    'on-positive-click': async () => {
+                      try {
+                        const { data } = await fetchDeleteQiniuData(row.id!);
+                        window.$message.success(data);
+                        await handlePageChange(params.value.nowPage);
+                      } catch (error) {
+                        console.error(error);
+                      }
+                    },
+                    'on-negative-click': () => {
+                      window.$message.info('已取消!');
+                    },
                   },
-                  'on-negative-click': () => {
-                    window.$message.info('已取消!');
-                  },
-                },
-                {
-                  trigger: () =>
-                    h(
-                      NButton,
-                      {
-                        size: 'small',
-                        type: 'error',
-                      },
-                      () => '删除' //用箭头函数返回性能更好。
-                    ),
-                  default: () => '确定删除吗?',
-                }
-              ),
-            ]
-          );
+                  {
+                    trigger: () =>
+                      h(
+                        NButton,
+                        {
+                          size: 'small',
+                          type: 'error',
+                        },
+                        () => '删除' //用箭头函数返回性能更好。
+                      ),
+                    default: () => '确定删除吗?',
+                  }
+                ),
+              ]
+            );
+          },
         },
-      };
-      return [...columnsConfig(), action];
+      ];
+      return [...columnsConfig(), ...action];
+    };
+
+    const getDiff = async () => {
+      try {
+        const res: any = await fetchDiff({ prefix: params.value.prefix });
+        if (res.code === 200) {
+          diffRes.value = res.data;
+        } else {
+          console.error(res);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     const ajaxFetchList = async (params) => {
@@ -174,12 +235,13 @@ export default defineComponent({
       try {
         modalConfirmLoading.value = true;
         const res = await addLinkRef.value.validateForm();
-        // await fetchUpdateLink({
-        //   ...res,
-        //   created_at: undefined,
-        //   updated_at: undefined,
-        //   deleted_at: undefined,
-        // });
+        console.log(res);
+        await fetchUpdateQiniuData({
+          ...res,
+          created_at: undefined,
+          updated_at: undefined,
+          deleted_at: undefined,
+        });
         window.$message.success('更新成功!');
         modalVisiable.value = false;
         handlePageChange(params.value.nowPage);
@@ -211,9 +273,22 @@ export default defineComponent({
       pagination: paginationReactive,
       searchFormConfig,
       params,
+      getDiff,
+      diffRes,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.diffRes-warp {
+  display: flex;
+  & > div {
+    margin: 0 30px;
+  }
+  .list {
+    height: 150px;
+    overflow-y: scroll;
+  }
+}
+</style>

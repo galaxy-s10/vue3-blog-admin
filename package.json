@@ -1,7 +1,7 @@
 {
   "name": "vue3-blog-admin",
   "version": "0.0.5",
-  "repository": "https://github.com/galaxy-s10/vue3-blog-admin.git",
+  "repository": "https://github.com/galaxy-s10/vue3-blog-admin",
   "license": "MIT",
   "author": "shuisheng <2274751790@qq.com>",
   "scripts": {

@@ -11,7 +11,7 @@
     <div v-if="uploadRes?.success.length">
       <h3>success:</h3>
       <div v-for="(item, index) in uploadRes?.success" :key="index">
-        源文件名: {{ item.originalFilename }} , cdn文件名:
+        源文件名: {{ item.original.filename }}，CDN文件名:
         {{ item.resultFilename }}
       </div>
     </div>
@@ -71,6 +71,7 @@ export default defineComponent({
         confirmLoading.value = true;
         let { message, data }: any = await fetchUpload(formData);
         window.$message.success(message);
+        console.log('data,', data);
         uploadRes.value = data;
       } catch (error) {
         console.log(error);

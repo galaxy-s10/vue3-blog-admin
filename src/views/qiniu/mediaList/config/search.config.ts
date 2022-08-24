@@ -20,17 +20,7 @@ export const searchFormConfig: IForm = {
       field: 'keyWord',
       type: 'input',
       label: '关键字',
-      placeholder: '友链名称/链接/简介',
-    },
-    {
-      field: 'status',
-      type: 'radio',
-      label: '状态',
-      placeholder: '请选择状态',
-      options: [
-        { label: '已审核', value: 1 },
-        { label: '未审核', value: 2 },
-      ],
+      placeholder: '输入qiniu_key',
     },
     ...useOrder(columnsConfig),
   ],

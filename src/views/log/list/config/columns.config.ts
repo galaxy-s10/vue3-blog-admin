@@ -59,13 +59,17 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_query',
       key: 'api_query',
       align: 'center',
-      ellipsis: true,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: 'api_body',
       key: 'api_body',
       align: 'center',
-      ellipsis: true,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: 'api_err_msg',
@@ -76,7 +80,9 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_err_stack',
       key: 'api_err_stack',
       align: 'center',
-      ellipsis: true,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: '创建时间',
