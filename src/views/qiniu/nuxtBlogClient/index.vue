@@ -43,9 +43,9 @@
     <n-data-table
       remote
       :scroll-x="2500"
-      :loading="linkListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="linkListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -59,7 +59,7 @@
       @cancel="modalCancel"
     >
       <EditQiniuData
-        ref="addLinkRef"
+        ref="editQiniuDataRef"
         v-model="currRow"
         :show-action="false"
       ></EditQiniuData>
@@ -94,17 +94,17 @@ interface ISearch extends IQiniuData, IList {}
 export default defineComponent({
   components: { HSearch, HModal, EditQiniuData },
   setup() {
-    const linkListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑文件');
-    const linkListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const diffRes = ref();
-    const addLinkRef = ref<any>(null);
+    const editQiniuDataRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
@@ -193,11 +193,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        linkListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchQiniuDataList(params);
         if (res.code === 200) {
-          linkListLoading.value = false;
-          linkListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -236,7 +236,7 @@ export default defineComponent({
     const modalConfirm = async () => {
       try {
         modalConfirmLoading.value = true;
-        const res = await addLinkRef.value.validateForm();
+        const res = await editQiniuDataRef.value.validateForm();
         console.log(res);
         await fetchUpdateQiniuData({
           ...res,
@@ -268,9 +268,9 @@ export default defineComponent({
       handlePageChange,
       handleSearch,
       currRow,
-      addLinkRef,
-      linkListData,
-      linkListLoading,
+      editQiniuDataRef,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

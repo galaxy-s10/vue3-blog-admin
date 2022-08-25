@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="userListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="userListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -131,7 +131,7 @@ export default defineComponent({
         trigger: ['input', 'blur', 'change'],
       },
     };
-    const userListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
     let roleTreeList = ref([]);
@@ -147,7 +147,7 @@ export default defineComponent({
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑文章');
-    const userListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const params = ref<ISearch>({
       nowPage: 1,
@@ -222,11 +222,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        userListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchUserList(params);
         if (res.code === 200) {
-          userListLoading.value = false;
-          userListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -336,8 +336,8 @@ export default defineComponent({
       modalUpdateShow,
       modalUserTypeEnum,
       currRow,
-      userListData,
-      userListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

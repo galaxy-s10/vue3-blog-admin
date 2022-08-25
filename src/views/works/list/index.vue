@@ -6,12 +6,12 @@
     ></HSearch>
     <n-data-table
       remote
-      :loading="worksListLoading"
+      :scroll-x="1500"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="worksListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
       @update:page="handlePageChange"
     />
     <HModal
@@ -56,19 +56,21 @@ interface ISearch extends IWorks, IList {}
 export default defineComponent({
   components: { HSearch, HModal, AddWorks },
   setup() {
-    const worksListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑标签');
-    const worksListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addWorksRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IWorks> => {
       const action: any = {
@@ -130,11 +132,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        worksListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchWorksList(params);
         if (res.code === 200) {
-          worksListLoading.value = false;
-          worksListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -205,8 +207,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addWorksRef,
-      worksListData,
-      worksListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

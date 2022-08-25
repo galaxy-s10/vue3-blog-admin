@@ -64,6 +64,8 @@ export default defineComponent({
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IType> => {
       const action: any = {

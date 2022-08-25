@@ -8,11 +8,13 @@ export const columnsConfig = (): DataTableColumns<ITag> => {
       title: 'id',
       key: 'id',
       align: 'center',
+      width: 100,
     },
     {
       title: '名称',
       key: 'name',
       align: 'center',
+      width: 100,
     },
     {
       title: '创建时间',

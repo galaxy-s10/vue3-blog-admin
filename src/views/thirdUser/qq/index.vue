@@ -6,14 +6,13 @@
       @click-search="handleSearch"
     ></HSearch>
     <n-data-table
-      ref="table"
       remote
+      :scroll-x="2500"
       :loading="isLoading"
       :columns="columns"
       :data="listData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="2500"
       @update:page="handlePageChange"
     />
   </div>

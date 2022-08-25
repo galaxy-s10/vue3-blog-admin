@@ -32,19 +32,19 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_ip',
       key: 'api_ip',
       align: 'center',
-      width: 100,
+      width: 150,
     },
     {
       title: 'api_hostname',
       key: 'api_hostname',
       align: 'center',
-      width: 100,
+      width: 150,
     },
     {
       title: 'api_method',
       key: 'api_method',
       align: 'center',
-      width: 100,
+      width: 150,
     },
 
     {
@@ -102,7 +102,7 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       title: 'api_err_msg',
       key: 'api_err_msg',
       align: 'center',
-      width: 200,
+      width: 150,
       fixed: 'right',
     },
     {

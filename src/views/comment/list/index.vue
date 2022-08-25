@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="2600"
-      :loading="commentListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="commentListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -37,14 +37,14 @@ interface ISearch extends IComment, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const commentListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑评论');
-    const commentListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addCommentRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -103,11 +103,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        commentListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchCommentList(params);
         if (res.code === 200) {
-          commentListLoading.value = false;
-          commentListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -178,8 +178,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addCommentRef,
-      commentListData,
-      commentListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

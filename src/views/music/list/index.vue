@@ -7,9 +7,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="musicListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="musicListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -56,19 +56,21 @@ interface ISearch extends IMusic, IList {}
 export default defineComponent({
   components: { HSearch, HModal, AddMusic },
   setup() {
-    const musicListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑音乐');
-    const musicListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addMusicRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IMusic> => {
       const action: any = {
@@ -130,11 +132,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        musicListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchMusicList(params);
         if (res.code === 200) {
-          musicListLoading.value = false;
-          musicListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -207,8 +209,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addMusicRef,
-      musicListData,
-      musicListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

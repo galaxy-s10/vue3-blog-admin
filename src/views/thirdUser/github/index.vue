@@ -6,14 +6,13 @@
       @click-search="handleSearch"
     ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="7000"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="listData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="7000"
       @update:page="handlePageChange"
     />
   </div>
@@ -36,10 +35,10 @@ interface ISearch extends IGithubUser, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    let listData = ref([]);
+    let tableListData = ref([]);
     let total = ref(0);
 
-    let isLoading = ref(false);
+    let tableListLoading = ref(false);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
@@ -54,11 +53,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        isLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchGithubUserList(params);
         if (res.code === 200) {
-          isLoading.value = false;
-          listData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
 
           paginationReactive.page = params.nowPage;
@@ -90,8 +89,8 @@ export default defineComponent({
     };
     return {
       handlePageChange,
-      isLoading: isLoading,
-      listData,
+      tableListLoading: tableListLoading,
+      tableListData,
       params,
       searchFormConfig,
       handleSearch,

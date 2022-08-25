@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1200"
-      :loading="visitorListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="visitorListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -36,11 +36,11 @@ interface ISearch extends IVisitor, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const visitorListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
 
-    const visitorListLoading = ref(false);
+    const tableListLoading = ref(false);
     const addVisitorRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
@@ -54,11 +54,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        visitorListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchVisitorList(params);
         if (res.code === 200) {
-          visitorListLoading.value = false;
-          visitorListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -94,8 +94,8 @@ export default defineComponent({
       handlePageChange,
       handleSearch,
       addVisitorRef,
-      visitorListData,
-      visitorListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

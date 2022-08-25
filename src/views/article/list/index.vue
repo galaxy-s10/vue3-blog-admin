@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="articleListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="articleListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -58,14 +58,14 @@ interface ISearch extends IArticle, IList {}
 export default defineComponent({
   components: { HSearch, HModal, AddArticle },
   setup() {
-    const articleListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
     let router = useRouter();
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑文章');
-    const articleListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addArticleRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -137,11 +137,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        articleListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchArticleList(params);
         if (res.code === 200) {
-          articleListLoading.value = false;
-          articleListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -212,8 +212,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addArticleRef,
-      articleListData,
-      articleListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

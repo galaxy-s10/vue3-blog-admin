@@ -6,7 +6,6 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1800"
       :loading="themeListLoading"
       :columns="columns"
       :data="themeListData"
@@ -69,6 +68,8 @@ export default defineComponent({
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<ITheme> => {
       const action: any = {

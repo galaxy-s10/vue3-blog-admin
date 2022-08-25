@@ -7,10 +7,10 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2600"
-      :loading="logListLoading"
+      :scroll-x="2500"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="logListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -36,10 +36,10 @@ interface ISearch extends ILog, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const logListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
     let paginationReactive = usePage();
-    const logListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addLogRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -54,11 +54,11 @@ export default defineComponent({
 
     const ajaxFetchList = async (params) => {
       try {
-        logListLoading.value = true;
+        tableListLoading.value = true;
         const res: any = await fetchLogList(params);
         if (res.code === 200) {
-          logListLoading.value = false;
-          logListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
           paginationReactive.page = params.nowPage;
           paginationReactive.itemCount = res.data.total;
@@ -95,8 +95,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addLogRef,
-      logListData,
-      logListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,
