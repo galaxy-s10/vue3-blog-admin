@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '分类管理',
       icon: renderIcon(FolderOpenOutline),
+      sort: 30,
     },
     children: [
       {

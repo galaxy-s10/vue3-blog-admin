@@ -99,6 +99,7 @@
             </template>
             <template v-else-if="item.type === 'upload'">
               <Upload
+                :max="item.uploadConfig?.max"
                 :model-value="modelValue[`${item.field}`]"
                 @update:value="handleValueChange($event, item.field)"
               ></Upload>
@@ -113,6 +114,7 @@
         </template>
       </n-grid>
 
+      <!-- 这里需要一个空格占位 -->
       <n-form-item v-if="showAction" label=" ">
         <n-space>
           <n-button @click="handleReset">重置</n-button>
@@ -175,13 +177,24 @@ export default defineComponent({
       default: 'left',
     },
   },
-  emits: ['update:modelValue', 'click:confirm'],
+  emits: ['update:modelValue', 'click:confirm', 'update:filed'],
+  // emits: {
+  //   'update:modelValue': (payload: any) => {
+  //     return true;
+  //   },
+  //   'update:filed': (field: string, value: any) => {
+  //     return true;
+  //   },
+  //   'click:confirm': (payload: any) => {
+  //     return true;
+  //   },
+  // },
   setup(props, { emit }) {
     const formRef = ref<any>(null);
-
     const handleValueChange = (value: any, field: string) => {
-      // console.log(field, value, 12411);
+      // console.log(field, value);
       emit('update:modelValue', { ...props.modelValue, [field]: value });
+      emit('update:filed', field, value);
     };
 
     const handleReset = () => {

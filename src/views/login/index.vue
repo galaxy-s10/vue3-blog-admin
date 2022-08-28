@@ -45,6 +45,7 @@
                 <n-input
                   v-model:value="loginForm.password"
                   type="password"
+                  show-password-on="mousedown"
                   placeholder="请输入密码"
                   @focus="onFocus"
                   @blur="onBlur"

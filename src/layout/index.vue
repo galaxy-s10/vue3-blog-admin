@@ -91,10 +91,16 @@ export default defineComponent({
       });
       return routes;
     };
-    const menuOptions = handleRoutes([
-      ...defaultRoutes,
-      ...appStore.routes,
-    ]).filter((v) => v.meta && !v.meta.hidden);
+
+    // sort越大越往上
+    function sortRoute(b, a) {
+      return (a.meta?.sort || 0) - (b.meta?.sort || 0);
+    }
+
+    const menuOptions = handleRoutes(
+      [...defaultRoutes, ...appStore.routes].sort(sortRoute)
+    ).filter((v) => v.meta && !v.meta.hidden);
+
     const handleUpdateValue = (key: string, item) => {
       path.value = key;
       if (!appStore.tabList[key]) {

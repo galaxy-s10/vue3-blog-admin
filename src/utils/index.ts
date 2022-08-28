@@ -1,3 +1,13 @@
+/**
+ * @description 返回正则匹配到的结果（数组或null）
+ * @param {string} str
+ * @param {RegExp} reg
+ * @return {*}
+ */
+export const getStrMatch = (str: string, reg: RegExp) => {
+  return str.match(reg);
+};
+
 /** 使用json进行深克隆 */
 export const deepCloneByJson = (T) => JSON.parse(JSON.stringify(T));
 

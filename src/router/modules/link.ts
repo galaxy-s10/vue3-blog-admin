@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '友链管理',
       icon: renderIcon(InfiniteOutline),
+      sort: 30,
     },
     children: [
       {

@@ -13,7 +13,6 @@ import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import AddArticle from '../add';
-import { formConfig } from './config/form.config';
 
 import { fetchArticleDetail } from '@/api/article';
 export default defineComponent({
@@ -26,12 +25,15 @@ export default defineComponent({
     onMounted(async () => {
       if (!route.query.id) return;
       const { data } = await fetchArticleDetail(+route.query.id!);
-      data.tags = data.tags.map((item) => item.id);
-      data.types = data.types.map((item) => item.id);
-      formData.value = data;
+      data.tags = data.tags!.map((item) => item.id);
+      data.types = data.types!.map((item) => item.id);
+      formData.value = {
+        ...data,
+        head_img: data.head_img ? [data.head_img] : [],
+      };
     });
 
-    return { route, formConfig, formData };
+    return { route, formData };
   },
 });
 </script>

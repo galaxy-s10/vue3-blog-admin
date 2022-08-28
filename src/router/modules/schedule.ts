@@ -20,6 +20,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '定时任务',
       icon: renderIcon(TimeOutline),
+      sort: 30,
     },
     children: [
       {

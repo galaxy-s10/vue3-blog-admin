@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '音乐管理',
       icon: renderIcon(MusicalNotesOutline),
+      sort: 30,
     },
     children: [
       {

@@ -11,7 +11,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/monit',
     component: Layout,
-    meta: { title: '监控管理' },
+    meta: { title: '监控管理', sort: 80 },
     children: [
       {
         name: 'monitlist',

@@ -1,5 +1,5 @@
-import { IQiniuData } from '@/interface';
-import request from '@/utils/request';
+import { IQiniuData, IUploadRes } from '@/interface';
+import request, { IResponse } from '@/utils/request';
 
 export function fetchQiniuDataList(params) {
   return request({
@@ -16,12 +16,9 @@ export function fetchDiff(params) {
   });
 }
 
-export function fetchUpload(data) {
-  return request({
-    url: '/qiniu_data/upload',
-    method: 'post',
+export function fetchUpload(data): Promise<IResponse<IUploadRes>> {
+  return request.post('/qiniu_data/upload', data, {
     headers: { 'Content-Type': 'multipart/form-data;' },
-    data,
   });
 }
 
@@ -44,5 +41,13 @@ export function fetchDeleteQiniuData(id: number) {
   return request({
     url: `/qiniu_data/delete/${id}`,
     method: 'delete',
+  });
+}
+export function fetchDeleteQiniuDataByQiniuKey(qiniu_key: string) {
+  return request({
+    url: `/qiniu_data/delete_by_qiniukey`,
+    method: 'delete',
+    // data: { qiniu_key },
+    params: { qiniu_key }, //后端的koa-body设置了strict:true，则delete不会解析data数据，因此需要使用params
   });
 }

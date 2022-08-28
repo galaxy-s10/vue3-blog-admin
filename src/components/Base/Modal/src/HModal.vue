@@ -10,7 +10,7 @@
         aria-modal="true"
       >
         <template #header-extra>
-          <n-icon size="20" @click="modalCancel">
+          <n-icon size="20" style="cursor: pointer" @click="modalCancel">
             <CloseOutline></CloseOutline>
           </n-icon>
         </template>
@@ -56,24 +56,29 @@ export default defineComponent({
   setup(props, context) {
     const { show } = toRefs(props);
     let showModal = ref(false);
+    console.log('111', show, props.show);
     const modalConfirm = async () => {
       context.emit('confirm');
     };
+
     const modalCancel = () => {
       context.emit('cancel');
-      showModal.value = false;
     };
+
+    watch(
+      () => show.value,
+      (newVal) => {
+        // console.log('show变了', newVal, oldVal);
+        showModal.value = newVal;
+      }
+    );
 
     watch(
       () => showModal.value,
       (newVal, oldVal) => {
-        context.emit('update:show', newVal, oldVal);
-      }
-    );
-    watch(
-      () => show.value,
-      (newVal) => {
+        // console.log('showModal变了', newVal, oldVal);
         showModal.value = newVal;
+        context.emit('update:show', newVal, oldVal);
       }
     );
 

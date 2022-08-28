@@ -7,6 +7,7 @@
       :show-action="showAction"
       :confirm-loading="confirmLoading"
       @click:confirm="handleConfirm"
+      @update:filed="updateFiled"
     ></h-form>
   </div>
 </template>
@@ -18,8 +19,11 @@ import { useRoute } from 'vue-router';
 import { formConfig } from '../config/form.config';
 
 import { fetchUpdateArticle, fetchCreateArticle } from '@/api/article';
+import { fetchDeleteQiniuDataByQiniuKey, fetchUpload } from '@/api/qiniuData';
 import HForm from '@/components/Base/Form';
-import { deleteUselessObjectKey } from '@/utils';
+import { QINIU_CDN_URL, QINIU_PREFIX } from '@/constant';
+import { IArticle } from '@/interface';
+
 export default defineComponent({
   components: { HForm },
   props: {
@@ -33,48 +37,102 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const formData = ref({ ...props.modelValue });
+    const formData = ref<IArticle>({ ...props.modelValue });
+    const originData: IArticle = { ...props.modelValue };
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
+    const qiniuCdnList = ref<string[]>([]);
     const formConfigRes = ref();
     const route = useRoute();
+    const reg =
+      /https:\/\/resource\.hsslive\.cn\/image\/.+?(jpg|jpeg|png|gif|webp)/gim;
 
     onBeforeMount(async () => {
       formConfigRes.value = await formConfig();
     });
-    const handleConfirm = async (v) => {
+    const updateFiled = (filed, value) => {
+      // console.log('updateFiled', filed, value);
+      if (filed === 'content') {
+        const str: string = value;
+        const arr = str.match(reg);
+        if (Array.isArray(arr)) {
+          qiniuCdnList.value = [
+            ...new Set([...new Set(qiniuCdnList.value), ...new Set(arr)]),
+          ];
+        }
+      }
+    };
+    const uploadImg = async (files: any[]) => {
+      console.log('上传新的封面图');
+      const formVal = { prefix: QINIU_PREFIX['image/'] };
+      const formData = new FormData();
+      Object.keys(formVal).forEach((key) => {
+        key !== 'uploadFiles' && formData.append(key, formVal[key]);
+      });
+      files.forEach((item) => {
+        formData.append('uploadFiles', item.file);
+      });
+      const { data } = await fetchUpload(formData);
+      const success = data.success;
+      return success[0].resultFilename;
+    };
+    const handleConfirm = async (v: IArticle) => {
+      console.log(v, 444, v.head_img, v.title, originData.head_img);
+      // console.log(originData.head_img![0].replace(QINIU_CDN_URL, ''));
+      // return;
       try {
         confirmLoading.value = true;
         if (route.query.id) {
-          await fetchUpdateArticle(
-            deleteUselessObjectKey({
-              title: v.title,
-              content: v.content,
-              desc: v.desc,
-              head_img: v.head_img,
-              id: v.id,
-              is_comment: v.is_comment,
-              status: v.status,
-              tags: v.tags,
-              types: v.types,
-              priority: v.priority,
-            })
-          );
+          if (v.head_img![0] !== originData.head_img![0]) {
+            console.log('修改了封面图');
+            if (originData.head_img![0]) {
+              console.log('先删除旧封面图');
+              const qiniu_key = originData.head_img![0].replace(
+                QINIU_CDN_URL,
+                ''
+              );
+              await fetchDeleteQiniuDataByQiniuKey(qiniu_key);
+            } else {
+              console.log('原本没有封面图');
+            }
+            if (v.head_img![0]) {
+              console.log('上传新的封面图');
+              v.head_img = await uploadImg(v.head_img as any[]);
+            } else {
+              v.head_img = null;
+            }
+          } else {
+            console.log('没修改封面图');
+            v.head_img = v.head_img![0];
+          }
+          await fetchUpdateArticle({
+            title: v.title,
+            content: v.content,
+            desc: v.desc,
+            head_img: v.head_img,
+            id: v.id,
+            is_comment: v.is_comment,
+            status: v.status,
+            tags: v.tags,
+            types: v.types,
+            priority: v.priority,
+          });
           window.$message.success('更新成功');
         } else {
-          await fetchCreateArticle(
-            deleteUselessObjectKey({
-              title: v.title,
-              content: v.content,
-              desc: v.desc,
-              head_img: v.head_img,
-              is_comment: v.is_comment,
-              status: v.status,
-              tags: v.tags,
-              types: v.types,
-              priority: v.priority,
-            })
-          );
+          if (v.head_img) {
+            v.head_img = await uploadImg(v.head_img as any[]);
+          }
+          await fetchCreateArticle({
+            title: v.title,
+            content: v.content,
+            desc: v.desc,
+            head_img: v.head_img,
+            is_comment: v.is_comment,
+            status: v.status,
+            tags: v.tags,
+            types: v.types,
+            priority: v.priority,
+          });
           window.$message.success('新增成功');
         }
       } catch (error) {
@@ -95,6 +153,7 @@ export default defineComponent({
       formData,
       confirmLoading,
       handleConfirm,
+      updateFiled,
       validateForm,
     };
   },

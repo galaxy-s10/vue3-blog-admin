@@ -20,6 +20,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '设置',
       icon: renderIcon(SettingsOutline),
+      sort: 90,
     },
     children: [
       {

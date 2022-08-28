@@ -7,7 +7,6 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1800"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -15,35 +14,12 @@
       :bordered="false"
       @update:page="handlePageChange"
     />
-    <HModal
-      v-model:show="modalVisiable"
-      :title="modalTitle"
-      :loading="modalConfirmLoading"
-      @update:show="modalUpdateShow"
-      @confirm="modalConfirm"
-      @cancel="modalCancel"
-    >
-      <div ref="addArticleRef">
-        <div v-if="qiniuCdnList?.length">
-          一共{{ qiniuCdnList.length }}个图片
-          <div class="qiniuCdnList-wrap">
-            <div v-for="(item, index) in qiniuCdnList" :key="index">
-              {{ item }}
-              <img :src="item" width="50" />
-            </div>
-          </div>
-        </div>
-        <div v-else>没有七牛云cdn图片</div>
-      </div>
-    </HModal>
   </div>
 </template>
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { TableColumn } from 'naive-ui/lib/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
@@ -51,43 +27,40 @@ import { searchFormConfig } from './config/search.config';
 import type { DataTableColumns } from 'naive-ui';
 
 import {
-  fetchArticleList,
-  fetchUpdateArticle,
-  fetchDeleteArticle,
-  fetchArticleDetail,
-} from '@/api/article';
-import HModal from '@/components/Base/Modal';
+  fetchBlacklistList,
+  fetchUpdateBlacklist,
+  fetchDeleteBlacklist,
+} from '@/api/blacklist';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
-import { IArticle, IList } from '@/interface';
+import { IBlacklist, IList } from '@/interface';
 
-interface ISearch extends IArticle, IList {}
+interface ISearch extends IBlacklist, IList {}
 
 export default defineComponent({
-  components: { HSearch, HModal },
+  components: { HSearch },
   setup() {
     const tableListData = ref([]);
-    const qiniuCdnList = ref<any>();
     const total = ref(0);
     let paginationReactive = usePage();
-    let router = useRouter();
+
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
-    const modalTitle = ref('编辑文章');
+    const modalTitle = ref('编辑友链');
     const tableListLoading = ref(false);
     const currRow = ref({});
-    const addArticleRef = ref<any>(null);
+    const addLinkRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
       orderName: 'id',
       orderBy: 'desc',
     });
-    const createColumns = (): DataTableColumns<IArticle> => {
-      const action: TableColumn<IArticle> = {
+    const createColumns = (): DataTableColumns<IBlacklist> => {
+      const action: any = {
         title: '操作',
         key: 'actions',
-        width: 300,
+        width: 200,
         align: 'center',
         fixed: 'right',
         render(row) {
@@ -102,34 +75,8 @@ export default defineComponent({
                 {
                   size: 'small',
                   onClick: async () => {
-                    qiniuCdnList.value = [];
                     modalVisiable.value = true;
-                    const { code, data, message }: any =
-                      await fetchArticleDetail(row.id as number);
-                    if (code === 200) {
-                      const str: string = data.content;
-                      let reg =
-                        /https:\/\/resource\.hsslive\.cn\/image\/.+?(jpg|jpeg|png|gif|webp)/gim;
-                      const arr = str.match(reg);
-                      if (Array.isArray(arr)) {
-                        qiniuCdnList.value = [...new Set(arr)];
-                      }
-                    } else {
-                      window.$message.error(message);
-                    }
-                  },
-                },
-                () => '查看图片' //用箭头函数返回性能更好。
-              ),
-              h(
-                NButton,
-                {
-                  size: 'small',
-                  onClick: async () => {
-                    router.push({
-                      name: 'updateArticle',
-                      query: { id: row.id },
-                    });
+                    currRow.value = { ...row };
                   },
                 },
                 () => '编辑' //用箭头函数返回性能更好。
@@ -140,7 +87,7 @@ export default defineComponent({
                   'positive-text': '确定',
                   'negative-text': '取消',
                   'on-positive-click': async () => {
-                    await fetchDeleteArticle(row.id!);
+                    await fetchDeleteBlacklist(row.id!);
                     window.$message.success('已删除!');
                     await handlePageChange(params.value.nowPage);
                   },
@@ -171,7 +118,7 @@ export default defineComponent({
     const ajaxFetchList = async (params) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchArticleList(params);
+        const res: any = await fetchBlacklistList(params);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
@@ -206,19 +153,22 @@ export default defineComponent({
       handlePageChange(1);
     };
 
-    const modalCancel = () => {};
+    const modalCancel = () => {
+      modalVisiable.value = false;
+    };
 
     const modalConfirm = async () => {
       try {
         modalConfirmLoading.value = true;
-        const res = await addArticleRef.value.validateForm();
-        await fetchUpdateArticle({
+        const res = await addLinkRef.value.validateForm();
+        await fetchUpdateBlacklist({
           ...res,
           created_at: undefined,
           updated_at: undefined,
           deleted_at: undefined,
         });
         window.$message.success('更新成功!');
+        modalVisiable.value = false;
         handlePageChange(params.value.nowPage);
       } catch (error) {
         console.log(error);
@@ -228,7 +178,6 @@ export default defineComponent({
     };
 
     const modalUpdateShow = (newVal) => {
-      console.log('modalUpdateShow', newVal);
       modalVisiable.value = newVal;
     };
 
@@ -242,9 +191,8 @@ export default defineComponent({
       handlePageChange,
       handleSearch,
       currRow,
-      addArticleRef,
+      addLinkRef,
       tableListData,
-      qiniuCdnList,
       tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
@@ -255,9 +203,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.qiniuCdnList-wrap {
-  max-height: 300px;
-  overflow: scroll;
-}
-</style>
+<style lang="scss" scoped></style>

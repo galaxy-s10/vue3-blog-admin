@@ -52,19 +52,37 @@ export interface ITheme {
   lang?: string;
   desc?: string;
 }
+
+export interface IUploadRes {
+  error: string[];
+  success: {
+    bucket: string;
+    key: string;
+    hash: string;
+    fsize: number;
+    mimeType: string;
+    original: {
+      filename: string;
+      key: string;
+      prefix: string;
+      putTime: string;
+    };
+    resultFilename: string;
+  }[];
+}
 export interface IArticle {
   id?: number;
   title?: string;
   desc?: string;
   content?: string;
-  head_img?: string;
+  head_img?: string | any[] | null;
   is_comment?: number;
   priority?: number;
   status?: number;
   click?: number;
-  tags?: number[];
-  types?: number[];
-  users?: number[];
+  tags?: number[] | ITag[];
+  types?: number[] | IType[];
+  users?: number[] | IUser[];
   keyword?: string;
 }
 export interface IQiniuData {
@@ -97,7 +115,7 @@ export interface ILog {
   api_err_msg?: string;
   api_err_stack?: string;
 }
-export interface IVisitor {
+export interface IVisitorLog {
   id?: number;
   user_id?: number;
   ip?: string;
@@ -105,6 +123,12 @@ export interface IVisitor {
   ip_data?: string;
 }
 
+export interface IBlacklist {
+  id?: number;
+  ip?: string;
+  user_id?: number;
+  msg?: string;
+}
 export interface IMonit {
   id?: number;
   type?: number;

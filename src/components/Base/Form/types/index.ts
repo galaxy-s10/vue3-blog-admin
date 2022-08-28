@@ -20,6 +20,9 @@ export interface IFormItem {
   labelWidth?: number;
   rule?: FormItemRule | Array<FormItemRule>;
   disabled?: boolean;
+  uploadConfig?: {
+    max: number;
+  };
   path?: string;
   placeholder?: any;
   options?: any[];

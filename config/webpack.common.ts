@@ -7,7 +7,7 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
-import { DefinePlugin } from 'webpack';
+import { DefinePlugin, Configuration } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
@@ -39,7 +39,7 @@ try {
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
 const commonConfig = (isProduction) => {
-  const result = {
+  const result: Configuration = {
     entry: {
       shared: ['vue', 'vue-router', 'pinia'],
       main: {
@@ -83,6 +83,9 @@ const commonConfig = (isProduction) => {
       alias: {
         '@': path.resolve(__dirname, '../src'), // 设置路径别名
         vue$: 'vue/dist/vue.runtime.esm-bundler.js', // 设置vue的路径别名
+      },
+      fallback: {
+        path: require.resolve('path-browserify'),
       },
     },
     resolveLoader: {

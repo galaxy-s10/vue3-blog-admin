@@ -3,8 +3,10 @@
     <n-upload
       v-model:file-list="list"
       multiple
+      :max="max"
       directory-dnd
       @change="handleUploadChange"
+      @before-upload="beforeUpload"
     >
       <n-upload-dragger>
         <n-text style="font-size: 16px">
@@ -18,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 
-import type { UploadCustomRequestOptions, UploadFileInfo } from 'naive-ui';
+import type { UploadFileInfo } from 'naive-ui';
 
 export default defineComponent({
   components: {},
@@ -33,33 +35,46 @@ export default defineComponent({
         return [];
       },
     },
+    max: {
+      type: Number,
+      default: 10,
+    },
   },
   emits: ['update:value'],
   setup(props, { emit }) {
-    const list = ref<UploadFileInfo[]>([
-      // {
-      //   id: 'url-test',
-      //   name: 'URL 测试',
-      //   url: 'https://www.mocky.io/v2/5e4bafc63100007100d8b70f',
-      //   status: 'finished',
-      // },
-    ]);
-    watch(
+    const list = ref<UploadFileInfo[]>(
       // @ts-ignore
-      () => props.modelValue,
-      (val) => {
-        if (val === null) list.value = [];
-      }
+      props.modelValue.map((item) => {
+        return {
+          id: item,
+          name: item,
+          url: item,
+          status: 'finished',
+        };
+      })
     );
+
+    // watch(
+    //   // @ts-ignore
+    //   () => props.modelValue,
+    //   (val) => {
+    //     if (val === null) list.value = [];
+    //   }
+    // );
+
     const handleUploadChange = (data: { fileList: UploadFileInfo[] }) => {
       list.value = data.fileList;
-      console.log(list.value, 222);
       emit('update:value', list.value);
+    };
+
+    const beforeUpload = () => {
+      return true;
     };
 
     return {
       list,
       handleUploadChange,
+      beforeUpload,
     };
   },
 });

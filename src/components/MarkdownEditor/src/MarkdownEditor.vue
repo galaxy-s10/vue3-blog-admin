@@ -3,7 +3,9 @@
     <v-md-editor
       v-model="text"
       height="600px"
+      :disabled-menus="[]"
       @change="handleChange"
+      @upload-image="handleUploadImage"
     ></v-md-editor>
   </div>
 </template>
@@ -46,7 +48,7 @@ export default defineComponent({
   emits: ['update:value'],
   setup(props, { emit }) {
     const text = ref(props.modelValue);
-
+    const allImg = ref<string[]>([]);
     watch(
       () => props.modelValue,
       (val) => {
@@ -57,7 +59,19 @@ export default defineComponent({
       text.value = str;
       emit('update:value', str);
     };
-    return { text, handleChange };
+    const handleUploadImage = (event, insertImage, files) => {
+      // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+      console.log(files);
+      const img = {
+        url: 'https://resource.hsslive.cn/image/1578937683585vueblog.webp',
+        desc: 'https://resource.hsslive.cn/image/1578937683585vueblog.webp',
+        // width: 'auto',
+        // height: 'auto',
+      };
+      insertImage(img);
+      allImg.value.push(img.url);
+    };
+    return { text, handleChange, handleUploadImage };
   },
 });
 </script>

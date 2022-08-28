@@ -14,6 +14,7 @@ export const routes: RouteRecordRaw[] = [
     component: Layout,
     meta: {
       title: '访客管理',
+      sort: 80,
     },
     children: [
       {

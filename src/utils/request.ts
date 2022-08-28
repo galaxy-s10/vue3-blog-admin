@@ -11,6 +11,12 @@ const config: AxiosRequestConfig = {
 
 const service = axios.create(config);
 
+export interface IResponse<T> {
+  code: number;
+  data: T;
+  message: string;
+}
+
 // 请求拦截
 service.interceptors.request.use(
   (config) => {

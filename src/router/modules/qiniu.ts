@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '七牛云管理',
       icon: renderIcon(CloudDownloadOutline),
+      sort: 40,
     },
     children: [
       {

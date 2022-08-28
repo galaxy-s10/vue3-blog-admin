@@ -15,6 +15,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '第三方用户',
       icon: renderIcon(PeopleOutline),
+      sort: 50,
     },
     children: [
       {

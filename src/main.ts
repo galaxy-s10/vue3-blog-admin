@@ -9,6 +9,7 @@ import store from '@/store/index';
 import { showProjectInfo } from '@/utils/showProjectInfo';
 import '@/assets/css/index.scss';
 import '@/permission';
+import '@/performance';
 
 showProjectInfo();
 const app = createApp(App);
@@ -16,11 +17,8 @@ const message = createApp(Message);
 
 app.use(store);
 app.use(router);
-import '@/performance';
 
 app.use(naive);
-
-const a = 1;
 
 const messageEle = document.createElement('div');
 const appEle = document.getElementById('app');

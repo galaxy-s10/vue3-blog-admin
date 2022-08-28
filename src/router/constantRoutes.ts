@@ -16,6 +16,9 @@ export const routes: RouteRecordRaw[] = [
     path: '/',
     redirect: '/dashboard',
     component: Layout,
+    meta: {
+      sort: 100,
+    },
     children: [
       {
         name: 'dashboard',
@@ -44,6 +47,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '错误页面',
       icon: renderIcon(BugOutline),
+      sort: 1,
     },
     children: [
       {
@@ -75,7 +79,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/log',
     component: Layout,
-    meta: { title: '日志管理' },
+    meta: { title: '日志管理', sort: 80 },
     children: [
       {
         name: 'loglist',

@@ -29,9 +29,9 @@ import type { DataTableColumns } from 'naive-ui';
 import { fetchVisitorList } from '@/api/visitor';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
-import { IVisitor, IList } from '@/interface';
+import { IVisitorLog, IList } from '@/interface';
 
-interface ISearch extends IVisitor, IList {}
+interface ISearch extends IVisitorLog, IList {}
 
 export default defineComponent({
   components: { HSearch },
@@ -48,7 +48,7 @@ export default defineComponent({
       orderName: 'id',
       orderBy: 'desc',
     });
-    const createColumns = (): DataTableColumns<IVisitor> => {
+    const createColumns = (): DataTableColumns<IVisitorLog> => {
       return [...columnsConfig()];
     };
 

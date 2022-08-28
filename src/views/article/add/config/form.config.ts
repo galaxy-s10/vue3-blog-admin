@@ -1,6 +1,8 @@
 import { fetchTagList } from '@/api/tag';
 import { fetchTypeList } from '@/api/type';
-export const formConfig = async () => {
+import { IForm } from '@/components/Base/Form';
+
+export const formConfig = async (): Promise<IForm> => {
   const params = { nowPage: 1, pageSize: 100 };
   const [tagList, typeList] = await Promise.all([
     fetchTagList(params),
@@ -64,7 +66,10 @@ export const formConfig = async () => {
       },
       {
         field: 'head_img',
-        type: 'input',
+        type: 'upload',
+        uploadConfig: {
+          max: 1,
+        },
         label: '封面图',
         placeholder: '请输入封面图',
       },

@@ -31,7 +31,6 @@ import { formConfig } from './config/form.config';
 
 import { fetchUpload } from '@/api/qiniuData';
 import HForm from '@/components/Base/Form';
-import { useUserStore } from '@/store/user';
 
 export default defineComponent({
   components: { HForm },
