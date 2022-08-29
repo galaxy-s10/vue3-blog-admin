@@ -35,34 +35,34 @@ interface ISearch extends IGithubUser, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    let tableListData = ref([]);
-    let total = ref(0);
+    const tableListData = ref([]);
+    const total = ref(0);
 
-    let tableListLoading = ref(false);
+    const tableListLoading = ref(false);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
       orderName: 'id',
       orderBy: 'desc',
     });
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const createColumns = (): DataTableColumns<IGithubUser> => {
       return [...columnsConfig()];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchGithubUserList(params);
+        const res: any = await fetchGithubUserList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
 
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -89,7 +89,7 @@ export default defineComponent({
     };
     return {
       handlePageChange,
-      tableListLoading: tableListLoading,
+      tableListLoading,
       tableListData,
       params,
       searchFormConfig,

@@ -46,8 +46,9 @@ export function fetchDeleteQiniuData(id: number) {
 export function fetchDeleteQiniuDataByQiniuKey(qiniu_key: string) {
   return request({
     url: `/qiniu_data/delete_by_qiniukey`,
+    // delete请求的话，设置params参数都是在地址栏的，因此会将如果参数是数组，会将数组序列化，如http://127.0.0.1:3300/role/batch_delete_child_roles?id=1&c_roles=18&c_roles=2&c_roles=%2733%27
     method: 'delete',
     // data: { qiniu_key },
-    params: { qiniu_key }, //后端的koa-body设置了strict:true，则delete不会解析data数据，因此需要使用params
+    params: { qiniu_key }, // 后端的koa-body设置了strict:true，则delete不会解析data数据，因此需要使用params
   });
 }

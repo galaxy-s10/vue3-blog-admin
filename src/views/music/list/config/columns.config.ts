@@ -2,7 +2,6 @@ import { h } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { QINIU_CDN_URL } from '@/constant';
 import { IMusic } from '@/interface';
 
 export const columnsConfig = (): DataTableColumns<IMusic> => {

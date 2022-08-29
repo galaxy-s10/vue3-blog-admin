@@ -38,7 +38,7 @@ export default defineComponent({
   setup() {
     const starListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
@@ -71,7 +71,7 @@ export default defineComponent({
                 {
                   'positive-text': '确定',
                   'negative-text': '取消',
-                  'on-positive-click': async () => {
+                  'on-positive-click': () => {
                     // await fetchDeleteStar(row.id!);
                     window.$message.info('敬请期待!');
                     // await handlePageChange(params.value.nowPage);
@@ -88,7 +88,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -100,17 +100,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         starListLoading.value = true;
-        const res: any = await fetchStarList(params);
+        const res: any = await fetchStarList(args);
         if (res.code === 200) {
           starListLoading.value = false;
           starListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }

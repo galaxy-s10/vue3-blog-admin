@@ -38,7 +38,7 @@ export default defineComponent({
   setup() {
     const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const tableListLoading = ref(false);
     const currRow = ref({});
@@ -53,17 +53,17 @@ export default defineComponent({
       return [...columnsConfig()];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchMonitList(params);
+        const res: any = await fetchMonitList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }

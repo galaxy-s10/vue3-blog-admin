@@ -54,15 +54,15 @@ export default defineComponent({
       const formVal = { ...v };
       const files = formVal.uploadFiles;
       try {
-        const formData = new FormData();
+        const form = new FormData();
         Object.keys(formVal).forEach((key) => {
-          key !== 'uploadFiles' && formData.append(key, formVal[key]);
+          key !== 'uploadFiles' && form.append(key, formVal[key]);
         });
         files.forEach((item) => {
-          formData.append('uploadFiles', item.file);
+          form.append('uploadFiles', item.file);
         });
         confirmLoading.value = true;
-        let { message, data }: any = await fetchUpload(formData);
+        const { message, data }: any = await fetchUpload(form);
         window.$message.success(message);
         uploadRes.value = data;
       } catch (error) {

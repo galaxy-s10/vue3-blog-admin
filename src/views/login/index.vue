@@ -237,13 +237,8 @@ export default defineComponent({
     /** github登录 */
     const githubLogin = () => {
       const url =
-        GITHUB_OAUTH_URL +
-        'client_id=' +
-        GITHUB_CLIENT_ID +
-        '&redirect_uri=' +
-        REDIRECT_URI +
-        'github_login' +
-        '&scope=user';
+        `${GITHUB_OAUTH_URL}client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}github_login` +
+        `&scope=user`;
       window.open(
         url,
         'github_login_window',
@@ -297,7 +292,7 @@ export default defineComponent({
     const handleLoginSubmit = (e) => {
       e.preventDefault();
       // @ts-ignore
-      loginFormRef.value.validate(async (errors) => {
+      loginFormRef.value.validate((errors) => {
         if (!errors) {
           handleLogin();
         }
@@ -306,7 +301,7 @@ export default defineComponent({
     const handleRegisterSubmit = (e) => {
       e.preventDefault();
       // @ts-ignore
-      registerFormRef.value.validate(async (errors) => {
+      registerFormRef.value.validate((errors) => {
         if (!errors) {
           if (currentTab.value === 'register') {
             handleRegister();

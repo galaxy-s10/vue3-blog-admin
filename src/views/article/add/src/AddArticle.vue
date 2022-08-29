@@ -65,14 +65,14 @@ export default defineComponent({
     const uploadImg = async (files: any[]) => {
       console.log('上传新的封面图');
       const formVal = { prefix: QINIU_PREFIX['image/'] };
-      const formData = new FormData();
+      const form = new FormData();
       Object.keys(formVal).forEach((key) => {
-        key !== 'uploadFiles' && formData.append(key, formVal[key]);
+        key !== 'uploadFiles' && form.append(key, formVal[key]);
       });
       files.forEach((item) => {
-        formData.append('uploadFiles', item.file);
+        form.append('uploadFiles', item.file);
       });
-      const { data } = await fetchUpload(formData);
+      const { data } = await fetchUpload(form);
       const success = data.success;
       return success[0].resultFilename;
     };

@@ -4,6 +4,7 @@ import { renderIcon } from '../utils';
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 // 异步路由
@@ -15,7 +16,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '角色管理',
       icon: renderIcon(LockClosedOutline),
-      sort: 60,
+      sort: ROUTE_SORT.role,
     },
     children: [
       {
@@ -24,6 +25,14 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/role/list/index.vue'),
         meta: {
           title: '角色列表',
+        },
+      },
+      {
+        name: 'roleTree',
+        path: '/role/tree',
+        component: () => import('@/views/role/tree/index.vue'),
+        meta: {
+          title: '角色树',
         },
       },
       {

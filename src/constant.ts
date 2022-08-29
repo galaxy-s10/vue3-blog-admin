@@ -29,3 +29,35 @@ export const MONIT_TYPE_MAP = {
   7: '备份数据库成功',
   8: '备份数据库失败',
 };
+
+// 路由sort，值越大越往上
+export const ROUTE_SORT = {
+  dashboard: 300,
+
+  log: 200,
+  monit: 200,
+  blacklist: 200,
+  visitor: 200,
+
+  setting: 180,
+  schedule: 180,
+
+  user: 120,
+  auth: 110,
+  role: 110,
+  thirdUser: 100,
+
+  comment: 80,
+  star: 80,
+
+  article: 60,
+  music: 60,
+  works: 60,
+  link: 60,
+  qiniu: 60,
+  tag: 60,
+  type: 60,
+  theme: 60,
+
+  error: 1,
+};

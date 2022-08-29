@@ -35,10 +35,10 @@ interface ISearch extends IEmailUser, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    let tableListData = ref([]);
-    let total = ref(0);
+    const tableListData = ref([]);
+    const total = ref(0);
 
-    let tableListLoading = ref(false);
+    const tableListLoading = ref(false);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
@@ -46,18 +46,18 @@ export default defineComponent({
       orderBy: 'desc',
     });
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchEmailUserList(params);
+        const res: any = await fetchEmailUserList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
 
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -65,7 +65,7 @@ export default defineComponent({
         Promise.reject(err);
       }
     };
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const createColumns = (): DataTableColumns<IEmailUser> => {
       return [...columnsConfig()];
@@ -88,7 +88,7 @@ export default defineComponent({
     };
     return {
       handlePageChange,
-      tableListLoading: tableListLoading,
+      tableListLoading,
       tableListData,
       columns: createColumns(),
       params,

@@ -1,3 +1,5 @@
+import path from 'path';
+
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import portfinder from 'portfinder';
 import WebpackDevServer from 'webpack-dev-server';
@@ -22,7 +24,7 @@ export default new Promise((resolve) => {
       resolve({
         target: 'web',
         mode: 'development',
-        devtool: 'source-map',
+        devtool: 'inline-cheap-module-source-map',
         stats: 'errors-warnings', // 只显示警告和错误信息（webpack-dev-server4.x后变了）
         // 这个infrastructureLogging设置参考了vuecli5，如果不设置，webpack-dev-server会打印一些信息
         infrastructureLogging: {
@@ -36,7 +38,7 @@ export default new Promise((resolve) => {
           // hot: 'only', // 要在构建失败的情况下启用热模块替换而不刷新页面作为后备，请使用hot: 'only'。但在vue项目的话，使用only会导致ts文件没有热更，得使用true
           compress: true, // 为所有服务启用gzip 压缩
           port, // 开发服务器端口，默认8080
-          open: false, //告诉 dev-server 在服务器启动后打开浏览器。
+          open: false, // 告诉 dev-server 在服务器启动后打开浏览器。
           historyApiFallback: {
             rewrites: [
               /**
@@ -52,7 +54,7 @@ export default new Promise((resolve) => {
            * 因为CopyWebpackPlugin插件会复制public的文件，所以static: false后再访问localhost:8080/a.js，其实还是能访问到public目录的a.js
            */
           static: {
-            watch: true, //告诉 dev-server 监听文件。默认启用，文件更改将触发整个页面重新加载。可以通过将 watch 设置为 false 禁用。
+            watch: true, // 告诉 dev-server 监听文件。默认启用，文件更改将触发整个页面重新加载。可以通过将 watch 设置为 false 禁用。
             publicPath: outputStaticUrl(false),
           },
           proxy: {
@@ -95,7 +97,10 @@ export default new Promise((resolve) => {
               extensions: {
                 vue: {
                   enabled: true,
-                  compiler: '@vue/compiler-sfc',
+                  compiler: path.resolve(
+                    __dirname,
+                    '../node_modules/vue/compiler-sfc/index.js'
+                  ),
                 },
               },
               diagnosticOptions: {

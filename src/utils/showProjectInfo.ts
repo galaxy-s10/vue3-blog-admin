@@ -18,7 +18,7 @@ export const showProjectInfo = () => {
   const buildRepository =
     NODE_ENV === 'development'
       ? VUE_APP_RELEASE_PROJECT_PACKAGE.repository
-      : 'https://gitee.com/galaxy-s10/' + VUE_APP_RELEASE_PROJECT_PACKAGE.name;
+      : `https://gitee.com/galaxy-s10/${VUE_APP_RELEASE_PROJECT_PACKAGE.name}`;
 
   prettierLog('项目名称：', VUE_APP_RELEASE_PROJECT_PACKAGE.name);
   prettierLog('项目版本：', VUE_APP_RELEASE_PROJECT_PACKAGE.version);

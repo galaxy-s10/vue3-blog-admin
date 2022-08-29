@@ -92,7 +92,6 @@ export default defineComponent({
       return routes;
     };
 
-    // sort越大越往上
     function sortRoute(b, a) {
       return (a.meta?.sort || 0) - (b.meta?.sort || 0);
     }
@@ -111,7 +110,7 @@ export default defineComponent({
       }
       router.push(key);
     };
-    let path = ref(route.path);
+    const path = ref(route.path);
     watch(
       () => route.path,
       () => {

@@ -69,8 +69,8 @@ export default defineComponent({
     const tableListData = ref([]);
     const qiniuCdnList = ref<any>();
     const total = ref(0);
-    let paginationReactive = usePage();
-    let router = useRouter();
+    const paginationReactive = usePage();
+    const router = useRouter();
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑文章');
@@ -108,7 +108,7 @@ export default defineComponent({
                       await fetchArticleDetail(row.id as number);
                     if (code === 200) {
                       const str: string = data.content;
-                      let reg =
+                      const reg =
                         /https:\/\/resource\.hsslive\.cn\/image\/.+?(jpg|jpeg|png|gif|webp)/gim;
                       const arr = str.match(reg);
                       if (Array.isArray(arr)) {
@@ -119,20 +119,20 @@ export default defineComponent({
                     }
                   },
                 },
-                () => '查看图片' //用箭头函数返回性能更好。
+                () => '查看图片' // 用箭头函数返回性能更好。
               ),
               h(
                 NButton,
                 {
                   size: 'small',
-                  onClick: async () => {
+                  onClick: () => {
                     router.push({
                       name: 'updateArticle',
                       query: { id: row.id },
                     });
                   },
                 },
-                () => '编辑' //用箭头函数返回性能更好。
+                () => '编辑' // 用箭头函数返回性能更好。
               ),
               h(
                 NPopconfirm,
@@ -156,7 +156,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -168,17 +168,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchArticleList(params);
+        const res: any = await fetchArticleList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -228,7 +228,6 @@ export default defineComponent({
     };
 
     const modalUpdateShow = (newVal) => {
-      console.log('modalUpdateShow', newVal);
       modalVisiable.value = newVal;
     };
 

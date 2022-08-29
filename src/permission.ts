@@ -51,7 +51,7 @@ router.beforeEach(async (to, from, next) => {
     next(`/login?redirect=${to.path}`);
   }
 });
-router.afterEach((to, from) => {
+router.afterEach(() => {
   const appStore = useAppStore();
   appStore.setLoading(false);
 });

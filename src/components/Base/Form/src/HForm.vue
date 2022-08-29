@@ -198,16 +198,16 @@ export default defineComponent({
     };
 
     const handleReset = () => {
-      let obj = {};
-      for (const item in props.modelValue) {
+      const obj = {};
+      Object.keys(props.modelValue).forEach((item) => {
         obj[`${item}`] = null;
-      }
+      });
       emit('update:modelValue', obj);
     };
 
     const handleValidate = () => {
       return new Promise((resolve, reject) => {
-        formRef.value.validate(async (error) => {
+        formRef.value.validate((error) => {
           if (!error) {
             resolve(props.modelValue);
           } else {

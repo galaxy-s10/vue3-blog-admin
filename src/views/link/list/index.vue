@@ -55,7 +55,7 @@ export default defineComponent({
   setup() {
     const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
@@ -87,12 +87,12 @@ export default defineComponent({
                 NButton,
                 {
                   size: 'small',
-                  onClick: async () => {
+                  onClick: () => {
                     modalVisiable.value = true;
                     currRow.value = { ...row };
                   },
                 },
-                () => '编辑' //用箭头函数返回性能更好。
+                () => '编辑' // 用箭头函数返回性能更好。
               ),
               h(
                 NPopconfirm,
@@ -116,7 +116,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -128,17 +128,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchLinkList(params);
+        const res: any = await fetchLinkList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -171,6 +171,7 @@ export default defineComponent({
     };
 
     const modalConfirm = async () => {
+      console.log('????');
       try {
         modalConfirmLoading.value = true;
         const res = await addLinkRef.value.validateForm();

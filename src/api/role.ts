@@ -11,10 +11,11 @@ export function fetchRoleList(params) {
 }
 
 /** 角色列表(不分页) */
-export function fetchAllList() {
+export function fetchAllList(params?: IRole) {
   return request({
     url: '/role/all_list',
     method: 'get',
+    params,
   });
 }
 
@@ -104,9 +105,10 @@ export function fetchUpdateRole({
 
 /** 批量删除子角色 */
 export function fetchBatchDeleteChildRoles({ id, c_roles }: IRole) {
+  console.log(id, c_roles, 'lll');
   return request({
     url: `/role/batch_delete_child_roles`,
-    method: 'delete',
+    method: 'post',
     data: {
       id,
       c_roles,

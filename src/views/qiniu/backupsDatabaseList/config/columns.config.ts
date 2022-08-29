@@ -3,7 +3,6 @@ import { h } from 'vue';
 
 import type { DataTableColumns } from 'naive-ui';
 
-import { QINIU_CDN_URL } from '@/constant';
 import { IQiniuData } from '@/interface';
 import { formatMemorySize } from '@/utils';
 
@@ -69,7 +68,7 @@ export const columnsConfig = (): DataTableColumns<IQiniuData> => {
       align: 'center',
       width: 200,
       render(row) {
-        const time = row.qiniu_putTime + '';
+        const time = `${row.qiniu_putTime}`;
         return h(
           'span',
           {},

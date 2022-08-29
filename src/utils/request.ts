@@ -19,25 +19,25 @@ export interface IResponse<T> {
 
 // 请求拦截
 service.interceptors.request.use(
-  (config) => {
+  (cfg) => {
     switch (cache.getStorageExp('env')) {
       case 'prod':
-        config.baseURL = '/prodapi/';
+        cfg.baseURL = '/prodapi/';
         break;
       case 'beta':
-        config.baseURL = '/betaapi/';
+        cfg.baseURL = '/betaapi/';
         break;
       case 'development':
-        config.baseURL = '/api/';
+        cfg.baseURL = '/api/';
         break;
     }
     const token = cache.getStorageExp('token');
     // @ts-ignore
     if (token) {
       // @ts-ignore
-      config.headers.Authorization = `Bearer ${token}`;
+      cfg.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
+    return cfg;
   },
   (error) => {
     console.log(error);

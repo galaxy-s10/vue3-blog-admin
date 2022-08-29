@@ -185,13 +185,8 @@ export default defineComponent({
           await fetchCancelBindGithub();
         } else {
           const bind_github_url =
-            GITHUB_OAUTH_URL +
-            'client_id=' +
-            GITHUB_CLIENT_ID +
-            '&redirect_uri=' +
-            REDIRECT_URI +
-            'github_login' +
-            '&scope=user';
+            `${GITHUB_OAUTH_URL}client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}github_login` +
+            `&scope=user`;
           window.open(
             bind_github_url,
             'github_login_window',

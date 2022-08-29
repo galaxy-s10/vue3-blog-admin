@@ -4,6 +4,7 @@ import { renderIcon } from '../utils';
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 // 异步路由
@@ -15,7 +16,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '主题管理',
       icon: renderIcon(ColorPaletteOutline),
-      sort: 30,
+      sort: ROUTE_SORT.theme,
     },
     children: [
       {

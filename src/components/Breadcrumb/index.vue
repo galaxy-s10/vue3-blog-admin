@@ -23,6 +23,7 @@ export default defineComponent({
       const strArr = target.split('/');
       const originSource = JSON.parse(JSON.stringify(source));
       // WARN:待优化
+      // eslint-disable-next-line
       const find = (source, target) => {
         for (let i = 0; i < source.length; i += 1) {
           const item = source[i];
@@ -42,7 +43,7 @@ export default defineComponent({
       find(source, target);
       return res;
     };
-    let result = ref(handleTree(routes.value, path.value));
+    const result = ref(handleTree(routes.value, path.value));
 
     watch(
       () => route.path,

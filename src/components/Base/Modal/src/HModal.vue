@@ -55,9 +55,8 @@ export default defineComponent({
   },
   setup(props, context) {
     const { show } = toRefs(props);
-    let showModal = ref(false);
-    console.log('111', show, props.show);
-    const modalConfirm = async () => {
+    const showModal = ref(false);
+    const modalConfirm = () => {
       context.emit('confirm');
     };
 
@@ -68,7 +67,6 @@ export default defineComponent({
     watch(
       () => show.value,
       (newVal) => {
-        // console.log('show变了', newVal, oldVal);
         showModal.value = newVal;
       }
     );
@@ -76,7 +74,6 @@ export default defineComponent({
     watch(
       () => showModal.value,
       (newVal, oldVal) => {
-        // console.log('showModal变了', newVal, oldVal);
         showModal.value = newVal;
         context.emit('update:show', newVal, oldVal);
       }

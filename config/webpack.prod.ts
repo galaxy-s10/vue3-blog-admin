@@ -1,11 +1,16 @@
 import PreloadPlugin from '@vue/preload-webpack-plugin';
+import { version as axiosVersion } from 'axios/package.json';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackTagsPlugin from 'html-webpack-tags-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { version as piniaVersion } from 'pinia/package.json';
 import TerserPlugin from 'terser-webpack-plugin';
+import { version as vueDemiVersion } from 'vue-demi/package.json';
+import { version as vueRouterVersion } from 'vue-router/package.json';
+import { version as vueVersion } from 'vue/package.json';
 
-import { chalkINFO, emoji } from './utils/chalkTip';
+import { chalkINFO } from './utils/chalkTip';
 
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
@@ -137,11 +142,11 @@ export default {
       publicPath: '', // 默认会拼上output.publicPath，因为我们引入的是cdn的地址，因此不需要拼上output.publicPath，直接publicPath:''，这样就约等于拼上空字符串''
       links: [],
       scripts: [
-        'https://unpkg.com/vue@3.2.33/dist/vue.global.prod.js',
-        'https://unpkg.com/vue-router@4.0.13/dist/vue-router.global.prod.js',
-        'https://unpkg.com/axios@0.27.2/dist/axios.min.js',
-        'https://unpkg.com/vue-demi@0.12.5/lib/index.iife.js',
-        'https://unpkg.com/pinia@2.0.14/dist/pinia.iife.prod.js',
+        `https://unpkg.com/vue@${vueVersion}/dist/vue.global.prod.js`,
+        `https://unpkg.com/vue-router@${vueRouterVersion}/dist/vue-router.global.prod.js`,
+        `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js`,
+        `https://unpkg.com/vue-demi@${vueDemiVersion}/lib/index.iife.js`,
+        `https://unpkg.com/pinia@${piniaVersion}/dist/pinia.iife.prod.js`,
       ],
     }),
     // 将 CSS 提取到单独的文件中

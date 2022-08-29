@@ -35,32 +35,32 @@ interface ISearch extends IQqUser, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    let listData = ref([]);
-    let total = ref(0);
-    let isLoading = ref(false);
+    const listData = ref([]);
+    const total = ref(0);
+    const isLoading = ref(false);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
       orderName: 'id',
       orderBy: 'desc',
     });
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const createColumns = (): DataTableColumns<IQqUser> => {
       return [...columnsConfig()];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         isLoading.value = true;
-        const res: any = await fetchQqUserList(params);
+        const res: any = await fetchQqUserList(args);
         if (res.code === 200) {
           isLoading.value = false;
           listData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -87,7 +87,7 @@ export default defineComponent({
     };
     return {
       handlePageChange,
-      isLoading: isLoading,
+      isLoading,
       searchFormConfig,
       handleSearch,
       listData,

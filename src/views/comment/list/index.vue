@@ -39,7 +39,7 @@ export default defineComponent({
   setup() {
     const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
@@ -72,7 +72,7 @@ export default defineComponent({
                 {
                   'positive-text': '确定',
                   'negative-text': '取消',
-                  'on-positive-click': async () => {
+                  'on-positive-click': () => {
                     // await fetchDeleteComment(row.id!);
                     window.$message.info('敬请期待!');
                     // await handlePageChange(params.value.nowPage);
@@ -89,7 +89,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -101,17 +101,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchCommentList(params);
+        const res: any = await fetchCommentList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }

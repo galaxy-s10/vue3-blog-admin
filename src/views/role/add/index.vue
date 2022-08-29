@@ -1,33 +1,71 @@
 <template>
-  <n-tree
-    block-line
-    checkable
-    cascade
-    :data="data"
-    :default-expanded-keys="defaultExpandedKeys"
-    key-field="role_description"
-    label-field="role_description"
-    children-field="children"
-    selectable
-  />
+  <div>
+    <h-form
+      ref="formRef"
+      v-bind="formConfig"
+      v-model="formData"
+      :show-action="showAction"
+      :confirm-loading="confirmLoading"
+      @click:confirm="handleConfirm"
+    ></h-form>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onBeforeMount, ref } from 'vue';
 
-import { fetchTreeRole } from '@/api/role';
+import { formConfig } from './config/form.config';
+
+import { fetchCreateRole, fetchUpdateRole } from '@/api/role';
+import HForm from '@/components/Base/Form';
 
 export default defineComponent({
-  setup() {
-    let data = ref([]);
-    onMounted(async () => {
-      const res = await fetchTreeRole();
-      data.value = res.data;
+  components: { HForm },
+  props: {
+    modelValue: {
+      type: Object,
+      default: () => {},
+    },
+    showAction: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
+    const formData = ref({ ...props.modelValue });
+    const confirmLoading = ref(false);
+    const formRef = ref<any>(null);
+    const formConfigRes = ref();
+    onBeforeMount(async () => {
+      formConfigRes.value = await formConfig();
     });
+    const handleConfirm = async (v) => {
+      try {
+        confirmLoading.value = true;
+        // const { message }: any = await fetchCreateLink(v);
+        // window.$message.success(message);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        confirmLoading.value = false;
+      }
+    };
+
+    const validateForm = async () => {
+      const res = await formRef.value.handleValidate();
+      return res;
+    };
+
     return {
-      data: data,
-      defaultExpandedKeys: ref([]),
+      formRef,
+      formConfig: formConfigRes,
+      formData,
+      confirmLoading,
+      handleConfirm,
+      validateForm,
     };
   },
 });
 </script>
+
+<style lang="scss" scoped></style>

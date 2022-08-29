@@ -133,10 +133,10 @@ export default defineComponent({
     };
     const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
-    let roleTreeList = ref([]);
-    let modalType = ref<modalUserTypeEnum>(modalUserTypeEnum.EDIT);
-    let formValue = ref<IUser>({
+    const paginationReactive = usePage();
+    const roleTreeList = ref([]);
+    const modalType = ref<modalUserTypeEnum>(modalUserTypeEnum.EDIT);
+    const formValue = ref<IUser>({
       id: 1,
       username: '',
       desc: '',
@@ -155,9 +155,9 @@ export default defineComponent({
       orderName: 'id',
       orderBy: 'desc',
     });
-    let defaultCheckedKeys = ref([]);
+    const defaultCheckedKeys = ref([]);
     const formRef = ref<any>(null);
-    let statusRadio = ref([
+    const statusRadio = ref([
       {
         value: 1,
         label: '正常',
@@ -191,7 +191,7 @@ export default defineComponent({
                   modalVisiable.value = !modalVisiable.value;
                 },
               },
-              () => '编辑' //用箭头函数返回性能更好。
+              () => '编辑' // 用箭头函数返回性能更好。
             ),
             h(
               NButton,
@@ -212,7 +212,7 @@ export default defineComponent({
                   modalVisiable.value = !modalVisiable.value;
                 },
               },
-              () => '编辑角色' //用箭头函数返回性能更好。
+              () => '编辑角色' // 用箭头函数返回性能更好。
             ),
           ]);
         },
@@ -220,17 +220,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
-        const res: any = await fetchUserList(params);
+        const res: any = await fetchUserList(args);
         if (res.code === 200) {
           tableListLoading.value = false;
           tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -284,7 +284,7 @@ export default defineComponent({
     };
 
     const modalConfirm = () => {
-      formRef.value?.validate(async (errors) => {
+      formRef.value?.validate((errors) => {
         if (!errors) {
           switch (modalType.value) {
             case modalUserTypeEnum.EDIT:

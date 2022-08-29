@@ -83,7 +83,7 @@ export const columnsConfig = (): DataTableColumns<IQiniuData> => {
       align: 'center',
       width: 200,
       render(row) {
-        const time = row.qiniu_putTime + '';
+        const time = `${row.qiniu_putTime}`;
         return h(
           'span',
           {},

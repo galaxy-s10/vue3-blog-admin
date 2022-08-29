@@ -15,7 +15,7 @@ class ConsoleDebugPlugin {
   apply(compiler) {
     compiler.hooks.done.tapAsync(
       'ConsoleDebugPlugin',
-      async (compilation, callback) => {
+      (compilation, callback) => {
         console.log('  App running at:');
         console.log(`- Local:   ${chalk.cyan(this.options.local)}`);
         console.log(`- Network: ${chalk.cyan(this.options.network)}`);

@@ -8,6 +8,7 @@ import { renderIcon } from './utils';
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 // 默认路由
@@ -17,7 +18,7 @@ export const routes: RouteRecordRaw[] = [
     redirect: '/dashboard',
     component: Layout,
     meta: {
-      sort: 100,
+      sort: ROUTE_SORT.dashboard,
     },
     children: [
       {
@@ -47,7 +48,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: '错误页面',
       icon: renderIcon(BugOutline),
-      sort: 1,
+      sort: ROUTE_SORT.error,
     },
     children: [
       {
@@ -79,7 +80,10 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/log',
     component: Layout,
-    meta: { title: '日志管理', sort: 80 },
+    meta: {
+      title: '日志管理',
+      sort: ROUTE_SORT.log,
+    },
     children: [
       {
         name: 'loglist',

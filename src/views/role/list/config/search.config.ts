@@ -17,20 +17,20 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入id',
     },
     {
-      field: 'status',
-      type: 'radio',
-      label: '状态',
-      placeholder: '请选择状态',
-      options: [
-        { label: '正常', value: 1 },
-        { label: '禁用', value: 2 },
-      ],
-    },
-    {
       field: 'keyWord',
       type: 'input',
       label: '关键字',
-      placeholder: '用户名/简介',
+      placeholder: '名称/标识',
+    },
+    {
+      field: 'type',
+      type: 'radio',
+      label: '类型',
+      placeholder: '请选择类型',
+      options: [
+        { label: '默认角色', value: 1 },
+        { label: '自定义', value: 2 },
+      ],
     },
     ...useOrder(columnsConfig),
   ],

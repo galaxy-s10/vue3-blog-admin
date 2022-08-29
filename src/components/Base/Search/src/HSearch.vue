@@ -34,9 +34,9 @@ export default defineComponent({
     const formData = ref({ ...props.initValue });
     const formRef = ref<any>(null);
     const handleReset = () => {
-      for (const item in formData.value) {
+      Object.keys(formData.value).forEach((item) => {
         formData.value[`${item}`] = null;
-      }
+      });
       emit('clickReset');
     };
 

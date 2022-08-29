@@ -4,6 +4,7 @@ import { renderIcon } from '../utils';
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import { ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 // 异步路由
@@ -14,7 +15,7 @@ export const routes: RouteRecordRaw[] = [
     component: Layout,
     meta: {
       title: '点赞管理',
-      sort: 5,
+      sort: ROUTE_SORT.star,
     },
     children: [
       {

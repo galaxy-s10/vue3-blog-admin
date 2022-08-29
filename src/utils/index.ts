@@ -13,8 +13,10 @@ export const deepCloneByJson = (T) => JSON.parse(JSON.stringify(T));
 
 /** 深拷贝，解决循环引用 */
 export const deepClone = (obj) => {
+  // eslint-disable-next-line
   function clone(obj, hash) {
     const newobj = Array.isArray(obj) ? [] : {};
+    // eslint-disable-next-line
     hash = hash || new WeakMap();
     if (hash.has(obj)) {
       return hash.get(obj);
@@ -35,8 +37,10 @@ export const deepClone = (obj) => {
 
 /** 深拷贝，解决循环引用。但不克隆key字段。 */
 export const deepCloneExclude = (obj, key) => {
+  // eslint-disable-next-line
   function clone(obj, hash) {
     const newobj = Array.isArray(obj) ? [] : {};
+    // eslint-disable-next-line
     hash = hash || new WeakMap();
     if (hash.has(obj)) {
       return hash.get(obj);
@@ -58,8 +62,8 @@ export const deepCloneExclude = (obj, key) => {
 };
 
 /** 模拟ajax请求 */
-export const mockAjax = async (time = 1000) => {
-  return new Promise((resolve, reject) => {
+export const mockAjax = (time = 1000) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         code: 0,

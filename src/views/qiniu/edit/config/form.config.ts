@@ -1,5 +1,4 @@
 import { IForm } from '@/components/Base/Form';
-import { QINIU_PREFIX } from '@/constant';
 
 export const formConfig: IForm = {
   gridSpan: 16,

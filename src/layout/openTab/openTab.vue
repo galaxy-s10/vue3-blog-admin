@@ -66,11 +66,11 @@ export default defineComponent({
     watch(
       () => tabList.value,
       (newVal) => {
-        const res: any[] = [];
+        const val: any[] = [];
         Object.keys(newVal).forEach((v) => {
-          res.push({ key: v, value: newVal[v] });
+          val.push({ key: v, value: newVal[v] });
         });
-        list1.value = res;
+        list1.value = val;
       }
     );
     watch(

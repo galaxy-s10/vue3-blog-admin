@@ -51,9 +51,9 @@ export default defineComponent({
     const currEnv = ref(appStore.env);
     const hasEnv = cache.getStorageExp('env');
     const isDev = process.env.NODE_ENV === 'development';
-    let modalVisiable = ref(false);
-    let modalTitle = ref('切换环境');
-    let modalType = ref();
+    const modalVisiable = ref(false);
+    const modalTitle = ref('切换环境');
+    const modalType = ref();
     let envList = [
       {
         value: 'beta',
