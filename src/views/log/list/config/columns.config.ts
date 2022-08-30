@@ -18,7 +18,12 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       align: 'center',
       width: 100,
     },
-
+    {
+      title: 'api_duration',
+      key: 'api_duration',
+      align: 'center',
+      width: 150,
+    },
     {
       title: 'api_from',
       key: 'api_from',
@@ -75,12 +80,6 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       },
     },
     {
-      title: 'api_sql_duration',
-      key: 'api_sql_duration',
-      align: 'center',
-      width: 150,
-    },
-    {
       title: 'api_user_agent',
       key: 'api_user_agent',
       align: 'center',
@@ -90,8 +89,26 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       },
     },
     {
-      title: 'api_err_stack',
-      key: 'api_err_stack',
+      title: 'api_code',
+      key: 'api_code',
+      align: 'center',
+      width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
+    },
+    {
+      title: 'api_err_code',
+      key: 'api_err_code',
+      align: 'center',
+      width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
+    },
+    {
+      title: 'api_error',
+      key: 'api_error',
       align: 'center',
       width: 200,
       ellipsis: {

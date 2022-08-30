@@ -31,3 +31,10 @@ export function fetchInvokeClearMemoryJob() {
     method: 'post',
   });
 }
+// 立即执行清除buff/cache任务
+export function fetchRestartPm2() {
+  return request({
+    url: '/schedule/restart_pm2',
+    method: 'post',
+  });
+}

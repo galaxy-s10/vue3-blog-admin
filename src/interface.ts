@@ -104,7 +104,7 @@ export interface ILog {
   id?: number;
   user_id?: number;
   api_user_agent?: string;
-  api_sql_duration?: number;
+  api_duration?: number;
   api_from?: number;
   api_ip?: string;
   api_hostname?: string;
@@ -112,8 +112,10 @@ export interface ILog {
   api_path?: string;
   api_query?: string;
   api_body?: string;
+  api_code?: number;
+  api_error?: string;
   api_err_msg?: string;
-  api_err_stack?: string;
+  api_err_code?: number;
 }
 export interface IVisitorLog {
   id?: number;
@@ -127,7 +129,11 @@ export interface IBlacklist {
   id?: number;
   ip?: string;
   user_id?: number;
+  type?: number;
   msg?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
 }
 export interface IMonit {
   id?: number;

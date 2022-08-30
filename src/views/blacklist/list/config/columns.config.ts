@@ -23,6 +23,12 @@ export const columnsConfig = (): DataTableColumns<IBlacklist> => {
       width: 200,
     },
     {
+      title: 'type',
+      key: 'type',
+      align: 'center',
+      width: 200,
+    },
+    {
       title: 'msg',
       key: 'msg',
       align: 'center',

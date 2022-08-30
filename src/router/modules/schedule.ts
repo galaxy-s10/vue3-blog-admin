@@ -3,6 +3,7 @@ import {
   ServerOutline,
   TimeOutline,
   WarningOutline,
+  ApertureOutline,
 } from '@vicons/ionicons5';
 
 import { renderIcon } from '../utils';
@@ -40,6 +41,15 @@ export const routes: RouteRecordRaw[] = [
         meta: {
           title: '内存任务',
           icon: renderIcon(WarningOutline),
+        },
+      },
+      {
+        name: 'scheduleRestartPm2',
+        path: '/schedule/restartPm2',
+        component: () => import('@/views/schedule/restartPm2/restartPm2.vue'),
+        meta: {
+          title: '重启pm2任务',
+          icon: renderIcon(ApertureOutline),
         },
       },
       {

@@ -17,8 +17,10 @@ module.exports = {
          * usage: 代码中需要哪些polyfill, 就引用相关的api
          * entry: 手动在入口文件中导入 core-js/regenerator-runtime, 根据目标浏览器引入所有对应的polyfill
          */
-        useBuiltIns: process.env.NODE_ENV === 'development' ? false : 'usage',
-        corejs: process.env.NODE_ENV === 'development' ? undefined : '3.8',
+        useBuiltIns: 'usage',
+        corejs: '3.8',
+        // useBuiltIns: process.env.NODE_ENV === 'development' ? false : 'usage',
+        // corejs: process.env.NODE_ENV === 'development' ? undefined : '3.8',
         modules: 'auto', // modules设置成commonjs后，路由懒加载就没了。
         // modules: 'commonjs', // https://github.com/vuejs/vue-cli/blob/HEAD/packages/@vue/babel-preset-app/index.js#L226
       },

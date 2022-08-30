@@ -18,7 +18,6 @@ const message = createApp(Message);
 
 app.use(store);
 app.use(router);
-
 app.use(naive);
 
 const messageEle = document.createElement('div');
