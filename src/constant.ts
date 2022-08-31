@@ -1,3 +1,4 @@
+export const GITHUB_REPO = 'https://github.com/galaxy-s10/vue3-blog-admin';
 export const REDIRECT_URI = 'https://admin.hsslive.cn/oauth/';
 
 export const QQ_CLIENT_ID = '101934585';
@@ -50,11 +51,12 @@ export const ROUTE_SORT = {
   comment: 80,
   star: 80,
 
+  qiniu: 70,
+
   article: 60,
   music: 60,
   works: 60,
   link: 60,
-  qiniu: 60,
   tag: 60,
   type: 60,
   theme: 60,

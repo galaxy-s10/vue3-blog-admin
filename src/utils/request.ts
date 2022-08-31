@@ -32,7 +32,6 @@ service.interceptors.request.use(
         break;
     }
     const token = cache.getStorageExp('token');
-    // @ts-ignore
     if (token) {
       // @ts-ignore
       cfg.headers.Authorization = `Bearer ${token}`;
@@ -50,23 +49,26 @@ service.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  // eslint-disable-next-line consistent-return
   (error) => {
     const userStore = useUserStore();
-    if (error.response && error.response.status) {
-      const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
-      if (!whiteList.includes(`${error.response.status}`)) {
-        // 网关超时504
+    const statusCode = error.response.status;
+    const errorResponseData = error.response.data;
+    const whiteList = ['400', '401', '403'];
+    if (error.response) {
+      if (!whiteList.includes(`${statusCode}`)) {
+        if (statusCode === 500) {
+          window.$message.error(errorResponseData.message);
+          return Promise.reject(errorResponseData.message);
+        }
         window.$message.error(error.message);
         return Promise.reject(error);
       }
-      if (error.response.status === 400) {
-        // 400错误不返回data
-        window.$message.error(error.response.data.message);
-        return Promise.reject(error.response.data);
+      if (statusCode === 400) {
+        window.$message.error(errorResponseData.message);
+        return Promise.reject(errorResponseData);
       }
-      if (error.response.status === 401) {
-        window.$message.error(error.response.data.message);
+      if (statusCode === 401) {
+        window.$message.error(errorResponseData.message);
         userStore.logout();
         router.push('/login');
         window.close();
@@ -77,18 +79,14 @@ service.interceptors.response.use(
           },
           '*'
         );
-        return Promise.reject(error.response.data);
+        return Promise.reject(errorResponseData);
       }
-      if (error.response.status === 403) {
-        window.$message.error(error.response.data.message);
-        return Promise.reject(error.response.data);
+      if (statusCode === 403) {
+        window.$message.error(errorResponseData.message);
+        return Promise.reject(errorResponseData);
       }
     } else {
-      if (error.response) {
-        window.$message.error(error.response.message);
-        return Promise.reject(error.response);
-      }
-      window.$message.error(error.message);
+      window.$message.error(error?.message);
       return Promise.reject(error);
     }
   }

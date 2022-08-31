@@ -1,3 +1,19 @@
+import { fetchUpload } from '@/api/qiniuData';
+import { QINIU_PREFIX } from '@/constant';
+
+export const uploadImageByMdEditor = async (files: any[]) => {
+  const formVal = { prefix: QINIU_PREFIX['image/'] };
+  const form = new FormData();
+  Object.keys(formVal).forEach((key) => {
+    key !== 'uploadFiles' && form.append(key, formVal[key]);
+  });
+  files.forEach((item) => {
+    form.append('uploadFiles', item);
+  });
+  const { data } = await fetchUpload(form);
+  const success = data.success;
+  return success[0].resultFilename;
+};
 /**
  * @description 返回正则匹配到的结果（数组或null）
  * @param {string} str

@@ -16,7 +16,7 @@ import { defineComponent, onBeforeMount, ref } from 'vue';
 
 import { formConfig } from './config/form.config';
 
-import { fetchCreateRole, fetchUpdateRole } from '@/api/role';
+import { fetchCreateRole } from '@/api/role';
 import HForm from '@/components/Base/Form';
 
 export default defineComponent({
@@ -42,8 +42,8 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        // const { message }: any = await fetchCreateLink(v);
-        // window.$message.success(message);
+        const { message }: any = await fetchCreateRole(v);
+        window.$message.success(message);
       } catch (error) {
         console.log(error);
       } finally {

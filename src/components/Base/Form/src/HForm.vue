@@ -48,6 +48,20 @@
                 @update:value="handleValueChange($event, item.field)"
               />
             </template>
+            <template v-else-if="item.type === 'treeSelect'">
+              <n-tree-select
+                multiple
+                cascade
+                checkable
+                :placeholder="item.placeholder"
+                :key-field="item.treeSelectConfig?.key"
+                :label-field="item.treeSelectConfig?.label"
+                :disabled-field="item.treeSelectConfig?.disabled"
+                :options="item.options"
+                :value="modelValue[`${item.field}`]"
+                @update:value="handleValueChange($event, item.field)"
+              />
+            </template>
             <template v-else-if="item.type === 'select'">
               <n-select
                 :value="modelValue[`${item.field}`]"

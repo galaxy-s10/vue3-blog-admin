@@ -10,7 +10,8 @@ type IFormType =
   | 'checkbox'
   | 'markdown'
   | 'switch'
-  | 'upload';
+  | 'upload'
+  | 'treeSelect';
 
 export interface IFormItem {
   field: string;
@@ -22,6 +23,11 @@ export interface IFormItem {
   disabled?: boolean;
   uploadConfig?: {
     max: number;
+  };
+  treeSelectConfig?: {
+    key?: string;
+    label?: string;
+    disabled?: string;
   };
   path?: string;
   placeholder?: any;

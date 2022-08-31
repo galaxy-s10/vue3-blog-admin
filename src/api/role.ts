@@ -60,6 +60,25 @@ export function fetchAllChildRole(id: number) {
   });
 }
 
+/** 获取某个角色的权限 */
+export function fetchRoleAuth(id: number) {
+  return request({
+    url: `/role/get_role_auth/${id}`,
+    method: 'get',
+  });
+}
+
+/** 修改角色权限 */
+export function fetchUpdateRoleAuth({ id, role_auths }: IRole) {
+  return request({
+    url: `/role/update_role_auth/${id}`,
+    method: 'put',
+    data: {
+      role_auths,
+    },
+  });
+}
+
 /** 新增角色 */
 export function fetchCreateRole({
   p_id,

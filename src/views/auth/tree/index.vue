@@ -6,7 +6,7 @@
       :row-key="(row) => row.id"
       :loading="tableLoading"
       :columns="columns"
-      :data="roleData"
+      :data="authData"
       :bordered="false"
       @update:page="handlePageChange"
     />
@@ -28,7 +28,7 @@
           :rules="rules"
           label-placement="left"
         >
-          <n-form-item label="角色" path="id">
+          <n-form-item label="权限" path="id">
             <n-select
               v-model:value="formValue.id"
               clearable
@@ -36,23 +36,23 @@
               disabled
             />
           </n-form-item>
-          <n-form-item label="子角色" path="c_roles">
+          <n-form-item label="子权限" path="c_auths">
             <n-tree
               style="width: 100%"
               checkable
               cascade
               selectable
-              :data="childRoleData"
-              :default-checked-keys="formValue.c_roles"
+              :data="childAuthData"
+              :default-checked-keys="formValue.c_auths"
               key-field="id"
-              label-field="role_name"
+              label-field="auth_name"
               children-field="children"
               @update:checked-keys="updateCheckedKeys"
             />
           </n-form-item>
         </n-form>
         <p>
-          注意：会删除选中的角色以及它关联的所有角色(即选中的角色的所有子孙角色)
+          注意：会删除选中的权限以及它关联的所有权限(即选中的权限的所有子孙权限)
         </p>
       </div>
       <div v-else-if="modalType === modalTypeEnum.BATCH_ADD">
@@ -64,7 +64,7 @@
           :rules="rules"
           label-placement="left"
         >
-          <n-form-item label="角色" path="id">
+          <n-form-item label="权限" path="id">
             <n-select
               v-model:value="formValue.id"
               clearable
@@ -72,7 +72,7 @@
               disabled
             />
           </n-form-item>
-          <n-form-item label="子角色" path="c_roles">
+          <n-form-item label="子权限" path="c_auths">
             <n-tree-select
               multiple
               cascade
@@ -80,15 +80,15 @@
               check-strategy="child"
               :options="batchAddOptions"
               key-field="id"
-              label-field="role_name"
+              label-field="auth_name"
               children-field="children"
               @update:value="updateCheckedKeys"
             />
           </n-form-item>
         </n-form>
-        <p>注意1：每次新增的子角色需要是同一个父级（但不是同一个祖先）。</p>
+        <p>注意1：每次新增的子权限需要是同一个父级（但不是同一个祖先）。</p>
         <p>
-          注意2：这里的新增其实并不是新增，而是修改当前的选中的角色的父级角色。
+          注意2：这里的新增其实并不是新增，而是修改当前的选中的权限的父级权限。
         </p>
       </div>
     </HModal>
@@ -102,83 +102,76 @@ import { h, defineComponent, onMounted, ref, watch } from 'vue';
 import type { DataTableColumns, FormInst } from 'naive-ui';
 
 import {
-  fetchTreeRole,
-  fetchGetChildRole,
-  fetchAllChildRole,
+  fetchTreeAuth,
+  fetchGetChildAuth,
+  fetchAllChildAuth,
   fetchAllList,
-  fetchUpdateRole,
-  fetchCreateRole,
-  fetchDeleteRole,
-  fetchBatchDeleteChildRoles,
-  fetchBatchAddChildRoles,
-} from '@/api/role';
+  fetchUpdateAuth,
+  fetchCreateAuth,
+  fetchDeleteAuth,
+  fetchBatchDeleteChildAuths,
+  fetchBatchAddChildAuths,
+} from '@/api/auth';
 import HModal from '@/components/Base/Modal';
-import { IRole, modalTypeEnum } from '@/interface';
+import { IAuth, modalTypeEnum } from '@/interface';
 import { deepCloneByJson } from '@/utils';
 
 const rules = {
   p_id: {
     // required: true,
     type: 'number',
-    message: '请选择父级角色',
+    message: '请选择父级权限',
     trigger: ['input'],
   },
-  p_role_name: {
+  p_auth_name: {
     required: true,
-    message: '请输入角色父级角色',
+    message: '请输入权限父级权限',
     trigger: ['input', 'blur', 'change'],
   },
-  role_name: {
+  auth_name: {
     required: true,
-    message: '请输入角色名称',
+    message: '请输入权限名称',
     trigger: ['input', 'blur'],
   },
-  role_value: {
+  auth_value: {
     required: true,
-    message: '请输入角色标识',
+    message: '请输入权限标识',
     trigger: ['input', 'blur'],
   },
   type: {
-    message: '请选择角色类型',
+    message: '请选择权限类型',
     type: 'number',
     trigger: ['input', 'blur'],
   },
   priority: {
     require: false,
-    message: '请输入角色权重',
+    message: '请输入权限权重',
     trigger: ['input'],
-  },
-  role_auths: {
-    // required: true,
-    message: '请选择角色权限',
-    type: 'array',
-    // trigger: ['input', 'blur', 'change'],
   },
 };
 
 export default defineComponent({
-  name: 'RoleTree',
+  name: 'AuthTree',
   components: { HModal },
   setup() {
-    const roleData = ref([]);
+    const authData = ref([]);
     const checkedKeys = ref([]);
     const defaultCheckedKeys = ref([]);
     const total = ref(0);
-    const currentRole = ref();
+    const currentAuth = ref();
     const tableLoading = ref(false);
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('');
     const selectList = ref([]);
-    const roleTreeList = ref([]);
-    const childRoleData = ref([]);
+    const childAuthData = ref([]);
     const batchAddOptions = ref([]);
     const currRow = ref({});
 
-    const roleTypes = ref([
+    const authTypes = ref([
       {
         value: 1,
-        label: '默认角色',
+        label: '默认权限',
       },
       {
         value: 2,
@@ -186,39 +179,37 @@ export default defineComponent({
       },
     ]);
     const modalType = ref<modalTypeEnum>(modalTypeEnum.ADD);
-    const isAssignRole = ref(false);
 
-    const formValue = ref<IRole>({
+    const formValue = ref<IAuth>({
       id: 1,
       p_id: 0,
-      role_name: '',
-      role_value: '',
+      auth_name: '',
+      auth_value: '',
       type: 1,
       priority: 1,
-      role_auths: [],
-      c_roles: [],
+      c_auths: [],
     });
     const formRef = ref<FormInst | null>(null);
 
     watch(
       () => modalVisiable.value,
       (newVal) => {
-        newVal === false && (currentRole.value = undefined);
+        newVal === false && (currentAuth.value = undefined);
       }
     );
 
     const updateShow = (newVal) => {
       modalVisiable.value = newVal;
-      newVal === false && (currentRole.value = undefined);
+      newVal === false && (currentAuth.value = undefined);
     };
 
-    const ajaxFetchRoleList = async () => {
+    const ajaxFetchAuthList = async () => {
       try {
         tableLoading.value = true;
-        const res: any = await fetchTreeRole(1);
+        const res: any = await fetchTreeAuth(1);
         if (res.code === 200) {
           tableLoading.value = false;
-          roleData.value = res.data;
+          authData.value = res.data;
           total.value = res.data.total;
         } else {
           Promise.reject(res);
@@ -229,13 +220,13 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchRoleList();
+      await ajaxFetchAuthList();
     });
 
     const handlePageChange = async () => {
-      await ajaxFetchRoleList();
+      await ajaxFetchAuthList();
     };
-    const createColumns = (): DataTableColumns<IRole> => {
+    const createColumns = (): DataTableColumns<IAuth> => {
       return [
         {
           title: 'id',
@@ -244,28 +235,28 @@ export default defineComponent({
           align: 'center',
         },
         {
-          title: '角色名称',
-          key: 'role_name',
+          title: '权限名称',
+          key: 'auth_name',
           width: 200,
           align: 'center',
         },
         {
-          title: '角色标识',
-          key: 'role_value',
+          title: '权限标识',
+          key: 'auth_value',
           width: 200,
           align: 'center',
         },
         {
-          title: '角色类型',
+          title: '权限类型',
           key: 'type',
           align: 'center',
           width: 200,
           render(row) {
-            return row.type === 1 ? '默认角色' : '自定义';
+            return row.type === 1 ? '默认权限' : '自定义';
           },
         },
         {
-          title: '角色权重',
+          title: '权限权重',
           key: 'priority',
           width: 100,
           align: 'center',
@@ -289,7 +280,7 @@ export default defineComponent({
               //   {
               //     size: 'small',
               //     onClick: () => {
-              //       modalTitle.value = '编辑角色';
+              //       modalTitle.value = '编辑权限';
               //       currRow.value = { ...row };
               //       modalVisiable.value = !modalVisiable.value;
               //     },
@@ -302,7 +293,7 @@ export default defineComponent({
               //     size: 'small',
               //     type: 'primary',
               //     onClick: () => {
-              //       modalTitle.value = '新增角色';
+              //       modalTitle.value = '新增权限';
               //       currRow.value = { ...row };
               //       modalVisiable.value = !modalVisiable.value;
               //     },
@@ -315,7 +306,7 @@ export default defineComponent({
                   'positive-text': '确定',
                   'negative-text': '取消',
                   'on-positive-click': () => {
-                    deleteRole(row.id);
+                    deleteAuth(row.id);
                   },
                   'on-negative-click': () => {
                     window.$message.info('已取消!');
@@ -331,7 +322,7 @@ export default defineComponent({
                       },
                       () => '删除' // 用箭头函数返回性能更好。
                     ),
-                  default: () => '会删除底下关联的所有子角色，确定吗?',
+                  default: () => '会删除底下关联的所有子权限，确定吗?',
                 }
               ),
               h(
@@ -340,23 +331,23 @@ export default defineComponent({
                   size: 'small',
                   type: 'info',
                   onClick: async () => {
-                    const treeRole = await fetchGetChildRole(row.id!); // 子角色树
-                    const allRole = await fetchAllList(); // 父级角色下拉框
-                    childRoleData.value = treeRole.data.result;
-                    selectList.value = allRole.data.rows.map((v) => {
+                    const treeAuth = await fetchGetChildAuth(row.id!); // 子权限树
+                    const allAuth = await fetchAllList(); // 父级权限下拉框
+                    childAuthData.value = treeAuth.data.result;
+                    selectList.value = allAuth.data.rows.map((v) => {
                       return {
                         ...v,
-                        label: v.role_name,
+                        label: v.auth_name,
                         value: v.id,
                       };
                     });
                     formValue.value.id = row.id;
-                    modalTitle.value = '批量删除子角色';
+                    modalTitle.value = '批量删除子权限';
                     modalType.value = modalTypeEnum.BATCH_DELETE;
                     modalVisiable.value = true;
                   },
                 },
-                () => '批量删除子角色' // 用箭头函数返回性能更好。
+                () => '批量删除子权限' // 用箭头函数返回性能更好。
               ),
               h(
                 NButton,
@@ -364,41 +355,41 @@ export default defineComponent({
                   size: 'small',
                   type: 'warning',
                   onClick: async () => {
-                    const allChildRole = await fetchAllChildRole(row.id!); // 子角色树
-                    const allChildRoleIds = [
+                    const allChildAuth = await fetchAllChildAuth(row.id!); // 子权限树
+                    const allChildAuthIds = [
                       row.id,
-                      ...allChildRole.data.result.map((v) => v.id),
+                      ...allChildAuth.data.result.map((v) => v.id),
                     ];
-                    const allRole = await fetchAllList(); // 父级角色下拉框
-                    // 递归禁用已有的角色
-                    const disableRole = (data) => {
+                    const allAuth = await fetchAllList(); // 父级权限下拉框
+                    // 递归禁用已有的权限
+                    const disableAuth = (data) => {
                       data.forEach((v) => {
-                        if (allChildRoleIds.includes(v.id)) {
+                        if (allChildAuthIds.includes(v.id)) {
                           v.disabled = true;
                         }
                         if (v.children) {
-                          disableRole(v.children);
+                          disableAuth(v.children);
                         }
                       });
                       return data;
                     };
-                    batchAddOptions.value = disableRole(
-                      deepCloneByJson(roleData.value)
+                    batchAddOptions.value = disableAuth(
+                      deepCloneByJson(authData.value)
                     );
-                    selectList.value = allRole.data.rows.map((v) => {
+                    selectList.value = allAuth.data.rows.map((v) => {
                       return {
                         ...v,
-                        label: v.role_name,
+                        label: v.auth_name,
                         value: v.id,
                       };
                     });
                     formValue.value.id = row.id;
-                    modalTitle.value = '批量新增子角色';
+                    modalTitle.value = '批量新增子权限';
                     modalType.value = modalTypeEnum.BATCH_ADD;
                     modalVisiable.value = true;
                   },
                 },
-                () => '批量新增子角色' // 用箭头函数返回性能更好。
+                () => '批量新增子权限' // 用箭头函数返回性能更好。
               ),
             ]);
           },
@@ -409,7 +400,7 @@ export default defineComponent({
     const update = async () => {
       try {
         modalConfirmLoading.value = true;
-        await fetchUpdateRole({
+        await fetchUpdateAuth({
           ...formValue.value,
           priority: Number(formValue.value.priority || 1),
         });
@@ -426,7 +417,7 @@ export default defineComponent({
     const create = async () => {
       try {
         modalConfirmLoading.value = true;
-        await fetchCreateRole({
+        await fetchCreateAuth({
           ...formValue.value,
           priority: Number(formValue.value.priority || 1),
         });
@@ -440,10 +431,10 @@ export default defineComponent({
       }
     };
 
-    const deleteRole = async (id) => {
+    const deleteAuth = async (id) => {
       try {
         modalConfirmLoading.value = true;
-        const { message }: any = await fetchDeleteRole(id);
+        const { message }: any = await fetchDeleteAuth(id);
         modalVisiable.value = false;
         window.$message.success(message);
       } catch (error) {
@@ -454,12 +445,12 @@ export default defineComponent({
       }
     };
 
-    const batchDeleteChildRoles = async () => {
+    const batchDeleteChildAuths = async () => {
       try {
         modalConfirmLoading.value = true;
-        const { message }: any = await fetchBatchDeleteChildRoles({
+        const { message }: any = await fetchBatchDeleteChildAuths({
           id: formValue.value.id,
-          c_roles: formValue.value.c_roles,
+          c_auths: formValue.value.c_auths,
         });
         modalVisiable.value = false;
         window.$message.success(message);
@@ -471,12 +462,12 @@ export default defineComponent({
       }
     };
 
-    const batchAddChildRoles = async () => {
+    const batchAddChildAuths = async () => {
       try {
         modalConfirmLoading.value = true;
-        const { message }: any = await fetchBatchAddChildRoles({
+        const { message }: any = await fetchBatchAddChildAuths({
           id: formValue.value.id,
-          c_roles: formValue.value.c_roles,
+          c_auths: formValue.value.c_auths,
         });
         modalVisiable.value = false;
         window.$message.success(message);
@@ -499,10 +490,10 @@ export default defineComponent({
               update();
               break;
             case modalTypeEnum.BATCH_DELETE:
-              batchDeleteChildRoles();
+              batchDeleteChildAuths();
               break;
             case modalTypeEnum.BATCH_ADD:
-              batchAddChildRoles();
+              batchAddChildAuths();
               break;
             default:
               window.$message.warning('错误的操作!');
@@ -516,17 +507,17 @@ export default defineComponent({
     };
     const updateCheckedKeys = (keys) => {
       defaultCheckedKeys.value = keys;
-      formValue.value.c_roles = keys;
+      formValue.value.c_auths = keys;
     };
     return {
       modalTypeEnum,
-      roleTypes,
+      authTypes,
       updateShow,
       handlePageChange,
       tableLoading,
       modalConfirmLoading,
       formValue,
-      currentRole,
+      currentAuth,
       modalConfirm,
       updateCheckedKeys,
       modalCancel,
@@ -535,14 +526,12 @@ export default defineComponent({
       modalVisiable,
       modalTitle,
       formRef,
-      roleData,
+      authData,
       columns: createColumns(),
       rules,
       selectList,
       modalType,
-      isAssignRole,
-      roleTreeList,
-      childRoleData,
+      childAuthData,
       batchAddOptions,
       currRow,
     };

@@ -31,6 +31,7 @@
         </div>
       </n-layout>
     </n-layout>
+    <PoweredByCpt></PoweredByCpt>
   </n-space>
 </template>
 
@@ -45,6 +46,7 @@ import openTabCpt from './openTab/openTab.vue';
 
 import type { RouteRecordRaw } from 'vue-router';
 
+import PoweredByCpt from '@/components/PoweredBy/index.vue';
 import { defaultRoutes } from '@/router/index';
 import { useAppStore } from '@/store/app';
 // import { deepCloneExclude } from '@/utils';
@@ -53,6 +55,7 @@ export default defineComponent({
   components: {
     HeaderCpt,
     openTabCpt,
+    PoweredByCpt,
   },
   setup() {
     const router = useRouter();
@@ -145,6 +148,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout-wrap {
   height: 100vh;
+
   .main-wrap {
     padding: 10px;
   }

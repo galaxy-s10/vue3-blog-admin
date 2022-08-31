@@ -1,8 +1,8 @@
 import type { DataTableColumns } from 'naive-ui';
 
-import { IRole } from '@/interface';
+import { IAuth } from '@/interface';
 
-export const columnsConfig = (): DataTableColumns<IRole> => {
+export const columnsConfig = (): DataTableColumns<IAuth> => {
   return [
     {
       title: 'id',
@@ -11,30 +11,30 @@ export const columnsConfig = (): DataTableColumns<IRole> => {
       width: 100,
     },
     {
-      title: '角色名称',
-      key: 'role_name',
+      title: '权限名称',
+      key: 'auth_name',
       align: 'center',
       width: 200,
     },
     {
-      title: '角色标识',
-      key: 'role_name',
+      title: '权限标识',
+      key: 'auth_name',
       align: 'center',
       width: 200,
     },
     {
-      title: '角色权重',
+      title: '权限权重',
       key: 'priority',
       align: 'center',
-      width: 100,
+      width: 200,
     },
     {
-      title: '角色类型',
+      title: '权限类型',
       key: 'type',
       align: 'center',
-      width: 100,
+      width: 200,
       render(row) {
-        return row.type === 1 ? '默认角色' : '自定义';
+        return row.type === 1 ? '默认权限' : '自定义';
       },
     },
     {

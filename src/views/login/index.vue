@@ -179,6 +179,7 @@
         </div>
       </div>
     </div>
+    <PoweredByCpt></PoweredByCpt>
   </div>
 </template>
 
@@ -192,6 +193,7 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { fetchSendLoginCode, fetchSendRegisterCode } from '@/api/emailUser';
+import PoweredByCpt from '@/components/PoweredBy/index.vue';
 import {
   GITHUB_CLIENT_ID,
   GITHUB_OAUTH_URL,
@@ -215,6 +217,7 @@ export default defineComponent({
     MailOutline,
     LockClosedOutline,
     PersonOutline,
+    PoweredByCpt,
   },
   setup() {
     const router = useRouter();

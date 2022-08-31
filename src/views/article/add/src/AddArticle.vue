@@ -51,7 +51,6 @@ export default defineComponent({
       formConfigRes.value = await formConfig();
     });
     const updateFiled = (filed, value) => {
-      // console.log('updateFiled', filed, value);
       if (filed === 'content') {
         const str: string = value;
         const arr = str.match(reg);
@@ -77,9 +76,6 @@ export default defineComponent({
       return success[0].resultFilename;
     };
     const handleConfirm = async (v: IArticle) => {
-      console.log(v, 444, v.head_img, v.title, originData.head_img);
-      // console.log(originData.head_img![0].replace(QINIU_CDN_URL, ''));
-      // return;
       try {
         confirmLoading.value = true;
         if (route.query.id) {

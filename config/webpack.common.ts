@@ -45,7 +45,6 @@ const sassRules = (isProduction: boolean, module?: boolean) => {
       ? {
           loader: MiniCssExtractPlugin.loader,
           options: {
-            sourceMap: false,
             publicPath: '../',
           },
         }
@@ -88,7 +87,6 @@ const cssRules = (isProduction: boolean, module?: boolean) => {
       ? {
           loader: MiniCssExtractPlugin.loader,
           options: {
-            sourceMap: false,
             publicPath: '../',
           },
         }

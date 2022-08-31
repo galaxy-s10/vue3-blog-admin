@@ -3,10 +3,9 @@ import { fetchTypeList } from '@/api/type';
 import { IForm } from '@/components/Base/Form';
 
 export const formConfig = async (): Promise<IForm> => {
-  const params = { nowPage: 1, pageSize: 100 };
   const [tagList, typeList] = await Promise.all([
-    fetchTagList(params),
-    fetchTypeList(params),
+    fetchTagList({}),
+    fetchTypeList({}),
   ]);
   return {
     gridSpan: 16,

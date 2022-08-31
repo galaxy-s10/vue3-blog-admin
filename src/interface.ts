@@ -31,6 +31,20 @@ export interface IComment {
   from_user?: IUser;
   to_user?: IUser;
 }
+
+export interface IAuth {
+  id?: number;
+  auth_name?: string;
+  auth_value?: string;
+  type?: number;
+  priority?: number | string;
+  p_id?: number | null;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: null;
+  c_auths?: number[];
+}
+
 export interface IRole {
   id?: number;
   role_name?: string;
@@ -139,19 +153,6 @@ export interface IMonit {
   id?: number;
   type?: number;
   info?: string;
-}
-
-export interface IAuth {
-  id?: number;
-  auth_name?: string;
-  auth_value?: string;
-  type?: number;
-  priority?: number | string;
-  p_id?: number | null;
-  created_at?: string;
-  updated_at?: string;
-  deleted_at?: null;
-  c_auths?: number[];
 }
 
 export interface IEmailUser {

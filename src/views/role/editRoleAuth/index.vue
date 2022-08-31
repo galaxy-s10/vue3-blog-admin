@@ -6,7 +6,6 @@
       v-model="formData"
       :show-action="showAction"
       :confirm-loading="confirmLoading"
-      @click:confirm="handleConfirm"
     ></h-form>
   </div>
 </template>
@@ -16,7 +15,6 @@ import { defineComponent, onBeforeMount, ref } from 'vue';
 
 import { formConfig } from './config/form.config';
 
-import { fetchCreateAuth } from '@/api/auth';
 import HForm from '@/components/Base/Form';
 
 export default defineComponent({
@@ -39,17 +37,6 @@ export default defineComponent({
     onBeforeMount(async () => {
       formConfigRes.value = await formConfig();
     });
-    const handleConfirm = async (v) => {
-      try {
-        confirmLoading.value = true;
-        const { message }: any = await fetchCreateAuth(v);
-        window.$message.success(message);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        confirmLoading.value = false;
-      }
-    };
 
     const validateForm = async () => {
       const res = await formRef.value.handleValidate();
@@ -61,7 +48,6 @@ export default defineComponent({
       formConfig: formConfigRes,
       formData,
       confirmLoading,
-      handleConfirm,
       validateForm,
     };
   },

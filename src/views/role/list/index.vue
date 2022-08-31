@@ -22,7 +22,14 @@
       @confirm="modalConfirm"
       @cancel="modalCancel"
     >
+      <EditRoleAuth
+        v-if="isEditAuth"
+        ref="editRoleAuthRef"
+        v-model="currRow"
+        :show-action="false"
+      ></EditRoleAuth>
       <AddRole
+        v-else
         ref="addRoleRef"
         v-model="currRow"
         :show-action="false"
@@ -32,17 +39,23 @@
 </template>
 
 <script lang="ts">
-import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { NButton, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import AddRole from '../add/index.vue';
+import EditRoleAuth from '../editRoleAuth/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
-import { fetchRoleList, fetchUpdateRole } from '@/api/role';
+import {
+  fetchRoleAuth,
+  fetchRoleList,
+  fetchUpdateRole,
+  fetchUpdateRoleAuth,
+} from '@/api/role';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
@@ -51,18 +64,20 @@ import { IRole, IList } from '@/interface';
 interface ISearch extends IRole, IList {}
 
 export default defineComponent({
-  components: { HSearch, HModal, AddRole },
+  components: { HSearch, HModal, AddRole, EditRoleAuth },
   setup() {
     const tableListData = ref([]);
     const total = ref(0);
+    const isEditAuth = ref(false);
     const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
-    const modalTitle = ref('编辑角色');
+    const modalTitle = ref('');
     const tableListLoading = ref(false);
     const currRow = ref({});
     const addRoleRef = ref<any>(null);
+    const editRoleAuthRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
@@ -87,39 +102,33 @@ export default defineComponent({
                 NButton,
                 {
                   size: 'small',
+                  type: 'info',
+                  onClick: async () => {
+                    const { data } = await fetchRoleAuth(row.id!);
+                    isEditAuth.value = true;
+                    modalTitle.value = '编辑角色权限';
+                    modalVisiable.value = true;
+                    currRow.value = {
+                      id: row.id,
+                      role_auths: data.result.map((v: IRole) => v.id),
+                    };
+                  },
+                },
+                () => '编辑角色权限' // 用箭头函数返回性能更好。
+              ),
+              h(
+                NButton,
+                {
+                  size: 'small',
+                  type: 'primary',
                   onClick: () => {
+                    isEditAuth.value = false;
+                    modalTitle.value = '编辑角色';
                     modalVisiable.value = true;
                     currRow.value = { ...row };
                   },
                 },
                 () => '编辑' // 用箭头函数返回性能更好。
-              ),
-              h(
-                NPopconfirm,
-                {
-                  'positive-text': '确定',
-                  'negative-text': '取消',
-                  'on-positive-click': async () => {
-                    // await fetchDeleteLink(row.id!);
-                    window.$message.success('已删除!');
-                    await handlePageChange(params.value.nowPage);
-                  },
-                  'on-negative-click': () => {
-                    window.$message.info('已取消!');
-                  },
-                },
-                {
-                  trigger: () =>
-                    h(
-                      NButton,
-                      {
-                        size: 'small',
-                        type: 'error',
-                      },
-                      () => '删除' // 用箭头函数返回性能更好。
-                    ),
-                  default: () => '确定删除吗?',
-                }
               ),
             ]
           );
@@ -170,7 +179,7 @@ export default defineComponent({
       modalVisiable.value = false;
     };
 
-    const modalConfirm = async () => {
+    const updateRole = async () => {
       try {
         modalConfirmLoading.value = true;
         const res = await addRoleRef.value.validateForm();
@@ -189,12 +198,38 @@ export default defineComponent({
         modalConfirmLoading.value = false;
       }
     };
+    const updateRoleAuth = async () => {
+      try {
+        modalConfirmLoading.value = true;
+        const res = await editRoleAuthRef.value.validateForm();
+        await fetchUpdateRoleAuth({
+          id: res.id,
+          role_auths: res.role_auths,
+        });
+        window.$message.success('更新成功!');
+        modalVisiable.value = false;
+        handlePageChange(params.value.nowPage);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        modalConfirmLoading.value = false;
+      }
+    };
+
+    const modalConfirm = () => {
+      if (isEditAuth.value) {
+        updateRoleAuth();
+      } else {
+        updateRole();
+      }
+    };
 
     const modalUpdateShow = (newVal) => {
       modalVisiable.value = newVal;
     };
 
     return {
+      isEditAuth,
       modalConfirmLoading,
       modalVisiable,
       modalTitle,
@@ -205,6 +240,7 @@ export default defineComponent({
       handleSearch,
       currRow,
       addRoleRef,
+      editRoleAuthRef,
       tableListData,
       tableListLoading,
       columns: createColumns(),

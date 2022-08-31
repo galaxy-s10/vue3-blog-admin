@@ -26,6 +26,8 @@ import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { defineComponent, ref, watch } from 'vue';
 
+import { uploadImageByMdEditor } from '@/utils';
+
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('scss', scss);
 hljs.registerLanguage('bash', bash);
@@ -60,16 +62,21 @@ export default defineComponent({
       emit('update:value', str);
     };
     // eslint-disable-next-line
-    const handleUploadImage = (event, insertImage, files) => {
-      // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
-      const img = {
-        url: 'https://resource.hsslive.cn/image/1578937683585vueblog.webp',
-        desc: 'https://resource.hsslive.cn/image/1578937683585vueblog.webp',
-        // width: 'auto',
-        // height: 'auto',
-      };
-      insertImage(img);
-      allImg.value.push(img.url);
+    const handleUploadImage = async (event, insertImage, files) => {
+      try {
+        const res = await uploadImageByMdEditor(files);
+        const img = {
+          url: res,
+          desc: res,
+          // width: 'auto',
+          // height: 'auto',
+        };
+        insertImage(img);
+        allImg.value.push(img.url);
+      } catch (error: any) {
+        console.log(error);
+        window.$message.error(error?.message);
+      }
     };
     return { text, handleChange, handleUploadImage };
   },

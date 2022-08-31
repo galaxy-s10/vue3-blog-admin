@@ -24,8 +24,8 @@ export default new Promise((resolve) => {
       resolve({
         target: 'web',
         mode: 'development',
-        devtool: 'inline-cheap-module-source-map',
-        stats: 'errors-warnings', // 只显示警告和错误信息（webpack-dev-server4.x后变了）
+        // https://webpack.docschina.org/configuration/devtool/
+        devtool: 'eval', // eval，具有最高性能的开发构建的推荐选择。
         // 这个infrastructureLogging设置参考了vuecli5，如果不设置，webpack-dev-server会打印一些信息
         infrastructureLogging: {
           level: 'none',

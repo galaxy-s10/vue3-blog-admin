@@ -171,7 +171,6 @@ export default defineComponent({
     };
 
     const modalConfirm = async () => {
-      console.log('????');
       try {
         modalConfirmLoading.value = true;
         const res = await addLinkRef.value.validateForm();

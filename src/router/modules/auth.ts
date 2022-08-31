@@ -28,6 +28,14 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'authTree',
+        path: '/auth/tree',
+        component: () => import('@/views/auth/tree/index.vue'),
+        meta: {
+          title: '权限树',
+        },
+      },
+      {
         name: 'addAuth',
         path: '/auth/add',
         component: () => import('@/views/auth/add/index.vue'),
