@@ -22,7 +22,8 @@
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
-    }
+    },
+    "transpileOnly": true
   }
   // "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"] // 仅仅匹配这些文件，除了src以外的文件都不会被匹配
 }

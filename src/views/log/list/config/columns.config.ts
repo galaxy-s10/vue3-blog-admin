@@ -89,8 +89,8 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       },
     },
     {
-      title: 'api_code',
-      key: 'api_code',
+      title: 'api_status_code',
+      key: 'api_status_code',
       align: 'center',
       width: 200,
       ellipsis: {

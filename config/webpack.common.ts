@@ -120,7 +120,7 @@ const cssRules = (isProduction: boolean, module?: boolean) => {
 const commonConfig = (isProduction) => {
   const result: Configuration = {
     entry: {
-      shared: ['vue', 'vue-router', 'pinia'],
+      // shared: ['vue', 'vue-router', 'pinia'],
       main: {
         import: './src/main.ts',
       },
