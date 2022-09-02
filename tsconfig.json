@@ -13,7 +13,8 @@
     "resolveJsonModule": true, //解析json模块
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "script/*": ["script/*"]
     }
     // "paths": {
     //   "@/*": ["./src/*"] // 这样写的话，@/不会提示路径，得使用baseUrl:'./'+paths:{"@/*": ["src/*"]}这样才的话@/才会提示路径

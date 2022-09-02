@@ -11,7 +11,7 @@ import { version as vueRouterVersion } from 'vue-router/package.json';
 import { version as vueVersion } from 'vue/package.json';
 import { Configuration } from 'webpack';
 
-import { chalkINFO } from './utils/chalkTip';
+import { chalkINFO } from '../utils/chalkTip';
 
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 

@@ -1,13 +1,12 @@
-import path from 'path';
-
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import portfinder from 'portfinder';
 import { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import ConsoleDebugPlugin from './consoleDebugPlugin';
-import { chalkINFO } from './utils/chalkTip';
-import { outputStaticUrl } from './utils/outputStaticUrl';
+import ConsoleDebugPlugin from '../consoleDebugPlugin';
+import { chalkINFO } from '../utils/chalkTip';
+import { outputStaticUrl } from '../utils/outputStaticUrl';
+import { resolveApp } from '../utils/path';
 
 const localIPv4 = WebpackDevServer.internalIPSync('v4');
 
@@ -102,9 +101,8 @@ export default new Promise((resolve) => {
               extensions: {
                 vue: {
                   enabled: true,
-                  compiler: path.resolve(
-                    __dirname,
-                    '../node_modules/vue/compiler-sfc/index.js'
+                  compiler: resolveApp(
+                    './node_modules/vue/compiler-sfc/index.js'
                   ),
                 },
               },

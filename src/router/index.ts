@@ -1,6 +1,6 @@
+import { outputStaticUrl, NODE_ENV } from 'script/utils/outputStaticUrl';
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { outputStaticUrl, NODE_ENV } from '../../config/utils/outputStaticUrl';
 import { routes as constantRoutes } from './constantRoutes';
 
 export { routes as asyncRoutes } from './asyncRoutes';

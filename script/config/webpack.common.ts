@@ -1,5 +1,4 @@
 import { execSync } from 'child_process';
-import path from 'path';
 
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
@@ -12,10 +11,11 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
-import pkg from '../package.json';
-import { outputDir } from './constant';
-import { chalkINFO, chalkWRAN } from './utils/chalkTip';
-import { outputStaticUrl } from './utils/outputStaticUrl';
+import pkg from '../../package.json';
+import { outputDir } from '../constant';
+import { chalkINFO, chalkWARN } from '../utils/chalkTip';
+import { outputStaticUrl } from '../utils/outputStaticUrl';
+import { resolveApp } from '../utils/path';
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
 
@@ -37,6 +37,7 @@ try {
 } catch (error) {
   console.log(error);
 }
+
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
 const sassRules = (isProduction: boolean, module?: boolean) => {
@@ -45,7 +46,7 @@ const sassRules = (isProduction: boolean, module?: boolean) => {
       ? {
           loader: MiniCssExtractPlugin.loader,
           options: {
-            publicPath: '../',
+            publicPath: outputStaticUrl(isProduction),
           },
         }
       : {
@@ -87,7 +88,7 @@ const cssRules = (isProduction: boolean, module?: boolean) => {
       ? {
           loader: MiniCssExtractPlugin.loader,
           options: {
-            publicPath: '../',
+            publicPath: outputStaticUrl(isProduction),
           },
         }
       : {
@@ -135,7 +136,7 @@ const commonConfig = (isProduction) => {
        * 这个模块会打包进bundle.js，而不会单独抽离出来。
        */
       chunkFilename: 'js/[name]-[contenthash:6]-bundle-chunk.js',
-      path: path.resolve(__dirname, `../${outputDir}`),
+      path: resolveApp(`./${outputDir}`),
       assetModuleFilename: 'assets/[name]-[contenthash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
       /**
        * webpack-dev-server 也会默认从 publicPath 为基准，使用它来决定在哪个目录下启用服务，来访问 webpack 输出的文件。
@@ -160,7 +161,8 @@ const commonConfig = (isProduction) => {
       // 解析路径
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'], // 解析扩展名
       alias: {
-        '@': path.resolve(__dirname, '../src'), // 设置路径别名
+        '@': resolveApp('./src'), // 设置路径别名
+        script: resolveApp('./script'), // 设置路径别名
         vue$: 'vue/dist/vue.runtime.esm-bundler.js', // 设置vue的路径别名
       },
       fallback: {
@@ -339,10 +341,7 @@ const commonConfig = (isProduction) => {
         failOnError: false, // 如果有任何错误，将导致模块构建失败，禁用设置为false
         failOnWarning: false, // 如果有任何警告，将导致模块构建失败，禁用设置为false
         cache: true,
-        cacheLocation: path.resolve(
-          __dirname,
-          '../node_modules/.cache/.eslintcache'
-        ),
+        cacheLocation: resolveApp('./node_modules/.cache/.eslintcache'),
       }),
       // 该插件将为您生成一个HTML5文件，其中包含使用脚本标签的所有Webpack捆绑包
       new HtmlWebpackPlugin({
@@ -436,7 +435,7 @@ export default (env) => {
       // 根据当前环境，合并配置文件
       const mergeConfig = merge(commonConfig(isProduction), config);
       console.log(
-        chalkWRAN(
+        chalkWARN(
           `根据当前环境，合并配置文件，当前是: ${process.env.NODE_ENV}环境`
         )
       );

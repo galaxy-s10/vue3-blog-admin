@@ -8,11 +8,11 @@
   "license": "MIT",
   "author": "shuisheng <2274751790@qq.com>",
   "scripts": {
-    "build": "webpack --config ./config/webpack.common.ts --env production",
-    "build:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack --config ./config/webpack.common.ts --env production",
-    "build:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack --config ./config/webpack.common.ts --env production",
-    "build:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack --config ./config/webpack.common.ts --env production",
-    "build:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack --config ./config/webpack.common.ts --env production",
+    "build": "webpack --config ./script/config/webpack.common.ts --env production",
+    "build:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack --config ./script/config/webpack.common.ts --env production",
+    "build:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack --config ./script/config/webpack.common.ts --env production",
+    "build:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack --config ./script/config/webpack.common.ts --env production",
+    "build:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack --config ./script/config/webpack.common.ts --env production",
     "commit": "cz",
     "lint": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue",
     "lint:fix": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue --fix",
@@ -20,10 +20,10 @@
     "prettier": "prettier --write .",
     "push": "cz && standard-version",
     "release": "standard-version",
-    "start": "webpack serve --config ./config/webpack.common.ts --env development",
-    "start:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack serve --config ./config/webpack.common.ts --env development",
-    "start:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack serve --config ./config/webpack.common.ts --env development",
-    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./config/webpack.common.ts --env development"
+    "start": "webpack serve --config ./script/config/webpack.common.ts --env development",
+    "start:beta": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=beta webpack serve --config ./script/config/webpack.common.ts --env development",
+    "start:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack serve --config ./script/config/webpack.common.ts --env development",
+    "start:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack serve --config ./script/config/webpack.common.ts --env development"
   },
   "config": {
     "commitizen": {
