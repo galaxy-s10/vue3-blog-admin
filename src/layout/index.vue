@@ -150,7 +150,7 @@ export default defineComponent({
   height: 100vh;
 
   .main-wrap {
-    padding: 10px;
+    padding: 10px 10px 50px 10px;
   }
 }
 </style>

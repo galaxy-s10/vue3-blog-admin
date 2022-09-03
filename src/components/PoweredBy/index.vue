@@ -23,20 +23,22 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .fixed-powered {
-  width: 100%;
   position: fixed;
   bottom: 0;
-  color: #9373ee;
-  background-color: rgba(147, 115, 238, 0.04);
+  width: 100%;
+  height: 40px;
   border-radius: 10px;
-  padding: 10px;
+  background-color: rgba(147, 115, 238, 0.04);
+  color: #9373ee;
   text-align: center;
+  line-height: 40px;
+
   user-select: none;
   .txt {
   }
   .author {
-    font-weight: bold;
     margin-left: 10px;
+    font-weight: bold;
     cursor: pointer;
   }
 }
