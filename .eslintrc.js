@@ -64,26 +64,6 @@ module.exports = {
      * 1 => warn
      * 2 => error
      */
-    'import/order': [
-      'error',
-      {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['sibling', 'parent'],
-          'index',
-          'object',
-          'type',
-        ],
-        'newlines-between': 'always', // 强制或禁止导入组之间的新行：
-        // 根据导入路径按字母顺序对每个组内的顺序进行排序
-        alphabetize: {
-          order: 'asc' /* 按升序排序。选项：['ignore', 'asc', 'desc'] */,
-          caseInsensitive: false /* 忽略大小写。选项：[true, false] */,
-        },
-      },
-    ],
     camelcase: 0, // 强制执行驼峰命名约定
     'no-console': 0, // 此规则不允许调用console对象的方法。
     'spaced-comment': ['error', 'always', { exceptions: ['-', '+'] }], // 该规则强制注释中 // 或 /* 后空格的一致性
@@ -135,6 +115,26 @@ module.exports = {
     'object-shorthand': ['error', 'always'], // （默认）希望尽可能使用速记。var foo = {x:x};替换为var foo = {x};
 
     // eslint-plugin-import插件
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          ['sibling', 'parent'],
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'always', // 强制或禁止导入组之间的新行：
+        // 根据导入路径按字母顺序对每个组内的顺序进行排序
+        alphabetize: {
+          order: 'asc' /* 按升序排序。选项：['ignore', 'asc', 'desc'] */,
+          caseInsensitive: false /* 忽略大小写。选项：[true, false] */,
+        },
+      },
+    ],
     'import/no-extraneous-dependencies': 2, // 禁止导入未在package.json中声明的外部模块。
     'import/prefer-default-export': 0, // 当模块只有一个导出时，更喜欢使用默认导出而不是命名导出。
     'import/extensions': 0, // 确保在导入路径中一致使用文件扩展名

@@ -13,7 +13,7 @@
     "build:preview": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=preview webpack --config ./script/config/webpack.common.ts --env production",
     "build:prod": "cross-env VUE_APP_RELEASE_PROJECT_NAME=vue3-blog-admin VUE_APP_RELEASE_PROJECT_ENV=prod webpack --config ./script/config/webpack.common.ts --env production",
     "build:stats": "cross-env WEBPACK_ANALYZER_SWITCH=true webpack --config ./script/config/webpack.common.ts --env production",
-    "commit": "cz",
+    "cz": "cz",
     "lint": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue",
     "lint:fix": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue --fix",
     "prepare": "husky install",

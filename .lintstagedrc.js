@@ -7,5 +7,6 @@ console.log(
 );
 
 module.exports = {
+  // 只对这几种格式的代码进行prettier美化
   '*.{js,jsx,ts,tsx,vue}': ['prettier --write'],
 };

@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext", // esnext,commonjs
+    "module": "esnext",
     "strict": true,
     "noImplicitAny": false,
     "lib": ["dom", "esnext"],
     "jsx": "preserve",
     "moduleResolution": "node",
     "esModuleInterop": true, // ES 模块互操作,import React from 'react';react是module.exports导出的，因此需要设置该属性
-    "forceConsistentCasingInFileNames": true, //在文件名中强制使用一致的大小写
+    "forceConsistentCasingInFileNames": true, // 在文件名中强制使用一致的大小写
     "skipLibCheck": true, // 跳过d.ts声明文件的类型检查。
     "resolveJsonModule": true, //解析json模块
     "baseUrl": "./",
@@ -20,11 +20,13 @@
     //   "@/*": ["./src/*"] // 这样写的话，@/不会提示路径，得使用baseUrl:'./'+paths:{"@/*": ["src/*"]}这样才的话@/才会提示路径
     // }
   },
+  // ts-node的时候会读取这里的配置
   "ts-node": {
     "compilerOptions": {
-      "module": "CommonJS"
+      "module": "commonjs" // 指定生成什么模块代码。
     },
-    "transpileOnly": true
-  }
-  // "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"] // 仅仅匹配这些文件，除了src以外的文件都不会被匹配
+    "transpileOnly": true // 只编译，报警告或者错误一样运行
+  },
+  // 仅仅匹配这些文件，除了src以外的文件都不会被匹配
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "script/**/*.ts"]
 }

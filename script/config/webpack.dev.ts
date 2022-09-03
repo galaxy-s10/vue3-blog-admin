@@ -23,6 +23,7 @@ export default new Promise((resolve) => {
     .then((port) => {
       const devConfig: Configuration = {
         target: 'web',
+        // https://github.com/webpack/webpack/blob/main/lib/config/defaults.js
         mode: 'development',
         stats: 'none',
         // https://webpack.docschina.org/configuration/devtool/
