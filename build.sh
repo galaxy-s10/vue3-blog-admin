@@ -6,7 +6,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /vue3-blog-admin/build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-08-25 03:45:51
+# LastEditTime: 2022-09-03 13:46:01
 # LastEditors: shuisheng
 ###
 
@@ -63,4 +63,4 @@ fi
 # npx cross-env VUE_APP_RELEASE_PROJECT_NAME=$JOBNAME VUE_APP_RELEASE_PROJECT_ENV=$ENV webpack --config ./config/webpack.common.ts --env production
 
 # 博客后台，直接放服务器根目录
-npx webpack --config ./config/webpack.common.ts --env production
+npx webpack --config ./script/config/webpack.common.ts --env production
