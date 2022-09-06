@@ -6,13 +6,11 @@ import Message from '@/components/Message/index.vue';
 import { naive } from '@/components/registerNaive';
 import router from '@/router/index';
 import store from '@/store/index';
-import { showProjectInfo } from '@/utils/showProjectInfo';
 
 import '@/assets/css/index.scss';
 import '@/permission';
 import '@/performance';
 
-showProjectInfo();
 const app = createApp(App);
 const message = createApp(Message);
 

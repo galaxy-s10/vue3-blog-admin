@@ -6,7 +6,7 @@ import cache from '@/utils/cache';
 
 const config: AxiosRequestConfig = {
   // baseURL: '/api/', // 本地开发：/api/，线上正式服：/prodapi/，线上测试服：/betaapi/
-  timeout: 5000,
+  timeout: 1000 * 5,
 };
 
 const service = axios.create(config);
@@ -50,6 +50,11 @@ service.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (!error.response) {
+      // 请求超时没有response
+      window.$message.error(error.message);
+      return Promise.reject(error.message);
+    }
     const userStore = useUserStore();
     const statusCode = error.response.status;
     const errorResponseData = error.response.data;
@@ -92,3 +97,9 @@ service.interceptors.response.use(
   }
 );
 export default service;
+
+const getHash = () => {
+  return new Promise((resolve) => {
+    resolve(1);
+  });
+};

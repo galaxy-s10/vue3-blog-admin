@@ -7,6 +7,7 @@ import ConsoleDebugPlugin from '../consoleDebugPlugin';
 import { chalkINFO } from '../utils/chalkTip';
 import { outputStaticUrl } from '../utils/outputStaticUrl';
 import { resolveApp } from '../utils/path';
+import VersionPlugin from '../versionPlugin';
 
 const localIPv4 = WebpackDevServer.internalIPSync('v4');
 
@@ -125,6 +126,9 @@ export default new Promise((resolve) => {
              * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
              */
             async: true,
+          }),
+          new VersionPlugin({
+            isProduction: false,
           }),
           // 打印控制调试地址
           new ConsoleDebugPlugin({

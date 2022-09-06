@@ -17,10 +17,18 @@ export function fetchDiff(params) {
 }
 
 // 上传图片
-export function fetchUpload(data): Promise<IResponse<IUploadRes>> {
+export function fetchUpload(
+  data,
+  onUploadProgress?
+): Promise<IResponse<IUploadRes>> {
   // data:new FormData {prefix,uploadFiles}
   return request.post('/qiniu_data/upload', data, {
     headers: { 'Content-Type': 'multipart/form-data;' },
+    timeout: 1000 * 60,
+    onUploadProgress: (e) => {
+      console.log(e);
+      onUploadProgress(e);
+    },
   });
 }
 
