@@ -50,15 +50,10 @@ service.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if (!error.response) {
-      // 请求超时没有response
-      window.$message.error(error.message);
-      return Promise.reject(error.message);
-    }
     const userStore = useUserStore();
     const statusCode = error.response.status;
     const errorResponseData = error.response.data;
-    const whiteList = ['400', '401', '403'];
+    const whiteList = ['400', '401', '403', '404'];
     if (error.response) {
       if (!whiteList.includes(`${statusCode}`)) {
         if (statusCode === 500) {
@@ -90,16 +85,15 @@ service.interceptors.response.use(
         window.$message.error(errorResponseData.message);
         return Promise.reject(errorResponseData);
       }
+      if (statusCode === 404) {
+        window.$message.error(errorResponseData.message);
+        return Promise.reject(errorResponseData);
+      }
     } else {
-      window.$message.error(error?.message);
-      return Promise.reject(error);
+      // 请求超时没有response
+      window.$message.error(error.message);
+      return Promise.reject(error.message);
     }
   }
 );
 export default service;
-
-const getHash = () => {
-  return new Promise((resolve) => {
-    resolve(1);
-  });
-};

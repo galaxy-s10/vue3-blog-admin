@@ -23,6 +23,9 @@ export const formConfig: IForm = {
       type: 'upload',
       label: '文件',
       placeholder: '请选择文件',
+      // uploadConfig: {
+      //   max: 1,
+      // },
       rule: { required: true, trigger: 'blur', type: 'array' },
     },
   ],

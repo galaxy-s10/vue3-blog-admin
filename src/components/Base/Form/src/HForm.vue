@@ -204,9 +204,10 @@ export default defineComponent({
   //   },
   // },
   setup(props, { emit }) {
+    console.log(props.modelValue.head_img, 'modelValue');
     const formRef = ref<any>(null);
     const handleValueChange = (value: any, field: string) => {
-      // console.log(field, value);
+      console.log(field, value, '-----');
       emit('update:modelValue', { ...props.modelValue, [field]: value });
       emit('update:filed', field, value);
     };

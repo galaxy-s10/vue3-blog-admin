@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts">
+import { UploadFileInfo } from 'naive-ui';
 import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -37,8 +38,23 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const formData = ref<IArticle>({ ...props.modelValue });
-    const originData: IArticle = { ...props.modelValue };
+    console.log('111111', { ...props.modelValue });
+    const handleData = ref();
+    handleData.value = {
+      ...props.modelValue,
+      head_img: [
+        {
+          id: props.modelValue.head_img,
+          name: props.modelValue.head_img,
+          url: props.modelValue.head_img,
+          status: 'finished',
+          percentage: 100,
+        },
+      ] as UploadFileInfo[],
+    };
+    console.log(handleData.value.head_img[0]);
+    const formData = ref<IArticle>(handleData.value);
+    const originData: IArticle = handleData.value;
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
     const qiniuCdnList = ref<string[]>([]);
@@ -73,7 +89,7 @@ export default defineComponent({
       });
       const { data } = await fetchUpload(form);
       const success = data.success;
-      return success[0].resultFilename;
+      return success[0].url;
     };
     const handleConfirm = async (v: IArticle) => {
       try {

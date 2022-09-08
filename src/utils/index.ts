@@ -12,7 +12,7 @@ export const uploadImageByMdEditor = async (files: any[]) => {
   });
   const { data } = await fetchUpload(form);
   const success = data.success;
-  return success[0].resultFilename;
+  return success[0].url;
 };
 /**
  * @description 返回正则匹配到的结果（数组或null）

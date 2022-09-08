@@ -4,10 +4,10 @@ import { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
 import ConsoleDebugPlugin from '../consoleDebugPlugin';
+import ConsoleProjectPlugin from '../consoleProjectPlugin';
 import { chalkINFO } from '../utils/chalkTip';
 import { outputStaticUrl } from '../utils/outputStaticUrl';
 import { resolveApp } from '../utils/path';
-import VersionPlugin from '../versionPlugin';
 
 const localIPv4 = WebpackDevServer.internalIPSync('v4');
 
@@ -127,7 +127,7 @@ export default new Promise((resolve) => {
              */
             async: true,
           }),
-          new VersionPlugin({
+          new ConsoleProjectPlugin({
             isProduction: false,
           }),
           // 打印控制调试地址

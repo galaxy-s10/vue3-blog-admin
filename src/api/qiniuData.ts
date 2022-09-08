@@ -27,8 +27,23 @@ export function fetchUpload(
     timeout: 1000 * 60,
     onUploadProgress: (e) => {
       console.log(e);
-      onUploadProgress(e);
+      onUploadProgress?.(e);
     },
+  });
+}
+
+// 获取上传图片进度
+export function fetchUploadProgress(hash: string): Promise<
+  IResponse<{
+    type: string;
+    hash: string;
+    uploadBytes: number;
+    totalBytes: number;
+  }>
+> {
+  return request.get('/qiniu_data/progress', {
+    timeout: 1000 * 10,
+    params: { hash },
   });
 }
 

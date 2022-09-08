@@ -1,5 +1,3 @@
-import { execSync } from 'child_process';
-
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
@@ -11,32 +9,12 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
-import pkg from '../../package.json';
 import { outputDir } from '../constant';
 import { chalkINFO, chalkWARN } from '../utils/chalkTip';
 import { outputStaticUrl } from '../utils/outputStaticUrl';
 import { resolveApp } from '../utils/path';
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
-
-let commitHash;
-let commitUserName;
-let commitDate;
-let commitMessage;
-try {
-  // commit哈希
-  commitHash = execSync('git show -s --format=%H').toString().trim();
-  // commit用户名
-  commitUserName = execSync('git show -s --format=%cn').toString().trim();
-  // commit日期
-  commitDate = new Date(
-    execSync(`git show -s --format=%cd`).toString()
-  ).toLocaleString();
-  // commit消息
-  commitMessage = execSync('git show -s --format=%s').toString().trim();
-} catch (error) {
-  console.log(error);
-}
 
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
@@ -121,7 +99,6 @@ const cssRules = (isProduction: boolean, module?: boolean) => {
 const commonConfig = (isProduction) => {
   const result: Configuration = {
     entry: {
-      // shared: ['vue', 'vue-router', 'pinia'],
       main: {
         import: './src/main.ts',
       },
@@ -360,7 +337,6 @@ const commonConfig = (isProduction) => {
               useShortDoctype: true, // 使用html5的<!doctype html>替换掉之前的html老版本声明方式<!doctype>
               // 上面的都是production模式下默认值。
               removeEmptyAttributes: true, // 移除一些空属性，如空的id,classs,style等等，但不是空的就全删，比如<img alt />中的alt不会删。http://perfectionkills.com/experimenting-with-html-minifier/#remove_empty_or_blank_attributes
-
               minifyCSS: true, // 使用clean-css插件删除 CSS 中一些无用的空格、注释等。
               minifyJS: true, // 使用Terser插件优化
             }
@@ -395,20 +371,6 @@ const commonConfig = (isProduction) => {
           VUE_APP_RELEASE_PROJECT_ENV: JSON.stringify(
             process.env.VUE_APP_RELEASE_PROJECT_ENV
           ),
-          VUE_APP_RELEASE_PROJECT_LASTBUILD: JSON.stringify(
-            new Date().toLocaleString()
-          ),
-          VUE_APP_RELEASE_PROJECT_PACKAGE: JSON.stringify({
-            name: pkg.name,
-            version: pkg.version,
-            repository: pkg.repository.url,
-          }),
-          VUE_APP_RELEASE_PROJECT_GIT: JSON.stringify({
-            commitHash,
-            commitDate,
-            commitUserName,
-            commitMessage,
-          }),
         },
         __VUE_OPTIONS_API__: 'true',
         __VUE_PROD_DEVTOOLS__: 'false',

@@ -108,10 +108,10 @@ module.exports = {
     'no-unused-expressions': [
       2,
       {
-        allowShortCircuit: true, // 允许短路
+        allowShortCircuit: true, // 允许短路，即允许a() && b();
         allowTernary: true, // 允许三元
       },
-    ], // 禁止未使用的表达式，即let a = true && console.log(1)允许，但是true && console.log(1)不行
+    ], // 禁止未使用的表达式
     'object-shorthand': ['error', 'always'], // （默认）希望尽可能使用速记。var foo = {x:x};替换为var foo = {x};
 
     // eslint-plugin-import插件
