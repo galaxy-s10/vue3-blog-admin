@@ -69,6 +69,7 @@
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import EditQiniuData from '../edit/index.vue';
@@ -114,68 +115,66 @@ export default defineComponent({
       bucket: QINIU_BUCKET,
     });
     const createColumns = (): DataTableColumns<IQiniuData> => {
-      const action: DataTableColumns<IQiniuData> = [
-        {
-          title: '操作',
-          key: 'actions',
-          width: 200,
-          align: 'center',
-          fixed: 'right',
-          render(row) {
-            return h(
-              NSpace,
-              {
-                justify: 'center',
-              },
-              () => [
-                h(
-                  NButton,
-                  {
-                    size: 'small',
-                    onClick: () => {
-                      modalVisiable.value = true;
-                      currRow.value = { ...row };
-                    },
+      const action: TableColumn<IQiniuData> = {
+        title: '操作',
+        key: 'actions',
+        width: 200,
+        align: 'center',
+        fixed: 'right',
+        render(row) {
+          return h(
+            NSpace,
+            {
+              justify: 'center',
+            },
+            () => [
+              h(
+                NButton,
+                {
+                  size: 'small',
+                  onClick: () => {
+                    modalVisiable.value = true;
+                    currRow.value = { ...row };
                   },
-                  () => '编辑' // 用箭头函数返回性能更好。
-                ),
-                h(
-                  NPopconfirm,
-                  {
-                    'positive-text': '确定',
-                    'negative-text': '取消',
-                    'on-positive-click': async () => {
-                      try {
-                        const { data } = await fetchDeleteQiniuData(row.id!);
-                        window.$message.success(data);
-                        await handlePageChange(params.value.nowPage);
-                      } catch (error) {
-                        console.error(error);
-                      }
-                    },
-                    'on-negative-click': () => {
-                      window.$message.info('已取消!');
-                    },
+                },
+                () => '编辑' // 用箭头函数返回性能更好。
+              ),
+              h(
+                NPopconfirm,
+                {
+                  'positive-text': '确定',
+                  'negative-text': '取消',
+                  'on-positive-click': async () => {
+                    try {
+                      const { data } = await fetchDeleteQiniuData(row.id!);
+                      window.$message.success(data);
+                      await handlePageChange(params.value.nowPage);
+                    } catch (error) {
+                      console.error(error);
+                    }
                   },
-                  {
-                    trigger: () =>
-                      h(
-                        NButton,
-                        {
-                          size: 'small',
-                          type: 'error',
-                        },
-                        () => '删除' // 用箭头函数返回性能更好。
-                      ),
-                    default: () => '确定删除吗?',
-                  }
-                ),
-              ]
-            );
-          },
+                  'on-negative-click': () => {
+                    window.$message.info('已取消!');
+                  },
+                },
+                {
+                  trigger: () =>
+                    h(
+                      NButton,
+                      {
+                        size: 'small',
+                        type: 'error',
+                      },
+                      () => '删除' // 用箭头函数返回性能更好。
+                    ),
+                  default: () => '确定删除吗?',
+                }
+              ),
+            ]
+          );
         },
-      ];
-      return [...columnsConfig(), ...action];
+      };
+      return [...columnsConfig(), action];
     };
 
     const getDiff = async () => {

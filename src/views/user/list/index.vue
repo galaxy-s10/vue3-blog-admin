@@ -100,6 +100,7 @@
 
 <script lang="ts">
 import { NButton, NSpace } from 'naive-ui';
+import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import { columnsConfig } from './config/columns.config';
@@ -172,7 +173,7 @@ export default defineComponent({
       formValue.value.user_roles = keys;
     };
     const createColumns = (): DataTableColumns<IUser> => {
-      const action: any = {
+      const action: TableColumn<IUser> = {
         title: '操作',
         key: 'actions',
         fixed: 'right',

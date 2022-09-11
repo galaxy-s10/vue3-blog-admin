@@ -1,4 +1,5 @@
 import { IForm } from '@/components/Base/Form';
+import { QINIU_PREFIX } from '@/constant';
 
 export const formConfig: IForm = {
   gridSpan: 16,
@@ -15,10 +16,13 @@ export const formConfig: IForm = {
     },
     {
       field: 'cover_pic',
-      type: 'input',
+      type: 'upload',
       label: '封面图',
-      placeholder: '请输入封面图',
-      rule: { required: true, trigger: 'blur' },
+      uploadConfig: {
+        max: 1,
+        prefix: QINIU_PREFIX['image/'],
+      },
+      rule: { required: true, trigger: 'blur', type: 'array' },
     },
     {
       field: 'author',
@@ -29,10 +33,13 @@ export const formConfig: IForm = {
     },
     {
       field: 'audio_url',
-      type: 'input',
+      type: 'upload',
       label: '音频资源',
-      placeholder: '请输入音频资源',
-      rule: [{ required: true, trigger: 'blur' }],
+      uploadConfig: {
+        max: 1,
+        prefix: QINIU_PREFIX['media/'],
+      },
+      rule: { required: true, trigger: 'blur', type: 'array' },
     },
     {
       field: 'status',

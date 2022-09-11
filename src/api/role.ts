@@ -124,7 +124,6 @@ export function fetchUpdateRole({
 
 /** 批量删除子角色 */
 export function fetchBatchDeleteChildRoles({ id, c_roles }: IRole) {
-  console.log(id, c_roles, 'lll');
   return request({
     url: `/role/batch_delete_child_roles`,
     method: 'post',

@@ -70,7 +70,6 @@ export const formConfig = async (): Promise<IForm> => {
           max: 1,
         },
         label: '封面图',
-        placeholder: '请输入封面图',
       },
       {
         field: 'priority',

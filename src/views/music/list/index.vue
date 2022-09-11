@@ -32,7 +32,8 @@
 </template>
 
 <script lang="ts">
-import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { NButton, NPopconfirm, NSpace, UploadFileInfo } from 'naive-ui';
+import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import AddMusic from '../add/index.vue';
@@ -73,7 +74,7 @@ export default defineComponent({
       orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IMusic> => {
-      const action: any = {
+      const action: TableColumn<IMusic> = {
         title: '操作',
         key: 'actions',
         width: 200,
@@ -92,6 +93,32 @@ export default defineComponent({
                   size: 'small',
                   onClick: () => {
                     modalVisiable.value = true;
+                    if (typeof row.cover_pic === 'string') {
+                      row.cover_pic = [
+                        {
+                          id: row.cover_pic,
+                          name: row.cover_pic,
+                          url: row.cover_pic,
+                          status: 'finished',
+                          percentage: 100,
+                        },
+                      ] as UploadFileInfo[];
+                    } else {
+                      row.audio_url = [];
+                    }
+                    if (typeof row.audio_url === 'string') {
+                      row.audio_url = [
+                        {
+                          id: row.audio_url,
+                          name: row.audio_url,
+                          url: row.audio_url,
+                          status: 'finished',
+                          percentage: 100,
+                        },
+                      ] as UploadFileInfo[];
+                    } else {
+                      row.audio_url = [];
+                    }
                     currRow.value = { ...row };
                   },
                 },
@@ -175,6 +202,11 @@ export default defineComponent({
     const modalConfirm = async () => {
       try {
         modalConfirmLoading.value = true;
+        console.log(
+          '.......',
+          addMusicRef.value.validateForm,
+          addMusicRef.value
+        );
         const res = await addMusicRef.value.validateForm();
         await fetchUpdateMusic({
           id: res.id,

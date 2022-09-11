@@ -13,11 +13,12 @@
 </template>
 
 <script lang="ts">
-import { UploadFileInfo } from 'naive-ui';
 import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { formConfig } from '../config/form.config';
+
+import type { UploadFileInfo } from 'naive-ui';
 
 import { fetchUpdateArticle, fetchCreateArticle } from '@/api/article';
 import { fetchDeleteQiniuDataByQiniuKey, fetchUpload } from '@/api/qiniuData';
@@ -38,21 +39,26 @@ export default defineComponent({
     },
   },
   setup(props) {
-    console.log('111111', { ...props.modelValue });
     const handleData = ref();
-    handleData.value = {
-      ...props.modelValue,
-      head_img: [
-        {
-          id: props.modelValue.head_img,
-          name: props.modelValue.head_img,
-          url: props.modelValue.head_img,
-          status: 'finished',
-          percentage: 100,
-        },
-      ] as UploadFileInfo[],
-    };
-    console.log(handleData.value.head_img[0]);
+    if (props.modelValue?.head_img) {
+      handleData.value = {
+        ...props.modelValue,
+        head_img: [
+          {
+            id: props.modelValue.head_img,
+            name: props.modelValue.head_img,
+            url: props.modelValue.head_img,
+            status: 'finished',
+            percentage: 100,
+          },
+        ] as UploadFileInfo[],
+      };
+    } else {
+      handleData.value = {
+        ...props.modelValue,
+        head_img: [] as UploadFileInfo[],
+      };
+    }
     const formData = ref<IArticle>(handleData.value);
     const originData: IArticle = handleData.value;
     const confirmLoading = ref(false);
@@ -88,8 +94,7 @@ export default defineComponent({
         form.append('uploadFiles', item.file);
       });
       const { data } = await fetchUpload(form);
-      const success = data.success;
-      return success[0].url;
+      return data.resultUrl;
     };
     const handleConfirm = async (v: IArticle) => {
       try {
@@ -131,14 +136,14 @@ export default defineComponent({
           });
           window.$message.success('更新成功');
         } else {
-          if (v.head_img) {
-            v.head_img = await uploadImg(v.head_img as any[]);
-          }
+          // if (v.head_img) {
+          //   v.head_img = await uploadImg(v.head_img as any[]);
+          // }
           await fetchCreateArticle({
             title: v.title,
             content: v.content,
             desc: v.desc,
-            head_img: v.head_img,
+            head_img: v.head_img![0].resultUrl,
             is_comment: v.is_comment,
             status: v.status,
             tags: v.tags,

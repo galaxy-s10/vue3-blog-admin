@@ -22,7 +22,8 @@ export interface IFormItem {
   rule?: FormItemRule | Array<FormItemRule>;
   disabled?: boolean;
   uploadConfig?: {
-    max: number;
+    max?: number;
+    prefix?: string;
   };
   treeSelectConfig?: {
     key?: string;

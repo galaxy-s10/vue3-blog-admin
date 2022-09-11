@@ -22,10 +22,22 @@ export const formConfig: IForm = {
       field: 'uploadFiles',
       type: 'upload',
       label: '文件',
-      placeholder: '请选择文件',
-      // uploadConfig: {
-      //   max: 1,
-      // },
+      // placeholder: '请选择文件',
+      uploadConfig: {
+        // max: 2,
+        prefix: QINIU_PREFIX['image/'],
+      },
+      rule: { required: true, trigger: 'blur', type: 'array' },
+    },
+    {
+      field: 'ddddd',
+      type: 'upload',
+      label: '文件ddd',
+      placeholder: '55555',
+      uploadConfig: {
+        // max: 2,
+        prefix: QINIU_PREFIX['image/'],
+      },
       rule: { required: true, trigger: 'blur', type: 'array' },
     },
   ],

@@ -67,23 +67,6 @@ export interface ITheme {
   desc?: string;
 }
 
-export interface IUploadRes {
-  error: string[];
-  success: {
-    bucket: string;
-    key: string;
-    hash: string;
-    fsize: number;
-    mimeType: string;
-    original: {
-      filename: string;
-      key: string;
-      prefix: string;
-      putTime: string;
-    };
-    url: string;
-  }[];
-}
 export interface IArticle {
   id?: number;
   title?: string;
@@ -245,9 +228,9 @@ export interface ILink {
 export interface IMusic {
   id?: number;
   name?: string;
-  cover_pic?: string;
+  cover_pic?: string | any[] | null;
   author?: string;
-  audio_url?: string;
+  audio_url?: string | any[] | null;
   status?: number;
   created_at?: string;
   updated_at?: string;

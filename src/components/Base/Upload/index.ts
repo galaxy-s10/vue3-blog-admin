@@ -1,3 +1,3 @@
-import HUpload from './src/HUpload.vue';
+import Upload from './src/Upload.vue';
 
-export default HUpload;
+export default Upload;

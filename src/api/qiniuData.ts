@@ -1,5 +1,11 @@
-import { IQiniuData, IUploadRes } from '@/interface';
+import { IQiniuData } from '@/interface';
 import request, { IResponse } from '@/utils/request';
+
+export interface IQiniuKey {
+  prefix: string;
+  hash: string;
+  ext: string;
+}
 
 export function fetchQiniuDataList(params) {
   return request({
@@ -17,33 +23,47 @@ export function fetchDiff(params) {
 }
 
 // 上传图片
-export function fetchUpload(
-  data,
-  onUploadProgress?
-): Promise<IResponse<IUploadRes>> {
+export function fetchUpload(data: IQiniuKey): Promise<
+  IResponse<{
+    flag: boolean;
+    respBody?: any;
+    respErr?: any;
+    respInfo?: any;
+    resultUrl?: string;
+  }>
+> {
   // data:new FormData {prefix,uploadFiles}
   return request.post('/qiniu_data/upload', data, {
+    timeout: 1000 * 60,
+  });
+}
+
+// 上传chunk
+export function fetchUploadChunk(
+  data
+): Promise<IResponse<{ percentage: number }>> {
+  // data:new FormData {prefix,uploadFiles}
+  return request.post('/qiniu_data/upload_chunk', data, {
     headers: { 'Content-Type': 'multipart/form-data;' },
     timeout: 1000 * 60,
-    onUploadProgress: (e) => {
-      console.log(e);
-      onUploadProgress?.(e);
-    },
+  });
+}
+
+// 合并chunk
+export function fetchUploadMergeChunk(data): Promise<IResponse<any>> {
+  // data:new FormData {prefix,uploadFiles}
+  return request.post('/qiniu_data/merge_chunk', data, {
+    timeout: 1000 * 60,
   });
 }
 
 // 获取上传图片进度
-export function fetchUploadProgress(hash: string): Promise<
-  IResponse<{
-    type: string;
-    hash: string;
-    uploadBytes: number;
-    totalBytes: number;
-  }>
-> {
+export function fetchUploadProgress(
+  params: IQiniuKey
+): Promise<IResponse<{ percentage?: number }>> {
   return request.get('/qiniu_data/progress', {
-    timeout: 1000 * 10,
-    params: { hash },
+    timeout: 1000 * 10, // 以免并发轮询获取进度的时候超时
+    params,
   });
 }
 

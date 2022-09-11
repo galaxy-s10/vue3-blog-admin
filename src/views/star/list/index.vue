@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import { columnsConfig } from './config/columns.config';
@@ -53,7 +54,7 @@ export default defineComponent({
       orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IStar> => {
-      const action: any = {
+      const action: TableColumn<IStar> = {
         title: '操作',
         key: 'actions',
         width: 200,

@@ -112,11 +112,15 @@
               </n-switch>
             </template>
             <template v-else-if="item.type === 'upload'">
-              <Upload
+              <UploadCpt
+                ref="hssUploadRef"
+                :field="item.field"
+                :placeholder="item.placeholder"
                 :max="item.uploadConfig?.max"
+                :prefix="item.uploadConfig?.prefix"
                 :model-value="modelValue[`${item.field}`]"
                 @update:value="handleValueChange($event, item.field)"
-              ></Upload>
+              ></UploadCpt>
             </template>
             <template v-else-if="item.type === 'markdown'">
               <MarkdownEditor
@@ -132,11 +136,7 @@
       <n-form-item v-if="showAction" label=" ">
         <n-space>
           <n-button @click="handleReset">重置</n-button>
-          <n-button
-            type="success"
-            :loading="confirmLoading"
-            @click="handleConfirm"
-          >
+          <n-button type="success" :loading="loading" @click="handleConfirm">
             确定
           </n-button>
         </n-space>
@@ -152,13 +152,13 @@ import { IFormItem } from '../types';
 
 import type { PropType } from 'vue';
 
-import Upload from '@/components/Base/Upload';
+import UploadCpt from '@/components/Base/Upload';
 import MarkdownEditor from '@/components/MarkdownEditor';
 
 export default defineComponent({
   components: {
     MarkdownEditor,
-    Upload,
+    UploadCpt,
   },
   props: {
     modelValue: {
@@ -204,10 +204,10 @@ export default defineComponent({
   //   },
   // },
   setup(props, { emit }) {
-    console.log(props.modelValue.head_img, 'modelValue');
     const formRef = ref<any>(null);
+    const hssUploadRef = ref<any[]>();
+    const loading = ref(props.confirmLoading);
     const handleValueChange = (value: any, field: string) => {
-      console.log(field, value, '-----');
       emit('update:modelValue', { ...props.modelValue, [field]: value });
       emit('update:filed', field, value);
     };
@@ -234,15 +234,28 @@ export default defineComponent({
 
     const handleConfirm = async () => {
       try {
-        const res = await handleValidate();
+        loading.value = true;
+        const res: any = await handleValidate();
+        const uploadQueue: any = [];
+        hssUploadRef.value?.forEach((item) => {
+          uploadQueue.push(item.startUpload());
+        });
+        const result = await Promise.all(uploadQueue);
+        result.forEach((item) => {
+          res[item.field] = item.result;
+        });
+        loading.value = false;
         emit('click:confirm', res);
       } catch (error) {
+        loading.value = false;
         console.log(error);
       }
     };
 
     return {
+      loading,
       formRef,
+      hssUploadRef,
       handleValidate,
       handleReset,
       handleConfirm,
