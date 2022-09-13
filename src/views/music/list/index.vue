@@ -32,15 +32,15 @@
 </template>
 
 <script lang="ts">
-import { NButton, NPopconfirm, NSpace, UploadFileInfo } from 'naive-ui';
-import { TableColumn } from 'naive-ui/es/data-table/src/interface';
+import { NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import AddMusic from '../add/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
-import type { DataTableColumns } from 'naive-ui';
+import type { DataTableColumns, UploadFileInfo } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import {
   fetchMusicList,

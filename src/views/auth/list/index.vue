@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { NButton, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import AddAuth from '../add/index.vue';

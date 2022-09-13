@@ -1,12 +1,10 @@
-import request from '@/utils/request';
+import { IFrontend } from '@/interface';
+import request, { IResponse } from '@/utils/request';
 
-export function fetchFrontendDetail() {
-  return request({
-    url: '/frontend/detail',
-    method: 'get',
-  });
+export function fetchFrontendDetail(): Promise<IResponse<IFrontend>> {
+  return request.get('/frontend/detail');
 }
-export function fetchUpdateFrontend(data) {
+export function fetchUpdateFrontend(data: IFrontend) {
   return request({
     url: `/frontend/update/${data.id}`,
     method: 'put',

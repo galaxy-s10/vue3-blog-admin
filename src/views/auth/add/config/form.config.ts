@@ -1,7 +1,8 @@
 import { fetchAllList } from '@/api/auth';
 import { IForm } from '@/components/Base/Form';
+import { IAuth } from '@/interface';
 
-export const formConfig = async (): Promise<IForm> => {
+export const formConfig = async (): Promise<IForm<IAuth>> => {
   const [allAuth]: any = await Promise.all([fetchAllList()]);
 
   return {

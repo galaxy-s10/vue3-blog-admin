@@ -2,8 +2,9 @@ import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
+import { IArticle, ISearch } from '@/interface';
 
-export const searchFormConfig: IForm = {
+export const searchFormConfig: IForm<ISearch<IArticle>> = {
   gridSpan: 8,
   labelPlacement: 'left',
   formStyle: {
@@ -11,7 +12,7 @@ export const searchFormConfig: IForm = {
   },
   formItems: [
     {
-      field: 'id',
+      field: 'keyWord',
       type: 'input',
       label: 'id',
       placeholder: '请输入id',

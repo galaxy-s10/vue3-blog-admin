@@ -67,16 +67,16 @@ module.exports = {
     camelcase: 0, // 强制执行驼峰命名约定
     'no-console': 0, // 此规则不允许调用console对象的方法。
     'class-methods-use-this': 0, // 类方法如果不使用this的话会报错
+    'no-unused-vars': 0, // 禁止出现未使用过的变量
+    'no-shadow': 0, // 禁止变量声明与外层作用域的变量同名
 
     'no-underscore-dangle': 1, // 此规则不允许在标识符中使用悬空下划线。
 
     'spaced-comment': ['error', 'always', { exceptions: ['-', '+'] }], // 该规则强制注释中 // 或 /* 后空格的一致性
     'no-var': 2, // 要求let或const代替var
-    'no-shadow': 2, // 禁止变量声明与外层作用域的变量同名
     'no-param-reassign': 2, // 禁止对 function 的参数进行重新赋值
     'no-nested-ternary': 2, // 禁止嵌套三元
     'no-plusplus': 2, // 禁用一元操作符 ++ 和 --
-    'no-unused-vars': 2, // 禁止出现未使用过的变量
     'vars-on-top': 2, // 要求所有的 var 声明出现在它们所在的作用域顶部
     'prefer-const': 2, // 要求使用 const 声明那些声明后不再被修改的变量
     'prefer-template': 2, // 要求使用模板字符串代替字符串连接
@@ -144,5 +144,9 @@ module.exports = {
 
     // vueeslint插件
     'vue/multi-word-component-names': 0,
+
+    // @typescript-eslint插件
+    '@typescript-eslint/no-unused-vars': 2, // 禁止出现未使用过的变量
+    '@typescript-eslint/no-shadow': 2, // 禁止变量声明与外层作用域的变量同名
   },
 };

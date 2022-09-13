@@ -6,7 +6,6 @@
       v-model="formData"
       :show-action="showAction"
       :confirm-loading="confirmLoading"
-      @click:confirm="handleConfirm"
     ></h-form>
     <div v-if="uploadRes?.success.length">
       <h3>success:</h3>
@@ -25,14 +24,10 @@
 </template>
 
 <script lang="ts">
-import sparkMD5 from 'spark-md5';
 import { defineComponent, ref } from 'vue';
 
 import { formConfig } from './config/form.config';
 
-import type { UploadFileInfo } from 'naive-ui';
-
-import { fetchUpload } from '@/api/qiniuData';
 import HForm from '@/components/Base/Form';
 
 export default defineComponent({
@@ -53,10 +48,6 @@ export default defineComponent({
     const formRef = ref<any>(null);
     const uploadRes = ref();
 
-    const handleConfirm = (v) => {
-      console.log('handleConfirm', v);
-    };
-
     const validateForm = async () => {
       const res = await formRef.value.handleValidate();
       return res;
@@ -67,7 +58,6 @@ export default defineComponent({
       formConfig,
       formData,
       confirmLoading,
-      handleConfirm,
       validateForm,
       uploadRes,
     };

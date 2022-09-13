@@ -1,3 +1,22 @@
+export interface ISearchBase {
+  keyWord?: string;
+  nowPage?: string;
+  pageSize?: string;
+  orderBy?: string;
+  orderName?: string;
+}
+
+export type ISearch<T, Origin = ISearchBase> = T & Origin;
+
+export interface IThirdUser {
+  id?: number;
+  user_id?: number;
+  third_user_id?: number;
+  third_platform?: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
 export interface IStar {
   id?: number;
   article_id?: number;
@@ -11,6 +30,23 @@ export interface IStar {
   to_user?: IUser;
   article?: any;
   comment?: any;
+}
+
+export interface IFrontend {
+  id?: number;
+  frontend_qq_login?: number;
+  frontend_github_login?: number;
+  frontend_email_login?: number;
+  frontend_comment?: number;
+  frontend_link?: number;
+  frontend_about?: string;
+  frontend_shutdown?: number;
+  frontend_shutdown_content?: string;
+  frontend_dialog?: number;
+  frontend_dialog_content?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
 }
 export interface IComment {
   id?: number;
@@ -248,7 +284,7 @@ export interface IWorks {
   name?: string;
   desc?: string;
   url?: string;
-  bg_url?: string;
+  bg_url?: string | any[] | null;
   priority?: string;
   status?: number;
 }

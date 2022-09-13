@@ -1,29 +1,24 @@
 import sparkMD5 from 'spark-md5';
 
-import type { UploadFileInfo } from 'naive-ui';
-
-import { fetchUpload } from '@/api/qiniuData';
-import { QINIU_PREFIX } from '@/constant';
-
 export const getFileExt = (name: string) => {
   return name.split('.')[1];
 };
 
 // 根据文件内容获取hash，同一个文件不管重命名还是改文件名后缀，hash都一样
-export const getHash = (file: UploadFileInfo['file']) => {
+export const getHash = (file: File) => {
   return new Promise<{
     hash: string;
     ext: string;
     buffer: ArrayBuffer;
   }>((resolve) => {
     const reader = new FileReader();
-    reader.readAsArrayBuffer(file!);
+    reader.readAsArrayBuffer(file);
     reader.onload = (e) => {
       const spark = new sparkMD5.ArrayBuffer();
       const buffer = e.target!.result as ArrayBuffer;
       spark.append(buffer);
       const hash = spark.end();
-      const ext = file!.name.split('.')[1];
+      const ext = file.name.split('.')[1];
       resolve({ hash, ext, buffer });
     };
   });
@@ -56,18 +51,6 @@ export const splitFile = (file: File) => {
   return chunkList;
 };
 
-export const uploadImageByMdEditor = async (files: any[]) => {
-  const formVal = { prefix: QINIU_PREFIX['image/'] };
-  const form = new FormData();
-  Object.keys(formVal).forEach((key) => {
-    key !== 'uploadFiles' && form.append(key, formVal[key]);
-  });
-  files.forEach((item) => {
-    form.append('uploadFiles', item);
-  });
-  const { data } = await fetchUpload(form);
-  return data.resultUrl;
-};
 /**
  * @description 返回正则匹配到的结果（数组或null）
  * @param {string} str

@@ -39,6 +39,11 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
+        if (v.bg_url[0]?.resultUrl) {
+          v.bg_url = v.bg_url[0]?.resultUrl;
+        } else {
+          v.bg_url = '';
+        }
         const { message }: any = await fetchCreateWorks(v);
         window.$message.success(message);
       } catch (error) {
@@ -52,6 +57,10 @@ export default defineComponent({
       const res = await formRef.value.handleValidate();
       return res;
     };
+    const validateAndUpload = async () => {
+      const res = await formRef.value.validateAndUpload();
+      return res;
+    };
 
     return {
       formRef,
@@ -59,6 +68,7 @@ export default defineComponent({
       formData,
       confirmLoading,
       handleConfirm,
+      validateAndUpload,
       validateForm,
     };
   },

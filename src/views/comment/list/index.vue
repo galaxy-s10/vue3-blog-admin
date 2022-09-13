@@ -20,13 +20,13 @@
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import { fetchCommentList, fetchUpdateComment } from '@/api/comment';
 import HSearch from '@/components/Base/Search';

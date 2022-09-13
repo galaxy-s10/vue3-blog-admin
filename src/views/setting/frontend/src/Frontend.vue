@@ -31,8 +31,11 @@ export default defineComponent({
 
     onMounted(async () => {
       const { data } = await fetchFrontendDetail();
-      formData.value = data.frontend;
-      oldFormData.value = data.frontend;
+      data.frontend_dialog_content = data.frontend_dialog_content || '';
+      data.frontend_shutdown_content = data.frontend_shutdown_content || '';
+      data.frontend_about = data.frontend_about || '';
+      formData.value = data;
+      oldFormData.value = data;
     });
     onBeforeMount(() => {
       formConfigRes.value = formConfig();
@@ -40,6 +43,7 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
+        console.log(v, 'lllllll');
         await fetchUpdateFrontend({
           id: oldFormData.value.id,
           frontend_about: v.frontend_about,
@@ -50,6 +54,8 @@ export default defineComponent({
           frontend_email_login: v.frontend_email_login,
           frontend_dialog: v.frontend_dialog,
           frontend_dialog_content: v.frontend_dialog_content,
+          frontend_shutdown: v.frontend_shutdown,
+          frontend_shutdown_content: v.frontend_shutdown_content,
         });
         window.$message.success('更新成功');
       } catch (error) {

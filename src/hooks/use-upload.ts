@@ -1,5 +1,3 @@
-import type { UploadFileInfo } from 'naive-ui';
-
 import {
   fetchUpload,
   fetchUploadChunk,
@@ -13,7 +11,7 @@ export const useUpload = async ({
   file,
 }: {
   prefix: string;
-  file: UploadFileInfo;
+  file: File;
 }) => {
   let timer;
   let isMerge = false;
@@ -63,7 +61,7 @@ export const useUpload = async ({
       let flag = false;
       timer = setInterval(async () => {
         try {
-          // eslint-disable-next-line no-shadow
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           const { code, data, message } = await fetchUploadProgress({
             hash,
             prefix,

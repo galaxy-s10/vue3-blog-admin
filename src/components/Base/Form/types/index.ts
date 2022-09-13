@@ -13,8 +13,8 @@ type IFormType =
   | 'upload'
   | 'treeSelect';
 
-export interface IFormItem {
-  field: string;
+export interface IFormItem<T> {
+  field: T extends String ? string : keyof T;
   type: IFormType;
   label: string;
   gridSpan?: number;
@@ -30,18 +30,20 @@ export interface IFormItem {
     label?: string;
     disabled?: string;
   };
+  switchConfig?: {
+    checkedText?: string;
+    unCheckedText?: string;
+    checkedValue?: any;
+    unCheckedValue?: any;
+  };
   path?: string;
   placeholder?: any;
   options?: any[];
   isHidden?: boolean;
-  checkedValue?: any;
-  unCheckedValue?: any;
-  checkedText?: string;
-  unCheckedText?: string;
   style?: StyleValue;
 }
-export interface IForm {
-  formItems: IFormItem[];
+export interface IForm<T> {
+  formItems: IFormItem<T>[];
   gridSpan?: Number;
   formStyle?: StyleValue;
   showAction?: Boolean;

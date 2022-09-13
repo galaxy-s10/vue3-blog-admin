@@ -27,10 +27,7 @@ export default defineComponent({
       const { data } = await fetchArticleDetail(+route.query.id!);
       data.tags = data.tags!.map((item) => item.id);
       data.types = data.types!.map((item) => item.id);
-      formData.value = {
-        ...data,
-        head_img: data.head_img ? [data.head_img] : [],
-      };
+      formData.value = data;
     });
 
     return { route, formData };

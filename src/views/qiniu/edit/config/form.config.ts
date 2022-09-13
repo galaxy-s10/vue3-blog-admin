@@ -1,6 +1,7 @@
 import { IForm } from '@/components/Base/Form';
+import { IQiniuData } from '@/interface';
 
-export const formConfig: IForm = {
+export const formConfig: IForm<IQiniuData> = {
   gridSpan: 16,
   formStyle: {
     justifyContent: 'center',

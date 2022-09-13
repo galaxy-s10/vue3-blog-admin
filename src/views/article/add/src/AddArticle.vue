@@ -21,9 +21,7 @@ import { formConfig } from '../config/form.config';
 import type { UploadFileInfo } from 'naive-ui';
 
 import { fetchUpdateArticle, fetchCreateArticle } from '@/api/article';
-import { fetchDeleteQiniuDataByQiniuKey, fetchUpload } from '@/api/qiniuData';
 import HForm from '@/components/Base/Form';
-import { QINIU_CDN_URL, QINIU_PREFIX } from '@/constant';
 import { IArticle } from '@/interface';
 
 export default defineComponent({
@@ -60,7 +58,6 @@ export default defineComponent({
       };
     }
     const formData = ref<IArticle>(handleData.value);
-    const originData: IArticle = handleData.value;
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
     const qiniuCdnList = ref<string[]>([]);
@@ -83,50 +80,15 @@ export default defineComponent({
         }
       }
     };
-    const uploadImg = async (files: any[]) => {
-      console.log('上传新的封面图');
-      const formVal = { prefix: QINIU_PREFIX['image/'] };
-      const form = new FormData();
-      Object.keys(formVal).forEach((key) => {
-        key !== 'uploadFiles' && form.append(key, formVal[key]);
-      });
-      files.forEach((item) => {
-        form.append('uploadFiles', item.file);
-      });
-      const { data } = await fetchUpload(form);
-      return data.resultUrl;
-    };
     const handleConfirm = async (v: IArticle) => {
       try {
         confirmLoading.value = true;
         if (route.query.id) {
-          if (v.head_img![0] !== originData.head_img![0]) {
-            console.log('修改了封面图');
-            if (originData.head_img![0]) {
-              console.log('先删除旧封面图');
-              const qiniu_key = originData.head_img![0].replace(
-                QINIU_CDN_URL,
-                ''
-              );
-              await fetchDeleteQiniuDataByQiniuKey(qiniu_key);
-            } else {
-              console.log('原本没有封面图');
-            }
-            if (v.head_img![0]) {
-              console.log('上传新的封面图');
-              v.head_img = await uploadImg(v.head_img as any[]);
-            } else {
-              v.head_img = null;
-            }
-          } else {
-            console.log('没修改封面图');
-            v.head_img = v.head_img![0];
-          }
           await fetchUpdateArticle({
             title: v.title,
             content: v.content,
             desc: v.desc,
-            head_img: v.head_img,
+            head_img: v.head_img?.[0]?.resultUrl,
             id: v.id,
             is_comment: v.is_comment,
             status: v.status,
@@ -136,14 +98,11 @@ export default defineComponent({
           });
           window.$message.success('更新成功');
         } else {
-          // if (v.head_img) {
-          //   v.head_img = await uploadImg(v.head_img as any[]);
-          // }
           await fetchCreateArticle({
             title: v.title,
             content: v.content,
             desc: v.desc,
-            head_img: v.head_img![0].resultUrl,
+            head_img: v.head_img?.[0]?.resultUrl,
             is_comment: v.is_comment,
             status: v.status,
             tags: v.tags,

@@ -1,20 +1,20 @@
 import chalk from 'chalk';
 
-interface IConsoleDebugPlugin {
+interface ITerminalPrintPlugin {
   local: string;
   network?: string;
 }
 
-class ConsoleDebugPlugin {
-  options: IConsoleDebugPlugin;
+class TerminalPrintPlugin {
+  options: ITerminalPrintPlugin;
 
-  constructor(options: IConsoleDebugPlugin) {
+  constructor(options: ITerminalPrintPlugin) {
     this.options = options;
   }
 
   apply(compiler) {
     compiler.hooks.done.tapAsync(
-      'ConsoleDebugPlugin',
+      'TerminalPrintPlugin',
       (compilation, callback) => {
         console.log('  App running at:');
         console.log(`- Local:   ${chalk.cyan(this.options.local)}`);
@@ -26,4 +26,4 @@ class ConsoleDebugPlugin {
   }
 }
 
-export default ConsoleDebugPlugin;
+export default TerminalPrintPlugin;

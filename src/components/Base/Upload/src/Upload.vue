@@ -1,5 +1,6 @@
 <template>
   <div class="upload-wrap">
+    <n-select v-model:value="prefixValue" :options="prefixOptions" />
     <n-upload
       v-model:file-list="list"
       multiple
@@ -14,15 +15,15 @@
         </n-text>
       </n-upload-dragger>
     </n-upload>
+
     <!-- <n-button type="success" @click="startUpload"> 上传 </n-button> -->
   </div>
 </template>
 
 <script lang="ts">
-import sparkMD5 from 'spark-md5';
 import { defineComponent, ref, watch } from 'vue';
 
-import type { UploadFileInfo } from 'naive-ui';
+import type { SelectOption, UploadFileInfo } from 'naive-ui';
 
 import {
   fetchUpload,
@@ -83,7 +84,11 @@ export default defineComponent({
         };
       })
     );
-
+    const oldList = [...list.value];
+    const prefixOptions = Object.keys(QINIU_PREFIX).map((v) => {
+      return { label: v, value: v };
+    });
+    const prefixValue = ref(props.prefix);
     const timerObj = ref({});
 
     watch(
@@ -126,17 +131,15 @@ export default defineComponent({
         const prefix = props.prefix;
         const { code } = await fetchUploadProgress({ prefix, hash, ext });
         if (code === 3) {
-          const res = await fetchUpload({ prefix, hash, ext });
+          const { data } = await fetchUpload({ prefix, hash, ext });
           list.value.forEach((val) => {
             if (val.id === id) {
               val.status = 'finished';
               val.percentage = 100;
-              val.url = res.data.resultUrl;
+              val.url = data.resultUrl;
             }
           });
-          return new Promise((resolve) => {
-            resolve(res.data);
-          });
+          return data;
         }
         const chunkList = splitFile(file.file!);
         let isMerge = false;
@@ -170,7 +173,7 @@ export default defineComponent({
           let flag = false;
           timerObj.value[id] = setInterval(async () => {
             try {
-              // eslint-disable-next-line no-shadow
+              // eslint-disable-next-line @typescript-eslint/no-shadow
               const { code, data, message } = await fetchUploadProgress({
                 hash,
                 prefix,
@@ -215,11 +218,28 @@ export default defineComponent({
 
     const startUpload = async () => {
       const queue: any = [];
+      const del: string[] = [];
       list.value.forEach((v) => {
-        queue.push(upload(v));
+        if (v.file) {
+          queue.push(upload(v));
+        } else {
+          queue.push(Promise.resolve({ flag: true, resultUrl: v.url }));
+        }
       });
       const result = await Promise.all(queue);
-      return { field: props.field, result };
+      oldList.forEach((val) => {
+        let flag = false;
+        for (let i = 0; i < result.length; i += 1) {
+          if (result[i].resultUrl === val.url) {
+            flag = true;
+            return;
+          }
+        }
+        if (!flag) {
+          del.push(val.url!);
+        }
+      });
+      return { field: props.field, result, del };
     };
 
     const beforeUpload = () => {
@@ -228,6 +248,8 @@ export default defineComponent({
 
     return {
       list,
+      prefixOptions,
+      prefixValue,
       handleUploadChange,
       beforeUpload,
       startUpload,

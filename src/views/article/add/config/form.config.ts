@@ -1,8 +1,9 @@
 import { fetchTagList } from '@/api/tag';
 import { fetchTypeList } from '@/api/type';
 import { IForm } from '@/components/Base/Form';
+import { IArticle } from '@/interface';
 
-export const formConfig = async (): Promise<IForm> => {
+export const formConfig = async (): Promise<IForm<IArticle>> => {
   const [tagList, typeList] = await Promise.all([
     fetchTagList({}),
     fetchTypeList({}),
@@ -32,7 +33,6 @@ export const formConfig = async (): Promise<IForm> => {
         type: 'checkbox',
         label: '分类',
         placeholder: '请选择分类',
-        labelWidth: 100,
         options: typeList.data.rows.map((v) => ({
           label: v.name,
           value: v.id,
@@ -49,19 +49,23 @@ export const formConfig = async (): Promise<IForm> => {
         field: 'status',
         type: 'switch',
         label: '审核开关',
-        checkedValue: 1,
-        unCheckedValue: 2,
-        checkedText: '已审核',
-        unCheckedText: '未审核',
+        switchConfig: {
+          checkedValue: 1,
+          unCheckedValue: 2,
+          checkedText: '已审核',
+          unCheckedText: '未审核',
+        },
       },
       {
         field: 'is_comment',
         type: 'switch',
         label: '评论开关',
-        checkedValue: 1,
-        unCheckedValue: 2,
-        checkedText: '开启',
-        unCheckedText: '关闭',
+        switchConfig: {
+          checkedValue: 1,
+          unCheckedValue: 2,
+          checkedText: '开启',
+          unCheckedText: '关闭',
+        },
       },
       {
         field: 'head_img',

@@ -33,14 +33,14 @@
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
 import AddWorks from '../add/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
-import type { DataTableColumns } from 'naive-ui';
+import type { DataTableColumns, UploadFileInfo } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import {
   fetchWorksList,
@@ -65,7 +65,7 @@ export default defineComponent({
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑标签');
     const tableListLoading = ref(false);
-    const currRow = ref({});
+    const currRow = ref<any>();
     const addWorksRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
@@ -93,7 +93,21 @@ export default defineComponent({
                   size: 'small',
                   onClick: () => {
                     modalVisiable.value = true;
-                    currRow.value = { ...row };
+                    const val = { ...row };
+                    if (typeof val.bg_url === 'string') {
+                      val.bg_url = [
+                        {
+                          id: val.bg_url,
+                          name: val.bg_url,
+                          url: val.bg_url,
+                          status: 'finished',
+                          percentage: 100,
+                        },
+                      ] as UploadFileInfo[];
+                    } else {
+                      val.bg_url = [];
+                    }
+                    currRow.value = val;
                   },
                 },
                 () => '编辑' // 用箭头函数返回性能更好。
@@ -176,12 +190,15 @@ export default defineComponent({
     const modalConfirm = async () => {
       try {
         modalConfirmLoading.value = true;
-        const res = await addWorksRef.value.validateForm();
+        const res: IWorks = await addWorksRef.value.validateAndUpload();
         await fetchUpdateWorks({
-          ...res,
-          created_at: undefined,
-          updated_at: undefined,
-          deleted_at: undefined,
+          bg_url: res.bg_url![0]?.resultUrl || '',
+          desc: res.desc,
+          id: res.id,
+          name: res.name,
+          status: res.status,
+          url: res.url,
+          priority: res.priority,
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;

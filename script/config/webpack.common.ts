@@ -9,6 +9,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WebpackBar from 'webpackbar';
 
+import InjectProjectInfoPlugin from '../InjectProjectInfoPlugin';
 import { outputDir } from '../constant';
 import { chalkINFO, chalkWARN } from '../utils/chalkTip';
 import { outputStaticUrl } from '../utils/outputStaticUrl';
@@ -342,6 +343,10 @@ const commonConfig = (isProduction) => {
             }
           : false,
         chunks: ['main'], // 要仅包含某些块，您可以限制正在使用的块
+      }),
+      // 注入项目信息
+      new InjectProjectInfoPlugin({
+        isProduction: false,
       }),
       // 将已存在的单个文件或整个目录复制到构建目录。
       new CopyWebpackPlugin({

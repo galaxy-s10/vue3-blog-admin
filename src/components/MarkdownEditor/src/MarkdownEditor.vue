@@ -28,7 +28,6 @@ import { defineComponent, ref, watch } from 'vue';
 
 import { QINIU_PREFIX } from '@/constant';
 import { useUpload } from '@/hooks/use-upload';
-import { uploadImageByMdEditor } from '@/utils';
 
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('scss', scss);
@@ -64,17 +63,12 @@ export default defineComponent({
       emit('update:value', str);
     };
 
-    // eslint-disable-next-line
     const handleUploadImage = async (event, insertImage, files) => {
       try {
-        // const res = (await uploadImageByMdEditor(files)) as string;
-        // console.log(files[0]);
-        // return;
         const res: any = await useUpload({
           prefix: QINIU_PREFIX['image/'],
           file: files[0],
         });
-        console.log(res, 'lllllll---');
         const img = {
           url: res.resultUrl,
           desc: res.resultUrl,

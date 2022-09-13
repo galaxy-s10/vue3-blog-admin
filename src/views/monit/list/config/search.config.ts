@@ -3,8 +3,9 @@ import { columnsConfig } from './columns.config';
 import { IForm } from '@/components/Base/Form';
 import { MONIT_TYPE_MAP } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
+import { IMonit, ISearch } from '@/interface';
 
-export const searchFormConfig: IForm = {
+export const searchFormConfig: IForm<ISearch<IMonit>> = {
   gridSpan: 8,
   labelPlacement: 'left',
   formStyle: {

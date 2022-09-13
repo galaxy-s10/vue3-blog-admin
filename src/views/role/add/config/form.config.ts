@@ -1,7 +1,8 @@
 import { fetchAllList } from '@/api/role';
 import { IForm } from '@/components/Base/Form';
+import { IRole } from '@/interface';
 
-export const formConfig = async (): Promise<IForm> => {
+export const formConfig = async (): Promise<IForm<IRole>> => {
   const [allRole]: any = await Promise.all([fetchAllList()]);
 
   return {

@@ -1,7 +1,8 @@
 import { IFormItem } from '@/components/Base/Form';
+import { ISearchBase } from '@/interface';
 
 export const useOrder = (columnsConfig) => {
-  const orderName: IFormItem = {
+  const orderName: IFormItem<ISearchBase> = {
     field: 'orderName',
     type: 'select',
     label: '排序字段',
@@ -14,7 +15,7 @@ export const useOrder = (columnsConfig) => {
     }),
   };
 
-  const orderBy: IFormItem = {
+  const orderBy: IFormItem<ISearchBase> = {
     field: 'orderBy',
     type: 'select',
     label: '排序规则',

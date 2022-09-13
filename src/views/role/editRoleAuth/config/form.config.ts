@@ -1,7 +1,8 @@
 import { fetchTreeAuth } from '@/api/auth';
 import { IForm } from '@/components/Base/Form';
+import { IRole } from '@/interface';
 
-export const formConfig = async (): Promise<IForm> => {
+export const formConfig = async (): Promise<IForm<IRole>> => {
   const [treeAuth]: any = await Promise.all([fetchTreeAuth()]);
 
   return {

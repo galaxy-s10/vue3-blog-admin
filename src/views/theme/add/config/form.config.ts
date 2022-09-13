@@ -1,6 +1,7 @@
 import { IForm } from '@/components/Base/Form';
+import { ITheme } from '@/interface';
 
-export const formConfig: IForm = {
+export const formConfig: IForm<ITheme> = {
   gridSpan: 16,
   formStyle: {
     justifyContent: 'center',
