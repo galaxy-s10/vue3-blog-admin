@@ -5,6 +5,7 @@ export const useAppStore = defineStore('app', {
   state: () => {
     return {
       loading: false,
+      collapsed: false,
       env: 'prod',
       path: null,
       routes: [],
@@ -14,6 +15,9 @@ export const useAppStore = defineStore('app', {
   actions: {
     setLoading(res) {
       this.loading = res;
+    },
+    setCollapsed(res) {
+      this.collapsed = res;
     },
     setEnv(res) {
       this.env = res;

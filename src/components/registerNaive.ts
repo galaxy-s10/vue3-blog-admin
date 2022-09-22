@@ -38,6 +38,7 @@ import {
   NText,
   NUpload,
   NUploadDragger,
+  NPopconfirm,
 } from 'naive-ui';
 
 const components = [
@@ -79,6 +80,7 @@ const components = [
   NText,
   NUpload,
   NUploadDragger,
+  NPopconfirm,
 ];
 
 export const naive = create({

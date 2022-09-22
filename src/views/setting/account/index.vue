@@ -8,7 +8,7 @@
             userInfo.email_users[0] ? userInfo.email_users[0].email : '未绑定'
           }}
         </div>
-        <n-button text type="info" @click="handleBindEmail()">
+        <n-button text type="info" @click="handlePositiveClick">
           {{ userInfo.email_users[0] ? '解绑' : '绑定' }}
         </n-button>
       </div>
@@ -19,23 +19,46 @@
             userInfo.github_users[0] ? userInfo.github_users[0].login : '未绑定'
           }}
         </div>
-        <n-button text type="info" @click="handleBindThird('github')">
-          {{ userInfo.github_users[0] ? '解绑' : '绑定' }}
-        </n-button>
+        <n-popconfirm
+          negative-text="取消"
+          positive-text="确定"
+          @positive-click="handleBindThird('github')"
+          @negative-click="handleNegativeClick"
+        >
+          <template #trigger>
+            <n-button text type="info">
+              {{ userInfo.github_users[0] ? '解绑' : '绑定' }}
+            </n-button>
+          </template>
+          确定{{ userInfo.github_users[0] ? '解绑' : '绑定' }}github？
+        </n-popconfirm>
       </div>
       <div class="item">
         <div class="label">QQ</div>
         <div class="content">
           {{ userInfo.qq_users[0] ? userInfo.qq_users[0].nickname : '未绑定' }}
         </div>
-        <n-button text type="info" @click="handleBindThird('qq')">
-          {{ userInfo.qq_users[0] ? '解绑' : '绑定' }}
-        </n-button>
+        <n-popconfirm
+          negative-text="取消"
+          positive-text="确定"
+          @positive-click="handleBindThird('qq')"
+          @negative-click="handleNegativeClick"
+        >
+          <template #trigger>
+            <n-button text type="info">
+              {{ userInfo.qq_users[0] ? '解绑' : '绑定' }}
+            </n-button>
+          </template>
+          确定{{ userInfo.qq_users[0] ? '解绑' : '绑定' }}qq？
+        </n-popconfirm>
       </div>
       <div class="item">
         <div class="label">密码</div>
-        <div class="content"></div>
-        <n-button text type="info">重置</n-button>
+        <div class="content">
+          <n-button text type="info" @click="getPwd()">点击获取</n-button>
+          {{ password }}
+        </div>
+        <n-button text type="info" @click="resetPwd">重置</n-button>
       </div>
     </div>
 
@@ -58,7 +81,7 @@
           <n-input
             v-model:value="bindEmailForm.email"
             placeholder="请输入邮箱"
-            :disabled="userInfo.email_users[0]"
+            :disabled="!!userInfo.email_users[0]"
           >
             <template #prefix>
               <n-icon size="20" class="lang">
@@ -86,12 +109,19 @@
         </n-form-item>
       </n-form>
     </n-modal>
+    <component
+      :is="currCpt"
+      v-if="currCpt !== ''"
+      @negative-click="negativeClick"
+    ></component>
   </div>
 </template>
 
 <script lang="ts">
 import { MailOutline } from '@vicons/ionicons5';
 import { defineComponent, ref, toRef } from 'vue';
+
+import ResetPwdCpt from './cpt/ResetPwd/index.vue';
 
 import {
   fetchSendBindEmailCode,
@@ -101,6 +131,7 @@ import {
 } from '@/api/emailUser';
 import { fetchCancelBindGithub } from '@/api/githubUser';
 import { fetchCancelBindQQ } from '@/api/qqUser';
+import { fetchUserPwd } from '@/api/user';
 import {
   GITHUB_CLIENT_ID,
   GITHUB_OAUTH_URL,
@@ -111,7 +142,7 @@ import {
 import { useUserStore } from '@/store/user';
 
 export default defineComponent({
-  components: { MailOutline },
+  components: { MailOutline, ResetPwdCpt },
   setup() {
     const bindEmailRules = {
       email: { required: true, message: '请输入邮箱', trigger: 'blur' },
@@ -119,6 +150,8 @@ export default defineComponent({
     };
     const userStore = useUserStore();
     const userInfo: any = toRef(userStore, 'userInfo');
+    const password = ref('');
+    const currCpt = ref('');
     const loading = ref(false);
     const showModal = ref(false);
     const downCount = ref(0);
@@ -168,7 +201,8 @@ export default defineComponent({
       if (platform === 'qq') {
         if (userInfo.value.qq_users[0]) {
           console.log('解绑qq');
-          await fetchCancelBindQQ();
+          const res: any = await fetchCancelBindQQ();
+          window.$message.success(res.message);
         } else {
           const bind_qq_url =
             `${QQ_OAUTH_URL}client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
@@ -182,7 +216,8 @@ export default defineComponent({
       } else {
         if (userInfo.value.github_users[0]) {
           console.log('解绑github');
-          await fetchCancelBindGithub();
+          const res: any = await fetchCancelBindGithub();
+          window.$message.success(res.message);
         } else {
           const bind_github_url =
             `${GITHUB_OAUTH_URL}client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}github_login` +
@@ -214,6 +249,14 @@ export default defineComponent({
         code: '',
       };
     };
+    const resetPwd = () => {
+      currCpt.value = 'ResetPwdCpt';
+    };
+    const getPwd = async () => {
+      const res = await fetchUserPwd();
+      password.value = res.data.password;
+      window.$message.success('获取密码成功！');
+    };
 
     const submitCallback = () => {
       return new Promise((res, rej) => {
@@ -239,6 +282,7 @@ export default defineComponent({
         });
       });
     };
+
     const handleBindEmail = () => {
       // @ts-ignore
       if (userInfo.value.email_users[0]) {
@@ -248,7 +292,22 @@ export default defineComponent({
       showModal.value = true;
     };
 
+    const handlePositiveClick = () => {
+      // @ts-ignore
+      if (userInfo.value.email_users[0]) {
+        // @ts-ignore
+        bindEmailForm.value.email = userInfo.value.email_users[0].email;
+      }
+      showModal.value = true;
+    };
+    const handleNegativeClick = () => {};
+    const negativeClick = () => {
+      currCpt.value = '';
+    };
+
     return {
+      password,
+      currCpt,
       userInfo,
       bindEmailRules,
       bindEmailForm,
@@ -260,6 +319,11 @@ export default defineComponent({
       submitCallback,
       handleBindEmail,
       handleBindThird,
+      handlePositiveClick,
+      handleNegativeClick,
+      negativeClick,
+      resetPwd,
+      getPwd,
     };
   },
 });
@@ -275,7 +339,7 @@ export default defineComponent({
       border-bottom: 1px solid #f1f1f1;
       padding: 10px 0;
       .label {
-        width: 50px;
+        width: 80px;
         margin: 10px;
       }
       .content {

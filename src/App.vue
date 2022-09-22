@@ -39,7 +39,8 @@ export default defineComponent({
         switch (type) {
           case 'qq_login':
             if (userStore.userInfo) {
-              await fetchBindQQ(code);
+              const res: any = await fetchBindQQ(code);
+              window.$message.success(res.message);
               userStore.getUserInfo();
             } else {
               await fetchQQLogin(code);
@@ -47,7 +48,8 @@ export default defineComponent({
             break;
           case 'github_login':
             if (userStore.userInfo) {
-              await fetchBindGithub(code);
+              const res: any = await fetchBindGithub(code);
+              window.$message.success(res.message);
               userStore.getUserInfo();
             } else {
               await fetchGithubLogin(code);

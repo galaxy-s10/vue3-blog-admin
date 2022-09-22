@@ -6,14 +6,14 @@
         collapse-mode="width"
         :collapsed-width="64"
         :width="240"
-        :collapsed="collapsed"
+        :collapsed="appStore.collapsed"
         show-trigger
-        @collapse="collapsed = true"
-        @expand="collapsed = false"
+        @collapse="appStore.setCollapsed(true)"
+        @expand="appStore.setCollapsed(false)"
       >
         <n-menu
           :value="currentPath"
-          :collapsed="collapsed"
+          :collapsed="appStore.collapsed"
           :collapsed-width="64"
           :collapsed-icon-size="22"
           :options="menuOptions"
@@ -24,8 +24,17 @@
         />
       </n-layout-sider>
       <n-layout>
-        <HeaderCpt></HeaderCpt>
-        <openTabCpt></openTabCpt>
+        <div
+          class="head-wrap"
+          :style="{
+            width: !appStore.collapsed
+              ? 'calc(100vw - 240px)'
+              : 'calc(100vw - 64px)',
+          }"
+        >
+          <HeaderCpt></HeaderCpt>
+          <openTabCpt></openTabCpt>
+        </div>
         <div class="main-wrap">
           <router-view></router-view>
         </div>
@@ -126,7 +135,7 @@ export default defineComponent({
     appStore.setTabList({ [route.path]: route.meta.title });
 
     return {
-      collapsed: ref(false),
+      appStore,
       menuOptions,
       currentPath: path,
       handleUpdateValue,
@@ -149,8 +158,14 @@ export default defineComponent({
 .layout-wrap {
   height: 100vh;
 
+  .head-wrap {
+    position: fixed;
+    z-index: 10;
+    background-color: white;
+  }
   .main-wrap {
-    padding: 10px 10px 50px 10px;
+    margin-top: 90px;
+    padding: 0px 10px 50px 10px;
   }
 }
 </style>

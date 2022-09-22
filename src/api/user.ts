@@ -31,6 +31,13 @@ export function fetchUserDetail(id: number) {
   });
 }
 
+export function fetchUserPwd() {
+  return request({
+    url: `/user/get_pwd`,
+    method: 'get',
+  });
+}
+
 export function fetchUpdateUser({ id, username, status, avatar, desc }: IUser) {
   return request({
     url: `/user/update/${id}`,
@@ -43,6 +50,18 @@ export function fetchUpdateUser({ id, username, status, avatar, desc }: IUser) {
     },
   });
 }
+
+export function fetchUpdatePwd({ oldpwd, newpwd }) {
+  return request({
+    url: `/user/update_pwd`,
+    method: 'put',
+    data: {
+      oldpwd,
+      newpwd,
+    },
+  });
+}
+
 export function fetchUpdateUserRole({ id, user_roles }: IUser) {
   return request({
     url: `/user/update_user_role/${id}`,
