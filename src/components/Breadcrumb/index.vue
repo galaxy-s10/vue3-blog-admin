@@ -16,7 +16,7 @@ export default defineComponent({
     const appStore = useAppStore();
     const route = useRoute();
     const path = ref(route.path);
-    const { routes } = toRefs(appStore.$state);
+    const { routes } = toRefs(appStore);
 
     const handleTree = (source, target) => {
       const res: any = [];

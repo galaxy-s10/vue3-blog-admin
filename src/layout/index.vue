@@ -58,6 +58,7 @@ import type { RouteRecordRaw } from 'vue-router';
 import PoweredByCpt from '@/components/PoweredBy/index.vue';
 import { defaultRoutes } from '@/router/index';
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 // import { deepCloneExclude } from '@/utils';
 
 export default defineComponent({
@@ -70,6 +71,7 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
+    const userStore = useUserStore();
     // const copyOriginDefaultRoutes = deepCloneExclude(
     //   defaultRoutes,
     //   'component'
@@ -80,6 +82,7 @@ export default defineComponent({
           v.meta = {
             title: v.children[0].meta?.title,
             icon: v.children[0].meta?.icon,
+            sort: v.meta?.sort,
           };
           // @ts-ignore
           v.label = v.children[0].meta.title;
@@ -104,13 +107,15 @@ export default defineComponent({
       return routes;
     };
 
-    function sortRoute(b, a) {
-      return (a.meta?.sort || 0) - (b.meta?.sort || 0);
+    function sortRoute(a, b) {
+      return (b.meta?.sort || 0) - (a.meta?.sort || 0);
     }
 
-    const menuOptions = handleRoutes(
-      [...defaultRoutes, ...appStore.routes].sort(sortRoute)
-    ).filter((v) => v.meta && !v.meta.hidden);
+    const menuOptions = ref(
+      handleRoutes([...defaultRoutes, ...appStore.routes])
+        .sort(sortRoute)
+        .filter((v) => v.meta && !v.meta.hidden)
+    );
 
     const handleUpdateValue = (key: string, item) => {
       path.value = key;
@@ -165,7 +170,7 @@ export default defineComponent({
   }
   .main-wrap {
     margin-top: 90px;
-    padding: 0px 10px 50px 10px;
+    padding: 10px 10px 50px 10px;
   }
 }
 </style>

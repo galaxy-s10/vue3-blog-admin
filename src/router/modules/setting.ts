@@ -9,7 +9,7 @@ import { renderIcon } from '../utils';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { ROUTE_SORT } from '@/constant';
+import { ROUTE_ROLES, ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 // 异步路由
@@ -31,7 +31,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
           title: '前台设置',
           icon: renderIcon(BagHandleOutline),
-          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
+          roles: [ROUTE_ROLES.SUPER_ADMIN],
         },
       },
       {
@@ -41,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
           title: '主题设置',
           icon: renderIcon(ColorPaletteOutline),
-          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
+          roles: [ROUTE_ROLES.SUPER_ADMIN],
         },
       },
       {

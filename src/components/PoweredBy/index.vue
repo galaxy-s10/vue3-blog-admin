@@ -1,7 +1,9 @@
 <template>
   <div class="fixed-powered">
     <span class="txt">Powered by</span>
-    <span class="author" @click="jumpToUrl">galaxy-s10</span>
+    <span class="author">
+      <a :href="GITHUB_REPO" target="_blank">galaxy-s10</a>
+    </span>
   </div>
 </template>
 
@@ -12,11 +14,7 @@ import { GITHUB_REPO } from '@/constant';
 export default defineComponent({
   components: {},
   setup() {
-    const jumpToUrl = () => {
-      window.open(GITHUB_REPO);
-    };
-
-    return { jumpToUrl };
+    return { GITHUB_REPO };
   },
 });
 </script>
@@ -39,7 +37,10 @@ export default defineComponent({
   .author {
     margin-left: 10px;
     font-weight: bold;
-    cursor: pointer;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
   }
 }
 </style>

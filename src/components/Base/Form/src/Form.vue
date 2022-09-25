@@ -81,6 +81,7 @@
                   v-for="radio in item.options"
                   :key="radio.label"
                   :value="radio.value"
+                  :disabled="radio.disabled"
                 >
                   {{ radio.label }}
                 </n-radio>

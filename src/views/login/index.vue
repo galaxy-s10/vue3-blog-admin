@@ -190,7 +190,7 @@ import {
   PersonOutline,
 } from '@vicons/ionicons5';
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 import { fetchSendLoginCode, fetchSendRegisterCode } from '@/api/emailUser';
 import PoweredByCpt from '@/components/PoweredBy/index.vue';
@@ -221,6 +221,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const userStore = useUserStore();
     const appStore = useAppStore();
 
@@ -279,7 +280,7 @@ export default defineComponent({
       }
       if (token) {
         window.$message.success('登录成功!');
-        router.push('/');
+        router.push((route.query.redirect as '') || '/');
       }
     };
     const handleRegister = async () => {
@@ -289,7 +290,7 @@ export default defineComponent({
       });
       if (token) {
         window.$message.success('注册成功!');
-        router.push('/');
+        router.push((route.query.redirect as '') || '/');
       }
     };
     const handleLoginSubmit = (e) => {

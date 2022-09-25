@@ -24,7 +24,12 @@
       @cancel="modalCancel"
     >
       <div v-if="modalType === modalUserTypeEnum.EDIT">
-        <n-form
+        <AddUser
+          ref="addUserRef"
+          v-model="currRow"
+          :show-action="false"
+        ></AddUser>
+        <!-- <n-form
           ref="formRef"
           :inline="false"
           :label-width="80"
@@ -60,7 +65,7 @@
               </n-space>
             </n-radio-group>
           </n-form-item>
-        </n-form>
+        </n-form> -->
       </div>
       <div v-if="modalType === modalUserTypeEnum.EDIT_ROLE">
         <n-form
@@ -102,6 +107,7 @@
 import { NButton, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
+import AddUser from '../add/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
@@ -123,7 +129,7 @@ import { IUser, modalUserTypeEnum, IList } from '@/interface';
 interface ISearch extends IUser, IList {}
 
 export default defineComponent({
-  components: { HSearch, HModal },
+  components: { HSearch, HModal, AddUser },
   setup() {
     const rules = {
       username: {
@@ -185,11 +191,20 @@ export default defineComponent({
               {
                 size: 'small',
                 onClick: async () => {
-                  const userInfo = await fetchUserDetail(row.id!);
-                  formValue.value = { ...userInfo.data };
-                  modalTitle.value = '编辑用户';
+                  const { data } = await fetchUserDetail(row.id!);
+                  // @ts-ignore
+                  data.qq_users = data.qq_users?.length ? 1 : 2;
+                  // @ts-ignore
+                  data.github_users = data.github_users?.length ? 1 : 2;
+                  // @ts-ignore
+                  data.email_users = data.email_users?.length ? 1 : 2;
+                  currRow.value = { ...data };
                   modalType.value = modalUserTypeEnum.EDIT;
                   modalVisiable.value = !modalVisiable.value;
+                  // formValue.value = { ...userInfo.data };
+                  // modalTitle.value = '编辑用户';
+                  // modalType.value = modalUserTypeEnum.EDIT;
+                  // modalVisiable.value = !modalVisiable.value;
                 },
               },
               () => '编辑' // 用箭头函数返回性能更好。

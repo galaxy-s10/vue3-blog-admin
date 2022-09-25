@@ -10,6 +10,8 @@ export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 
 export const QINIU_CDN_URL = 'https://resource.hsslive.cn/';
 
+export const BLOG_CLIENT_URL = 'https://www.hsslive.cn';
+
 export const POSTMESSAGE_TYPE = ['qq_login', 'github_login', 'login_expired'];
 
 export const QINIU_BUCKET = 'hssblog'; // 七牛云bucket
@@ -30,6 +32,10 @@ export const MONIT_TYPE_MAP = {
   7: '备份数据库成功',
   8: '备份数据库失败',
 };
+
+export const ROUTE_ROLES = { SUPER_ADMIN: 'SUPER_ADMIN' };
+
+export const USER_ROLE = { SUPER_ADMIN: 'SUPER_ADMIN' };
 
 // 路由sort，值越大越往上
 export const ROUTE_SORT = {
@@ -61,5 +67,5 @@ export const ROUTE_SORT = {
   type: 60,
   theme: 60,
 
-  error: 1,
+  error: 10,
 };

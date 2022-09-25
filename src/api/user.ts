@@ -1,5 +1,5 @@
 import { IUser } from '@/interface';
-import request from '@/utils/request';
+import request, { IResponse } from '@/utils/request';
 
 export function fetchLogin({ id, password }) {
   return request({
@@ -24,11 +24,8 @@ export function fetchUserList(params) {
   });
 }
 
-export function fetchUserDetail(id: number) {
-  return request({
-    url: `/user/find/${id}`,
-    method: 'get',
-  });
+export function fetchUserDetail(id: number): Promise<IResponse<IUser>> {
+  return request.get(`/user/find/${id}`);
 }
 
 export function fetchUserPwd() {

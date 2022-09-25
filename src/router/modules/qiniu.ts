@@ -4,7 +4,7 @@ import { renderIcon } from '../utils';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { ROUTE_SORT } from '@/constant';
+import { ROUTE_ROLES, ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 // 异步路由
@@ -57,7 +57,7 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/qiniu/upload/index.vue'),
         meta: {
           title: '上传文件',
-          roles: ['ALL_ROLE', 'SUPER_ADMIN'],
+          roles: [ROUTE_ROLES.SUPER_ADMIN],
         },
       },
     ],

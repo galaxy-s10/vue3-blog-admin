@@ -7,13 +7,12 @@ import cache from '@/utils/cache';
 // 白名单，不需要登录即可跳转，如登录页
 const whiteList = ['/login', '/oauth/qq_login', '/oauth/github_login'];
 
-// eslint-disable-next-line consistent-return
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   const appStore = useAppStore();
-  appStore.setLoading(true);
   const { roles } = userStore;
   const hasToken = cache.getStorageExp('token');
+  appStore.setLoading(true);
   // 先判断有没有登录
   if (hasToken) {
     // userStore.setToken(hasToken);
@@ -21,7 +20,6 @@ router.beforeEach(async (to, from, next) => {
       next('/');
     }
     // 判断用户有没有角色
-    // @ts-ignore
     if (roles && roles.length) {
       next();
     } else {
@@ -51,6 +49,7 @@ router.beforeEach(async (to, from, next) => {
     next(`/login?redirect=${to.path}`);
   }
 });
+
 router.afterEach(() => {
   const appStore = useAppStore();
   appStore.setLoading(false);

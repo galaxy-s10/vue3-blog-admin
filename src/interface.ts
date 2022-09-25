@@ -220,13 +220,18 @@ export interface IGithubUser {
 export interface IUser {
   id?: number;
   username?: string;
+  password?: string;
   status?: number;
   avatar?: string;
   desc?: string;
+  token?: string;
   user_roles?: number[];
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
+  github_users?: IGithubUser[];
+  qq_users?: IQqUser[];
+  email_users?: IEmailUser[];
 }
 export interface IQqUser {
   id?: number;

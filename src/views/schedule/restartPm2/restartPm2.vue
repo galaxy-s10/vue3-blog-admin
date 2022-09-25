@@ -1,6 +1,11 @@
 <template>
   <div>
-    <n-button type="error" :loading="isLoading" @click="handleInvoke">
+    <n-button
+      v-auth="USER_ROLE.SUPER_ADMIN"
+      type="error"
+      :loading="isLoading"
+      @click="handleInvoke"
+    >
       重启pm2
     </n-button>
   </div>
@@ -10,6 +15,7 @@
 import { defineComponent, ref } from 'vue';
 
 import { fetchRestartPm2 } from '@/api/schedule';
+import { USER_ROLE } from '@/constant';
 export default defineComponent({
   components: {},
   setup() {
@@ -35,7 +41,7 @@ export default defineComponent({
       await ajaxFetchInvokeDbJob();
     };
 
-    return { isLoading, handleInvoke };
+    return { isLoading, handleInvoke, USER_ROLE };
   },
 });
 </script>

@@ -40,7 +40,7 @@ export default defineComponent({
   setup() {
     const appStore = useAppStore();
     const route = useRoute();
-    const { tabList, path } = toRefs(appStore.$state);
+    const { tabList, path } = toRefs(appStore);
     const list1: any = ref([]);
     const listRef = ref<HTMLElement>();
     const res: { key: string; value: string }[] = [];

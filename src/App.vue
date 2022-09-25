@@ -10,7 +10,7 @@
 <script lang="ts">
 import Cookies from 'js-cookie';
 import { defineComponent, toRef } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 import { fetchGithubLogin, fetchBindGithub } from '@/api/githubUser';
 import { fetchQQLogin, fetchBindQQ } from '@/api/qqUser';
@@ -22,9 +22,9 @@ export default defineComponent({
   components: { SwitchEnvCpt },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const userStore = useUserStore();
     const appStore = useAppStore();
-
     const appLoading = toRef(appStore, 'loading');
 
     window.addEventListener('message', async (e) => {
@@ -57,7 +57,7 @@ export default defineComponent({
             break;
         }
         userStore.setToken(Cookies.get('token'));
-        router.push('/');
+        router.push((route.query.redirect as '') || '/');
       } catch (error) {
         console.log(error);
       } finally {
