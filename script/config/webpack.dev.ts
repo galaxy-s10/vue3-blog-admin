@@ -60,7 +60,7 @@ export default new Promise((resolve) => {
            */
           static: {
             watch: true, // 告诉 dev-server 监听文件。默认启用，文件更改将触发整个页面重新加载。可以通过将 watch 设置为 false 禁用。
-            publicPath: outputStaticUrl(false),
+            publicPath: resolveApp('./public/'),
           },
           proxy: {
             '/api': {
