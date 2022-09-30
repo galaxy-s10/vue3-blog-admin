@@ -94,6 +94,7 @@ export default new Promise((resolve) => {
         },
       },
       usedExports: true, // production模式或者不设置usedExports，它默认就是true。usedExports的目的是标注出来哪些函数是没有被使用 unused，会结合Terser进行处理
+      sideEffects: true, // webpack.dev.ts有注释
       minimize: true, // 是否开启Terser,默认就是true，设置false后，不会压缩和转化
       minimizer: [
         new TerserPlugin({
