@@ -141,6 +141,7 @@ module.exports = {
     'import/prefer-default-export': 0, // 当模块只有一个导出时，更喜欢使用默认导出而不是命名导出。
     'import/extensions': 0, // 确保在导入路径中一致使用文件扩展名
     'import/no-unresolved': 0, // 不能解析带别名的路径的模块，但实际上是不影响代码运行的。找不到解决办法，只能关掉了。
+    'import/newline-after-import': 0, // 强制在最后一个顶级导入语句或 require 调用之后有一个或多个空行
 
     // vueeslint插件
     'vue/multi-word-component-names': 0,

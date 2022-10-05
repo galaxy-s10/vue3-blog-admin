@@ -1,10 +1,14 @@
 const chalk = require('chalk');
 
+const pkg = require('./package.json');
+
 console.log(
   `${chalk.bgBlueBright.black(' INFO ')} ${chalk.blueBright(
     `读取了: ${__filename.slice(__dirname.length + 1)}`
   )}`
 );
+
+const corejsVersion = pkg.dependencies['core-js'].replace(/^[^0-9]*/, '');
 
 module.exports = {
   presets: [
@@ -18,7 +22,7 @@ module.exports = {
          * entry: 手动在入口文件中导入 core-js/regenerator-runtime, 根据目标浏览器引入所有对应的polyfill
          */
         useBuiltIns: 'usage',
-        corejs: '3.8',
+        corejs: corejsVersion,
         // useBuiltIns: process.env.NODE_ENV === 'development' ? false : 'usage',
         // corejs: process.env.NODE_ENV === 'development' ? undefined : '3.8',
         modules: 'auto', // modules设置成commonjs后，路由懒加载就没了。
