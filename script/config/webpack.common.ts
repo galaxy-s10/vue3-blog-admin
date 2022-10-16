@@ -163,14 +163,14 @@ const commonConfig = (isProduction) => {
       // 用于解析webpack的loader
       modules: ['node_modules'],
     },
-    // cache: {
-    //   type: 'filesystem',
-    //   buildDependencies: {
-    //     // https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
-    //     // 建议cache.buildDependencies.config: [__filename]在您的 webpack 配置中设置以获取最新配置和所有依赖项。
-    //     config: [__filename],
-    //   },
-    // },
+    cache: {
+      type: 'filesystem',
+      buildDependencies: {
+        // https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
+        // 建议cache.buildDependencies.config: [__filename]在您的 webpack 配置中设置以获取最新配置和所有依赖项。
+        config: [__filename],
+      },
+    },
     module: {
       noParse: /^(vue|vue-router)$/,
       // loader执行顺序：从下往上，从右往左

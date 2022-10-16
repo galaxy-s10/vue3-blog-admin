@@ -1,6 +1,6 @@
 # 简介
 
-> 基于Vue3 + Vue-router + Webpack5 + NaiveUI + Pinia
+> 基于 Vue3 + Vue-router + Webpack5 + NaiveUI + Pinia
 
 # 预览
 
@@ -11,13 +11,13 @@
 ## 安装依赖
 
 ```bash
-yarn install
+pnpm install
 ```
 
 ## 运行在根目录
 
 ```bash
-yarn start
+pnpm start
 ```
 
 默认运行在 [http://localhost:8000/](http://localhost:8000/)，如果 8000 端口被占用了，会自动递增+1
@@ -27,11 +27,11 @@ yarn start
 ## 运行在非根目录
 
 ```bash
-yarn start:beta
+pnpm start:beta
 # 或
-yarn start:preview
+pnpm start:preview
 # 或
-yarn start:prod
+pnpm start:prod
 ```
 
 默认运行在 [http://localhost:8000/vue3-blog-admin/beta/](http://localhost:8000/vue3-blog-admin/beta/) ，如果 8000 端口被占用了，会自动递增+1
@@ -47,21 +47,21 @@ yarn start:prod
 ## 部署在根目录
 
 ```bash
-yarn build
+pnpm build
 ```
 
 最终构建的静态资源需要部署在服务器根目录。
 
 ## 部署在非根目录
 
-> 注意：如果部署在非根目录，需要配合nginx做好try_files
+> 注意：如果部署在非根目录，需要配合 nginx 做好 try_files
 
 ```bash
-yarn build:beta
+pnpm build:beta
 # 或
-yarn build:preview
+pnpm build:preview
 # 或
-yarn build:prod
+pnpm build:prod
 ```
 
 最终构建的静态资源需要部署在服务器的/vue3-blog-admin/beta/目录。
