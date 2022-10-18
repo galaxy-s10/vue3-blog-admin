@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 
 import cache from '@/utils/cache';
+
 export const useAppStore = defineStore('app', {
   state: () => {
     return {

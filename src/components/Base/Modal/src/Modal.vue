@@ -10,14 +10,22 @@
         aria-modal="true"
       >
         <template #header-extra>
-          <n-icon size="20" style="cursor: pointer" @click="modalCancel">
+          <n-icon
+            size="20"
+            style="cursor: pointer"
+            @click="modalCancel"
+          >
             <CloseOutline></CloseOutline>
           </n-icon>
         </template>
         <slot>默认内容</slot>
         <template #footer>
           <n-space justify="end">
-            <n-button type="primary" :loading="loading" @click="modalConfirm">
+            <n-button
+              type="primary"
+              :loading="loading"
+              @click="modalConfirm"
+            >
               确定
             </n-button>
             <n-button @click="modalCancel">取消</n-button>

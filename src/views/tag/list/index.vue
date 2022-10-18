@@ -21,7 +21,11 @@
       @confirm="modalConfirm"
       @cancel="modalCancel"
     >
-      <AddTag ref="addTagRef" v-model="currRow" :show-action="false"></AddTag>
+      <AddTag
+        ref="addTagRef"
+        v-model="currRow"
+        :show-action="false"
+      ></AddTag>
     </HModal>
   </div>
 </template>

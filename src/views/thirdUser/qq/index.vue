@@ -30,6 +30,7 @@ import { fetchQqUserList } from '@/api/qqUser';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IList, IQqUser } from '@/interface';
+
 interface ISearch extends IQqUser, IList {}
 
 export default defineComponent({

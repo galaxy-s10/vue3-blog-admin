@@ -1,6 +1,9 @@
 <template>
   <n-breadcrumb>
-    <n-breadcrumb-item v-for="item in currentRouteArr" :key="item.path">
+    <n-breadcrumb-item
+      v-for="item in currentRouteArr"
+      :key="item.path"
+    >
       {{ item.meta.title }}
     </n-breadcrumb-item>
   </n-breadcrumb>
@@ -11,6 +14,7 @@ import { defineComponent, reactive, ref, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useAppStore } from '@/store/app';
+
 export default defineComponent({
   setup() {
     const appStore = useAppStore();

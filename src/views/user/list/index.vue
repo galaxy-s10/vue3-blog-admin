@@ -76,14 +76,20 @@
           :rules="rules"
           label-placement="left"
         >
-          <n-form-item label="用户名" path="username">
+          <n-form-item
+            label="用户名"
+            path="username"
+          >
             <n-input
               v-model:value="formValue.username"
               placeholder="请输入用户名"
               disabled
             />
           </n-form-item>
-          <n-form-item label="角色" path="user_roles">
+          <n-form-item
+            label="角色"
+            path="user_roles"
+          >
             <n-tree
               style="width: 100%"
               checkable

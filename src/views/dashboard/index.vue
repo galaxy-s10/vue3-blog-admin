@@ -4,7 +4,11 @@
     <div>用户昵称: {{ userInfo?.username }}</div>
     <div>
       用户头像:
-      <img class="avatar" :src="userInfo?.avatar" alt="" />
+      <img
+        class="avatar"
+        :src="userInfo?.avatar"
+        alt=""
+      />
     </div>
     <div>简介: {{ userInfo?.title }}</div>
     <div>角色: {{ userInfo?.roles.map((v) => v.role_name) }}</div>

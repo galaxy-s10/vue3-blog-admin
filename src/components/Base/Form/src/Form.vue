@@ -8,8 +8,14 @@
       :style="formStyle"
       :model="modelValue"
     >
-      <n-grid :cols="24" :x-gap="24">
-        <template v-for="item in formItems" :key="item.field">
+      <n-grid
+        :cols="24"
+        :x-gap="24"
+      >
+        <template
+          v-for="item in formItems"
+          :key="item.field"
+        >
           <n-form-item-gi
             v-if="!item.isHidden"
             :span="item.gridSpan || gridSpan"
@@ -138,10 +144,17 @@
       </n-grid>
 
       <!-- 这里需要一个空格占位 -->
-      <n-form-item v-if="showAction" label=" ">
+      <n-form-item
+        v-if="showAction"
+        label=" "
+      >
         <n-space>
           <n-button @click="handleReset">重置</n-button>
-          <n-button type="success" :loading="loading" @click="handleConfirm">
+          <n-button
+            type="success"
+            :loading="loading"
+            @click="handleConfirm"
+          >
             确定
           </n-button>
         </n-space>

@@ -397,15 +397,20 @@ export default (env) => {
     const configPromise = Promise.resolve(
       isProduction ? prodConfig : devConfig
     );
-    configPromise.then((config: any) => {
-      // 根据当前环境，合并配置文件
-      const mergeConfig = merge(commonConfig(isProduction), config);
-      console.log(
-        chalkWARN(
-          `根据当前环境，合并配置文件，当前是: ${process.env.NODE_ENV}环境`
-        )
-      );
-      resolve(mergeConfig);
-    });
+    configPromise.then(
+      (config: any) => {
+        // 根据当前环境，合并配置文件
+        const mergeConfig = merge(commonConfig(isProduction), config);
+        console.log(
+          chalkWARN(
+            `根据当前环境，合并配置文件，当前是: ${process.env.NODE_ENV!}环境`
+          )
+        );
+        resolve(mergeConfig);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   });
 };

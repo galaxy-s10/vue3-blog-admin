@@ -1,6 +1,9 @@
 <template>
   <n-space class="layout-wrap">
-    <n-layout position="absolute" has-sider>
+    <n-layout
+      position="absolute"
+      has-sider
+    >
       <n-layout-sider
         bordered
         collapse-mode="width"

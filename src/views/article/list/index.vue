@@ -27,9 +27,15 @@
         <div v-if="qiniuCdnList?.length">
           一共{{ qiniuCdnList.length }}个图片
           <div class="qiniuCdnList-wrap">
-            <div v-for="(item, index) in qiniuCdnList" :key="index">
+            <div
+              v-for="(item, index) in qiniuCdnList"
+              :key="index"
+            >
               {{ item }}
-              <img :src="item" width="50" />
+              <img
+                :src="item"
+                width="50"
+              />
             </div>
           </div>
         </div>

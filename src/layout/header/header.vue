@@ -9,9 +9,17 @@
           <language></language>
         </n-icon>
       </div>
-      <n-dropdown trigger="hover" :options="options" @select="handleSelect">
+      <n-dropdown
+        trigger="hover"
+        :options="options"
+        @select="handleSelect"
+      >
         <div class="user">
-          <img class="avatar" :src="userInfo?.avatar" alt="" />
+          <img
+            class="avatar"
+            :src="userInfo?.avatar"
+            alt=""
+          />
           <span class="name">{{ userInfo?.username }}</span>
         </div>
       </n-dropdown>

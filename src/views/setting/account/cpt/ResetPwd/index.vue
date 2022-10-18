@@ -26,7 +26,10 @@
             placeholder="请输入旧密码"
           >
             <template #prefix>
-              <n-icon size="20" class="lang">
+              <n-icon
+                size="20"
+                class="lang"
+              >
                 <LockClosedOutline></LockClosedOutline>
               </n-icon>
             </template>
@@ -38,7 +41,10 @@
             placeholder="请输入新密码"
           >
             <template #prefix>
-              <n-icon size="20" class="lang">
+              <n-icon
+                size="20"
+                class="lang"
+              >
                 <LockClosedOutline></LockClosedOutline>
               </n-icon>
             </template>
@@ -50,7 +56,10 @@
             placeholder="请再次输入新密码"
           >
             <template #prefix>
-              <n-icon size="20" class="lang">
+              <n-icon
+                size="20"
+                class="lang"
+              >
                 <LockClosedOutline></LockClosedOutline>
               </n-icon>
             </template>

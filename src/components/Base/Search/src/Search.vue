@@ -1,9 +1,21 @@
 <template>
   <div class="search-wrap">
-    <HForm ref="formRef" v-bind="searchFormConfig" v-model="formData"></HForm>
+    <HForm
+      ref="formRef"
+      v-bind="searchFormConfig"
+      v-model="formData"
+    ></HForm>
     <n-space justify="end">
-      <n-button type="info" @click="handleReset">重置</n-button>
-      <n-button type="success" @click="handleSearch">搜索</n-button>
+      <n-button
+        type="info"
+        @click="handleReset"
+        >重置</n-button
+      >
+      <n-button
+        type="success"
+        @click="handleSearch"
+        >搜索</n-button
+      >
     </n-space>
   </div>
 </template>

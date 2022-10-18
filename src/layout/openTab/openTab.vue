@@ -1,22 +1,38 @@
 <template>
   <div class="tagbar-wrap">
-    <div ref="listRef" class="list-wrap">
+    <div
+      ref="listRef"
+      class="list-wrap"
+    >
       <div
         v-for="item in list"
         :key="item.path"
         class="tag"
         @click="pushPath(item)"
       >
-        <i class="dot" :class="{ curr: item.key === path ? true : false }"></i>
+        <i
+          class="dot"
+          :class="{ curr: item.key === path ? true : false }"
+        ></i>
         <span> {{ item.value }} </span>
-        <n-icon size="18" @click.stop="close(item)">
+        <n-icon
+          size="18"
+          @click.stop="close(item)"
+        >
           <CloseOutline></CloseOutline>
         </n-icon>
       </div>
     </div>
     <div class="action">
-      <n-dropdown trigger="hover" :options="options" @select="closeTag">
-        <n-icon size="18" class="ico">
+      <n-dropdown
+        trigger="hover"
+        :options="options"
+        @select="closeTag"
+      >
+        <n-icon
+          size="18"
+          class="ico"
+        >
           <ChevronDownOutline></ChevronDownOutline>
         </n-icon>
       </n-dropdown>

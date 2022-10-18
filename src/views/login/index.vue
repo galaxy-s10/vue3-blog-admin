@@ -20,7 +20,10 @@
           size="large"
           :on-update:value="tabChange"
         >
-          <n-tab-pane name="pwdlogin" tab="账密登录">
+          <n-tab-pane
+            name="pwdlogin"
+            tab="账密登录"
+          >
             <n-form
               ref="loginFormRef"
               label-placement="left"
@@ -35,7 +38,10 @@
                   placeholder="请输入账号"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <PersonOutline></PersonOutline>
                     </n-icon>
                   </template>
@@ -52,7 +58,10 @@
                   @keyup.enter="handleLoginSubmit"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <LockClosedOutline></LockClosedOutline>
                     </n-icon>
                   </template>
@@ -69,7 +78,10 @@
               登录
             </n-button>
           </n-tab-pane>
-          <n-tab-pane name="codelogin" tab="免密登录">
+          <n-tab-pane
+            name="codelogin"
+            tab="免密登录"
+          >
             <n-form
               ref="registerFormRef"
               label-placement="left"
@@ -83,7 +95,10 @@
                   placeholder="请输入邮箱"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <MailOutline></MailOutline>
                     </n-icon>
                   </template>
@@ -118,7 +133,10 @@
               登录
             </n-button>
           </n-tab-pane>
-          <n-tab-pane name="register" tab="注册">
+          <n-tab-pane
+            name="register"
+            tab="注册"
+          >
             <n-form
               ref="registerFormRef"
               label-placement="left"
@@ -132,7 +150,10 @@
                   placeholder="请输入邮箱"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <MailOutline></MailOutline>
                     </n-icon>
                   </template>
@@ -171,11 +192,23 @@
       </n-card>
       <div class="other-login">
         <span>第三方登录：</span>
-        <div class="logo-wrap" @click="qqLogin">
-          <img class="qq-logo" src="../../assets/img/qq_logo.svg" />
+        <div
+          class="logo-wrap"
+          @click="qqLogin"
+        >
+          <img
+            class="qq-logo"
+            src="../../assets/img/qq_logo.svg"
+          />
         </div>
-        <div class="logo-wrap" @click="githubLogin">
-          <img class="qq-logo" src="../../assets/img/github_logo.svg" />
+        <div
+          class="logo-wrap"
+          @click="githubLogin"
+        >
+          <img
+            class="qq-logo"
+            src="../../assets/img/github_logo.svg"
+          />
         </div>
       </div>
     </div>

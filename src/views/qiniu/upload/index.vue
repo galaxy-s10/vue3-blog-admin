@@ -9,14 +9,20 @@
     ></h-form>
     <div v-if="uploadRes?.success.length">
       <h3>success:</h3>
-      <div v-for="(item, index) in uploadRes?.success" :key="index">
+      <div
+        v-for="(item, index) in uploadRes?.success"
+        :key="index"
+      >
         源文件名: {{ item.original.filename }}，CDN文件名:
         {{ item.url }}
       </div>
     </div>
     <div v-if="uploadRes?.error.length">
       <h3>error:</h3>
-      <div v-for="(item, index) in uploadRes?.error" :key="index">
+      <div
+        v-for="(item, index) in uploadRes?.error"
+        :key="index"
+      >
         源文件名: {{ item.originalFilename }}
       </div>
     </div>

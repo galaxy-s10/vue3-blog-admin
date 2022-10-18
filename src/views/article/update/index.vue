@@ -15,6 +15,7 @@ import { useRoute } from 'vue-router';
 import AddArticle from '../add';
 
 import { fetchArticleDetail } from '@/api/article';
+
 export default defineComponent({
   components: { AddArticle },
   props: {},

@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="btn-warp">
-      <n-button type="primary" @click="getDiff">
+      <n-button
+        type="primary"
+        @click="getDiff"
+      >
         获取nuxt-blog-client/差异
       </n-button>
     </div>
-    <div v-if="diffRes" class="diffRes-warp">
+    <div
+      v-if="diffRes"
+      class="diffRes-warp"
+    >
       <div>
         <h3>officialDiff</h3>
         {{
@@ -13,8 +19,14 @@
             ? '差异数量：' + diffRes.officialDiff.length
             : ''
         }}
-        <div v-if="diffRes.officialDiff.length" class="list">
-          <div v-for="(item, index) in diffRes.officialDiff" :key="index">
+        <div
+          v-if="diffRes.officialDiff.length"
+          class="list"
+        >
+          <div
+            v-for="(item, index) in diffRes.officialDiff"
+            :key="index"
+          >
             {{ item }}
           </div>
         </div>
@@ -27,8 +39,14 @@
             ? '差异数量：' + diffRes.qiniudataDiff.length
             : ''
         }}
-        <div v-if="diffRes.qiniudataDiff.length" class="list">
-          <div v-for="(item, index) in diffRes.qiniudataDiff" :key="index">
+        <div
+          v-if="diffRes.qiniudataDiff.length"
+          class="list"
+        >
+          <div
+            v-for="(item, index) in diffRes.qiniudataDiff"
+            :key="index"
+          >
             {{ item }}
           </div>
         </div>

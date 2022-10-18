@@ -28,7 +28,10 @@
           :rules="rules"
           label-placement="left"
         >
-          <n-form-item label="权限" path="id">
+          <n-form-item
+            label="权限"
+            path="id"
+          >
             <n-select
               v-model:value="formValue.id"
               clearable
@@ -36,7 +39,10 @@
               disabled
             />
           </n-form-item>
-          <n-form-item label="子权限" path="c_auths">
+          <n-form-item
+            label="子权限"
+            path="c_auths"
+          >
             <n-tree
               style="width: 100%"
               checkable
@@ -64,7 +70,10 @@
           :rules="rules"
           label-placement="left"
         >
-          <n-form-item label="权限" path="id">
+          <n-form-item
+            label="权限"
+            path="id"
+          >
             <n-select
               v-model:value="formValue.id"
               clearable
@@ -72,7 +81,10 @@
               disabled
             />
           </n-form-item>
-          <n-form-item label="子权限" path="c_auths">
+          <n-form-item
+            label="子权限"
+            path="c_auths"
+          >
             <n-tree-select
               multiple
               cascade

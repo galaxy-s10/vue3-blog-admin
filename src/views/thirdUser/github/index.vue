@@ -30,6 +30,7 @@ import { fetchGithubUserList } from '@/api/githubUser';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IGithubUser, IList } from '@/interface';
+
 interface ISearch extends IGithubUser, IList {}
 
 export default defineComponent({

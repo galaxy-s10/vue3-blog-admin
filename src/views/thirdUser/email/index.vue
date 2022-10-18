@@ -30,6 +30,7 @@ import { fetchEmailUserList } from '@/api/emailUser';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IEmailUser, IList } from '@/interface';
+
 interface ISearch extends IEmailUser, IList {}
 
 export default defineComponent({

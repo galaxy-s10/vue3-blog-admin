@@ -1,14 +1,23 @@
 <template>
   <div>
     <h2>服务器内存使用情况：</h2>
-    <div v-for="(item, index) in memoryInfo" :key="index">
+    <div
+      v-for="(item, index) in memoryInfo"
+      :key="index"
+    >
       {{ item }}
     </div>
     <div>
-      <n-button :loading="isLoading" @click="refreshMemory">
+      <n-button
+        :loading="isLoading"
+        @click="refreshMemory"
+      >
         刷新内存信息
       </n-button>
-      <n-button :loading="isLoading" @click="handleInvoke">
+      <n-button
+        :loading="isLoading"
+        @click="handleInvoke"
+      >
         清除buff/cache
       </n-button>
     </div>
@@ -21,6 +30,7 @@ import { defineComponent, onMounted, ref } from 'vue';
 
 import { fetchShowMemoryJob, fetchInvokeClearMemoryJob } from '@/api/schedule';
 import { formatMemorySize } from '@/utils';
+
 export default defineComponent({
   components: {},
   setup() {

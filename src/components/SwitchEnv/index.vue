@@ -22,14 +22,23 @@
       选择当前环境：
       <n-radio-group v-model:value="currEnv">
         <n-space>
-          <n-radio v-for="env in envList" :key="env.value" :value="env.value">
+          <n-radio
+            v-for="env in envList"
+            :key="env.value"
+            :value="env.value"
+          >
             {{ env.label }}
           </n-radio>
         </n-space>
       </n-radio-group>
     </HModal>
     <div class="switch-env">
-      <n-button type="info" size="tiny" @click="showModal">切换环境</n-button>
+      <n-button
+        type="info"
+        size="tiny"
+        @click="showModal"
+        >切换环境</n-button
+      >
     </div>
   </div>
 </template>
@@ -42,6 +51,7 @@ import HModal from '@/components/Base/Modal';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
+
 export default defineComponent({
   components: { HModal },
   setup() {

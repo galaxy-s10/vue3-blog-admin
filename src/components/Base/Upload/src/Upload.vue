@@ -1,6 +1,9 @@
 <template>
   <div class="upload-wrap">
-    <n-select v-model:value="prefixValue" :options="prefixOptions" />
+    <n-select
+      v-model:value="prefixValue"
+      :options="prefixOptions"
+    />
     <n-upload
       v-model:file-list="list"
       multiple

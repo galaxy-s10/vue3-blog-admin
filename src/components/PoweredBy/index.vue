@@ -2,7 +2,11 @@
   <div class="fixed-powered">
     <span class="txt">Powered by</span>
     <span class="author">
-      <a :href="GITHUB_REPO" target="_blank">galaxy-s10</a>
+      <a
+        :href="GITHUB_REPO"
+        target="_blank"
+        >galaxy-s10</a
+      >
     </span>
   </div>
 </template>
@@ -11,6 +15,7 @@
 import { defineComponent } from 'vue';
 
 import { GITHUB_REPO } from '@/constant';
+
 export default defineComponent({
   components: {},
   setup() {

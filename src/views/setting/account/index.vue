@@ -8,7 +8,11 @@
             userInfo.email_users[0] ? userInfo.email_users[0].email : '未绑定'
           }}
         </div>
-        <n-button text type="info" @click="handlePositiveClick">
+        <n-button
+          text
+          type="info"
+          @click="handlePositiveClick"
+        >
           {{ userInfo.email_users[0] ? '解绑' : '绑定' }}
         </n-button>
       </div>
@@ -26,7 +30,10 @@
           @negative-click="handleNegativeClick"
         >
           <template #trigger>
-            <n-button text type="info">
+            <n-button
+              text
+              type="info"
+            >
               {{ userInfo.github_users[0] ? '解绑' : '绑定' }}
             </n-button>
           </template>
@@ -45,7 +52,10 @@
           @negative-click="handleNegativeClick"
         >
           <template #trigger>
-            <n-button text type="info">
+            <n-button
+              text
+              type="info"
+            >
               {{ userInfo.qq_users[0] ? '解绑' : '绑定' }}
             </n-button>
           </template>
@@ -55,10 +65,20 @@
       <div class="item">
         <div class="label">密码</div>
         <div class="content">
-          <n-button text type="info" @click="getPwd()">点击获取</n-button>
+          <n-button
+            text
+            type="info"
+            @click="getPwd()"
+            >点击获取</n-button
+          >
           {{ password }}
         </div>
-        <n-button text type="info" @click="resetPwd">重置</n-button>
+        <n-button
+          text
+          type="info"
+          @click="resetPwd"
+          >重置</n-button
+        >
       </div>
     </div>
 
@@ -84,7 +104,10 @@
             :disabled="!!userInfo.email_users[0]"
           >
             <template #prefix>
-              <n-icon size="20" class="lang">
+              <n-icon
+                size="20"
+                class="lang"
+              >
                 <MailOutline></MailOutline>
               </n-icon>
             </template>
