@@ -2,8 +2,10 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import portfinder from 'portfinder';
 import { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import WebpackBar from 'webpackbar';
 
 import TerminalPrintPlugin from '../TerminalPrintPlugin';
+import { webpackBarEnable } from '../constant';
 import { chalkINFO } from '../utils/chalkTip';
 import { outputStaticUrl } from '../utils/outputStaticUrl';
 import { resolveApp } from '../utils/path';
@@ -55,12 +57,13 @@ export default new Promise((resolve) => {
           },
           /**
            * devServer.static提供静态文件服务器，默认是 'public' 文件夹。static: false禁用
-           * 即访问localhost:8080/a.js，其实访问的是localhost:8080/public/a.js
-           * 因为CopyWebpackPlugin插件会复制public的文件，所以static: false后再访问localhost:8080/a.js，其实还是能访问到public目录的a.js
+           * 即访问localhost:8080/a.js，其实访问的是public目录的a.js
            */
+          // WARN 因为CopyWebpackPlugin插件会复制public的文件，所以static: false后再访问localhost:8080/a.js，其实还是能访问到public目录的a.js
           static: {
             watch: true, // 告诉 dev-server 监听文件。默认启用，文件更改将触发整个页面重新加载。可以通过将 watch 设置为 false 禁用。
-            publicPath: resolveApp('./public/'),
+            publicPath: outputStaticUrl(false), // 让它和输入的静态目录对应
+            directory: resolveApp('./public/'),
           },
           proxy: {
             '/api': {
@@ -95,7 +98,10 @@ export default new Promise((resolve) => {
             },
           },
         },
+        // @ts-ignore
         plugins: [
+          // 构建进度条
+          webpackBarEnable && new WebpackBar(),
           new ForkTsCheckerWebpackPlugin({
             // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
             typescript: {
@@ -129,9 +135,9 @@ export default new Promise((resolve) => {
           // 打印控制调试地址
           new TerminalPrintPlugin({
             local: `http://localhost:${port}${outputStaticUrl(false)}`,
-            network: `http://${localIPv4}:${port}${outputStaticUrl(false)}`,
+            network: `http://${localIPv4!}:${port}${outputStaticUrl(false)}`,
           }),
-        ],
+        ].filter(Boolean),
         optimization: {
           /**
            * 官网解释：告知 webpack 去辨识 package.json 中的 副作用 标记或规则，

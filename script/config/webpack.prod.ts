@@ -10,6 +10,7 @@ import { version as vueDemiVersion } from 'vue-demi/package.json';
 import { version as vueRouterVersion } from 'vue-router/package.json';
 import { version as vueVersion } from 'vue/package.json';
 import { Configuration } from 'webpack';
+import WebpackBar from 'webpackbar';
 
 import { chalkINFO } from '../utils/chalkTip';
 
@@ -132,6 +133,8 @@ export default new Promise((resolve) => {
       // }
     },
     plugins: [
+      // 构建进度条
+      new WebpackBar(),
       // http压缩
       new CompressionPlugin({
         test: /\.(css|js)$/i,

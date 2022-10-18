@@ -6,13 +6,20 @@
 # Email: 2274751790@qq.com
 # FilePath: /github/vue3-blog-admin/build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-10-16 09:02:50
+# LastEditTime: 2022-10-16 11:02:32
 # LastEditors: shuisheng
 ###
 
 # 生成头部文件快捷键：ctrl+cmd+i
 
-# 该build.sh文件会在Jenkins构建完成后被执行
+# 静态部署的项目，一般流程是在jenkins里面执行build.sh进行构建，
+# 构建完成后会连接ssh，执行/node/sh/frontend.sh，frontend.sh会将构建的完成资源复制到/node/xxx。
+# 复制完成后，frontend.sh会执行清除buff/cache操作
+
+# node项目，一般流程是在jenkins里面执行build.sh进行构建，
+# 构建完成后会连接ssh，执行/node/sh/node.sh，node.sh会将构建的完成资源复制到/node/xxx，并且执行/node/xxx/pm2.sh。
+# 最后，node.sh会执行清除buff/cache操作
+
 # 注意:JOBNAME=$1,这个等号左右不能有空格！
 JOBNAME=$1      #约定$1为任务名
 ENV=$2          #约定$2为环境
@@ -71,8 +78,3 @@ fi
 
 # 博客后台，直接放服务器根目录
 npx webpack --config ./script/config/webpack.common.ts --env production
-
-echo 清除buff/cache:
-
-sync
-echo 3 >/proc/sys/vm/drop_caches

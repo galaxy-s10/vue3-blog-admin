@@ -7,10 +7,9 @@ import { VueLoaderPlugin } from 'vue-loader';
 import { DefinePlugin, Configuration } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
-import WebpackBar from 'webpackbar';
 
 import InjectProjectInfoPlugin from '../InjectProjectInfoPlugin';
-import { outputDir } from '../constant';
+import { eslintEnable, outputDir } from '../constant';
 import { chalkINFO, chalkWARN } from '../utils/chalkTip';
 import { outputStaticUrl } from '../utils/outputStaticUrl';
 import { resolveApp } from '../utils/path';
@@ -305,22 +304,21 @@ const commonConfig = (isProduction) => {
       ],
     },
     plugins: [
-      // 构建进度条
-      new WebpackBar(),
       // 友好的显示错误信息在终端
       new FriendlyErrorsWebpackPlugin(),
       // 解析vue
       new VueLoaderPlugin(),
       // eslint
-      new ESLintPlugin({
-        extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
-        emitError: false, // 发现的错误将始终发出，禁用设置为false.
-        emitWarning: false, // 找到的警告将始终发出，禁用设置为false.
-        failOnError: false, // 如果有任何错误，将导致模块构建失败，禁用设置为false
-        failOnWarning: false, // 如果有任何警告，将导致模块构建失败，禁用设置为false
-        cache: true,
-        cacheLocation: resolveApp('./node_modules/.cache/.eslintcache'),
-      }),
+      eslintEnable &&
+        new ESLintPlugin({
+          extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
+          emitError: false, // 发现的错误将始终发出，禁用设置为false.
+          emitWarning: false, // 找到的警告将始终发出，禁用设置为false.
+          failOnError: false, // 如果有任何错误，将导致模块构建失败，禁用设置为false
+          failOnWarning: false, // 如果有任何警告，将导致模块构建失败，禁用设置为false
+          cache: true,
+          cacheLocation: resolveApp('./node_modules/.cache/.eslintcache'),
+        }),
       // 该插件将为您生成一个HTML5文件，其中包含使用脚本标签的所有Webpack捆绑包
       new HtmlWebpackPlugin({
         filename: 'index.html',
@@ -338,6 +336,7 @@ const commonConfig = (isProduction) => {
               useShortDoctype: true, // 使用html5的<!doctype html>替换掉之前的html老版本声明方式<!doctype>
               // 上面的都是production模式下默认值。
               removeEmptyAttributes: true, // 移除一些空属性，如空的id,classs,style等等，但不是空的就全删，比如<img alt />中的alt不会删。http://perfectionkills.com/experimenting-with-html-minifier/#remove_empty_or_blank_attributes
+
               minifyCSS: true, // 使用clean-css插件删除 CSS 中一些无用的空格、注释等。
               minifyJS: true, // 使用Terser插件优化
             }
@@ -346,7 +345,7 @@ const commonConfig = (isProduction) => {
       }),
       // 注入项目信息
       new InjectProjectInfoPlugin({
-        isProduction: false,
+        isProduction,
       }),
       // 将已存在的单个文件或整个目录复制到构建目录。
       new CopyWebpackPlugin({
