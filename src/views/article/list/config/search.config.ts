@@ -12,7 +12,7 @@ export const searchFormConfig: IForm<ISearch<IArticle>> = {
   },
   formItems: [
     {
-      field: 'keyWord',
+      field: 'id',
       type: 'input',
       label: 'id',
       placeholder: '请输入id',

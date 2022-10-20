@@ -66,11 +66,22 @@ export default defineComponent({
       if (v === '1') {
         window.open(BLOG_CLIENT_URL);
       } else if (v === '2') {
-        router.push('/setting/account');
+        router.push('/setting/account').then(
+          () => {},
+          () => {}
+        );
       } else if (v === '3') {
         userStore.logout();
         appStore.setRoutes([]);
-        router.push('/login');
+        router.push('/login').then(
+          () => {
+            console.log('ok');
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
     };
     return { options, userInfo: userStore.userInfo, handleSelect };
