@@ -89,7 +89,6 @@ export default new Promise((resolve) => {
             chunks: 'all',
             maxSize: 100 * 1024,
             filename: 'js/[name]-[contenthash:6]-default.js',
-            minChunks: 2, // 至少被minChunks个入口文件引入了minChunks次。
             priority: -20,
           },
         },
