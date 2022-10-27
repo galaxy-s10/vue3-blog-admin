@@ -1,5 +1,5 @@
 import { IUser } from '@/interface';
-import request from '@/utils/request';
+import request, { IResponse } from '@/utils/request';
 
 export function fetchLogin({ id, password }) {
   return request({
@@ -24,9 +24,13 @@ export function fetchUserList(params) {
   });
 }
 
-export function fetchUserDetail(id: number) {
+export function fetchUserDetail(id: number): Promise<IResponse<IUser>> {
+  return request.get(`/user/find/${id}`);
+}
+
+export function fetchUserPwd() {
   return request({
-    url: `/user/find/${id}`,
+    url: `/user/get_pwd`,
     method: 'get',
   });
 }
@@ -43,6 +47,18 @@ export function fetchUpdateUser({ id, username, status, avatar, desc }: IUser) {
     },
   });
 }
+
+export function fetchUpdatePwd({ oldpwd, newpwd }) {
+  return request({
+    url: `/user/update_pwd`,
+    method: 'put',
+    data: {
+      oldpwd,
+      newpwd,
+    },
+  });
+}
+
 export function fetchUpdateUserRole({ id, user_roles }: IUser) {
   return request({
     url: `/user/update_user_role/${id}`,

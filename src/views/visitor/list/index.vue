@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1200"
-      :loading="visitorListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="visitorListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -29,18 +29,18 @@ import type { DataTableColumns } from 'naive-ui';
 import { fetchVisitorList } from '@/api/visitor';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
-import { IVisitor, IList } from '@/interface';
+import { IVisitorLog, IList } from '@/interface';
 
-interface ISearch extends IVisitor, IList {}
+interface ISearch extends IVisitorLog, IList {}
 
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const visitorListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
-    const visitorListLoading = ref(false);
+    const tableListLoading = ref(false);
     const addVisitorRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
@@ -48,21 +48,21 @@ export default defineComponent({
       orderName: 'id',
       orderBy: 'desc',
     });
-    const createColumns = (): DataTableColumns<IVisitor> => {
+    const createColumns = (): DataTableColumns<IVisitorLog> => {
       return [...columnsConfig()];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        visitorListLoading.value = true;
-        const res: any = await fetchVisitorList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchVisitorList(args);
         if (res.code === 200) {
-          visitorListLoading.value = false;
-          visitorListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -81,7 +81,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
@@ -89,8 +94,8 @@ export default defineComponent({
       handlePageChange,
       handleSearch,
       addVisitorRef,
-      visitorListData,
-      visitorListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

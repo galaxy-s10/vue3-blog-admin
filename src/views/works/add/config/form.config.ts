@@ -1,6 +1,8 @@
 import { IForm } from '@/components/Base/Form';
+import { QINIU_PREFIX } from '@/constant';
+import { IWorks } from '@/interface';
 
-export const formConfig: IForm = {
+export const formConfig: IForm<IWorks> = {
   gridSpan: 16,
   formStyle: {
     justifyContent: 'center',
@@ -23,10 +25,13 @@ export const formConfig: IForm = {
     },
     {
       field: 'bg_url',
-      type: 'input',
+      type: 'upload',
       label: '背景图',
-      placeholder: '请输入背景图',
-      rule: { required: true },
+      uploadConfig: {
+        max: 1,
+        prefix: QINIU_PREFIX['image/'],
+      },
+      rule: { required: true, trigger: 'blur', type: 'array' },
     },
     {
       field: 'url',
@@ -45,10 +50,12 @@ export const formConfig: IForm = {
       field: 'status',
       type: 'switch',
       label: '状态',
-      checkedValue: 1,
-      unCheckedValue: 2,
-      checkedText: '已发布',
-      unCheckedText: '未发布',
+      switchConfig: {
+        checkedValue: 1,
+        unCheckedValue: 2,
+        checkedText: '已发布',
+        unCheckedText: '未发布',
+      },
     },
   ],
 };

@@ -2,8 +2,9 @@ import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
+import { ISearch, IUser } from '@/interface';
 
-export const searchFormConfig: IForm = {
+export const searchFormConfig: IForm<ISearch<IUser>> = {
   gridSpan: 8,
   labelPlacement: 'left',
   formStyle: {
@@ -22,8 +23,8 @@ export const searchFormConfig: IForm = {
       label: '状态',
       placeholder: '请选择状态',
       options: [
-        { label: '已审核', value: 1 },
-        { label: '未审核', value: 2 },
+        { label: '正常', value: 1 },
+        { label: '禁用', value: 2 },
       ],
     },
     {

@@ -1,6 +1,8 @@
 <template>
   <n-spin :show="appLoading">
-    <div class="app-wrap"><router-view></router-view></div>
+    <div class="app-wrap">
+      <router-view></router-view>
+    </div>
     <SwitchEnvCpt></SwitchEnvCpt>
   </n-spin>
 </template>
@@ -8,7 +10,7 @@
 <script lang="ts">
 import Cookies from 'js-cookie';
 import { defineComponent, toRef } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 import { fetchGithubLogin, fetchBindGithub } from '@/api/githubUser';
 import { fetchQQLogin, fetchBindQQ } from '@/api/qqUser';
@@ -16,13 +18,14 @@ import SwitchEnvCpt from '@/components/SwitchEnv/index.vue';
 import { POSTMESSAGE_TYPE } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
+
 export default defineComponent({
   components: { SwitchEnvCpt },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const userStore = useUserStore();
     const appStore = useAppStore();
-
     const appLoading = toRef(appStore, 'loading');
 
     window.addEventListener('message', async (e) => {
@@ -37,7 +40,8 @@ export default defineComponent({
         switch (type) {
           case 'qq_login':
             if (userStore.userInfo) {
-              await fetchBindQQ(code);
+              const res: any = await fetchBindQQ(code);
+              window.$message.success(res.message);
               userStore.getUserInfo();
             } else {
               await fetchQQLogin(code);
@@ -45,7 +49,8 @@ export default defineComponent({
             break;
           case 'github_login':
             if (userStore.userInfo) {
-              await fetchBindGithub(code);
+              const res: any = await fetchBindGithub(code);
+              window.$message.success(res.message);
               userStore.getUserInfo();
             } else {
               await fetchGithubLogin(code);
@@ -53,7 +58,7 @@ export default defineComponent({
             break;
         }
         userStore.setToken(Cookies.get('token'));
-        router.push('/');
+        router.push((route.query.redirect as '') || '/');
       } catch (error) {
         console.log(error);
       } finally {

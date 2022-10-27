@@ -2,8 +2,9 @@ import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
+import { ISearch, IType } from '@/interface';
 
-export const searchFormConfig: IForm = {
+export const searchFormConfig: IForm<ISearch<IType>> = {
   gridSpan: 8,
   labelPlacement: 'left',
   formStyle: {

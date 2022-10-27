@@ -1,3 +1,22 @@
+export interface ISearchBase {
+  keyWord?: string;
+  nowPage?: string;
+  pageSize?: string;
+  orderBy?: string;
+  orderName?: string;
+}
+
+export type ISearch<T, Origin = ISearchBase> = T & Origin;
+
+export interface IThirdUser {
+  id?: number;
+  user_id?: number;
+  third_user_id?: number;
+  third_platform?: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
 export interface IStar {
   id?: number;
   article_id?: number;
@@ -11,6 +30,23 @@ export interface IStar {
   to_user?: IUser;
   article?: any;
   comment?: any;
+}
+
+export interface IFrontend {
+  id?: number;
+  frontend_qq_login?: number;
+  frontend_github_login?: number;
+  frontend_email_login?: number;
+  frontend_comment?: number;
+  frontend_link?: number;
+  frontend_about?: string;
+  frontend_shutdown?: number;
+  frontend_shutdown_content?: string;
+  frontend_dialog?: number;
+  frontend_dialog_content?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
 }
 export interface IComment {
   id?: number;
@@ -31,6 +67,20 @@ export interface IComment {
   from_user?: IUser;
   to_user?: IUser;
 }
+
+export interface IAuth {
+  id?: number;
+  auth_name?: string;
+  auth_value?: string;
+  type?: number;
+  priority?: number | string;
+  p_id?: number | null;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: null;
+  c_auths?: number[];
+}
+
 export interface IRole {
   id?: number;
   role_name?: string;
@@ -52,27 +102,42 @@ export interface ITheme {
   lang?: string;
   desc?: string;
 }
+
 export interface IArticle {
   id?: number;
   title?: string;
   desc?: string;
   content?: string;
-  head_img?: string;
+  head_img?: string | any[] | null;
   is_comment?: number;
   priority?: number;
   status?: number;
   click?: number;
-  tags?: number[];
-  types?: number[];
-  users?: number[];
+  tags?: number[] | ITag[];
+  types?: number[] | IType[];
+  users?: number[] | IUser[];
   keyword?: string;
+}
+export interface IQiniuData {
+  id?: number;
+  user_id?: number;
+  prefix?: string;
+  bucket?: string;
+  qiniu_key?: string;
+  qiniu_hash?: string;
+  qiniu_fsize?: number;
+  qiniu_mimeType?: string;
+  qiniu_putTime?: number;
+  qiniu_type?: number;
+  qiniu_status?: number;
+  qiniu_md5?: string;
 }
 
 export interface ILog {
   id?: number;
   user_id?: number;
   api_user_agent?: string;
-  api_sql_duration?: number;
+  api_duration?: number;
   api_from?: number;
   api_ip?: string;
   api_hostname?: string;
@@ -80,36 +145,110 @@ export interface ILog {
   api_path?: string;
   api_query?: string;
   api_body?: string;
+  api_status_code?: number;
+  api_error?: string;
   api_err_msg?: string;
-  api_err_stack?: string;
+  api_err_code?: number;
 }
-export interface IVisitor {
+export interface IVisitorLog {
   id?: number;
   user_id?: number;
   ip?: string;
   status?: number;
   ip_data?: string;
 }
-export interface IAuth {
+
+export interface IBlacklist {
   id?: number;
-  auth_name?: string;
-  auth_value?: string;
+  ip?: string;
+  user_id?: number;
   type?: number;
-  priority?: number | string;
-  p_id?: number | null;
+  msg?: string;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: null;
-  c_auths?: number[];
+  deleted_at?: string;
+}
+export interface IMonit {
+  id?: number;
+  type?: number;
+  info?: string;
 }
 
+export interface IEmailUser {
+  id?: number;
+  email?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: any;
+}
+export interface IGithubUser {
+  id?: number;
+  client_id?: string;
+  login?: string;
+  github_id?: number;
+  node_id?: string;
+  avatar_url?: string;
+  gravatar_id?: string;
+  url?: string;
+  html_url?: string;
+  type?: string;
+  site_admin?: string;
+  name?: string;
+  company?: string;
+  blog?: string;
+  location?: string;
+  email?: any;
+  hireable?: any;
+  bio?: string;
+  twitter_username?: any;
+  public_repos?: number;
+  public_gists?: number;
+  followers?: number;
+  following?: number;
+  github_created_at?: string;
+  github_updated_at?: string;
+  private_gists?: number;
+  total_private_repos?: number;
+  owned_private_repos?: number;
+  disk_usage?: number;
+  collaborators?: number;
+  two_factor_authentication?: string;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: any;
+}
 export interface IUser {
   id?: number;
   username?: string;
+  password?: string;
   status?: number;
   avatar?: string;
   desc?: string;
+  token?: string;
   user_roles?: number[];
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+  github_users?: IGithubUser[];
+  qq_users?: IQqUser[];
+  email_users?: IEmailUser[];
+}
+export interface IQqUser {
+  id?: number;
+  client_id?: number;
+  openid?: string;
+  unionid?: string;
+  nickname?: string;
+  figureurl?: string;
+  figureurl_1?: string;
+  figureurl_2?: string;
+  figureurl_qq_1?: string;
+  figureurl_qq_2?: string;
+  constellation?: string;
+  gender?: string;
+  city?: string;
+  province?: string;
+  year?: string;
   created_at?: string;
   updated_at?: string;
   deleted_at?: any;
@@ -130,9 +269,9 @@ export interface ILink {
 export interface IMusic {
   id?: number;
   name?: string;
-  cover_pic?: string;
+  cover_pic?: string | any[] | null;
   author?: string;
-  audio_url?: string;
+  audio_url?: string | any[] | null;
   status?: number;
   created_at?: string;
   updated_at?: string;
@@ -150,7 +289,7 @@ export interface IWorks {
   name?: string;
   desc?: string;
   url?: string;
-  bg_url?: string;
+  bg_url?: string | any[] | null;
   priority?: string;
   status?: number;
 }

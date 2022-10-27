@@ -11,10 +11,11 @@ export function fetchRoleList(params) {
 }
 
 /** 角色列表(不分页) */
-export function fetchAllList() {
+export function fetchAllList(params?: IRole) {
   return request({
     url: '/role/all_list',
     method: 'get',
+    params,
   });
 }
 
@@ -56,6 +57,25 @@ export function fetchAllChildRole(id: number) {
   return request({
     url: `/role/get_all_child_role/${id}`,
     method: 'get',
+  });
+}
+
+/** 获取某个角色的权限 */
+export function fetchRoleAuth(id: number) {
+  return request({
+    url: `/role/get_role_auth/${id}`,
+    method: 'get',
+  });
+}
+
+/** 修改角色权限 */
+export function fetchUpdateRoleAuth({ id, role_auths }: IRole) {
+  return request({
+    url: `/role/update_role_auth/${id}`,
+    method: 'put',
+    data: {
+      role_auths,
+    },
   });
 }
 
@@ -106,7 +126,7 @@ export function fetchUpdateRole({
 export function fetchBatchDeleteChildRoles({ id, c_roles }: IRole) {
   return request({
     url: `/role/batch_delete_child_roles`,
-    method: 'delete',
+    method: 'post',
     data: {
       id,
       c_roles,

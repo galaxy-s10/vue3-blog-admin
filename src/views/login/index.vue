@@ -20,7 +20,10 @@
           size="large"
           :on-update:value="tabChange"
         >
-          <n-tab-pane name="pwdlogin" tab="账密登录">
+          <n-tab-pane
+            name="pwdlogin"
+            tab="账密登录"
+          >
             <n-form
               ref="loginFormRef"
               label-placement="left"
@@ -35,7 +38,10 @@
                   placeholder="请输入账号"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <PersonOutline></PersonOutline>
                     </n-icon>
                   </template>
@@ -45,13 +51,17 @@
                 <n-input
                   v-model:value="loginForm.password"
                   type="password"
+                  show-password-on="mousedown"
                   placeholder="请输入密码"
                   @focus="onFocus"
                   @blur="onBlur"
                   @keyup.enter="handleLoginSubmit"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <LockClosedOutline></LockClosedOutline>
                     </n-icon>
                   </template>
@@ -68,7 +78,10 @@
               登录
             </n-button>
           </n-tab-pane>
-          <n-tab-pane name="codelogin" tab="免密登录">
+          <n-tab-pane
+            name="codelogin"
+            tab="免密登录"
+          >
             <n-form
               ref="registerFormRef"
               label-placement="left"
@@ -82,7 +95,10 @@
                   placeholder="请输入邮箱"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <MailOutline></MailOutline>
                     </n-icon>
                   </template>
@@ -117,7 +133,10 @@
               登录
             </n-button>
           </n-tab-pane>
-          <n-tab-pane name="register" tab="注册">
+          <n-tab-pane
+            name="register"
+            tab="注册"
+          >
             <n-form
               ref="registerFormRef"
               label-placement="left"
@@ -131,7 +150,10 @@
                   placeholder="请输入邮箱"
                 >
                   <template #prefix>
-                    <n-icon size="20" class="lang">
+                    <n-icon
+                      size="20"
+                      class="lang"
+                    >
                       <MailOutline></MailOutline>
                     </n-icon>
                   </template>
@@ -170,14 +192,27 @@
       </n-card>
       <div class="other-login">
         <span>第三方登录：</span>
-        <div class="logo-wrap" @click="qqLogin">
-          <img class="qq-logo" src="../../assets/img/qq_logo.svg" />
+        <div
+          class="logo-wrap"
+          @click="qqLogin"
+        >
+          <img
+            class="qq-logo"
+            src="../../assets/img/qq_logo.svg"
+          />
         </div>
-        <div class="logo-wrap" @click="githubLogin">
-          <img class="qq-logo" src="../../assets/img/github_logo.svg" />
+        <div
+          class="logo-wrap"
+          @click="githubLogin"
+        >
+          <img
+            class="qq-logo"
+            src="../../assets/img/github_logo.svg"
+          />
         </div>
       </div>
     </div>
+    <PoweredByCpt></PoweredByCpt>
   </div>
 </template>
 
@@ -188,9 +223,10 @@ import {
   PersonOutline,
 } from '@vicons/ionicons5';
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 import { fetchSendLoginCode, fetchSendRegisterCode } from '@/api/emailUser';
+import PoweredByCpt from '@/components/PoweredBy/index.vue';
 import {
   GITHUB_CLIENT_ID,
   GITHUB_OAUTH_URL,
@@ -214,9 +250,11 @@ export default defineComponent({
     MailOutline,
     LockClosedOutline,
     PersonOutline,
+    PoweredByCpt,
   },
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const userStore = useUserStore();
     const appStore = useAppStore();
 
@@ -236,13 +274,8 @@ export default defineComponent({
     /** github登录 */
     const githubLogin = () => {
       const url =
-        GITHUB_OAUTH_URL +
-        'client_id=' +
-        GITHUB_CLIENT_ID +
-        '&redirect_uri=' +
-        REDIRECT_URI +
-        'github_login' +
-        '&scope=user';
+        `${GITHUB_OAUTH_URL}client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}github_login` +
+        `&scope=user`;
       window.open(
         url,
         'github_login_window',
@@ -280,7 +313,7 @@ export default defineComponent({
       }
       if (token) {
         window.$message.success('登录成功!');
-        router.push('/');
+        router.push((route.query.redirect as '') || '/');
       }
     };
     const handleRegister = async () => {
@@ -290,13 +323,13 @@ export default defineComponent({
       });
       if (token) {
         window.$message.success('注册成功!');
-        router.push('/');
+        router.push((route.query.redirect as '') || '/');
       }
     };
     const handleLoginSubmit = (e) => {
       e.preventDefault();
       // @ts-ignore
-      loginFormRef.value.validate(async (errors) => {
+      loginFormRef.value.validate((errors) => {
         if (!errors) {
           handleLogin();
         }
@@ -305,7 +338,7 @@ export default defineComponent({
     const handleRegisterSubmit = (e) => {
       e.preventDefault();
       // @ts-ignore
-      registerFormRef.value.validate(async (errors) => {
+      registerFormRef.value.validate((errors) => {
         if (!errors) {
           if (currentTab.value === 'register') {
             handleRegister();

@@ -7,10 +7,10 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2000"
-      :loading="logListLoading"
+      :scroll-x="2500"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="logListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -36,11 +36,10 @@ interface ISearch extends ILog, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const logListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
-
-    const logListLoading = ref(false);
+    const paginationReactive = usePage();
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addLogRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -53,17 +52,17 @@ export default defineComponent({
       return [...columnsConfig()];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        logListLoading.value = true;
-        const res: any = await fetchLogList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchLogList(args);
         if (res.code === 200) {
-          logListLoading.value = false;
-          logListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -82,7 +81,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
@@ -91,8 +95,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addLogRef,
-      logListData,
-      logListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

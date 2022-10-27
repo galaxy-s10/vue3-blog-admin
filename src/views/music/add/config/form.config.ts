@@ -1,6 +1,8 @@
 import { IForm } from '@/components/Base/Form';
+import { QINIU_PREFIX } from '@/constant';
+import { IMusic } from '@/interface';
 
-export const formConfig: IForm = {
+export const formConfig: IForm<IMusic> = {
   gridSpan: 16,
   formStyle: {
     justifyContent: 'center',
@@ -15,10 +17,13 @@ export const formConfig: IForm = {
     },
     {
       field: 'cover_pic',
-      type: 'input',
+      type: 'upload',
       label: '封面图',
-      placeholder: '请输入封面图',
-      rule: { required: true, trigger: 'blur' },
+      uploadConfig: {
+        max: 1,
+        prefix: QINIU_PREFIX['image/'],
+      },
+      rule: { required: true, trigger: 'blur', type: 'array' },
     },
     {
       field: 'author',
@@ -29,19 +34,24 @@ export const formConfig: IForm = {
     },
     {
       field: 'audio_url',
-      type: 'input',
+      type: 'upload',
       label: '音频资源',
-      placeholder: '请输入音频资源',
-      rule: [{ required: true, trigger: 'blur' }],
+      uploadConfig: {
+        max: 1,
+        prefix: QINIU_PREFIX['media/'],
+      },
+      rule: { required: true, trigger: 'blur', type: 'array' },
     },
     {
       field: 'status',
       type: 'switch',
       label: '状态',
-      checkedValue: 1,
-      unCheckedValue: 2,
-      checkedText: '已审核',
-      unCheckedText: '未审核',
+      switchConfig: {
+        checkedValue: 1,
+        unCheckedValue: 2,
+        checkedText: '已审核',
+        unCheckedText: '未审核',
+      },
     },
   ],
 };

@@ -1,19 +1,22 @@
 <template>
   <n-space class="layout-wrap">
-    <n-layout position="absolute" has-sider>
+    <n-layout
+      position="absolute"
+      has-sider
+    >
       <n-layout-sider
         bordered
         collapse-mode="width"
         :collapsed-width="64"
         :width="240"
-        :collapsed="collapsed"
+        :collapsed="appStore.collapsed"
         show-trigger
-        @collapse="collapsed = true"
-        @expand="collapsed = false"
+        @collapse="appStore.setCollapsed(true)"
+        @expand="appStore.setCollapsed(false)"
       >
         <n-menu
           :value="currentPath"
-          :collapsed="collapsed"
+          :collapsed="appStore.collapsed"
           :collapsed-width="64"
           :collapsed-icon-size="22"
           :options="menuOptions"
@@ -24,13 +27,23 @@
         />
       </n-layout-sider>
       <n-layout>
-        <HeaderCpt></HeaderCpt>
-        <TabListCpt></TabListCpt>
+        <div
+          class="head-wrap"
+          :style="{
+            width: !appStore.collapsed
+              ? 'calc(100vw - 240px)'
+              : 'calc(100vw - 64px)',
+          }"
+        >
+          <HeaderCpt></HeaderCpt>
+          <openTabCpt></openTabCpt>
+        </div>
         <div class="main-wrap">
           <router-view></router-view>
         </div>
       </n-layout>
     </n-layout>
+    <PoweredByCpt></PoweredByCpt>
   </n-space>
 </template>
 
@@ -41,28 +54,38 @@ import { defineComponent, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import HeaderCpt from './header/header.vue';
-import TabListCpt from './tabList/tabList.vue';
+import openTabCpt from './openTab/openTab.vue';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { defaultRoutes, iconMap } from '@/router/index';
+import PoweredByCpt from '@/components/PoweredBy/index.vue';
+import { defaultRoutes } from '@/router/index';
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
+// import { deepCloneExclude } from '@/utils';
 
 export default defineComponent({
   components: {
     HeaderCpt,
-    TabListCpt,
+    openTabCpt,
+    PoweredByCpt,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
     const appStore = useAppStore();
+    const userStore = useUserStore();
+    // const copyOriginDefaultRoutes = deepCloneExclude(
+    //   defaultRoutes,
+    //   'component'
+    // );
     const handleRoutes = (routes: RouteRecordRaw[]) => {
       routes.forEach((v) => {
         if (v.children && v.children.length === 1) {
           v.meta = {
             title: v.children[0].meta?.title,
             icon: v.children[0].meta?.icon,
+            sort: v.meta?.sort,
           };
           // @ts-ignore
           v.label = v.children[0].meta.title;
@@ -86,10 +109,16 @@ export default defineComponent({
       });
       return routes;
     };
-    const menuOptions = handleRoutes([
-      ...defaultRoutes,
-      ...appStore.routes,
-    ]).filter((v) => v.meta && !v.meta.hidden);
+
+    function sortRoute(a, b) {
+      return (b.meta?.sort || 0) - (a.meta?.sort || 0);
+    }
+
+    const menuOptions = ref(
+      handleRoutes([...defaultRoutes, ...appStore.routes])
+        .sort(sortRoute)
+        .filter((v) => v.meta && !v.meta.hidden)
+    );
 
     const handleUpdateValue = (key: string, item) => {
       path.value = key;
@@ -101,7 +130,7 @@ export default defineComponent({
       }
       router.push(key);
     };
-    let path = ref(route.path);
+    const path = ref(route.path);
     watch(
       () => route.path,
       () => {
@@ -114,7 +143,7 @@ export default defineComponent({
     appStore.setTabList({ [route.path]: route.meta.title });
 
     return {
-      collapsed: ref(false),
+      appStore,
       menuOptions,
       currentPath: path,
       handleUpdateValue,
@@ -123,7 +152,7 @@ export default defineComponent({
       },
       renderMenuIcon(option) {
         const vn = option.meta && option.meta.icon;
-        return vn ? h(iconMap(vn)) : false;
+        return vn ? h(vn) : false;
       },
       expandIcon() {
         return h(NIcon, null, { default: () => h(CaretDownOutline) });
@@ -136,8 +165,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .layout-wrap {
   height: 100vh;
+
+  .head-wrap {
+    position: fixed;
+    z-index: 10;
+    background-color: white;
+  }
   .main-wrap {
-    padding: 10px;
+    margin-top: 90px;
+    padding: 10px 10px 50px 10px;
   }
 }
 </style>

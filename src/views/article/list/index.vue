@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="articleListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="articleListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -23,21 +23,34 @@
       @confirm="modalConfirm"
       @cancel="modalCancel"
     >
-      <AddArticle
-        ref="addArticleRef"
-        v-model="currRow"
-        :show-action="false"
-      ></AddArticle>
+      <div ref="addArticleRef">
+        <div v-if="qiniuCdnList?.length">
+          一共{{ qiniuCdnList.length }}个图片
+          <div class="qiniuCdnList-wrap">
+            <div
+              v-for="(item, index) in qiniuCdnList"
+              :key="index"
+            >
+              {{ item }}
+              <img
+                :src="item"
+                width="50"
+              />
+            </div>
+          </div>
+        </div>
+        <div v-else>没有七牛云cdn图片</div>
+      </div>
     </HModal>
   </div>
 </template>
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { TableColumn } from 'naive-ui/lib/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import AddArticle from '../add';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
@@ -47,6 +60,7 @@ import {
   fetchArticleList,
   fetchUpdateArticle,
   fetchDeleteArticle,
+  fetchArticleDetail,
 } from '@/api/article';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
@@ -56,16 +70,17 @@ import { IArticle, IList } from '@/interface';
 interface ISearch extends IArticle, IList {}
 
 export default defineComponent({
-  components: { HSearch, HModal, AddArticle },
+  components: { HSearch, HModal },
   setup() {
-    const articleListData = ref([]);
+    const tableListData = ref([]);
+    const qiniuCdnList = ref<any>();
     const total = ref(0);
-    let paginationReactive = usePage();
-    let router = useRouter();
+    const paginationReactive = usePage();
+    const router = useRouter();
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑文章');
-    const articleListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addArticleRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -75,10 +90,10 @@ export default defineComponent({
       orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IArticle> => {
-      const action: any = {
+      const action: TableColumn<IArticle> = {
         title: '操作',
         key: 'actions',
-        width: 200,
+        width: 300,
         align: 'center',
         fixed: 'right',
         render(row) {
@@ -93,13 +108,37 @@ export default defineComponent({
                 {
                   size: 'small',
                   onClick: async () => {
+                    qiniuCdnList.value = [];
+                    modalVisiable.value = true;
+                    const { code, data, message }: any =
+                      await fetchArticleDetail(row.id as number);
+                    if (code === 200) {
+                      const str: string = data.content;
+                      const reg =
+                        /https:\/\/resource\.hsslive\.cn\/image\/.+?(jpg|jpeg|png|gif|webp)/gim;
+                      const arr = str.match(reg);
+                      if (Array.isArray(arr)) {
+                        qiniuCdnList.value = [...new Set(arr)];
+                      }
+                    } else {
+                      window.$message.error(message);
+                    }
+                  },
+                },
+                () => '查看图片' // 用箭头函数返回性能更好。
+              ),
+              h(
+                NButton,
+                {
+                  size: 'small',
+                  onClick: () => {
                     router.push({
                       name: 'updateArticle',
                       query: { id: row.id },
                     });
                   },
                 },
-                () => '编辑' //用箭头函数返回性能更好。
+                () => '编辑' // 用箭头函数返回性能更好。
               ),
               h(
                 NPopconfirm,
@@ -107,7 +146,7 @@ export default defineComponent({
                   'positive-text': '确定',
                   'negative-text': '取消',
                   'on-positive-click': async () => {
-                    await fetchDeleteArticle(row.id);
+                    await fetchDeleteArticle(row.id!);
                     window.$message.success('已删除!');
                     await handlePageChange(params.value.nowPage);
                   },
@@ -123,7 +162,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -135,17 +174,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        articleListLoading.value = true;
-        const res: any = await fetchArticleList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchArticleList(args);
         if (res.code === 200) {
-          articleListLoading.value = false;
-          articleListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -164,13 +203,16 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
-    const modalCancel = () => {
-      modalVisiable.value = false;
-    };
+    const modalCancel = () => {};
 
     const modalConfirm = async () => {
       try {
@@ -183,7 +225,6 @@ export default defineComponent({
           deleted_at: undefined,
         });
         window.$message.success('更新成功!');
-        modalVisiable.value = false;
         handlePageChange(params.value.nowPage);
       } catch (error) {
         console.log(error);
@@ -207,8 +248,9 @@ export default defineComponent({
       handleSearch,
       currRow,
       addArticleRef,
-      articleListData,
-      articleListLoading,
+      tableListData,
+      qiniuCdnList,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,
@@ -218,4 +260,9 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.qiniuCdnList-wrap {
+  max-height: 300px;
+  overflow: scroll;
+}
+</style>

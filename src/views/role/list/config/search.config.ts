@@ -1,0 +1,38 @@
+import { columnsConfig } from './columns.config';
+
+import { IForm } from '@/components/Base/Form';
+import { useOrder } from '@/hooks/use-order';
+import { IRole, ISearch } from '@/interface';
+
+export const searchFormConfig: IForm<ISearch<IRole>> = {
+  gridSpan: 8,
+  labelPlacement: 'left',
+  formStyle: {
+    justifyContent: 'center',
+  },
+  formItems: [
+    {
+      field: 'id',
+      type: 'input',
+      label: 'id',
+      placeholder: '请输入id',
+    },
+    {
+      field: 'keyWord',
+      type: 'input',
+      label: '关键字',
+      placeholder: '名称/标识',
+    },
+    {
+      field: 'type',
+      type: 'radio',
+      label: '类型',
+      placeholder: '请选择类型',
+      options: [
+        { label: '默认角色', value: 1 },
+        { label: '自定义', value: 2 },
+      ],
+    },
+    ...useOrder(columnsConfig),
+  ],
+};

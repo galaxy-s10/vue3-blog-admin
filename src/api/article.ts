@@ -1,5 +1,5 @@
 import { IArticle } from '@/interface';
-import request from '@/utils/request';
+import request, { IResponse } from '@/utils/request';
 
 export function fetchArticleList(params) {
   return request({
@@ -9,11 +9,8 @@ export function fetchArticleList(params) {
   });
 }
 
-export function fetchArticleDetail(id: number) {
-  return request({
-    url: `/article/find/${id}`,
-    method: 'get',
-  });
+export function fetchArticleDetail(id: number): Promise<IResponse<IArticle>> {
+  return request.get(`/article/find/${id}`);
 }
 
 export function fetchCreateArticle(data: IArticle) {

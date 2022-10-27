@@ -1,4 +1,4 @@
-import { IVisitor } from '@/interface';
+import { IVisitorLog } from '@/interface';
 import request from '@/utils/request';
 
 export function fetchVisitorList(params) {
@@ -9,7 +9,7 @@ export function fetchVisitorList(params) {
   });
 }
 
-export function fetchCreateVisitor(data: IVisitor) {
+export function fetchCreateVisitor(data: IVisitorLog) {
   return request({
     url: '/visitor_log/create',
     method: 'post',
@@ -17,7 +17,7 @@ export function fetchCreateVisitor(data: IVisitor) {
   });
 }
 
-export function fetchUpdateVisitor(data: IVisitor) {
+export function fetchUpdateVisitor(data: IVisitorLog) {
   return request({
     url: `/visitor_log/update/${data.id}`,
     method: 'put',

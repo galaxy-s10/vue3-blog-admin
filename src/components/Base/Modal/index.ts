@@ -1,3 +1,3 @@
-import HModal from './src/HModal.vue';
+import Modal from './src/Modal.vue';
 
-export default HModal;
+export default Modal;

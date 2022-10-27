@@ -39,7 +39,7 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        const { message } = await fetchCreateLink(v);
+        const { message }: any = await fetchCreateLink(v);
         window.$message.success(message);
       } catch (error) {
         console.log(error);

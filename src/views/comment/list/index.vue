@@ -7,10 +7,10 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2500"
-      :loading="commentListLoading"
+      :scroll-x="2600"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="commentListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -26,6 +26,7 @@ import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import { fetchCommentList, fetchUpdateComment } from '@/api/comment';
 import HSearch from '@/components/Base/Search';
@@ -37,14 +38,14 @@ interface ISearch extends IComment, IList {}
 export default defineComponent({
   components: { HSearch },
   setup() {
-    const commentListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑评论');
-    const commentListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addCommentRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -54,7 +55,7 @@ export default defineComponent({
       orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IComment> => {
-      const action: any = {
+      const action: TableColumn<IComment> = {
         title: '操作',
         key: 'actions',
         width: 200,
@@ -72,7 +73,7 @@ export default defineComponent({
                 {
                   'positive-text': '确定',
                   'negative-text': '取消',
-                  'on-positive-click': async () => {
+                  'on-positive-click': () => {
                     // await fetchDeleteComment(row.id!);
                     window.$message.info('敬请期待!');
                     // await handlePageChange(params.value.nowPage);
@@ -89,7 +90,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -101,17 +102,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        commentListLoading.value = true;
-        const res: any = await fetchCommentList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchCommentList(args);
         if (res.code === 200) {
-          commentListLoading.value = false;
-          commentListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -130,7 +131,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
@@ -173,8 +179,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addCommentRef,
-      commentListData,
-      commentListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

@@ -1,6 +1,7 @@
 import { IForm } from '@/components/Base/Form';
+import { ILink } from '@/interface';
 
-export const formConfig: IForm = {
+export const formConfig: IForm<ILink> = {
   gridSpan: 16,
   formStyle: {
     justifyContent: 'center',
@@ -45,10 +46,12 @@ export const formConfig: IForm = {
       field: 'status',
       type: 'switch',
       label: '状态',
-      checkedValue: 1,
-      unCheckedValue: 2,
-      checkedText: '已审核',
-      unCheckedText: '未审核',
+      switchConfig: {
+        checkedValue: 1,
+        unCheckedValue: 2,
+        checkedText: '已审核',
+        unCheckedText: '未审核',
+      },
     },
   ],
 };

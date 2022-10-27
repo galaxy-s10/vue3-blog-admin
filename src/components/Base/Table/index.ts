@@ -1,3 +1,3 @@
-import HTable from './src/HTable.vue';
+import Table from './src/Table.vue';
 
-export default HTable;
+export default Table;

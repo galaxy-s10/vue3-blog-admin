@@ -7,9 +7,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="musicListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="musicListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -39,7 +39,8 @@ import AddMusic from '../add/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
-import type { DataTableColumns } from 'naive-ui';
+import type { DataTableColumns, UploadFileInfo } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import {
   fetchMusicList,
@@ -56,22 +57,24 @@ interface ISearch extends IMusic, IList {}
 export default defineComponent({
   components: { HSearch, HModal, AddMusic },
   setup() {
-    const musicListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑音乐');
-    const musicListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addMusicRef = ref<any>(null);
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<IMusic> => {
-      const action: any = {
+      const action: TableColumn<IMusic> = {
         title: '操作',
         key: 'actions',
         width: 200,
@@ -88,12 +91,38 @@ export default defineComponent({
                 NButton,
                 {
                   size: 'small',
-                  onClick: async () => {
+                  onClick: () => {
                     modalVisiable.value = true;
+                    if (typeof row.cover_pic === 'string') {
+                      row.cover_pic = [
+                        {
+                          id: row.cover_pic,
+                          name: row.cover_pic,
+                          url: row.cover_pic,
+                          status: 'finished',
+                          percentage: 100,
+                        },
+                      ] as UploadFileInfo[];
+                    } else {
+                      row.audio_url = [];
+                    }
+                    if (typeof row.audio_url === 'string') {
+                      row.audio_url = [
+                        {
+                          id: row.audio_url,
+                          name: row.audio_url,
+                          url: row.audio_url,
+                          status: 'finished',
+                          percentage: 100,
+                        },
+                      ] as UploadFileInfo[];
+                    } else {
+                      row.audio_url = [];
+                    }
                     currRow.value = { ...row };
                   },
                 },
-                () => '编辑' //用箭头函数返回性能更好。
+                () => '编辑' // 用箭头函数返回性能更好。
               ),
               h(
                 NPopconfirm,
@@ -116,7 +145,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -128,17 +157,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        musicListLoading.value = true;
-        const res: any = await fetchMusicList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchMusicList(args);
         if (res.code === 200) {
-          musicListLoading.value = false;
-          musicListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -157,7 +186,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
@@ -168,12 +202,19 @@ export default defineComponent({
     const modalConfirm = async () => {
       try {
         modalConfirmLoading.value = true;
+        console.log(
+          '.......',
+          addMusicRef.value.validateForm,
+          addMusicRef.value
+        );
         const res = await addMusicRef.value.validateForm();
         await fetchUpdateMusic({
-          ...res,
-          created_at: undefined,
-          updated_at: undefined,
-          deleted_at: undefined,
+          id: res.id,
+          author: res.author,
+          name: res.name,
+          audio_url: res.audio_url,
+          status: res.status,
+          cover_pic: res.cover_pic,
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;
@@ -200,8 +241,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addMusicRef,
-      musicListData,
-      musicListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

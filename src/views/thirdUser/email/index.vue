@@ -1,97 +1,64 @@
 <template>
   <div>
-    <!-- <n-spin :show="isLoading"> -->
+    <HSearch
+      :search-form-config="searchFormConfig"
+      :init-value="params"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="1500"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="logData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="1500"
       @update:page="handlePageChange"
     />
-    <!-- </n-spin> -->
   </div>
 </template>
 
 <script lang="ts">
-import { NButton } from 'naive-ui';
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
 import { fetchEmailUserList } from '@/api/emailUser';
-type IProp = {
-  id: number;
-  email: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-};
-const createColumns = (): DataTableColumns<IProp> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      align: 'center',
-    },
-    {
-      title: '邮箱',
-      key: 'email',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
-      key: 'created_at',
-      align: 'center',
-    },
-    {
-      title: '更新时间',
-      key: 'updated_at',
-      align: 'center',
-    },
-  ];
-};
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IEmailUser, IList } from '@/interface';
+
+interface ISearch extends IEmailUser, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch },
   setup() {
-    let logData = ref([]);
-    let total = ref(0);
+    const tableListData = ref([]);
+    const total = ref(0);
 
-    let isLoading = ref(false);
-    const params = reactive({
+    const tableListLoading = ref(false);
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
       orderName: 'id',
-    });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
+      orderBy: 'desc',
     });
 
-    /**
-     * ajaxfetchEmailUserList
-     */
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        isLoading.value = true;
-        const res: any = await fetchEmailUserList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchEmailUserList(args);
         if (res.code === 200) {
-          isLoading.value = false;
-          logData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
 
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -99,19 +66,35 @@ export default defineComponent({
         Promise.reject(err);
       }
     };
+    const paginationReactive = usePage();
 
+    const createColumns = (): DataTableColumns<IEmailUser> => {
+      return [...columnsConfig()];
+    };
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
     const handlePageChange = async (currentPage) => {
-      params.nowPage = currentPage;
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      params.value.nowPage = currentPage;
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
+    };
+    const handleSearch = (v) => {
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
+      handlePageChange(1);
     };
     return {
       handlePageChange,
-      isLoading: isLoading,
-      logData,
+      tableListLoading,
+      tableListData,
       columns: createColumns(),
+      params,
+      searchFormConfig,
+      handleSearch,
       pagination: paginationReactive,
     };
   },

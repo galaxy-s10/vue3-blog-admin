@@ -15,7 +15,13 @@
         }}
       </div>
       <div>
-        <n-button :loading="isLoading" @click="handleInvoke">立即执行</n-button>
+        <n-button
+          v-auth="USER_ROLE.SUPER_ADMIN"
+          :loading="isLoading"
+          @click="handleInvoke"
+        >
+          立即执行
+        </n-button>
       </div>
     </div>
   </div>
@@ -26,6 +32,8 @@ import dayjs from 'dayjs';
 import { defineComponent, onMounted, ref } from 'vue';
 
 import { fetchDbJob, fetchInvokeDbJob } from '@/api/schedule';
+import { USER_ROLE } from '@/constant';
+
 export default defineComponent({
   components: {},
   setup() {
@@ -69,7 +77,7 @@ export default defineComponent({
       await ajaxFetchInvokeDbJob();
     };
 
-    return { isLoading, handleInvoke, dbJob, dayjs };
+    return { USER_ROLE, isLoading, handleInvoke, dbJob, dayjs };
   },
 });
 </script>

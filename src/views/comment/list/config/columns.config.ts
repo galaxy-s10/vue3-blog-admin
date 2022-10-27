@@ -46,6 +46,7 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       title: '内容',
       key: 'content',
       align: 'center',
+      width: 300,
     },
     {
       title: '子评论数',
@@ -62,27 +63,38 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       key: 'ua',
       align: 'center',
       width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: 'ip',
       key: 'ip',
       align: 'center',
+      width: 200,
     },
     {
       title: 'ip_data',
       key: 'ip_data',
       align: 'center',
       width: 200,
+      ellipsis: {
+        tooltip: true,
+      },
     },
     {
       title: '创建时间',
       key: 'created_at',
       align: 'center',
+      width: 180,
+      fixed: 'right',
     },
     {
-      title: '更新时间',
+      title: '最后更新',
       key: 'updated_at',
       align: 'center',
+      width: 180,
+      fixed: 'right',
     },
   ];
 };

@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="userListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="userListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -24,7 +24,12 @@
       @cancel="modalCancel"
     >
       <div v-if="modalType === modalUserTypeEnum.EDIT">
-        <n-form
+        <AddUser
+          ref="addUserRef"
+          v-model="currRow"
+          :show-action="false"
+        ></AddUser>
+        <!-- <n-form
           ref="formRef"
           :inline="false"
           :label-width="80"
@@ -60,7 +65,7 @@
               </n-space>
             </n-radio-group>
           </n-form-item>
-        </n-form>
+        </n-form> -->
       </div>
       <div v-if="modalType === modalUserTypeEnum.EDIT_ROLE">
         <n-form
@@ -71,14 +76,20 @@
           :rules="rules"
           label-placement="left"
         >
-          <n-form-item label="用户名" path="username">
+          <n-form-item
+            label="用户名"
+            path="username"
+          >
             <n-input
               v-model:value="formValue.username"
               placeholder="请输入用户名"
               disabled
             />
           </n-form-item>
-          <n-form-item label="角色" path="user_roles">
+          <n-form-item
+            label="角色"
+            path="user_roles"
+          >
             <n-tree
               style="width: 100%"
               checkable
@@ -102,10 +113,12 @@
 import { NButton, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
+import AddUser from '../add/index.vue';
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import { fetchTreeRole, fetchUserRole } from '@/api/role';
 import {
@@ -122,7 +135,7 @@ import { IUser, modalUserTypeEnum, IList } from '@/interface';
 interface ISearch extends IUser, IList {}
 
 export default defineComponent({
-  components: { HSearch, HModal },
+  components: { HSearch, HModal, AddUser },
   setup() {
     const rules = {
       username: {
@@ -131,12 +144,12 @@ export default defineComponent({
         trigger: ['input', 'blur', 'change'],
       },
     };
-    const userListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
-    let roleTreeList = ref([]);
-    let modalType = ref<modalUserTypeEnum>(modalUserTypeEnum.EDIT);
-    let formValue = ref<IUser>({
+    const paginationReactive = usePage();
+    const roleTreeList = ref([]);
+    const modalType = ref<modalUserTypeEnum>(modalUserTypeEnum.EDIT);
+    const formValue = ref<IUser>({
       id: 1,
       username: '',
       desc: '',
@@ -147,7 +160,7 @@ export default defineComponent({
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑文章');
-    const userListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const params = ref<ISearch>({
       nowPage: 1,
@@ -155,9 +168,9 @@ export default defineComponent({
       orderName: 'id',
       orderBy: 'desc',
     });
-    let defaultCheckedKeys = ref([]);
+    const defaultCheckedKeys = ref([]);
     const formRef = ref<any>(null);
-    let statusRadio = ref([
+    const statusRadio = ref([
       {
         value: 1,
         label: '正常',
@@ -172,7 +185,7 @@ export default defineComponent({
       formValue.value.user_roles = keys;
     };
     const createColumns = (): DataTableColumns<IUser> => {
-      const action: any = {
+      const action: TableColumn<IUser> = {
         title: '操作',
         key: 'actions',
         fixed: 'right',
@@ -184,15 +197,23 @@ export default defineComponent({
               {
                 size: 'small',
                 onClick: async () => {
-                  const userInfo = await fetchUserDetail(row.id!);
-                  console.log(userInfo, 333333);
-                  formValue.value = { ...userInfo.data };
-                  modalTitle.value = '编辑用户';
+                  const { data } = await fetchUserDetail(row.id!);
+                  // @ts-ignore
+                  data.qq_users = data.qq_users?.length ? 1 : 2;
+                  // @ts-ignore
+                  data.github_users = data.github_users?.length ? 1 : 2;
+                  // @ts-ignore
+                  data.email_users = data.email_users?.length ? 1 : 2;
+                  currRow.value = { ...data };
                   modalType.value = modalUserTypeEnum.EDIT;
                   modalVisiable.value = !modalVisiable.value;
+                  // formValue.value = { ...userInfo.data };
+                  // modalTitle.value = '编辑用户';
+                  // modalType.value = modalUserTypeEnum.EDIT;
+                  // modalVisiable.value = !modalVisiable.value;
                 },
               },
-              () => '编辑' //用箭头函数返回性能更好。
+              () => '编辑' // 用箭头函数返回性能更好。
             ),
             h(
               NButton,
@@ -213,7 +234,7 @@ export default defineComponent({
                   modalVisiable.value = !modalVisiable.value;
                 },
               },
-              () => '编辑角色' //用箭头函数返回性能更好。
+              () => '编辑角色' // 用箭头函数返回性能更好。
             ),
           ]);
         },
@@ -221,17 +242,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        userListLoading.value = true;
-        const res: any = await fetchUserList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchUserList(args);
         if (res.code === 200) {
-          userListLoading.value = false;
-          userListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -285,7 +306,7 @@ export default defineComponent({
     };
 
     const modalConfirm = () => {
-      formRef.value?.validate(async (errors) => {
+      formRef.value?.validate((errors) => {
         if (!errors) {
           switch (modalType.value) {
             case modalUserTypeEnum.EDIT:
@@ -319,7 +340,12 @@ export default defineComponent({
       }
     };
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
     return {
@@ -332,8 +358,8 @@ export default defineComponent({
       modalUpdateShow,
       modalUserTypeEnum,
       currRow,
-      userListData,
-      userListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

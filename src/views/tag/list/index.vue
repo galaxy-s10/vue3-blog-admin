@@ -21,7 +21,11 @@
       @confirm="modalConfirm"
       @cancel="modalCancel"
     >
-      <AddTag ref="addTagRef" v-model="currRow" :show-action="false"></AddTag>
+      <AddTag
+        ref="addTagRef"
+        v-model="currRow"
+        :show-action="false"
+      ></AddTag>
     </HModal>
   </div>
 </template>
@@ -35,6 +39,7 @@ import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import { fetchTagList, fetchUpdateTag, fetchDeleteTag } from '@/api/tag';
 import HModal from '@/components/Base/Modal';
@@ -49,7 +54,7 @@ export default defineComponent({
   setup() {
     const tagListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
@@ -60,9 +65,11 @@ export default defineComponent({
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
+      orderName: 'id',
+      orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<ITag> => {
-      const action: any = {
+      const action: TableColumn<ITag> = {
         title: '操作',
         key: 'actions',
         width: 200,
@@ -79,12 +86,12 @@ export default defineComponent({
                 NButton,
                 {
                   size: 'small',
-                  onClick: async () => {
+                  onClick: () => {
                     modalVisiable.value = true;
                     currRow.value = { ...row };
                   },
                 },
-                () => '编辑' //用箭头函数返回性能更好。
+                () => '编辑' // 用箭头函数返回性能更好。
               ),
               h(
                 NPopconfirm,
@@ -107,7 +114,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -119,17 +126,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
         tagListLoading.value = true;
-        const res: any = await fetchTagList(params);
+        const res: any = await fetchTagList(args);
         if (res.code === 200) {
           tagListLoading.value = false;
           tagListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -148,7 +155,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
@@ -161,10 +173,9 @@ export default defineComponent({
         modalConfirmLoading.value = true;
         const res = await addTagRef.value.validateForm();
         await fetchUpdateTag({
-          ...res,
-          created_at: undefined,
-          updated_at: undefined,
-          deleted_at: undefined,
+          color: res.color,
+          name: res.name,
+          id: res.id,
         });
         window.$message.success('更新成功!');
         modalVisiable.value = false;

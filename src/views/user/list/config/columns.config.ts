@@ -40,7 +40,7 @@ export const columnsConfig = (): DataTableColumns<IUser> => {
       key: 'status',
       align: 'center',
       render(row) {
-        return row.status === 1 ? '正常' : '非法';
+        return row.status === 1 ? '正常' : '禁用';
       },
     },
     {
@@ -49,7 +49,7 @@ export const columnsConfig = (): DataTableColumns<IUser> => {
       align: 'center',
     },
     {
-      title: '更新时间',
+      title: '最后更新',
       key: 'updated_at',
       align: 'center',
     },

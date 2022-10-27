@@ -8,9 +8,9 @@
     <n-data-table
       remote
       :scroll-x="1800"
-      :loading="linkListLoading"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="linkListData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
       @update:page="handlePageChange"
@@ -41,6 +41,7 @@ import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import { fetchLinkList, fetchUpdateLink, fetchDeleteLink } from '@/api/link';
 import HModal from '@/components/Base/Modal';
@@ -53,14 +54,14 @@ interface ISearch extends ILink, IList {}
 export default defineComponent({
   components: { HSearch, HModal, AddLink },
   setup() {
-    const linkListData = ref([]);
+    const tableListData = ref([]);
     const total = ref(0);
-    let paginationReactive = usePage();
+    const paginationReactive = usePage();
 
     const modalConfirmLoading = ref(false);
     const modalVisiable = ref(false);
     const modalTitle = ref('编辑友链');
-    const linkListLoading = ref(false);
+    const tableListLoading = ref(false);
     const currRow = ref({});
     const addLinkRef = ref<any>(null);
     const params = ref<ISearch>({
@@ -70,7 +71,7 @@ export default defineComponent({
       orderBy: 'desc',
     });
     const createColumns = (): DataTableColumns<ILink> => {
-      const action: any = {
+      const action: TableColumn<ILink> = {
         title: '操作',
         key: 'actions',
         width: 200,
@@ -87,12 +88,12 @@ export default defineComponent({
                 NButton,
                 {
                   size: 'small',
-                  onClick: async () => {
+                  onClick: () => {
                     modalVisiable.value = true;
                     currRow.value = { ...row };
                   },
                 },
-                () => '编辑' //用箭头函数返回性能更好。
+                () => '编辑' // 用箭头函数返回性能更好。
               ),
               h(
                 NPopconfirm,
@@ -116,7 +117,7 @@ export default defineComponent({
                         size: 'small',
                         type: 'error',
                       },
-                      () => '删除' //用箭头函数返回性能更好。
+                      () => '删除' // 用箭头函数返回性能更好。
                     ),
                   default: () => '确定删除吗?',
                 }
@@ -128,17 +129,17 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
-    const ajaxFetchList = async (params) => {
+    const ajaxFetchList = async (args) => {
       try {
-        linkListLoading.value = true;
-        const res: any = await fetchLinkList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchLinkList(args);
         if (res.code === 200) {
-          linkListLoading.value = false;
-          linkListData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -157,7 +158,12 @@ export default defineComponent({
     };
 
     const handleSearch = (v) => {
-      params.value = { ...params.value, ...v };
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
       handlePageChange(1);
     };
 
@@ -200,8 +206,8 @@ export default defineComponent({
       handleSearch,
       currRow,
       addLinkRef,
-      linkListData,
-      linkListLoading,
+      tableListData,
+      tableListLoading,
       columns: createColumns(),
       pagination: paginationReactive,
       searchFormConfig,

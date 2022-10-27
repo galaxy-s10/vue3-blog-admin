@@ -9,9 +9,17 @@
           <language></language>
         </n-icon>
       </div>
-      <n-dropdown trigger="hover" :options="options" @select="handleSelect">
+      <n-dropdown
+        trigger="hover"
+        :options="options"
+        @select="handleSelect"
+      >
         <div class="user">
-          <img class="avatar" :src="userInfo?.avatar" alt="" />
+          <img
+            class="avatar"
+            :src="userInfo?.avatar"
+            alt=""
+          />
           <span class="name">{{ userInfo?.username }}</span>
         </div>
       </n-dropdown>
@@ -30,6 +38,7 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
+import { BLOG_CLIENT_URL } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 
@@ -39,27 +48,43 @@ export default defineComponent({
     const userStore = useUserStore();
     const appStore = useAppStore();
     const router = useRouter();
-    const { userInfo } = userStore.$state;
     const options = ref([
       {
-        label: '账号设置',
+        label: '博客前台',
         key: '1',
       },
       {
-        label: '退出登录',
+        label: '账号设置',
         key: '2',
+      },
+      {
+        label: '退出登录',
+        key: '3',
       },
     ]);
     const handleSelect = (v) => {
       if (v === '1') {
-        router.push('/setting/account');
+        window.open(BLOG_CLIENT_URL);
       } else if (v === '2') {
+        router.push('/setting/account').then(
+          () => {},
+          () => {}
+        );
+      } else if (v === '3') {
         userStore.logout();
         appStore.setRoutes([]);
-        router.push('/login');
+        router.push('/login').then(
+          () => {
+            console.log('ok');
+            window.location.reload();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
     };
-    return { options, userInfo, handleSelect };
+    return { options, userInfo: userStore.userInfo, handleSelect };
   },
 });
 </script>

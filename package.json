@@ -29,7 +29,8 @@
     "pinia": "^2.0.13",
     "vfonts": "^0.0.3",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "web-vitals": "^3.0.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.0.1",

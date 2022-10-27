@@ -1,37 +1,42 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import router from '@/router';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
-const config = {
+const config: AxiosRequestConfig = {
   // baseURL: '/api/', // 本地开发：/api/，线上正式服：/prodapi/，线上测试服：/betaapi/
-  timeout: 5000,
+  timeout: 1000 * 5,
 };
 
-const service: any = axios.create(config);
+const service = axios.create(config);
+
+export interface IResponse<T> {
+  code: number;
+  data: T;
+  message: string;
+}
 
 // 请求拦截
 service.interceptors.request.use(
-  (config) => {
+  (cfg) => {
     switch (cache.getStorageExp('env')) {
       case 'prod':
-        config.baseURL = '/prodapi/';
+        cfg.baseURL = '/prodapi/';
         break;
       case 'beta':
-        config.baseURL = '/betaapi/';
+        cfg.baseURL = '/betaapi/';
         break;
       case 'development':
-        config.baseURL = '/api/';
+        cfg.baseURL = '/api/';
         break;
     }
     const token = cache.getStorageExp('token');
-    // @ts-ignore
     if (token) {
       // @ts-ignore
-      config.headers.Authorization = `Bearer ${token}`;
+      cfg.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
+    return cfg;
   },
   (error) => {
     console.log(error);
@@ -44,23 +49,26 @@ service.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  // eslint-disable-next-line consistent-return
   (error) => {
     const userStore = useUserStore();
-    if (error.response && error.response.status) {
-      const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
-      if (!whiteList.includes(`${error.response.status}`)) {
-        // 网关超时504
+    const statusCode = error.response.status;
+    const errorResponseData = error.response.data;
+    const whiteList = ['400', '401', '403', '404'];
+    if (error.response) {
+      if (!whiteList.includes(`${statusCode}`)) {
+        if (statusCode === 500) {
+          window.$message.error(errorResponseData.message);
+          return Promise.reject(errorResponseData.message);
+        }
         window.$message.error(error.message);
         return Promise.reject(error);
       }
-      if (error.response.status === 400) {
-        // 400错误不返回data
-        window.$message.error(error.response.data.message);
-        return Promise.reject(error.response.data);
+      if (statusCode === 400) {
+        window.$message.error(errorResponseData.message);
+        return Promise.reject(errorResponseData);
       }
-      if (error.response.status === 401) {
-        window.$message.error(error.response.data.message);
+      if (statusCode === 401) {
+        window.$message.error(errorResponseData.message);
         userStore.logout();
         router.push('/login');
         window.close();
@@ -71,19 +79,20 @@ service.interceptors.response.use(
           },
           '*'
         );
-        return Promise.reject(error.response.data);
+        return Promise.reject(errorResponseData);
       }
-      if (error.response.status === 403) {
-        window.$message.error(error.response.data.message);
-        return Promise.reject(error.response.data);
+      if (statusCode === 403) {
+        window.$message.error(errorResponseData.message);
+        return Promise.reject(errorResponseData);
+      }
+      if (statusCode === 404) {
+        window.$message.error(errorResponseData.message);
+        return Promise.reject(errorResponseData);
       }
     } else {
-      if (error.response) {
-        window.$message.error(error.response.message);
-        return Promise.reject(error.response);
-      }
+      // 请求超时没有response
       window.$message.error(error.message);
-      return Promise.reject(error);
+      return Promise.reject(error.message);
     }
   }
 );

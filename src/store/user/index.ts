@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { fetchEmailCodeLogin, fetchRegister } from '@/api/emailUser';
 import { fetchLogin, fetchUserInfo } from '@/api/user';
 import { IRole } from '@/interface';
-import { asyncRoutes } from '@/router';
+import { asyncRoutes } from '@/router/index';
 import cache from '@/utils/cache';
 
 type RootState = {
@@ -28,7 +28,7 @@ type RootState = {
     roles: IRole[];
   } | null;
   token: string | null;
-  roles: string[] | null;
+  roles: IRole[] | null;
 };
 
 export const useUserStore = defineStore('user', {
@@ -44,7 +44,6 @@ export const useUserStore = defineStore('user', {
       this.userInfo = res;
     },
     setToken(res) {
-      console.log('first setToken', res);
       Cookies.remove('token');
       cache.setStorageExp('token', res, 24);
       this.token = res;
@@ -121,9 +120,11 @@ export const useUserStore = defineStore('user', {
           route.forEach((v) => {
             const t = { ...v };
             if (t.meta && t.meta.roles) {
+              // 有meta数据，且meta有roles数据，开始判断权限，有权限才允许访问
               const hasRole = hasMixin(t.meta.roles, myRole);
               hasRole && res.push(t);
             } else {
+              // 没有meta信息，允许访问
               res.push(t);
             }
             if (t.children) {
@@ -133,7 +134,6 @@ export const useUserStore = defineStore('user', {
           return res;
         };
         const res = deepFind(roleRoutes);
-
         return res;
       };
       return handleAsyncRoutes(asyncRoutes);

@@ -1,274 +1,69 @@
 <template>
   <div>
+    <HSearch
+      :search-form-config="searchFormConfig"
+      :init-value="params"
+      @click-search="handleSearch"
+    ></HSearch>
     <n-data-table
-      ref="table"
       remote
-      :loading="isLoading"
+      :scroll-x="7000"
+      :loading="tableListLoading"
       :columns="columns"
-      :data="logData"
+      :data="tableListData"
       :pagination="pagination"
       :bordered="false"
-      :scroll-x="3500"
       @update:page="handlePageChange"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { h, defineComponent, onMounted, ref, reactive } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 
 import { fetchGithubUserList } from '@/api/githubUser';
-type ILog = {
-  id: number;
-  client_id: string;
-  login: string;
-  github_id: number;
-  node_id: string;
-  avatar_url: string;
-  gravatar_id: string;
-  url: string;
-  html_url: string;
-  type: string;
-  site_admin: string;
-  name: string;
-  company: string;
-  blog: string;
-  location: string;
-  email: any;
-  hireable: any;
-  bio: string;
-  twitter_username: any;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  github_created_at: string;
-  github_updated_at: string;
-  private_gists: number;
-  total_private_repos: number;
-  owned_private_repos: number;
-  disk_usage: number;
-  collaborators: number;
-  two_factor_authentication: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: any;
-};
-const createColumns = (): DataTableColumns<ILog> => {
-  return [
-    {
-      title: 'id',
-      key: 'id',
-      align: 'center',
-    },
-    {
-      title: 'client_id',
-      key: 'client_id',
-      align: 'center',
-    },
-    {
-      title: 'login',
-      key: 'login',
-      align: 'center',
-    },
-    {
-      title: 'github_id',
-      key: 'github_id',
-      align: 'center',
-    },
-    {
-      title: 'node_id',
-      key: 'node_id',
-      align: 'center',
-    },
-    {
-      title: 'avatar_url',
-      key: 'avatar_url',
-      align: 'center',
-      render(row) {
-        return h('img', {
-          src: row.avatar_url,
-          width: 100,
-        });
-      },
-    },
-    {
-      title: 'gravatar_id',
-      key: 'gravatar_id',
-      align: 'center',
-    },
-    {
-      title: 'url',
-      key: 'url',
-      align: 'center',
-    },
-    {
-      title: 'html_url',
-      key: 'html_url',
-      align: 'center',
-    },
-    {
-      title: 'type',
-      key: 'type',
-      align: 'center',
-    },
-    {
-      title: 'site_admin',
-      key: 'site_admin',
-      align: 'center',
-    },
-    {
-      title: 'name',
-      key: 'name',
-      align: 'center',
-    },
-    {
-      title: 'company',
-      key: 'company',
-      align: 'center',
-    },
-    {
-      title: 'blog',
-      key: 'blog',
-      align: 'center',
-    },
-    {
-      title: 'location',
-      key: 'location',
-      align: 'center',
-    },
-    {
-      title: 'email',
-      key: 'email',
-      align: 'center',
-    },
-    {
-      title: 'hireable',
-      key: 'hireable',
-      align: 'center',
-    },
-    {
-      title: 'bio',
-      key: 'bio',
-      align: 'center',
-    },
-    {
-      title: 'twitter_username',
-      key: 'twitter_username',
-      align: 'center',
-    },
-    {
-      title: 'public_repos',
-      key: 'public_repos',
-      align: 'center',
-    },
-    {
-      title: 'public_gists',
-      key: 'public_gists',
-      align: 'center',
-    },
-    {
-      title: 'followers',
-      key: 'followers',
-      align: 'center',
-    },
-    {
-      title: 'following',
-      key: 'following',
-      align: 'center',
-    },
-    {
-      title: 'github_created_at',
-      key: 'github_created_at',
-      align: 'center',
-    },
-    {
-      title: 'github_updated_at',
-      key: 'github_updated_at',
-      align: 'center',
-    },
-    {
-      title: 'private_gists',
-      key: 'private_gists',
-      align: 'center',
-    },
-    {
-      title: 'total_private_repos',
-      key: 'total_private_repos',
-      align: 'center',
-    },
-    {
-      title: 'owned_private_repos',
-      key: 'owned_private_repos',
-      align: 'center',
-    },
-    {
-      title: 'disk_usage',
-      key: 'disk_usage',
-      align: 'center',
-    },
-    {
-      title: 'collaborators',
-      key: 'collaborators',
-      align: 'center',
-    },
-    {
-      title: 'two_factor_authentication',
-      key: 'two_factor_authentication',
-      align: 'center',
-    },
-    {
-      title: '创建时间',
-      key: 'created_at',
-      align: 'center',
-    },
-    {
-      title: '更新时间',
-      key: 'updated_at',
-      align: 'center',
-    },
-  ];
-};
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IGithubUser, IList } from '@/interface';
+
+interface ISearch extends IGithubUser, IList {}
 
 export default defineComponent({
-  components: {},
+  components: { HSearch },
   setup() {
-    let logData = ref([]);
-    let total = ref(0);
+    const tableListData = ref([]);
+    const total = ref(0);
 
-    let isLoading = ref(false);
-    const params = reactive({
+    const tableListLoading = ref(false);
+    const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderBy: 'asc',
       orderName: 'id',
+      orderBy: 'desc',
     });
-    const paginationReactive = reactive({
-      page: 0, //当前页
-      itemCount: 0, //总条数
-      pageSize: 0, //分页大小
-      prefix() {
-        return `一共${total.value}条数据`;
-      },
-    });
+    const paginationReactive = usePage();
 
-    /**
-     * ajaxfetchGithubUserList
-     */
-    const ajaxFetchList = async (params) => {
+    const createColumns = (): DataTableColumns<IGithubUser> => {
+      return [...columnsConfig()];
+    };
+
+    const ajaxFetchList = async (args) => {
       try {
-        isLoading.value = true;
-        const res: any = await fetchGithubUserList(params);
+        tableListLoading.value = true;
+        const res: any = await fetchGithubUserList(args);
         if (res.code === 200) {
-          isLoading.value = false;
-          logData.value = res.data.rows;
+          tableListLoading.value = false;
+          tableListData.value = res.data.rows;
           total.value = res.data.total;
 
-          paginationReactive.page = params.nowPage;
+          paginationReactive.page = args.nowPage;
           paginationReactive.itemCount = res.data.total;
-          paginationReactive.pageSize = params.pageSize;
+          paginationReactive.pageSize = args.pageSize;
         } else {
           Promise.reject(res);
         }
@@ -278,16 +73,28 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      await ajaxFetchList(params);
+      await ajaxFetchList(params.value);
     });
     const handlePageChange = async (currentPage) => {
-      params.nowPage = currentPage;
-      await ajaxFetchList({ ...params, nowPage: currentPage });
+      params.value.nowPage = currentPage;
+      await ajaxFetchList({ ...params.value, nowPage: currentPage });
+    };
+    const handleSearch = (v) => {
+      params.value = {
+        ...params.value,
+        ...v,
+        nowPage: 1,
+        pageSize: params.value.pageSize,
+      };
+      handlePageChange(1);
     };
     return {
       handlePageChange,
-      isLoading: isLoading,
-      logData,
+      tableListLoading,
+      tableListData,
+      params,
+      searchFormConfig,
+      handleSearch,
       columns: createColumns(),
       pagination: paginationReactive,
     };

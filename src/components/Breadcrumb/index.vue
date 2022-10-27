@@ -1,6 +1,9 @@
 <template>
   <n-breadcrumb>
-    <n-breadcrumb-item v-for="item in currentRouteArr" :key="item.path">
+    <n-breadcrumb-item
+      v-for="item in currentRouteArr"
+      :key="item.path"
+    >
       {{ item.meta.title }}
     </n-breadcrumb-item>
   </n-breadcrumb>
@@ -11,18 +14,20 @@ import { defineComponent, reactive, ref, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useAppStore } from '@/store/app';
+
 export default defineComponent({
   setup() {
     const appStore = useAppStore();
     const route = useRoute();
     const path = ref(route.path);
-    const { routes } = toRefs(appStore.$state);
+    const { routes } = toRefs(appStore);
 
     const handleTree = (source, target) => {
       const res: any = [];
       const strArr = target.split('/');
       const originSource = JSON.parse(JSON.stringify(source));
       // WARN:待优化
+      // eslint-disable-next-line
       const find = (source, target) => {
         for (let i = 0; i < source.length; i += 1) {
           const item = source[i];
@@ -42,7 +47,7 @@ export default defineComponent({
       find(source, target);
       return res;
     };
-    let result = ref(handleTree(routes.value, path.value));
+    const result = ref(handleTree(routes.value, path.value));
 
     watch(
       () => route.path,

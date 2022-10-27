@@ -1,13 +1,13 @@
 <template>
   <div>
-    <HForm
+    <h-form
       ref="formRef"
       v-bind="formConfig"
       v-model="formData"
       :show-action="showAction"
       :confirm-loading="confirmLoading"
       @click:confirm="handleConfirm"
-    ></HForm>
+    ></h-form>
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import { formConfig } from './config/form.config';
 
 import { fetchCreateMusic } from '@/api/music';
 import HForm from '@/components/Base/Form';
+import { IMusic } from '@/interface';
 
 export default defineComponent({
   components: { HForm },
@@ -36,10 +37,16 @@ export default defineComponent({
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
 
-    const handleConfirm = async (v) => {
+    const handleConfirm = async (v: IMusic) => {
       try {
         confirmLoading.value = true;
-        const { message } = await fetchCreateMusic(v);
+        const { message }: any = await fetchCreateMusic({
+          author: v.author,
+          name: v.name,
+          audio_url: v.audio_url![0].resultUrl,
+          status: v.status,
+          cover_pic: v.cover_pic![0].resultUrl,
+        });
         window.$message.success(message);
       } catch (error) {
         console.log(error);

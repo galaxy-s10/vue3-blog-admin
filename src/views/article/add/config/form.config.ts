@@ -1,10 +1,12 @@
 import { fetchTagList } from '@/api/tag';
 import { fetchTypeList } from '@/api/type';
-export const formConfig = async () => {
-  const params = { nowPage: 1, pageSize: 100 };
+import { IForm } from '@/components/Base/Form';
+import { IArticle } from '@/interface';
+
+export const formConfig = async (): Promise<IForm<IArticle>> => {
   const [tagList, typeList] = await Promise.all([
-    fetchTagList(params),
-    fetchTypeList(params),
+    fetchTagList({}),
+    fetchTypeList({}),
   ]);
   return {
     gridSpan: 16,
@@ -31,7 +33,6 @@ export const formConfig = async () => {
         type: 'checkbox',
         label: '分类',
         placeholder: '请选择分类',
-        labelWidth: 100,
         options: typeList.data.rows.map((v) => ({
           label: v.name,
           value: v.id,
@@ -48,25 +49,31 @@ export const formConfig = async () => {
         field: 'status',
         type: 'switch',
         label: '审核开关',
-        checkedValue: 1,
-        unCheckedValue: 2,
-        checkedText: '已审核',
-        unCheckedText: '未审核',
+        switchConfig: {
+          checkedValue: 1,
+          unCheckedValue: 2,
+          checkedText: '已审核',
+          unCheckedText: '未审核',
+        },
       },
       {
         field: 'is_comment',
         type: 'switch',
         label: '评论开关',
-        checkedValue: 1,
-        unCheckedValue: 2,
-        checkedText: '开启',
-        unCheckedText: '关闭',
+        switchConfig: {
+          checkedValue: 1,
+          unCheckedValue: 2,
+          checkedText: '开启',
+          unCheckedText: '关闭',
+        },
       },
       {
         field: 'head_img',
-        type: 'input',
+        type: 'upload',
+        uploadConfig: {
+          max: 1,
+        },
         label: '封面图',
-        placeholder: '请输入封面图',
       },
       {
         field: 'priority',

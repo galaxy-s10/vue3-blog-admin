@@ -1,5 +1,7 @@
-// edit by:https://github.com/substack/insert-css
+/* eslint-disable */
 // @ts-nocheck
+
+// edit by:https://github.com/substack/insert-css
 const containers = []; // will store container HTMLElement references
 const styleElements = []; // will store {prepend: HTMLElement, append: HTMLElement}
 

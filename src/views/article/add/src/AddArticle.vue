@@ -7,6 +7,7 @@
       :show-action="showAction"
       :confirm-loading="confirmLoading"
       @click:confirm="handleConfirm"
+      @update:filed="updateFiled"
     ></h-form>
   </div>
 </template>
@@ -17,9 +18,12 @@ import { useRoute } from 'vue-router';
 
 import { formConfig } from '../config/form.config';
 
+import type { UploadFileInfo } from 'naive-ui';
+
 import { fetchUpdateArticle, fetchCreateArticle } from '@/api/article';
 import HForm from '@/components/Base/Form';
-import { deleteUselessObjectKey } from '@/utils';
+import { IArticle } from '@/interface';
+
 export default defineComponent({
   components: { HForm },
   props: {
@@ -33,48 +37,78 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const formData = ref({ ...props.modelValue });
+    const handleData = ref();
+    if (props.modelValue?.head_img) {
+      handleData.value = {
+        ...props.modelValue,
+        head_img: [
+          {
+            id: props.modelValue.head_img,
+            name: props.modelValue.head_img,
+            url: props.modelValue.head_img,
+            status: 'finished',
+            percentage: 100,
+          },
+        ] as UploadFileInfo[],
+      };
+    } else {
+      handleData.value = {
+        ...props.modelValue,
+        head_img: [] as UploadFileInfo[],
+      };
+    }
+    const formData = ref<IArticle>(handleData.value);
     const confirmLoading = ref(false);
     const formRef = ref<any>(null);
+    const qiniuCdnList = ref<string[]>([]);
     const formConfigRes = ref();
     const route = useRoute();
+    const reg =
+      /https:\/\/resource\.hsslive\.cn\/image\/.+?(jpg|jpeg|png|gif|webp)/gim;
 
     onBeforeMount(async () => {
       formConfigRes.value = await formConfig();
     });
-    const handleConfirm = async (v) => {
+    const updateFiled = (filed, value) => {
+      if (filed === 'content') {
+        const str: string = value;
+        const arr = str.match(reg);
+        if (Array.isArray(arr)) {
+          qiniuCdnList.value = [
+            ...new Set([...new Set(qiniuCdnList.value), ...new Set(arr)]),
+          ];
+        }
+      }
+    };
+    const handleConfirm = async (v: IArticle) => {
       try {
         confirmLoading.value = true;
         if (route.query.id) {
-          await fetchUpdateArticle(
-            deleteUselessObjectKey({
-              title: v.title,
-              content: v.content,
-              desc: v.desc,
-              head_img: v.head_img,
-              id: v.id,
-              is_comment: v.is_comment,
-              status: v.status,
-              tags: v.tags,
-              types: v.types,
-              priority: v.priority,
-            })
-          );
+          await fetchUpdateArticle({
+            title: v.title,
+            content: v.content,
+            desc: v.desc,
+            head_img: v.head_img?.[0]?.resultUrl,
+            id: v.id,
+            is_comment: v.is_comment,
+            status: v.status,
+            tags: v.tags,
+            types: v.types,
+            priority: v.priority,
+          });
           window.$message.success('更新成功');
         } else {
-          await fetchCreateArticle(
-            deleteUselessObjectKey({
-              title: v.title,
-              content: v.content,
-              desc: v.desc,
-              head_img: v.head_img,
-              is_comment: v.is_comment,
-              status: v.status,
-              tags: v.tags,
-              types: v.types,
-              priority: v.priority,
-            })
-          );
+          await fetchCreateArticle({
+            title: v.title,
+            content: v.content,
+            desc: v.desc,
+            head_img: v.head_img?.[0]?.resultUrl,
+            is_comment: v.is_comment,
+            status: v.status,
+            tags: v.tags,
+            types: v.types,
+            priority: v.priority,
+          });
           window.$message.success('新增成功');
         }
       } catch (error) {
@@ -95,6 +129,7 @@ export default defineComponent({
       formData,
       confirmLoading,
       handleConfirm,
+      updateFiled,
       validateForm,
     };
   },

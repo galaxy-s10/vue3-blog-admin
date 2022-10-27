@@ -1,3 +1,3 @@
-import HSearch from './src/HSearch.vue';
+import Search from './src/Search.vue';
 
-export default HSearch;
+export default Search;
