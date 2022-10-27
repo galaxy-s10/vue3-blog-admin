@@ -1,8 +1,6 @@
 <template>
   <n-spin :show="appLoading">
-    <div class="app-wrap">
-      <router-view></router-view>
-    </div>
+    <div class="app-wrap"><router-view></router-view></div>
     <SwitchEnvCpt></SwitchEnvCpt>
   </n-spin>
 </template>
