@@ -136,7 +136,7 @@ export const useUserStore = defineStore('user', {
         const res = deepFind(roleRoutes);
         return res;
       };
-      return handleAsyncRoutes(asyncRoutes);
+      return handleAsyncRoutes(asyncRoutes());
     },
   },
 });

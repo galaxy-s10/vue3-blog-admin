@@ -1,4 +1,3 @@
-import { outputStaticUrl, NODE_ENV } from 'script/utils/outputStaticUrl';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { routes as constantRoutes } from './constantRoutes';
@@ -8,7 +7,7 @@ export const defaultRoutes = constantRoutes;
 
 const router = createRouter({
   routes: [...defaultRoutes],
-  history: createWebHistory(outputStaticUrl(NODE_ENV === 'production')),
+  history: createWebHistory('/'),
 });
 
 export default router;

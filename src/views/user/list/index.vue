@@ -254,10 +254,10 @@ export default defineComponent({
           paginationReactive.itemCount = res.data.total;
           paginationReactive.pageSize = args.pageSize;
         } else {
-          Promise.reject(res);
+          return res;
         }
       } catch (err) {
-        Promise.reject(err);
+        return err;
       }
     };
 

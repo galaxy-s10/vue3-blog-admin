@@ -1,3 +1,5 @@
+// / <reference types="vite/client" />
+
 declare module '*.vue' {
   /* eslint-disable */
   import type { DefineComponent } from 'vue';

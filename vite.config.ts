@@ -6,7 +6,10 @@ const path = require('path');
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: { '@': path.resolve(__dirname, 'src') },
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      script: path.resolve(__dirname, 'script'),
+    },
     /**
      * 不建议省略.vue后缀
      * https://cn.vitejs.dev/config/shared-options.html#resolve-extensions
@@ -15,11 +18,11 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    eslint({
-      failOnError: false,
-      failOnWarning: false,
-      cache: true,
-    }),
+    // eslint({
+    //   failOnError: false,
+    //   failOnWarning: false,
+    //   cache: true,
+    // }),
   ],
 
   server: {

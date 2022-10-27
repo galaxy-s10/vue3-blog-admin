@@ -14,11 +14,19 @@
     "skipLibCheck": true,
     "allowJs": true,
     "baseUrl": "./",
+    "outDir": "outDir",
     "paths": {
       "@/*": ["src/*"]
     },
     "noImplicitAny": false
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.d.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.vue",
+    "./.eslintrc.js",
+    "./vite.config.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
