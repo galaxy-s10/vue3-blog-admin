@@ -3,9 +3,11 @@
     <div class="btn-warp">
       <n-button
         type="primary"
-        @click="getDiff"
-        >获取image/差异</n-button
+        await
+        @click="getDiff()"
       >
+        获取image/差异
+      </n-button>
     </div>
     <div
       v-if="diffRes"
@@ -27,6 +29,12 @@
             :key="index"
           >
             {{ item }}
+            <n-button
+              size="small"
+              @click="deleteQiniuDiff(item)"
+            >
+              删除
+            </n-button>
           </div>
         </div>
         <div v-else>无差异</div>
@@ -97,6 +105,7 @@ import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 import {
   fetchDeleteQiniuData,
+  fetchDeleteQiniuDataByQiniuKey,
   fetchDiff,
   fetchQiniuDataList,
   fetchUpdateQiniuData,
@@ -235,6 +244,12 @@ export default defineComponent({
       await ajaxFetchList({ ...params.value, nowPage: currentPage });
     };
 
+    const deleteQiniuDiff = async (qiniu_key) => {
+      const res = await fetchDeleteQiniuDataByQiniuKey(qiniu_key);
+      window.$message.success(res.data);
+      await getDiff();
+    };
+
     const handleSearch = (v) => {
       params.value = {
         ...params.value,
@@ -283,6 +298,7 @@ export default defineComponent({
       modalUpdateShow,
       handlePageChange,
       handleSearch,
+      deleteQiniuDiff,
       currRow,
       addLinkRef,
       tableListData,

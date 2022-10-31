@@ -1,14 +1,14 @@
 import PreloadPlugin from '@vue/preload-webpack-plugin';
-import { version as axiosVersion } from 'axios/package.json';
+// import { version as axiosVersion } from 'axios/package.json';
 import CompressionPlugin from 'compression-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackTagsPlugin from 'html-webpack-tags-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { version as piniaVersion } from 'pinia/package.json';
+// import { version as piniaVersion } from 'pinia/package.json';
 import TerserPlugin from 'terser-webpack-plugin';
-import { version as vueDemiVersion } from 'vue-demi/package.json';
-import { version as vueRouterVersion } from 'vue-router/package.json';
-import { version as vueVersion } from 'vue/package.json';
+// import { version as vueDemiVersion } from 'vue-demi/package.json';
+// import { version as vueRouterVersion } from 'vue-router/package.json';
+// import { version as vueVersion } from 'vue/package.json';
 import { Configuration } from 'webpack';
 import WebpackBar from 'webpackbar';
 
@@ -20,12 +20,12 @@ export default new Promise((resolve) => {
   const prodConfig: Configuration = {
     mode: 'production',
     devtool: false,
-    externals: {
-      vue: 'Vue',
-      'vue-router': 'VueRouter',
-      pinia: 'Pinia',
-      axios: 'axios',
-    },
+    // externals: {
+    //   vue: 'Vue',
+    //   'vue-router': 'VueRouter',
+    //   pinia: 'Pinia',
+    //   axios: 'axios',
+    // },
     optimization: {
       /**
        * splitChunks属性，如果设置了mode: 'production'，会有默认行为，具体看官网
@@ -146,13 +146,13 @@ export default new Promise((resolve) => {
         append: false,
         publicPath: '', // 默认会拼上output.publicPath，因为我们引入的是cdn的地址，因此不需要拼上output.publicPath，直接publicPath:''，这样就约等于拼上空字符串''
         links: [],
-        scripts: [
-          `https://unpkg.com/vue@${vueVersion}/dist/vue.global.prod.js`,
-          `https://unpkg.com/vue-router@${vueRouterVersion}/dist/vue-router.global.prod.js`,
-          `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js`,
-          `https://unpkg.com/vue-demi@${vueDemiVersion}/lib/index.iife.js`,
-          `https://unpkg.com/pinia@${piniaVersion}/dist/pinia.iife.prod.js`,
-        ],
+        // scripts: [
+        //   `https://unpkg.com/vue@${vueVersion}/dist/vue.global.prod.js`,
+        //   `https://unpkg.com/vue-router@${vueRouterVersion}/dist/vue-router.global.prod.js`,
+        //   `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js`,
+        //   `https://unpkg.com/vue-demi@${vueDemiVersion}/lib/index.iife.js`,
+        //   `https://unpkg.com/pinia@${piniaVersion}/dist/pinia.iife.prod.js`,
+        // ],
       }),
       // 将 CSS 提取到单独的文件中
       new MiniCssExtractPlugin({

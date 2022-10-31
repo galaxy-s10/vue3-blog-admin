@@ -9,13 +9,15 @@
       <n-button
         type="info"
         @click="handleReset"
-        >重置</n-button
       >
+        重置
+      </n-button>
       <n-button
         type="success"
         @click="handleSearch"
-        >搜索</n-button
       >
+        搜索
+      </n-button>
     </n-space>
   </div>
 </template>
@@ -46,9 +48,7 @@ export default defineComponent({
     const formData = ref({ ...props.initValue });
     const formRef = ref<any>(null);
     const handleReset = () => {
-      Object.keys(formData.value).forEach((item) => {
-        formData.value[`${item}`] = null;
-      });
+      formRef.value.handleReset();
       emit('clickReset');
     };
 

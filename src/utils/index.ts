@@ -18,7 +18,8 @@ export const getHash = (file: File) => {
       const buffer = e.target!.result as ArrayBuffer;
       spark.append(buffer);
       const hash = spark.end();
-      const ext = file.name.split('.')[1];
+      const arr = file.name.split('.');
+      const ext = arr[arr.length - 1];
       resolve({ hash, ext, buffer });
     };
   });

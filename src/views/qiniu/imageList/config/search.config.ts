@@ -1,6 +1,7 @@
 import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
+import { QINIU_PREFIX } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
 import { IQiniuData, ISearch } from '@/interface';
 
@@ -11,6 +12,16 @@ export const searchFormConfig: IForm<ISearch<IQiniuData>> = {
     justifyContent: 'center',
   },
   formItems: [
+    {
+      field: 'prefix',
+      type: 'select',
+      label: '前缀',
+      placeholder: '请选择前缀',
+      options: Object.keys(QINIU_PREFIX).map((v) => {
+        return { label: v, value: v };
+      }),
+      disabled: true,
+    },
     {
       field: 'id',
       type: 'input',

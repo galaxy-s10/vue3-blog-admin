@@ -234,8 +234,12 @@ export default defineComponent({
 
     const handleReset = () => {
       const obj = {};
-      Object.keys(props.modelValue).forEach((item) => {
-        obj[`${item}`] = null;
+      props.formItems.forEach((item) => {
+        if (!item.disabled) {
+          obj[item.field] = null;
+        } else {
+          obj[item.field] = props.modelValue[item.field];
+        }
       });
       emit('update:modelValue', obj);
     };
