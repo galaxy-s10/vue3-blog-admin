@@ -36,6 +36,12 @@
                 :src="item"
                 width="50"
               />
+              <n-button
+                size="small"
+                @click="deleteImg(item)"
+              >
+                删除
+              </n-button>
             </div>
           </div>
         </div>
@@ -62,8 +68,10 @@ import {
   fetchDeleteArticle,
   fetchArticleDetail,
 } from '@/api/article';
+import { fetchDeleteQiniuDataByQiniuKey } from '@/api/qiniuData';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
+import { QINIU_CDN_URL } from '@/constant';
 import { usePage } from '@/hooks/use-page';
 import { IArticle, IList } from '@/interface';
 
@@ -110,6 +118,7 @@ export default defineComponent({
                   onClick: async () => {
                     qiniuCdnList.value = [];
                     modalVisiable.value = true;
+                    modalTitle.value = '查看图片';
                     const { code, data, message }: any =
                       await fetchArticleDetail(row.id as number);
                     if (code === 200) {
@@ -174,6 +183,12 @@ export default defineComponent({
       return [...columnsConfig(), action];
     };
 
+    const deleteImg = async (url) => {
+      const key = url.replace(QINIU_CDN_URL, '');
+      const res = await fetchDeleteQiniuDataByQiniuKey(key);
+      window.$message.success(res.data);
+    };
+
     const ajaxFetchList = async (args) => {
       try {
         tableListLoading.value = true;
@@ -212,7 +227,9 @@ export default defineComponent({
       handlePageChange(1);
     };
 
-    const modalCancel = () => {};
+    const modalCancel = () => {
+      modalVisiable.value = false;
+    };
 
     const modalConfirm = async () => {
       try {
@@ -245,6 +262,7 @@ export default defineComponent({
       modalCancel,
       modalUpdateShow,
       handlePageChange,
+      deleteImg,
       handleSearch,
       currRow,
       addArticleRef,

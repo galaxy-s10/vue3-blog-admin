@@ -135,7 +135,7 @@ export default defineComponent({
     const params = ref<ISearch>({
       nowPage: 1,
       pageSize: 10,
-      orderName: 'qiniu_putTime',
+      orderName: 'created_at',
       orderBy: 'desc',
       prefix: QINIU_PREFIX['image/'],
       bucket: QINIU_BUCKET,
