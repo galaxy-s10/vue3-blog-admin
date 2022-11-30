@@ -139,7 +139,10 @@ export interface ILog {
   api_user_agent?: string;
   api_duration?: number;
   api_from?: number;
-  api_ip?: string;
+  api_forwarded_for?: string;
+  api_referer?: string;
+  api_real_ip?: string;
+  api_host?: string;
   api_hostname?: string;
   api_method?: string;
   api_path?: string;

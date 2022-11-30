@@ -34,8 +34,26 @@ export const columnsConfig = (): DataTableColumns<ILog> => {
       },
     },
     {
-      title: 'api_ip',
-      key: 'api_ip',
+      title: 'api_referer',
+      key: 'api_referer',
+      align: 'center',
+      width: 200,
+    },
+    {
+      title: 'api_real_ip',
+      key: 'api_real_ip',
+      align: 'center',
+      width: 150,
+    },
+    {
+      title: 'api_forwarded_for',
+      key: 'api_forwarded_for',
+      align: 'center',
+      width: 150,
+    },
+    {
+      title: 'api_host',
+      key: 'api_host',
       align: 'center',
       width: 150,
     },

@@ -22,7 +22,7 @@ export const searchFormConfig: IForm<ISearch<ILog>> = {
       type: 'input',
       label: '关键字',
       placeholder:
-        'user_id/api_user_agent/api_ip/api_hostname/api_method/api_path',
+        'user_id/api_user_agent/api_real_ip/api_host/api_hostname/api_method/api_path',
     },
     ...useOrder(columnsConfig),
   ],
