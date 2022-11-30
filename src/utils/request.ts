@@ -4,11 +4,14 @@ import router from '@/router';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const config: AxiosRequestConfig = {
   // baseURL: '/api/', // 本地开发：/api/，线上正式服：/prodapi/，线上测试服：/betaapi/
   timeout: 1000 * 5,
+  withCredentials: true, // 允许跨域携带cookie信息
 };
-
+console.log(process.env.NODE_ENV, 'lll');
 const service = axios.create(config);
 
 export interface IResponse<T> {
@@ -22,10 +25,10 @@ service.interceptors.request.use(
   (cfg) => {
     switch (cache.getStorageExp('env')) {
       case 'prod':
-        cfg.baseURL = '/prodapi/';
+        cfg.baseURL = 'https://api.hsslive.cn/prodapi/';
         break;
       case 'beta':
-        cfg.baseURL = '/betaapi/';
+        cfg.baseURL = 'https://api.hsslive.cn/betaapi/';
         break;
       case 'development':
         cfg.baseURL = '/api/';
