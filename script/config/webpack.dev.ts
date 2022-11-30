@@ -80,22 +80,22 @@ export default new Promise((resolve) => {
                 '^/api': '/admin/', // 效果：/api/link/list ==> http://localhost:3300/admin/link/list
               },
             },
-            '/prodapi': {
-              target: 'http://42.193.157.44:3200',
-              secure: false,
-              changeOrigin: true,
-              pathRewrite: {
-                '^/prodapi': '/admin/',
-              },
-            },
-            '/betaapi': {
-              target: 'http://42.193.157.44:3300',
-              secure: false,
-              changeOrigin: true,
-              pathRewrite: {
-                '^/betaapi': '/admin/',
-              },
-            },
+            // '/prodapi': {
+            //   target: 'http://42.193.157.44:3200',
+            //   secure: false,
+            //   changeOrigin: true,
+            //   pathRewrite: {
+            //     '^/prodapi': '/admin/',
+            //   },
+            // },
+            // '/betaapi': {
+            //   target: 'http://42.193.157.44:3300',
+            //   secure: false,
+            //   changeOrigin: true,
+            //   pathRewrite: {
+            //     '^/betaapi': '/admin/',
+            //   },
+            // },
           },
         },
         // @ts-ignore

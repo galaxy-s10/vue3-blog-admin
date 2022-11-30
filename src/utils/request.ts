@@ -50,6 +50,11 @@ service.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    console.log('响应拦截到错误', error);
+    if (error.message.indexOf('timeout') !== -1) {
+      window.$message.error(error.message);
+      return;
+    }
     const userStore = useUserStore();
     const statusCode = error.response.status;
     const errorResponseData = error.response.data;
