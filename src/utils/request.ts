@@ -22,10 +22,10 @@ service.interceptors.request.use(
   (cfg) => {
     switch (cache.getStorageExp('env')) {
       case 'prod':
-        cfg.baseURL = 'https://api.hsslive.cn/prodapi/';
+        cfg.baseURL = 'https://api.hsslive.cn/prodapi/admin/';
         break;
       case 'beta':
-        cfg.baseURL = 'https://api.hsslive.cn/betaapi/';
+        cfg.baseURL = 'https://api.hsslive.cn/betaapi/admin/';
         break;
       case 'development':
         cfg.baseURL = '/api/';
