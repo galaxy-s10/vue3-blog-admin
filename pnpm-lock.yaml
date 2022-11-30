@@ -18,7 +18,7 @@ specifiers:
   '@vue/preload-webpack-plugin': ^2.0.0
   axios: ^0.26.0
   babel-loader: ^8.2.2
-  billd-html-webpack-plugin: ^0.0.6
+  billd-html-webpack-plugin: ^0.0.7
   chalk: ^4
   commitizen: ^4.2.4
   compression-webpack-plugin: ^7.1.2
@@ -106,7 +106,7 @@ devDependencies:
   '@vue/eslint-config-typescript': 10.0.0_a7j55mrihwbpx4bxnpzfobe5je
   '@vue/preload-webpack-plugin': 2.0.0_dseqt6curza6cwqlyc3eowsnru
   babel-loader: 8.2.5_wfdvla2jorjoj23kkavho2upde
-  billd-html-webpack-plugin: 0.0.6_rsacaof5czrksf4shdtglgmete
+  billd-html-webpack-plugin: 0.0.7_rsacaof5czrksf4shdtglgmete
   chalk: 4.1.2
   commitizen: 4.2.5
   compression-webpack-plugin: 7.1.2_webpack@5.74.0
@@ -1433,20 +1433,22 @@ packages:
       - '@swc/wasm'
     dev: true
 
-  /@commitlint/load/17.1.2:
-    resolution: {integrity: sha512-sk2p/jFYAWLChIfOIp/MGSIn/WzZ0vkc3afw+l4X8hGEYkvDe4gQUUAVxjl/6xMRn0HgnSLMZ04xXh5pkTsmgg==}
+  /@commitlint/load/17.3.0:
+    resolution: {integrity: sha512-u/pV6rCAJrCUN+HylBHLzZ4qj1Ew3+eN9GBPhNi9otGxtOfA8b+8nJSxaNbcC23Ins/kcpjGf9zPSVW7628Umw==}
     engines: {node: '>=v14'}
     requiresBuild: true
     dependencies:
       '@commitlint/config-validator': 17.1.0
       '@commitlint/execute-rule': 17.0.0
-      '@commitlint/resolve-extends': 17.1.0
+      '@commitlint/resolve-extends': 17.3.0
       '@commitlint/types': 17.0.0
       '@types/node': 14.18.32
       chalk: 4.1.2
       cosmiconfig: 7.0.1
       cosmiconfig-typescript-loader: 4.1.1_vfayau7oz5qy4giwqlppd3j3ti
-      lodash: 4.17.21
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      lodash.uniq: 4.5.0
       resolve-from: 5.0.0
       ts-node: 10.9.1_jcmx33t3olsvcxopqdljsohpme
       typescript: 4.8.4
@@ -1492,14 +1494,14 @@ packages:
       resolve-global: 1.0.0
     dev: true
 
-  /@commitlint/resolve-extends/17.1.0:
-    resolution: {integrity: sha512-jqKm00LJ59T0O8O4bH4oMa4XyJVEOK4GzH8Qye9XKji+Q1FxhZznxMV/bDLyYkzbTodBt9sL0WLql8wMtRTbqQ==}
+  /@commitlint/resolve-extends/17.3.0:
+    resolution: {integrity: sha512-Lf3JufJlc5yVEtJWC8o4IAZaB8FQAUaVlhlAHRACd0TTFizV2Lk2VH70et23KgvbQNf7kQzHs/2B4QZalBv6Cg==}
     engines: {node: '>=v14'}
     dependencies:
       '@commitlint/config-validator': 17.1.0
       '@commitlint/types': 17.0.0
       import-fresh: 3.3.0
-      lodash: 4.17.21
+      lodash.mergewith: 4.6.2
       resolve-from: 5.0.0
       resolve-global: 1.0.0
     dev: true
@@ -3028,8 +3030,8 @@ packages:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
     dev: true
 
-  /billd-html-webpack-plugin/0.0.6_rsacaof5czrksf4shdtglgmete:
-    resolution: {integrity: sha512-z6pVRJCucrZx+5EDf3qqcfHljX+E7Hl4goNRjpiByuPBY5vL9lR9jQOhI2Lx0hW8r3WANfakAAAnmW+w+g8sHQ==}
+  /billd-html-webpack-plugin/0.0.7_rsacaof5czrksf4shdtglgmete:
+    resolution: {integrity: sha512-ITSjMUMxnz4r3xjzJv1SeHFrsb4c3NSAk+A4MahXPn6/Xf0Chz0ED0NQyMfpdQMVUCuR3Btihy5Y8wSPK+V1FA==}
     dependencies:
       '@babel/core': 7.19.3
       '@babel/plugin-transform-runtime': 7.19.6_@babel+core@7.19.3
@@ -4042,7 +4044,7 @@ packages:
       longest: 2.0.1
       word-wrap: 1.2.3
     optionalDependencies:
-      '@commitlint/load': 17.1.2
+      '@commitlint/load': 17.3.0
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -5905,7 +5907,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.17.3
+      uglify-js: 3.17.4
     dev: true
 
   /hard-rejection/2.1.0:
@@ -6898,6 +6900,11 @@ packages:
     resolution: {integrity: sha512-fPMfXjGQEV9Xsq/8MTSgUf255gawYRbjwMyDbcvDhXgV7enSZA0hynz6vMPnpAb5iONEzBHBPsT+0zes5Z301g==}
     dev: true
 
+  /lodash.isplainobject/4.0.6:
+    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
+    dev: true
+    optional: true
+
   /lodash.map/4.6.0:
     resolution: {integrity: sha512-worNHGKLDetmcEYDvh2stPCrrQRkP20E4l0iIS7F8EvzMqBBi7ltvFN5m1HvTf1P7Jk1txKhvFcmYsCr8O2F1Q==}
     dev: true
@@ -6909,6 +6916,11 @@ packages:
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
+
+  /lodash.mergewith/4.6.2:
+    resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
+    dev: true
+    optional: true
 
   /lodash.uniq/4.5.0:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
@@ -9870,8 +9882,8 @@ packages:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
     dev: false
 
-  /uglify-js/3.17.3:
-    resolution: {integrity: sha512-JmMFDME3iufZnBpyKL+uS78LRiC+mK55zWfM5f/pWBJfpOttXAqYfdDGRukYhJuyRinvPVAtUhvy7rlDybNtFg==}
+  /uglify-js/3.17.4:
+    resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
