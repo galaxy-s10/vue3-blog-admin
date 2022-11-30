@@ -8,7 +8,6 @@
 </template>
 
 <script lang="ts">
-import Cookies from 'js-cookie';
 import { defineComponent, toRef } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -30,13 +29,14 @@ export default defineComponent({
 
     window.addEventListener('message', async (e) => {
       const { type, data: code } = e.data;
-      // console.log('收到消息', type, code);
+      console.log('收到消息', type, code);
       if (!POSTMESSAGE_TYPE.includes(type)) return;
       if (type === 'login_expired') {
         window.$message.error('登录错误，请重试~');
         return;
       }
       try {
+        let token = '';
         switch (type) {
           case 'qq_login':
             if (userStore.userInfo) {
@@ -44,7 +44,8 @@ export default defineComponent({
               window.$message.success(res.message);
               userStore.getUserInfo();
             } else {
-              await fetchQQLogin(code);
+              const { data } = await fetchQQLogin(code);
+              token = data;
             }
             break;
           case 'github_login':
@@ -53,11 +54,12 @@ export default defineComponent({
               window.$message.success(res.message);
               userStore.getUserInfo();
             } else {
-              await fetchGithubLogin(code);
+              const { data } = await fetchGithubLogin(code);
+              token = data;
             }
             break;
         }
-        userStore.setToken(Cookies.get('token'));
+        userStore.setToken(token);
         router.push((route.query.redirect as '') || '/');
       } catch (error) {
         console.log(error);
