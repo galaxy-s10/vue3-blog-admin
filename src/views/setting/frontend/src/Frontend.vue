@@ -44,7 +44,6 @@ export default defineComponent({
     const handleConfirm = async (v) => {
       try {
         confirmLoading.value = true;
-        console.log(v, 'lllllll');
         await fetchUpdateFrontend({
           id: oldFormData.value.id,
           frontend_about: v.frontend_about,
