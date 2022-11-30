@@ -62,7 +62,7 @@
     "@vue/eslint-config-typescript": "^10.0.0",
     "@vue/preload-webpack-plugin": "^2.0.0",
     "babel-loader": "^8.2.2",
-    "billd-html-webpack-plugin": "^0.0.7",
+    "billd-html-webpack-plugin": "^0.0.8",
     "chalk": "^4",
     "commitizen": "^4.2.4",
     "compression-webpack-plugin": "^7.1.2",
