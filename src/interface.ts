@@ -50,22 +50,25 @@ export interface IFrontend {
 }
 export interface IComment {
   id?: number;
-  article_id?: number;
-  parent_comment_id?: number;
-  reply_comment_id?: number;
   from_user_id?: number;
-  to_user_id?: number;
   content?: string;
   children_comment_total?: number;
-  star_total?: number;
   ua?: string;
   ip?: string;
   ip_data?: string;
+  parent_comment_id?: number;
+  reply_comment_id?: number;
+  article_id?: number;
+  to_user_id?: number;
+  p_comment?: any[];
+  to_user?: IUser;
+  from_user?: IUser;
+  stars?: any[];
+  star_total?: number;
+  status?: number;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
-  from_user?: IUser;
-  to_user?: IUser;
+  deleted_at?: string;
 }
 
 export interface IAuth {

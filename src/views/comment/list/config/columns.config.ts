@@ -12,6 +12,14 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       align: 'center',
     },
     {
+      title: '状态',
+      key: 'status',
+      align: 'center',
+      render(row) {
+        return row.status === 1 ? '显示' : '隐藏';
+      },
+    },
+    {
       title: '文章id',
       key: 'article_id',
       align: 'center',

@@ -23,6 +23,16 @@ export const searchFormConfig: IForm<ISearch<IComment>> = {
       label: '关键字',
       placeholder: '评论内容',
     },
+    {
+      field: 'status',
+      type: 'radio',
+      label: '状态',
+      placeholder: '请选择状态',
+      options: [
+        { label: '显示', value: 1 },
+        { label: '隐藏', value: 2 },
+      ],
+    },
     ...useOrder(columnsConfig),
   ],
 };
