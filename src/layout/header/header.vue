@@ -4,7 +4,10 @@
       <BreadcrumbCpt></BreadcrumbCpt>
     </div>
     <div class="action">
-      <div class="lang">
+      <div
+        class="lang"
+        @click="handleClick"
+      >
         <n-icon size="20">
           <language></language>
         </n-icon>
@@ -23,7 +26,10 @@
           <span class="name">{{ userInfo?.username }}</span>
         </div>
       </n-dropdown>
-      <div class="setting">
+      <div
+        class="setting"
+        @click="handleClick"
+      >
         <n-icon size="20">
           <SettingsOutline></SettingsOutline>
         </n-icon>
@@ -32,9 +38,9 @@
   </header>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Language, SettingsOutline } from '@vicons/ionicons5';
-import { defineComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import BreadcrumbCpt from '@/components/Breadcrumb/index.vue';
@@ -42,51 +48,53 @@ import { BLOG_CLIENT_URL } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 
-export default defineComponent({
-  components: { BreadcrumbCpt, Language, SettingsOutline },
-  setup() {
-    const userStore = useUserStore();
-    const appStore = useAppStore();
-    const router = useRouter();
-    const options = ref([
-      {
-        label: '博客前台',
-        key: '1',
-      },
-      {
-        label: '账号设置',
-        key: '2',
-      },
-      {
-        label: '退出登录',
-        key: '3',
-      },
-    ]);
-    const handleSelect = (v) => {
-      if (v === '1') {
-        window.open(BLOG_CLIENT_URL);
-      } else if (v === '2') {
-        router.push('/setting/account').then(
-          () => {},
-          () => {}
-        );
-      } else if (v === '3') {
-        userStore.logout();
-        appStore.setRoutes([]);
-        router.push('/login').then(
-          () => {
-            console.log('ok');
-            window.location.reload();
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
-      }
-    };
-    return { options, userInfo: userStore.userInfo, handleSelect };
+const userStore = useUserStore();
+const appStore = useAppStore();
+const router = useRouter();
+
+const options = ref([
+  {
+    label: '博客前台',
+    key: '1',
   },
-});
+  {
+    label: '账号设置',
+    key: '2',
+  },
+  {
+    label: '退出登录',
+    key: '3',
+  },
+]);
+
+const handleSelect = (v) => {
+  console.log(111);
+  if (v === '1') {
+    window.open(BLOG_CLIENT_URL);
+  } else if (v === '2') {
+    router.push('/setting/account').then(
+      () => {},
+      () => {}
+    );
+  } else if (v === '3') {
+    userStore.logout();
+    appStore.setRoutes([]);
+    router.push('/login').then(
+      () => {
+        console.log('ok');
+        window.location.reload();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+};
+
+function handleClick() {
+  window.$message.info('敬请期待!');
+}
+const userInfo = userStore.userInfo;
 </script>
 
 <style lang="scss" scoped>

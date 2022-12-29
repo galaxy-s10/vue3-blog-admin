@@ -1,17 +1,7 @@
 import type { FormItemRule } from 'naive-ui';
 import type { StyleValue } from 'vue';
 
-type IFormType =
-  | 'input'
-  | 'password'
-  | 'number'
-  | 'select'
-  | 'radio'
-  | 'checkbox'
-  | 'markdown'
-  | 'switch'
-  | 'upload'
-  | 'treeSelect';
+import { IFormType } from '@/interface';
 
 export interface IFormItem<T> {
   field: T extends String ? string : keyof T;
@@ -42,6 +32,7 @@ export interface IFormItem<T> {
   isHidden?: boolean;
   style?: StyleValue;
 }
+
 export interface IForm<T> {
   formItems: IFormItem<T>[];
   gridSpan?: Number;

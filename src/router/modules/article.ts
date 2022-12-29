@@ -37,12 +37,13 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'updateArticle',
+        name: 'editArticle',
         path: '/article/update',
-        component: () => import('@/views/article/update/index.vue'),
+        component: () => import('@/views/article/edit/index.vue'),
         meta: {
           title: '编辑文章',
           roles: [ROUTE_ROLES.SUPER_ADMIN],
+          hidden: true,
         },
       },
     ],

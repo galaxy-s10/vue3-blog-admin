@@ -7,5 +7,8 @@ export const routes: RouteRecordRaw[] = [
     name: 'NotFound',
     // component: () => import('@/views/error/404/index.vue'),
     redirect: '/error/404',
+    meta: {
+      hidden: true,
+    },
   },
 ];

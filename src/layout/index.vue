@@ -85,12 +85,15 @@ export default defineComponent({
           v.meta = {
             title: v.children[0].meta?.title,
             icon: v.children[0].meta?.icon,
+            hidden: v.children[0].meta?.hidden,
             sort: v.meta?.sort,
           };
           // @ts-ignore
-          v.label = v.children[0].meta.title;
+          v.label = v.meta.title;
           // @ts-ignore
           v.key = v.children[0].path;
+          // @ts-ignore
+          v.show = !v.meta.hidden;
           delete v.children;
         } else if (v.children && v.children.length > 1) {
           // @ts-ignore
@@ -99,11 +102,13 @@ export default defineComponent({
           v.key = v.path;
           handleRoutes(v.children);
         } else if (!v.children) {
-          if (!v.meta?.hidden) {
+          if (v.meta) {
             // @ts-ignore
             v.label = v.meta && v.meta.title;
             // @ts-ignore
             v.key = v.path;
+            // @ts-ignore
+            v.show = !v.meta.hidden;
           }
         }
       });
@@ -115,11 +120,9 @@ export default defineComponent({
     }
 
     const menuOptions = ref(
-      handleRoutes([...defaultRoutes, ...appStore.routes])
-        .sort(sortRoute)
-        .filter((v) => v.meta && !v.meta.hidden)
+      handleRoutes([...defaultRoutes, ...appStore.routes]).sort(sortRoute)
     );
-
+    console.log(menuOptions.value);
     const handleUpdateValue = (key: string, item) => {
       path.value = key;
       if (!appStore.tabList[key]) {

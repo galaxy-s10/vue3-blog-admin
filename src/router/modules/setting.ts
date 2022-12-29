@@ -27,12 +27,38 @@ export const routes: RouteRecordRaw[] = [
       {
         name: 'frontendSetting',
         path: '/setting/frontend',
-        component: () => import('@/views/setting/frontend'),
         meta: {
           title: '前台设置',
           icon: renderIcon(BagHandleOutline),
           roles: [ROUTE_ROLES.SUPER_ADMIN],
         },
+        children: [
+          {
+            name: 'frontendSettingList',
+            path: '/setting/frontend/list',
+            component: () => import('@/views/setting/frontend/list/index.vue'),
+            meta: {
+              title: '概览',
+            },
+          },
+          {
+            name: 'frontendSettingAdd',
+            path: '/setting/frontend/add',
+            component: () => import('@/views/setting/frontend/add/index.vue'),
+            meta: {
+              title: '新增',
+            },
+          },
+          {
+            name: 'frontendSettingEdit',
+            path: '/setting/frontend/edit',
+            component: () => import('@/views/setting/frontend/edit/index.vue'),
+            meta: {
+              title: '编辑',
+              hidden: true,
+            },
+          },
+        ],
       },
       {
         name: 'themeSetting',

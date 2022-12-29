@@ -142,7 +142,7 @@ export default defineComponent({
                   size: 'small',
                   onClick: () => {
                     router.push({
-                      name: 'updateArticle',
+                      name: 'editArticle',
                       query: { id: row.id },
                     });
                   },
