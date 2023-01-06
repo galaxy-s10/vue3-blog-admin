@@ -69,3 +69,12 @@ pnpm build:prod
 最终构建的静态资源需要部署在服务器的/vue3-blog-admin/preview/目录。
 
 最终构建的静态资源需要部署在服务器的/vue3-blog-admin/prod/目录。
+
+# 服务器环境
+
+- 操作系统：CentOS Linux release 8.2.2004
+- nginx 版本：1.21.4
+- node 版本：14.19.0
+- redis 版本：5.0.3
+- mysql 版本：8.0.26
+- pm2 版本：5.1.2
