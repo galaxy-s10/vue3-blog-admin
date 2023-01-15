@@ -238,7 +238,6 @@ export default defineComponent({
     const hssUploadRef = ref<any[]>();
     const loading = ref(props.confirmLoading);
     const handleValueChange = (value: any, field: string) => {
-      console.log(value, field, 22222);
       emit('update:modelValue', { ...props.modelValue, [field]: value });
       emit('update:filed', field, value);
     };

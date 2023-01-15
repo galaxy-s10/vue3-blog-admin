@@ -122,7 +122,6 @@ export default defineComponent({
     const menuOptions = ref(
       handleRoutes([...defaultRoutes, ...appStore.routes]).sort(sortRoute)
     );
-    console.log(menuOptions.value);
     const handleUpdateValue = (key: string, item) => {
       path.value = key;
       if (!appStore.tabList[key]) {
