@@ -14,3 +14,7 @@ interface Window {
     default: any;
   };
 }
+
+declare global {
+  import utils from 'billd-utils';
+}

@@ -40,6 +40,7 @@
 
 <script lang="ts" setup>
 import { Language, SettingsOutline } from '@vicons/ionicons5';
+import { windowReload } from 'billd-utils';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -80,8 +81,7 @@ const handleSelect = (v) => {
     appStore.setRoutes([]);
     router.push('/login').then(
       () => {
-        console.log('ok');
-        window.location.reload();
+        windowReload();
       },
       (err) => {
         console.log(err);

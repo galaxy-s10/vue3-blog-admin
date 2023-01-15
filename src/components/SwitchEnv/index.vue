@@ -45,6 +45,7 @@
 </template>
 
 <script lang="ts">
+import { windowReload } from 'billd-utils';
 import { defineComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -94,7 +95,9 @@ export default defineComponent({
       window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
       modalVisiable.value = false;
       userStore.logout();
-      router.push('/login');
+      router.push('/login').then(() => {
+        windowReload();
+      });
     };
     const modalCancel = () => {
       modalVisiable.value = false;

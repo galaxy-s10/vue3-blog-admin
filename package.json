@@ -37,7 +37,7 @@
     "axios": "^0.26.0",
     "billd-html-webpack-plugin": "^0.0.15",
     "billd-scss": "^0.0.6",
-    "billd-utils": "^0.0.5",
+    "billd-utils": "^0.0.6",
     "core-js": "^3.17.2",
     "dayjs": "^1.11.0",
     "highlight.js": "^11.6.0",
