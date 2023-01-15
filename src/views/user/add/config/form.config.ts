@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { IUser } from '@/interface';
+import { FormTypeEnum, IUser } from '@/interface';
 
 export const formConfig: IForm<IUser> = {
   gridSpan: 16,
@@ -10,25 +10,25 @@ export const formConfig: IForm<IUser> = {
   formItems: [
     {
       field: 'username',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '用户名',
       placeholder: '请输入用户名',
     },
     {
       field: 'avatar',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '头像',
       placeholder: '请输入头像',
     },
     {
       field: 'desc',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '简介',
       placeholder: '请输入简介',
     },
     {
       field: 'status',
-      type: 'radio',
+      type: FormTypeEnum.radio,
       label: '状态',
       placeholder: '请选择状态',
       options: [
@@ -38,7 +38,7 @@ export const formConfig: IForm<IUser> = {
     },
     {
       field: 'email_users',
-      type: 'radio',
+      type: FormTypeEnum.radio,
       label: '邮箱绑定',
       placeholder: '邮箱绑定状态',
       options: [
@@ -48,7 +48,7 @@ export const formConfig: IForm<IUser> = {
     },
     {
       field: 'qq_users',
-      type: 'radio',
+      type: FormTypeEnum.radio,
       label: 'qq绑定',
       placeholder: 'qq绑定状态',
       options: [
@@ -58,7 +58,7 @@ export const formConfig: IForm<IUser> = {
     },
     {
       field: 'github_users',
-      type: 'radio',
+      type: FormTypeEnum.radio,
       label: 'github绑定',
       placeholder: 'github绑定状态',
       options: [

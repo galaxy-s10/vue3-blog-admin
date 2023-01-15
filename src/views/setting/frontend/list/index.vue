@@ -144,6 +144,9 @@ const handleSearch = (v) => {
     ...v,
     nowPage: 1,
     pageSize: params.value.pageSize,
+    rangTimeType: 'created_at',
+    rangTimeStart: v.rangTimeType[0],
+    rangTimeEnd: v.rangTimeType[1],
   };
   handlePageChange(1);
 };

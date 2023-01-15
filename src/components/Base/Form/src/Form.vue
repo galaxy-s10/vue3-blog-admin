@@ -25,7 +25,7 @@
             :rule="item.rule"
             :style="item.style"
           >
-            <template v-if="item.type === 'input'">
+            <template v-if="item.type === FormTypeEnum.input">
               <n-input
                 clearable
                 :value="modelValue[`${item.field}`]"
@@ -35,7 +35,7 @@
                 @update:value="handleValueChange($event, item.field)"
               />
             </template>
-            <template v-else-if="item.type === 'number'">
+            <template v-else-if="item.type === FormTypeEnum.number">
               <n-input-number
                 clearable
                 :value="modelValue[`${item.field}`]"
@@ -44,7 +44,7 @@
                 @update:value="handleValueChange($event, item.field)"
               />
             </template>
-            <template v-else-if="item.type === 'password'">
+            <template v-else-if="item.type === FormTypeEnum.password">
               <n-input
                 clearable
                 :value="modelValue[`${item.field}`]"
@@ -54,7 +54,7 @@
                 @update:value="handleValueChange($event, item.field)"
               />
             </template>
-            <template v-else-if="item.type === 'treeSelect'">
+            <template v-else-if="item.type === FormTypeEnum.treeSelect">
               <n-tree-select
                 multiple
                 cascade
@@ -68,7 +68,7 @@
                 @update:value="handleValueChange($event, item.field)"
               />
             </template>
-            <template v-else-if="item.type === 'select'">
+            <template v-else-if="item.type === FormTypeEnum.select">
               <n-select
                 :value="modelValue[`${item.field}`]"
                 :options="item.options"
@@ -78,7 +78,7 @@
                 @update:value="handleValueChange($event, item.field)"
               />
             </template>
-            <template v-else-if="item.type === 'radio'">
+            <template v-else-if="item.type === FormTypeEnum.radio">
               <n-radio-group
                 :value="modelValue[`${item.field}`]"
                 @update:value="handleValueChange($event, item.field)"
@@ -93,7 +93,7 @@
                 </n-radio>
               </n-radio-group>
             </template>
-            <template v-else-if="item.type === 'checkbox'">
+            <template v-else-if="item.type === FormTypeEnum.checkbox">
               <n-checkbox-group
                 :value="modelValue[`${item.field}`]"
                 @update:value="handleValueChange($event, item.field)"
@@ -107,7 +107,7 @@
                 </n-checkbox>
               </n-checkbox-group>
             </template>
-            <template v-else-if="item.type === 'switch'">
+            <template v-else-if="item.type === FormTypeEnum.switch">
               <n-switch
                 :value="modelValue[`${item.field}`]"
                 :checked-value="item.switchConfig?.checkedValue"
@@ -122,7 +122,7 @@
                 </template>
               </n-switch>
             </template>
-            <template v-else-if="item.type === 'upload'">
+            <template v-else-if="item.type === FormTypeEnum.upload">
               <UploadCpt
                 ref="hssUploadRef"
                 :field="item.field"
@@ -133,11 +133,20 @@
                 @update:value="handleValueChange($event, item.field)"
               ></UploadCpt>
             </template>
-            <template v-else-if="item.type === 'markdown'">
+            <template v-else-if="item.type === FormTypeEnum.markdown">
               <MarkdownEditor
                 :model-value="modelValue[`${item.field}`]"
                 @update:value="handleValueChange($event, item.field)"
               ></MarkdownEditor>
+            </template>
+            <template v-else-if="item.type === FormTypeEnum.datePicker">
+              <n-date-picker
+                :value="modelValue[`${item.field}`]"
+                type="datetimerange"
+                :shortcuts="rangeShortcuts"
+                clearable
+                @update:value="handleValueChange($event, item.field)"
+              ></n-date-picker>
             </template>
           </n-form-item-gi>
         </template>
@@ -174,6 +183,7 @@ import { fetchDeleteQiniuDataByQiniuKey } from '@/api/qiniuData';
 import UploadCpt from '@/components/Base/Upload';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import { QINIU_CDN_URL } from '@/constant';
+import { FormTypeEnum } from '@/interface';
 
 export default defineComponent({
   components: {
@@ -228,6 +238,7 @@ export default defineComponent({
     const hssUploadRef = ref<any[]>();
     const loading = ref(props.confirmLoading);
     const handleValueChange = (value: any, field: string) => {
+      console.log(value, field, 22222);
       emit('update:modelValue', { ...props.modelValue, [field]: value });
       emit('update:filed', field, value);
     };
@@ -322,6 +333,33 @@ export default defineComponent({
       handleReset,
       handleConfirm,
       handleValueChange,
+      FormTypeEnum,
+      rangeShortcuts: {
+        近1小时: () => {
+          const cur = new Date().getTime();
+          return [cur - 1 * 60 * 60 * 1000, cur];
+        },
+        近2小时: () => {
+          const cur = new Date().getTime();
+          return [cur - 2 * 60 * 60 * 1000, cur];
+        },
+        近4小时: () => {
+          const cur = new Date().getTime();
+          return [cur - 4 * 60 * 60 * 1000, cur];
+        },
+        近6小时: () => {
+          const cur = new Date().getTime();
+          return [cur - 6 * 60 * 60 * 1000, cur];
+        },
+        近12小时: () => {
+          const cur = new Date().getTime();
+          return [cur - 12 * 60 * 60 * 1000, cur];
+        },
+        近24小时: () => {
+          const cur = new Date().getTime();
+          return [cur - 24 * 60 * 60 * 1000, cur];
+        },
+      },
     };
   },
 });

@@ -1,6 +1,6 @@
 import { fetchTreeAuth } from '@/api/auth';
 import { IForm } from '@/components/Base/Form';
-import { IRole } from '@/interface';
+import { FormTypeEnum, IRole } from '@/interface';
 
 export const formConfig = async (): Promise<IForm<IRole>> => {
   const [treeAuth]: any = await Promise.all([fetchTreeAuth()]);
@@ -14,7 +14,7 @@ export const formConfig = async (): Promise<IForm<IRole>> => {
     formItems: [
       {
         field: 'role_auths',
-        type: 'treeSelect',
+        type: FormTypeEnum.treeSelect,
         label: '权限',
         treeSelectConfig: {
           label: 'auth_name',

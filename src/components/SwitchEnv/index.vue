@@ -37,8 +37,9 @@
         type="info"
         size="tiny"
         @click="showModal"
-        >切换环境</n-button
       >
+        切换环境
+      </n-button>
     </div>
   </div>
 </template>
@@ -89,6 +90,7 @@ export default defineComponent({
     }
     const modalConfirm = () => {
       appStore.setEnv(currEnv.value);
+      cache.setStorageExp('env', currEnv.value, 24);
       window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
       modalVisiable.value = false;
       userStore.logout();
@@ -111,7 +113,8 @@ export default defineComponent({
     if (hasEnv) {
       appStore.setEnv(hasEnv);
     } else {
-      cache.setStorageExp('env', currEnv.value, 24);
+      appStore.setEnv('prod');
+      cache.setStorageExp('env', 'prod', 24);
     }
 
     const showModal = () => {

@@ -17,7 +17,7 @@ const app = createApp(App);
 registerDirectives(app);
 app.use(store);
 app.use(router);
-app.use(naive);
+// app.use(naive);
 
 const message = createApp(Message);
 const messageEle = document.createElement('div');

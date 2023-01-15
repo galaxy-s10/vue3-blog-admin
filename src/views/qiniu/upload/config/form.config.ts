@@ -1,6 +1,6 @@
 import { IForm } from '@/components/Base/Form';
 import { QINIU_PREFIX } from '@/constant';
-import { IQiniuData } from '@/interface';
+import { FormTypeEnum, IQiniuData } from '@/interface';
 
 export const formConfig: IForm<IQiniuData> = {
   gridSpan: 16,
@@ -11,7 +11,7 @@ export const formConfig: IForm<IQiniuData> = {
   formItems: [
     // {
     //   field: 'prefix',
-    //   type: 'select',
+    //   type: FormTypeEnum.select,
     //   options: Object.keys(QINIU_PREFIX).map((v) => {
     //     return { label: v, value: QINIU_PREFIX[v] };
     //   }),
@@ -21,7 +21,7 @@ export const formConfig: IForm<IQiniuData> = {
     // },
     {
       field: 'qiniu_fsize',
-      type: 'upload',
+      type: FormTypeEnum.upload,
       label: 'qiniu_fsize',
       // placeholder: '请选择文件',
       uploadConfig: {
@@ -32,7 +32,7 @@ export const formConfig: IForm<IQiniuData> = {
     },
     // {
     //   field: 'bucket',
-    //   type: 'upload',
+    //   type: FormTypeEnum.upload,
     //   label: 'bucket',
     //   placeholder: 'bucket',
     //   uploadConfig: {

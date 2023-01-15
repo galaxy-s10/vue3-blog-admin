@@ -68,7 +68,6 @@ const options = ref([
 ]);
 
 const handleSelect = (v) => {
-  console.log(111);
   if (v === '1') {
     window.open(BLOG_CLIENT_URL);
   } else if (v === '2') {

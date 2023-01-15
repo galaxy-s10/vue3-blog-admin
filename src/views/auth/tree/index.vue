@@ -125,13 +125,13 @@ import {
   fetchBatchAddChildAuths,
 } from '@/api/auth';
 import HModal from '@/components/Base/Modal';
-import { IAuth, modalTypeEnum } from '@/interface';
+import { FormTypeEnum, IAuth, modalTypeEnum } from '@/interface';
 import { deepCloneByJson } from '@/utils';
 
 const rules = {
   p_id: {
     // required: true,
-    type: 'number',
+    type: FormTypeEnum.number,
     message: '请选择父级权限',
     trigger: ['input'],
   },
@@ -152,7 +152,7 @@ const rules = {
   },
   type: {
     message: '请选择权限类型',
-    type: 'number',
+    type: FormTypeEnum.number,
     trigger: ['input', 'blur'],
   },
   priority: {

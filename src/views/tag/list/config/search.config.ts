@@ -2,7 +2,7 @@ import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
-import { ISearch, ITag } from '@/interface';
+import { FormTypeEnum, ISearch, ITag } from '@/interface';
 
 export const searchFormConfig: IForm<ISearch<ITag>> = {
   gridSpan: 8,
@@ -13,15 +13,21 @@ export const searchFormConfig: IForm<ISearch<ITag>> = {
   formItems: [
     {
       field: 'id',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'id',
       placeholder: '请输入id',
     },
     {
       field: 'keyWord',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '关键字',
       placeholder: '标签名',
+    },
+    {
+      field: 'rangTimeType',
+      type: FormTypeEnum.datePicker,
+      label: '时间范围',
+      placeholder: '请选择时间范围',
     },
     ...useOrder(columnsConfig),
   ],

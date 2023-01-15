@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { IFrontend, formTypeEnum } from '@/interface';
+import { IFrontend, FormTypeEnum } from '@/interface';
 
 export const formConfig: IForm<IFrontend> = {
   gridSpan: 16,
@@ -10,8 +10,8 @@ export const formConfig: IForm<IFrontend> = {
   formItems: [
     {
       field: 'type',
-      type: 'select',
-      options: Object.keys(formTypeEnum).map((v) => {
+      type: FormTypeEnum.select,
+      options: Object.keys(FormTypeEnum).map((v) => {
         return {
           label: v,
           value: v,
@@ -23,14 +23,14 @@ export const formConfig: IForm<IFrontend> = {
     },
     {
       field: 'key',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'key',
       placeholder: '请输入key',
       rule: { required: true, trigger: 'blur' },
     },
     {
       field: 'value',
-      type: 'markdown',
+      type: FormTypeEnum.markdown,
       label: 'value',
       placeholder: '请输入value',
       gridSpan: 24,
@@ -39,7 +39,7 @@ export const formConfig: IForm<IFrontend> = {
 
     {
       field: 'desc',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'desc',
       placeholder: '请输入desc',
       rule: [{ required: true, trigger: 'blur' }],

@@ -1,11 +1,11 @@
 import type { FormItemRule } from 'naive-ui';
 import type { StyleValue } from 'vue';
 
-import { IFormType } from '@/interface';
+import { FormTypeEnum } from '@/interface';
 
 export interface IFormItem<T> {
   field: T extends String ? string : keyof T;
-  type: IFormType;
+  type: FormTypeEnum;
   label: string;
   gridSpan?: number;
   labelWidth?: number;

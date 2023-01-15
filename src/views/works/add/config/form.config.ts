@@ -1,6 +1,6 @@
 import { IForm } from '@/components/Base/Form';
 import { QINIU_PREFIX } from '@/constant';
-import { IWorks } from '@/interface';
+import { FormTypeEnum, IWorks } from '@/interface';
 
 export const formConfig: IForm<IWorks> = {
   gridSpan: 16,
@@ -11,21 +11,21 @@ export const formConfig: IForm<IWorks> = {
   formItems: [
     {
       field: 'name',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '名称',
       placeholder: '请输入名称',
       rule: { required: true },
     },
     {
       field: 'desc',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '简介',
       placeholder: '请输入简介',
       rule: { required: true },
     },
     {
       field: 'bg_url',
-      type: 'upload',
+      type: FormTypeEnum.upload,
       label: '背景图',
       uploadConfig: {
         max: 1,
@@ -35,20 +35,20 @@ export const formConfig: IForm<IWorks> = {
     },
     {
       field: 'url',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '线上地址',
       placeholder: '请输入线上地址',
       rule: { required: true },
     },
     {
       field: 'priority',
-      type: 'number',
+      type: FormTypeEnum.number,
       label: '权重',
       placeholder: '请输入权重',
     },
     {
       field: 'status',
-      type: 'switch',
+      type: FormTypeEnum.switch,
       label: '状态',
       switchConfig: {
         checkedValue: 1,

@@ -125,13 +125,13 @@ import {
   fetchBatchAddChildRoles,
 } from '@/api/role';
 import HModal from '@/components/Base/Modal';
-import { IRole, modalTypeEnum } from '@/interface';
+import { FormTypeEnum, IRole, modalTypeEnum } from '@/interface';
 import { deepCloneByJson } from '@/utils';
 
 const rules = {
   p_id: {
     // required: true,
-    type: 'number',
+    type: FormTypeEnum.number,
     message: '请选择父级角色',
     trigger: ['input'],
   },
@@ -152,7 +152,7 @@ const rules = {
   },
   type: {
     message: '请选择角色类型',
-    type: 'number',
+    type: FormTypeEnum.number,
     trigger: ['input', 'blur'],
   },
   priority: {

@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { IQiniuData } from '@/interface';
+import { FormTypeEnum, IQiniuData } from '@/interface';
 
 export const formConfig: IForm<IQiniuData> = {
   gridSpan: 16,
@@ -10,7 +10,7 @@ export const formConfig: IForm<IQiniuData> = {
   formItems: [
     {
       field: 'qiniu_key',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '文件名',
       placeholder: '请输入文件名',
     },

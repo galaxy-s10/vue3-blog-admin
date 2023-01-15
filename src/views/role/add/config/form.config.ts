@@ -1,6 +1,6 @@
 import { fetchAllList } from '@/api/role';
 import { IForm } from '@/components/Base/Form';
-import { IRole } from '@/interface';
+import { FormTypeEnum, IRole } from '@/interface';
 
 export const formConfig = async (): Promise<IForm<IRole>> => {
   const [allRole]: any = await Promise.all([fetchAllList()]);
@@ -14,7 +14,7 @@ export const formConfig = async (): Promise<IForm<IRole>> => {
     formItems: [
       {
         field: 'p_id',
-        type: 'select',
+        type: FormTypeEnum.select,
         options: allRole.data.rows.map((v) => {
           return {
             ...v,
@@ -27,21 +27,21 @@ export const formConfig = async (): Promise<IForm<IRole>> => {
       },
       {
         field: 'role_name',
-        type: 'input',
+        type: FormTypeEnum.input,
         label: '角色名称',
         placeholder: '请输入角色名称',
         rule: { required: true, trigger: 'blur' },
       },
       {
         field: 'role_value',
-        type: 'input',
+        type: FormTypeEnum.input,
         label: '角色标识',
         placeholder: '请输入角色标识',
         rule: { required: true, trigger: 'blur' },
       },
       {
         field: 'type',
-        type: 'radio',
+        type: FormTypeEnum.radio,
         label: '角色类型',
         placeholder: '请选择角色类型',
         options: [
@@ -51,7 +51,7 @@ export const formConfig = async (): Promise<IForm<IRole>> => {
       },
       {
         field: 'priority',
-        type: 'number',
+        type: FormTypeEnum.number,
         label: '角色权重',
         placeholder: '请输入角色权重',
       },

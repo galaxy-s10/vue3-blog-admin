@@ -2,7 +2,7 @@ import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
-import { ISearch, IStar } from '@/interface';
+import { FormTypeEnum, ISearch, IStar } from '@/interface';
 
 export const searchFormConfig: IForm<ISearch<IStar>> = {
   gridSpan: 8,
@@ -13,7 +13,7 @@ export const searchFormConfig: IForm<ISearch<IStar>> = {
   formItems: [
     {
       field: 'id',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'id',
       placeholder: '请输入id',
     },

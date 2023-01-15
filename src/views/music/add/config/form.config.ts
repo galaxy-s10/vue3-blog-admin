@@ -1,6 +1,6 @@
 import { IForm } from '@/components/Base/Form';
 import { QINIU_PREFIX } from '@/constant';
-import { IMusic } from '@/interface';
+import { FormTypeEnum, IMusic } from '@/interface';
 
 export const formConfig: IForm<IMusic> = {
   gridSpan: 16,
@@ -11,13 +11,13 @@ export const formConfig: IForm<IMusic> = {
   formItems: [
     {
       field: 'name',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '歌名',
       placeholder: '请输入歌名',
     },
     {
       field: 'cover_pic',
-      type: 'upload',
+      type: FormTypeEnum.upload,
       label: '封面图',
       uploadConfig: {
         max: 1,
@@ -27,14 +27,14 @@ export const formConfig: IForm<IMusic> = {
     },
     {
       field: 'author',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '作者',
       placeholder: '请输入作者',
       rule: [{ required: true, trigger: 'blur' }],
     },
     {
       field: 'audio_url',
-      type: 'upload',
+      type: FormTypeEnum.upload,
       label: '音频资源',
       uploadConfig: {
         max: 1,
@@ -44,7 +44,7 @@ export const formConfig: IForm<IMusic> = {
     },
     {
       field: 'status',
-      type: 'switch',
+      type: FormTypeEnum.switch,
       label: '状态',
       switchConfig: {
         checkedValue: 1,

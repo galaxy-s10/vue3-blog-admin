@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { ILink } from '@/interface';
+import { FormTypeEnum, ILink } from '@/interface';
 
 export const formConfig: IForm<ILink> = {
   gridSpan: 16,
@@ -10,41 +10,41 @@ export const formConfig: IForm<ILink> = {
   formItems: [
     {
       field: 'email',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '邮箱',
       placeholder: '请输入邮箱',
     },
     {
       field: 'name',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '友链名称',
       placeholder: '请输入友链名称',
       rule: { required: true, trigger: 'blur' },
     },
     {
       field: 'avatar',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '友链头像',
       placeholder: '请输入友链头像',
       rule: [{ required: true, trigger: 'blur' }],
     },
     {
       field: 'desc',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '友链简介',
       placeholder: '请输入友链简介',
       rule: [{ required: true, trigger: 'blur' }],
     },
     {
       field: 'url',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '友链地址',
       placeholder: '请输入友链地址',
       rule: [{ required: true, trigger: 'blur' }],
     },
     {
       field: 'status',
-      type: 'switch',
+      type: FormTypeEnum.switch,
       label: '状态',
       switchConfig: {
         checkedValue: 1,

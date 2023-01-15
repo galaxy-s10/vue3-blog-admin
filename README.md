@@ -1,6 +1,6 @@
 # 简介
 
-> 基于 Vue3 + Vue-router + Webpack5 + NaiveUI + Pinia
+基于 Vue3 + Vue-router + Webpack5 + NaiveUI + Pinia 搭建的博客后台
 
 # 预览
 

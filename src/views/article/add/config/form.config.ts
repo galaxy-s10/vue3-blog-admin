@@ -1,7 +1,7 @@
 import { fetchTagList } from '@/api/tag';
 import { fetchTypeList } from '@/api/type';
 import { IForm } from '@/components/Base/Form';
-import { IArticle } from '@/interface';
+import { FormTypeEnum, IArticle } from '@/interface';
 
 export const formConfig = async (): Promise<IForm<IArticle>> => {
   const [tagList, typeList] = await Promise.all([
@@ -17,20 +17,20 @@ export const formConfig = async (): Promise<IForm<IArticle>> => {
     formItems: [
       {
         field: 'title',
-        type: 'input',
+        type: FormTypeEnum.input,
         label: '标题',
         placeholder: '请输入标题',
         rule: { required: true, trigger: 'blur' },
       },
       {
         field: 'desc',
-        type: 'input',
+        type: FormTypeEnum.input,
         label: '简介',
         placeholder: '请输入简介',
       },
       {
         field: 'types',
-        type: 'checkbox',
+        type: FormTypeEnum.checkbox,
         label: '分类',
         placeholder: '请选择分类',
         options: typeList.data.rows.map((v) => ({
@@ -40,14 +40,14 @@ export const formConfig = async (): Promise<IForm<IArticle>> => {
       },
       {
         field: 'tags',
-        type: 'checkbox',
+        type: FormTypeEnum.checkbox,
         label: '标签',
         placeholder: '请选择标签',
         options: tagList.data.rows.map((v) => ({ label: v.name, value: v.id })),
       },
       {
         field: 'status',
-        type: 'switch',
+        type: FormTypeEnum.switch,
         label: '审核开关',
         switchConfig: {
           checkedValue: 1,
@@ -58,7 +58,7 @@ export const formConfig = async (): Promise<IForm<IArticle>> => {
       },
       {
         field: 'is_comment',
-        type: 'switch',
+        type: FormTypeEnum.switch,
         label: '评论开关',
         switchConfig: {
           checkedValue: 1,
@@ -69,7 +69,7 @@ export const formConfig = async (): Promise<IForm<IArticle>> => {
       },
       {
         field: 'head_img',
-        type: 'upload',
+        type: FormTypeEnum.upload,
         uploadConfig: {
           max: 1,
         },
@@ -77,13 +77,13 @@ export const formConfig = async (): Promise<IForm<IArticle>> => {
       },
       {
         field: 'priority',
-        type: 'number',
+        type: FormTypeEnum.number,
         label: '权重',
         placeholder: '请输入权重',
       },
       {
         field: 'content',
-        type: 'markdown',
+        type: FormTypeEnum.markdown,
         label: '内容',
         placeholder: '请输入内容',
         gridSpan: 24,

@@ -50,7 +50,7 @@ module.exports = {
     'no-param-reassign': 2, // 禁止对 function 的参数进行重新赋值
     'no-nested-ternary': 2, // 禁止嵌套三元
     'no-plusplus': 2, // 禁用一元操作符 ++ 和 --
-    'no-unused-vars': 2, // 禁止出现未使用过的变量
+    'no-unused-vars': 0, // 禁止出现未使用过的变量
     'vars-on-top': 2, // 要求所有的 var 声明出现在它们所在的作用域顶部
     'prefer-const': 2, // 要求使用 const 声明那些声明后不再被修改的变量
     'prefer-template': 2, // 要求使用模板字符串代替字符串连接
@@ -159,6 +159,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 0, // 不允许调用any类型的值
     '@typescript-eslint/no-var-requires': 0, // 即不允许var foo = require('foo');。但是允许import foo = require('foo');
     '@typescript-eslint/restrict-plus-operands': 0, // 要求加法的两个操作数是相同的类型并且是bigint, number, 或string。即const a = '1';console.log(a + 1);会报错
+    '@typescript-eslint/no-unused-vars': 2,
 
     // vueeslint插件
     'vue/multi-word-component-names': 0,

@@ -56,14 +56,18 @@ service.interceptors.response.use(
       return;
     }
     const userStore = useUserStore();
-    const statusCode = error.response.status;
+    const statusCode = error.response.status as number;
     const errorResponseData = error.response.data;
     const whiteList = ['400', '401', '403', '404'];
     if (error.response) {
       if (!whiteList.includes(`${statusCode}`)) {
         if (statusCode === 500) {
-          window.$message.error(errorResponseData.message);
-          return Promise.reject(errorResponseData.message);
+          let msg = errorResponseData.message;
+          if (errorResponseData?.errorCode) {
+            msg = errorResponseData.error;
+          }
+          window.$message.error(msg);
+          return Promise.reject(msg);
         }
         window.$message.error(error.message);
         return Promise.reject(error);

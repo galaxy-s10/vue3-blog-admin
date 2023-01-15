@@ -3,7 +3,7 @@ import { columnsConfig } from './columns.config';
 import { IForm } from '@/components/Base/Form';
 import { QINIU_PREFIX } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
-import { IQiniuData, ISearch } from '@/interface';
+import { IQiniuData, ISearch, FormTypeEnum } from '@/interface';
 
 export const searchFormConfig: IForm<ISearch<IQiniuData>> = {
   gridSpan: 8,
@@ -14,7 +14,7 @@ export const searchFormConfig: IForm<ISearch<IQiniuData>> = {
   formItems: [
     {
       field: 'prefix',
-      type: 'select',
+      type: FormTypeEnum.select,
       label: '前缀',
       placeholder: '请选择前缀',
       options: Object.keys(QINIU_PREFIX).map((v) => {
@@ -24,15 +24,21 @@ export const searchFormConfig: IForm<ISearch<IQiniuData>> = {
     },
     {
       field: 'id',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'id',
       placeholder: '请输入id',
     },
     {
       field: 'keyWord',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '关键字',
       placeholder: '输入qiniu_key',
+    },
+    {
+      field: 'rangTimeType',
+      type: FormTypeEnum.datePicker,
+      label: '时间范围',
+      placeholder: '请选择时间范围',
     },
     ...useOrder(columnsConfig),
   ],

@@ -1,9 +1,5 @@
 import sparkMD5 from 'spark-md5';
 
-export const getFileExt = (name: string) => {
-  return name.split('.')[1];
-};
-
 // 根据文件内容获取hash，同一个文件不管重命名还是改文件名后缀，hash都一样
 export const getHash = (file: File) => {
   return new Promise<{
@@ -50,16 +46,6 @@ export const splitFile = (file: File) => {
     index += 1;
   }
   return chunkList;
-};
-
-/**
- * @description 返回正则匹配到的结果（数组或null）
- * @param {string} str
- * @param {RegExp} reg
- * @return {*}
- */
-export const getStrMatch = (str: string, reg: RegExp) => {
-  return str.match(reg);
 };
 
 /** 使用json进行深克隆 */
@@ -113,34 +99,6 @@ export const deepCloneExclude = (obj, key) => {
     return newobj;
   }
   return clone(obj, undefined);
-};
-
-/** 模拟ajax请求 */
-export const mockAjax = (time = 1000) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        code: 0,
-        data: {
-          name: '张三',
-          age: 18,
-        },
-      });
-    }, time);
-  });
-};
-
-/**
- * 删除对象中值为: null, undefined, NaN, ''的属性
- */
-export const deleteUselessObjectKey = <T>(obj: T): T => {
-  // @ts-ignore
-  Object.keys(obj).forEach((key) => {
-    if ([null, undefined, NaN, ''].includes(obj[key])) {
-      delete obj[key];
-    }
-  });
-  return obj;
 };
 
 /**

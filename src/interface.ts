@@ -4,6 +4,9 @@ export interface ISearchBase {
   pageSize?: string;
   orderBy?: string;
   orderName?: string;
+  rangTimeType?: 'created_at' | 'updated_at' | 'deleted_at';
+  rangTimeStart?: string;
+  rangTimeEnd?: string;
 }
 
 export type ISearch<T, Origin = ISearchBase> = T & Origin;
@@ -32,36 +35,26 @@ export interface IStar {
   comment?: any;
 }
 
-export enum formTypeEnum {
+export enum FormTypeEnum {
   'input' = 'input',
   'password' = 'password',
-  'number' = 'select',
+  'number' = 'number',
+  'select' = 'select',
   'radio' = 'radio',
   'checkbox' = 'checkbox',
   'markdown' = 'markdown',
   'switch' = 'switch',
   'upload' = 'upload',
   'treeSelect' = 'treeSelect',
+  'datePicker' = 'datePicker',
 }
-
-export type IFormType =
-  | 'input'
-  | 'password'
-  | 'number'
-  | 'select'
-  | 'radio'
-  | 'checkbox'
-  | 'markdown'
-  | 'switch'
-  | 'upload'
-  | 'treeSelect';
 
 export interface IFrontend {
   id?: number;
   key?: string;
   value?: string;
   desc?: string;
-  type?: IFormType;
+  type?: FormTypeEnum;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;

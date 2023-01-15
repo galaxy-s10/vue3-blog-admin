@@ -3,7 +3,7 @@ import { columnsConfig } from './columns.config';
 import { IForm } from '@/components/Base/Form';
 import { MONIT_TYPE_MAP } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
-import { IMonit, ISearch } from '@/interface';
+import { FormTypeEnum, IMonit, ISearch } from '@/interface';
 
 export const searchFormConfig: IForm<ISearch<IMonit>> = {
   gridSpan: 8,
@@ -14,13 +14,13 @@ export const searchFormConfig: IForm<ISearch<IMonit>> = {
   formItems: [
     {
       field: 'id',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'id',
       placeholder: '请输入id',
     },
     {
       field: 'type',
-      type: 'select',
+      type: FormTypeEnum.select,
       label: 'type',
       placeholder: '选择类型',
       options: Object.keys(MONIT_TYPE_MAP).map((v) => {
@@ -29,9 +29,15 @@ export const searchFormConfig: IForm<ISearch<IMonit>> = {
     },
     {
       field: 'keyWord',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: '关键字',
       placeholder: '请输入关键字',
+    },
+    {
+      field: 'rangTimeType',
+      type: FormTypeEnum.datePicker,
+      label: '时间范围',
+      placeholder: '请选择时间范围',
     },
     ...useOrder(columnsConfig),
   ],

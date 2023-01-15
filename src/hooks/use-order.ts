@@ -1,10 +1,10 @@
 import { IFormItem } from '@/components/Base/Form';
-import { ISearchBase } from '@/interface';
+import { FormTypeEnum, ISearchBase } from '@/interface';
 
 export const useOrder = (columnsConfig) => {
   const orderName: IFormItem<ISearchBase> = {
     field: 'orderName',
-    type: 'select',
+    type: FormTypeEnum.select,
     label: '排序字段',
     placeholder: '请选择排序字段',
     options: columnsConfig().map((v: any) => {
@@ -17,7 +17,7 @@ export const useOrder = (columnsConfig) => {
 
   const orderBy: IFormItem<ISearchBase> = {
     field: 'orderBy',
-    type: 'select',
+    type: FormTypeEnum.select,
     label: '排序规则',
     placeholder: '请选择排序规则',
     options: [

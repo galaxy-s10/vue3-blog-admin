@@ -1,6 +1,6 @@
 import { fetchAllList } from '@/api/auth';
 import { IForm } from '@/components/Base/Form';
-import { IAuth } from '@/interface';
+import { FormTypeEnum, IAuth } from '@/interface';
 
 export const formConfig = async (): Promise<IForm<IAuth>> => {
   const [allAuth]: any = await Promise.all([fetchAllList()]);
@@ -14,7 +14,7 @@ export const formConfig = async (): Promise<IForm<IAuth>> => {
     formItems: [
       {
         field: 'p_id',
-        type: 'select',
+        type: FormTypeEnum.select,
         options: allAuth.data.rows.map((v) => {
           return {
             ...v,
@@ -27,21 +27,21 @@ export const formConfig = async (): Promise<IForm<IAuth>> => {
       },
       {
         field: 'auth_name',
-        type: 'input',
+        type: FormTypeEnum.input,
         label: '权限名称',
         placeholder: '请输入权限名称',
         rule: { required: true, trigger: 'blur' },
       },
       {
         field: 'auth_value',
-        type: 'input',
+        type: FormTypeEnum.input,
         label: '权限标识',
         placeholder: '请输入权限标识',
         rule: { required: true, trigger: 'blur' },
       },
       {
         field: 'type',
-        type: 'radio',
+        type: FormTypeEnum.radio,
         label: '权限类型',
         placeholder: '请选择权限类型',
         options: [
@@ -51,7 +51,7 @@ export const formConfig = async (): Promise<IForm<IAuth>> => {
       },
       {
         field: 'priority',
-        type: 'number',
+        type: FormTypeEnum.number,
         label: '权限权重',
         placeholder: '请输入权限权重',
       },

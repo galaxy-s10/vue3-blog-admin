@@ -4,6 +4,8 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+import ComponentsPlugin from 'unplugin-vue-components/webpack';
 import { VueLoaderPlugin } from 'vue-loader';
 import { DefinePlugin, Configuration } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -136,7 +138,7 @@ const commonConfig = (isProduction) => {
     },
     resolve: {
       // 解析路径
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'], // 解析扩展名
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.mjs'], // 解析扩展名,加上.mjs是因为vant，https://github.com/youzan/vant/issues/10738
       alias: {
         '@': resolveApp('./src'), // 设置路径别名
         script: resolveApp('./script'), // 设置路径别名
@@ -308,6 +310,11 @@ const commonConfig = (isProduction) => {
       new FriendlyErrorsWebpackPlugin(),
       // 解析vue
       new VueLoaderPlugin(),
+      // eslint-disable-next-line
+      ComponentsPlugin({
+        // eslint-disable-next-line
+        resolvers: [NaiveUiResolver()],
+      }),
       // eslint
       eslintEnable &&
         new ESLintPlugin({
@@ -345,7 +352,7 @@ const commonConfig = (isProduction) => {
       }),
       // 注入项目信息
       new BilldHtmlWebpackPlugin({
-        webpack5: true,
+        env: 'webpack5',
       }),
       // 将已存在的单个文件或整个目录复制到构建目录。
       new CopyWebpackPlugin({

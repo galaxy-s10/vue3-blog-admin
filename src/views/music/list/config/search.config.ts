@@ -2,7 +2,7 @@ import { columnsConfig } from './columns.config';
 
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
-import { IMusic, ISearch } from '@/interface';
+import { FormTypeEnum, IMusic, ISearch } from '@/interface';
 
 export const searchFormConfig: IForm<ISearch<IMusic>> = {
   gridSpan: 8,
@@ -13,25 +13,31 @@ export const searchFormConfig: IForm<ISearch<IMusic>> = {
   formItems: [
     {
       field: 'id',
-      type: 'input',
+      type: FormTypeEnum.input,
       label: 'id',
       placeholder: '请输入id',
     },
     {
-      field: 'keyWord',
-      type: 'input',
-      label: '关键字',
-      placeholder: '音乐歌名/作者',
-    },
-    {
       field: 'status',
-      type: 'radio',
+      type: FormTypeEnum.radio,
       label: '状态',
       placeholder: '请选择状态',
       options: [
         { label: '已审核', value: 1 },
         { label: '未审核', value: 2 },
       ],
+    },
+    {
+      field: 'keyWord',
+      type: FormTypeEnum.input,
+      label: '关键字',
+      placeholder: '音乐歌名/作者',
+    },
+    {
+      field: 'rangTimeType',
+      type: FormTypeEnum.datePicker,
+      label: '时间范围',
+      placeholder: '请选择时间范围',
     },
     ...useOrder(columnsConfig),
   ],

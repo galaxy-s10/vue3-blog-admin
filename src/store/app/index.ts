@@ -7,7 +7,7 @@ export const useAppStore = defineStore('app', {
     return {
       loading: false,
       collapsed: false,
-      env: 'prod',
+      env: cache.getStorageExp('env'),
       path: null,
       routes: [],
       tabList: {},
@@ -22,7 +22,6 @@ export const useAppStore = defineStore('app', {
     },
     setEnv(res) {
       this.env = res;
-      cache.setStorageExp('env', res, 24);
     },
     setPath(res) {
       this.path = res;
