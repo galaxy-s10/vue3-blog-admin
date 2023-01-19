@@ -147,8 +147,9 @@ module.exports = {
     'import/no-named-as-default': 0, // https://github.com/import-js/eslint-plugin-import/blob/v2.26.0/docs/rules/no-named-as-default.md
 
     // @typescript-eslint插件
-    '@typescript-eslint/no-floating-promises': 2, // 要求适当处理类似 Promise 的语句。即将await或者return Promise，或者对promise进行.then或者.catch
     '@typescript-eslint/restrict-template-expressions': 2, // 强制模板文字表达式为string类型。即const a = {};console.log(`${a}`);会报错
+    '@typescript-eslint/no-unused-vars': 2,
+    '@typescript-eslint/no-floating-promises': 1, // 要求适当处理类似 Promise 的语句。即将await或者return Promise，或者对promise进行.then或者.catch
     '@typescript-eslint/no-explicit-any': 0, // 不允许定义any类型。即let a: any;会报错
     '@typescript-eslint/no-non-null-assertion': 0, // 禁止使用非空断言（后缀运算符!）。即const el = document.querySelector('.app');console.log(el!.tagName);会报错
     '@typescript-eslint/ban-ts-comment': 0, // 禁止使用@ts-<directive>注释
@@ -159,7 +160,6 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 0, // 不允许调用any类型的值
     '@typescript-eslint/no-var-requires': 0, // 即不允许var foo = require('foo');。但是允许import foo = require('foo');
     '@typescript-eslint/restrict-plus-operands': 0, // 要求加法的两个操作数是相同的类型并且是bigint, number, 或string。即const a = '1';console.log(a + 1);会报错
-    '@typescript-eslint/no-unused-vars': 2,
 
     // vueeslint插件
     'vue/multi-word-component-names': 0,

@@ -4,7 +4,7 @@ import App from './App.vue';
 import registerDirectives from './directives';
 
 import Message from '@/components/Message/index.vue';
-import { naive } from '@/components/registerNaive';
+// import { naive } from '@/components/registerNaive';
 import router from '@/router/index';
 import store from '@/store/index';
 

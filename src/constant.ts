@@ -22,6 +22,14 @@ export const QINIU_PREFIX = {
   'nuxt-blog-client/': 'nuxt-blog-client/',
 };
 
+// 全局的localStorage的key
+export const lsKey = {};
+
+// 全局的cookie的key
+export const cookieKey = {
+  loginEnv: 'loginEnv',
+};
+
 export const MONIT_TYPE_MAP = {
   1: '服务器内存日志',
   2: '服务器内存达到阈值',
