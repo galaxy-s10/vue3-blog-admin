@@ -23,7 +23,7 @@
       <n-radio-group v-model:value="currEnv">
         <n-space>
           <n-radio
-            v-for="env in envList"
+            v-for="env in envlist2"
             :key="env.value"
             :value="env.value"
           >
@@ -50,6 +50,7 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HModal from '@/components/Base/Modal';
+import { envList } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
@@ -63,32 +64,25 @@ const isDev = process.env.NODE_ENV === 'development';
 const modalVisiable = ref(false);
 const modalTitle = ref('切换环境');
 
-let envList = [
-  {
-    value: 'beta',
-    label: '测试环境',
-  },
-  {
-    value: 'prod',
-    label: '正式环境',
-  },
-  {
-    value: 'development',
-    label: '本地开发环境',
-  },
-];
+const envlist2 = envList.filter((v) => {
+  if (currEnv.value === 'prod' && v.value === 'prod') {
+    return true;
+  }
+  return true;
+});
+
 watch(
   () => appStore.env,
   () => {
     currEnv.value = appStore.env;
   }
 );
-if (!isDev) {
-  envList = envList.filter((v) => v.value !== 'development');
-}
 
-if (currEnv.value !== 'prod') {
+if (['development', 'beta'].includes(currEnv.value)) {
+  // eslint-disable-next-line
   import('vconsole').then((vConsole) => {
+    console.log('new vConsole');
+    // eslint-disable-next-line
     new vConsole.default();
   });
 }
@@ -99,9 +93,8 @@ const modalConfirm = () => {
   window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
   modalVisiable.value = false;
   userStore.logout();
-  router.push('/login').then(() => {
-    windowReload();
-  });
+  // eslint-disable-next-line
+  router.push('/login').then(() => windowReload());
 };
 
 const modalCancel = () => {

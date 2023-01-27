@@ -23,12 +23,27 @@ export const QINIU_PREFIX = {
 };
 
 // 全局的localStorage的key
-export const lsKey = {};
+export const LOCALSTORAGE_KEY = {};
 
 // 全局的cookie的key
-export const cookieKey = {
+export const COOKIE_KEY = {
   loginEnv: 'loginEnv',
 };
+
+export const envList = [
+  {
+    value: 'beta',
+    label: '测试环境',
+  },
+  {
+    value: 'prod',
+    label: '正式环境',
+  },
+  {
+    value: 'development',
+    label: '本地开发环境',
+  },
+];
 
 export const MONIT_TYPE_MAP = {
   1: '服务器内存日志',

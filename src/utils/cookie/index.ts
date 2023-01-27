@@ -1,17 +1,17 @@
 import cookies from 'js-cookie';
 
-import { cookieKey } from '@/constant';
+import { COOKIE_KEY } from '@/constant';
 
 export const getLoginEnv = () => {
-  return cookies.get(cookieKey.loginEnv);
+  return cookies.get(COOKIE_KEY.loginEnv);
 };
 
 export const setLoginEnv = (val) => {
-  cookies.set(cookieKey.loginEnv, val, {
+  cookies.set(COOKIE_KEY.loginEnv, val, {
     domain: process.env.NODE_ENV === 'development' ? undefined : '.hsslive.cn',
   });
 };
 
 export const clearLoginEnv = () => {
-  cookies.remove(cookieKey.loginEnv);
+  cookies.remove(COOKIE_KEY.loginEnv);
 };
