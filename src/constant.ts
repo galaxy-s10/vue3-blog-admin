@@ -11,6 +11,7 @@ export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 export const QINIU_CDN_URL = 'https://resource.hsslive.cn/';
 
 export const BLOG_CLIENT_URL = 'https://www.hsslive.cn';
+export const BLOG_ADMIN_URL = 'https://admin.hsslive.cn';
 
 export const POSTMESSAGE_TYPE = ['qq_login', 'github_login', 'login_expired'];
 
@@ -23,7 +24,9 @@ export const QINIU_PREFIX = {
 };
 
 // 全局的localStorage的key
-export const LOCALSTORAGE_KEY = {};
+export const LOCALSTORAGE_KEY = {
+  currEnv: 'currEnv',
+};
 
 // 全局的cookie的key
 export const COOKIE_KEY = {

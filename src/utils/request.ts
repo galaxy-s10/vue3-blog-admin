@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
+import { getCurrEnv } from './localStorage';
+
 import router from '@/router';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
@@ -20,7 +22,7 @@ export interface IResponse<T> {
 // 请求拦截
 service.interceptors.request.use(
   (cfg) => {
-    switch (cache.getStorageExp('env')) {
+    switch (getCurrEnv()) {
       case 'prod':
         cfg.baseURL = 'https://api.hsslive.cn/prodapi/admin/';
         break;

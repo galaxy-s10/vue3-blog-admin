@@ -53,20 +53,20 @@ import HModal from '@/components/Base/Modal';
 import { envList } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import cache from '@/utils/cache';
+import { setCurrEnv, getCurrEnv } from '@/utils/localStorage';
 
 const router = useRouter();
 const userStore = useUserStore();
 const appStore = useAppStore();
 const currEnv = ref(appStore.env);
-const hasEnv = cache.getStorageExp('env');
+const hasEnv = getCurrEnv();
 const isDev = process.env.NODE_ENV === 'development';
 const modalVisiable = ref(false);
 const modalTitle = ref('切换环境');
 
 const envlist2 = envList.filter((v) => {
-  if (currEnv.value === 'prod' && v.value === 'prod') {
-    return true;
+  if (!isDev && v.value === 'development') {
+    return false;
   }
   return true;
 });
@@ -75,21 +75,31 @@ watch(
   () => appStore.env,
   () => {
     currEnv.value = appStore.env;
+    handleVConsole();
   }
 );
 
-if (['development', 'beta'].includes(currEnv.value)) {
-  // eslint-disable-next-line
-  import('vconsole').then((vConsole) => {
-    console.log('new vConsole');
+function handleVConsole() {
+  if (['development', 'beta'].includes(currEnv.value)) {
     // eslint-disable-next-line
-    new vConsole.default();
-  });
+    import('vconsole').then((vConsole) => {
+      // eslint-disable-next-line
+      new vConsole.default();
+    });
+  }
 }
+
+if (hasEnv) {
+  appStore.setEnv(hasEnv);
+} else {
+  appStore.setEnv('prod');
+  setCurrEnv('prod');
+}
+handleVConsole();
 
 const modalConfirm = () => {
   appStore.setEnv(currEnv.value);
-  cache.setStorageExp('env', currEnv.value, 24);
+  setCurrEnv(currEnv.value);
   window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
   modalVisiable.value = false;
   userStore.logout();
@@ -111,13 +121,6 @@ const parseEnv = (env) => {
       return '本地开发环境';
   }
 };
-
-if (hasEnv) {
-  appStore.setEnv(hasEnv);
-} else {
-  appStore.setEnv('prod');
-  cache.setStorageExp('env', 'prod', 24);
-}
 
 const showModal = () => {
   modalVisiable.value = !modalVisiable.value;

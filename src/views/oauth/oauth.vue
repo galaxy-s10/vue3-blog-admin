@@ -3,16 +3,16 @@
 </template>
 
 <script lang="ts" setup>
-import { hrefToTarget, isMobile } from 'billd-utils';
+import { hrefToTarget } from 'billd-utils';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { BLOG_CLIENT_URL } from '@/constant';
+import { BLOG_CLIENT_URL, BLOG_ADMIN_URL } from '@/constant';
+import { handleLogin } from '@/hooks/use-login';
 import { getLoginEnv, clearLoginEnv } from '@/utils/cookie';
 
 const route = useRoute();
 
-const loginEnvList = ['qqMobile', 'qqPc', 'githubMobile', 'githubPc'];
 const currentOauth = ref('非法');
 
 onMounted(() => {
@@ -26,56 +26,60 @@ onMounted(() => {
       currentOauth.value = 'Github';
       break;
   }
+
+  // 在第三方登录的时候，都会往cookie里记录环境，因此这里直接读取
   const loginEnv = getLoginEnv();
-  // 如果是移动端的qq登录，重定向后拿不到state，额外处理（判断缓存）
-  if (isMobile() && loginEnv === 'qqMobile') {
-    clearLoginEnv();
-    hrefToTarget(
-      `${BLOG_CLIENT_URL}?code=${authCode as string}&loginEnv=${
-        loginEnv as string
-      }`
-    );
-  } else if (typeof state === 'string') {
-    // 否则的话都要校验state
-    try {
-      // 解密state
-      const origin = window.atob(state);
-      // 判断state是否合法
-      const data = JSON.parse(origin);
-      const { code, loginEnv } = data;
-      if (
-        Object.keys(data).length !== 2 ||
-        code !== 200 ||
-        !loginEnvList.includes(loginEnv)
-      ) {
-        console.error('解密state成功，但非法');
-        return;
+  if (!loginEnv) return;
+  try {
+    const { isMobile, isAdmin, env } = JSON.parse(loginEnv);
+    if (isMobile && env === 'qq') {
+      // 移动端的前后台qq登录，重定向后地址栏(也就是https://admin.hsslive.cn/oauth/)只有code，没有state（应该是qq互联的问题。）额外处理
+      // 因为登录前记录了登录环境信息，因此这里直接将登录信息和code都带到地址栏
+      if (isAdmin) {
+        handleLogin({ data: { type: 'qq_login', data: authCode } });
+      } else {
+        hrefToTarget(
+          `${isAdmin ? BLOG_ADMIN_URL : BLOG_CLIENT_URL}?code=${
+            authCode as string
+          }&loginEnv=${loginEnv as string}`
+        );
       }
-      if (['qqMobile', 'githubMobile'].includes(loginEnv)) {
+
+      return;
+    }
+
+    if (state !== window.btoa(window.decodeURIComponent(loginEnv))) {
+      console.error('非法回调');
+      return;
+    }
+
+    if (isMobile) {
+      if (isAdmin) {
+        if (env === 'qq') {
+          handleLogin({ data: { type: 'qq_login', data: authCode } });
+        } else if (env === 'github') {
+          handleLogin({ data: { type: 'github_login', data: authCode } });
+        }
+      } else {
         hrefToTarget(
           `${BLOG_CLIENT_URL}?code=${authCode as string}&loginEnv=${
             loginEnv as string
           }`
         );
-      } else if (['qqPc', 'githubPc'].includes(loginEnv)) {
-        if (
-          window.opener &&
-          ['qq_login', 'github_login'].includes(method as string)
-        ) {
-          window.opener.postMessage(
-            {
-              type: method,
-              data: authCode,
-            },
-            '*'
-          );
-          window.close();
-        }
       }
-    } catch (error) {
-      console.error('解密state失败');
-      console.error(error);
+    } else {
+      window.opener.postMessage(
+        {
+          type: method,
+          data: authCode,
+        },
+        '*'
+      );
+      window.close();
     }
+  } catch (error) {
+    console.log(error);
+    clearLoginEnv();
   }
 });
 </script>

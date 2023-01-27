@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 
-import cache from '@/utils/cache';
+import { getCurrEnv } from '@/utils/localStorage';
 
 export const useAppStore = defineStore('app', {
   state: () => {
     return {
       loading: false,
       collapsed: false,
-      env: cache.getStorageExp('env'),
+      env: getCurrEnv(),
       path: null,
       routes: [],
       tabList: {},
