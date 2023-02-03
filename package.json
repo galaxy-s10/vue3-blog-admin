@@ -35,7 +35,7 @@
     "@kangc/v-md-editor": "^2.3.15",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^0.26.0",
-    "billd-html-webpack-plugin": "^0.0.15",
+    "billd-html-webpack-plugin": "^0.0.24",
     "billd-scss": "^0.0.6",
     "billd-utils": "^0.0.6",
     "core-js": "^3.17.2",
@@ -75,6 +75,7 @@
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.0.0",
     "cz-conventional-changelog": "^3.3.0",
+    "esbuild-loader": "^2.21.0",
     "eslint": "^8.23.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-vue": "^8.5.0",
@@ -109,6 +110,7 @@
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.2",
     "webpack-merge": "^5.7.3",
-    "webpackbar": "^5.0.0-3"
+    "webpackbar": "^5.0.0-3",
+    "windicss-webpack-plugin": "^1.7.7"
   }
 }

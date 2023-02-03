@@ -36,7 +36,8 @@
     "script/**/*.ts",
     "./.eslintrc.js",
     "./babel.config.js",
-    "./postcss.config.js"
+    "./postcss.config.js",
+    "windi.config.ts"
   ],
   // ts-node的时候会读取这里的配置
   "ts-node": {

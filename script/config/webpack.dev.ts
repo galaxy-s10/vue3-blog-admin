@@ -1,16 +1,11 @@
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import portfinder from 'portfinder';
 import { Configuration } from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
 import WebpackBar from 'webpackbar';
 
 import TerminalPrintPlugin from '../TerminalPrintPlugin';
-import { webpackBarEnable } from '../constant';
+import { webpackBarEnable, outputStaticUrl } from '../constant';
 import { chalkINFO } from '../utils/chalkTip';
-import { outputStaticUrl } from '../utils/outputStaticUrl';
 import { resolveApp } from '../utils/path';
-
-const localIPv4 = WebpackDevServer.internalIPSync('v4');
 
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
 
@@ -28,6 +23,18 @@ export default new Promise((resolve) => {
         // https://github.com/webpack/webpack/blob/main/lib/config/defaults.js
         mode: 'development',
         stats: 'none',
+        cache: {
+          type: 'filesystem',
+          allowCollectingMemory: true, // 它在生产模式中默认为false，并且在开发模式下默认为true。https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
+          buildDependencies: {
+            // 建议cache.buildDependencies.config: [__filename]在您的 webpack 配置中设置以获取最新配置和所有依赖项。
+            config: [
+              __filename,
+              resolveApp('.browserslistrc'), // 防止修改了.browserslistrc文件后，但没修改webpack配置文件，webpack不读取最新更新后的.browserslistrc
+              resolveApp('babel.config.js'), // 防止修改了babel.config.js文件后，但没修改webpack配置文件，webpack不读取最新更新后的babel.config.js
+            ],
+          },
+        },
         // https://webpack.docschina.org/configuration/devtool/
         devtool: 'eval', // eval，具有最高性能的开发构建的推荐选择。
         // 这个infrastructureLogging设置参考了vuecli5，如果不设置，webpack-dev-server会打印一些信息
@@ -102,41 +109,8 @@ export default new Promise((resolve) => {
         plugins: [
           // 构建进度条
           webpackBarEnable && new WebpackBar(),
-          new ForkTsCheckerWebpackPlugin({
-            // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
-            typescript: {
-              extensions: {
-                vue: {
-                  enabled: true,
-                  compiler: resolveApp(
-                    './node_modules/vue/compiler-sfc/index.js'
-                  ),
-                },
-              },
-              diagnosticOptions: {
-                semantic: true,
-                syntactic: false,
-              },
-            },
-            /**
-             * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
-             * 但是控制台还是会打印错误。
-             */
-            devServer: false, // 7.x版本：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
-            // logger: {
-            //   devServer: false, // fork-ts-checker-webpack-plugin6.x版本
-            // },
-            /**
-             * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
-             * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
-             */
-            async: true,
-          }),
           // 打印控制调试地址
-          new TerminalPrintPlugin({
-            local: `http://localhost:${port}${outputStaticUrl(false)}`,
-            network: `http://${localIPv4!}:${port}${outputStaticUrl(false)}`,
-          }),
+          new TerminalPrintPlugin(),
         ].filter(Boolean),
         optimization: {
           /**

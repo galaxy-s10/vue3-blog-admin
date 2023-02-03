@@ -12,6 +12,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import { Configuration } from 'webpack';
 import WebpackBar from 'webpackbar';
 
+import { gzipEnable } from '../constant';
 import { chalkINFO } from '../utils/chalkTip';
 
 console.log(chalkINFO(`读取: ${__filename.slice(__dirname.length + 1)}`));
@@ -135,12 +136,13 @@ export default new Promise((resolve) => {
       // 构建进度条
       new WebpackBar(),
       // http压缩
-      new CompressionPlugin({
-        test: /\.(css|js)$/i,
-        threshold: 10 * 1024, // 大于10k的文件才进行压缩
-        minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
-        algorithm: 'gzip', // 压缩算法
-      }),
+      gzipEnable &&
+        new CompressionPlugin({
+          test: /\.(css|js)$/i,
+          threshold: 10 * 1024, // 大于10k的文件才进行压缩
+          minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
+          algorithm: 'gzip', // 压缩算法
+        }),
       // 注入script或link
       new HtmlWebpackTagsPlugin({
         append: false,

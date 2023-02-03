@@ -185,71 +185,59 @@ const commonConfig = (isProduction) => {
           ],
         },
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           use: [
             // 'thread-loader',
-            // {
-            //   loader: 'babel-loader',
-            //   options: {
-            //     cacheDirectory: true,
-            //     cacheCompression: false, // https://github.com/facebook/create-react-app/issues/6846
-            //   },
-            // },
             {
-              loader: 'esbuild-loader',
+              loader: 'babel-loader',
               options: {
-                target: 'esnext', // Syntax to compile to (see options below for possible values)
+                cacheDirectory: true,
+                cacheCompression: false, // https://github.com/facebook/create-react-app/issues/6846
               },
             },
           ],
         },
         {
-          test: /\.jsx$/,
+          test: /\.ts$/,
           exclude: /node_modules/,
           use: [
-            // 'thread-loader',
-            // {
-            //   loader: 'babel-loader',
-            //   options: {
-            //     cacheDirectory: true,
-            //     cacheCompression: false, // https://github.com/facebook/create-react-app/issues/6846
-            //   },
-            // },
             {
-              loader: 'esbuild-loader',
+              loader: 'babel-loader',
               options: {
-                loader: 'jsx', // Remove this if you're not using JSX
-                target: 'esnext', // Syntax to compile to (see options below for possible values)
+                cacheDirectory: true,
+                cacheCompression: false, // https://github.com/facebook/create-react-app/issues/6846
+              },
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                appendTsSuffixTo: ['\\.vue$'],
+                // If you want to speed up compilation significantly you can set this flag. https://www.npmjs.com/package/ts-loader#transpileonly
+                transpileOnly: true,
+                happyPackMode: false,
               },
             },
           ],
         },
         {
-          test: /\.tsx?$/,
+          test: /\.tsx$/,
           exclude: /node_modules/,
           use: [
-            // {
-            //   loader: 'babel-loader',
-            //   options: {
-            //     cacheDirectory: true,
-            //     cacheCompression: false, // https://github.com/facebook/create-react-app/issues/6846
-            //   },
-            // },
-            // {
-            //   loader: 'ts-loader',
-            //   options: {
-            //     appendTsxSuffixTo: ['\\.vue$'],
-            //     // If you want to speed up compilation significantly you can set this flag. https://www.npmjs.com/package/ts-loader#transpileonly
-            //     transpileOnly: true,
-            //     happyPackMode: false,
-            //   },
-            // },
             {
-              loader: 'esbuild-loader',
+              loader: 'babel-loader',
               options: {
-                loader: 'tsx', // Remove this if you're not using JSX
-                target: 'esnext', // Syntax to compile to (see options below for possible values)
+                cacheDirectory: true,
+                cacheCompression: false, // https://github.com/facebook/create-react-app/issues/6846
+              },
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                appendTsxSuffixTo: ['\\.vue$'],
+                // If you want to speed up compilation significantly you can set this flag. https://www.npmjs.com/package/ts-loader#transpileonly
+                transpileOnly: true,
+                happyPackMode: false,
               },
             },
           ],
