@@ -194,7 +194,7 @@ export default new Promise((resolve) => {
         include: 'asyncChunks',
       }),
       // new webpack.optimize.ModuleConcatenationPlugin(), //作用域提升。！！！在使用cdn时，axios有问题，先不用！
-    ],
+    ].filter(Boolean),
   };
   resolve(prodConfig);
 });
