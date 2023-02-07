@@ -124,7 +124,7 @@ const commonConfig = (isProduction) => {
        */
       chunkFilename: 'js/[name]-[contenthash:6]-bundle-chunk.js',
       path: resolveApp(`./${outputDir}`),
-      assetModuleFilename: 'assets/[name]-[contenthash:6].[ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
+      assetModuleFilename: 'assets/[name]-[contenthash:6][ext]', // 静态资源生成目录（不管什么资源默认都统一生成到这里,除非单独设置了generator）
       /**
        * webpack-dev-server 也会默认从 publicPath 为基准，使用它来决定在哪个目录下启用服务，来访问 webpack 输出的文件。
        * 所以不管开发模式还是生产模式，output.publicPath都会生效，
