@@ -60,13 +60,14 @@ function putFile() {
 if (path.resolve(__dirname) === giteeDir) {
   // eslint-disable-next-line
   console.log('当前在gitee文件目录，直接退出！');
+} else {
+  execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
+  findFile(dir);
+  putFile();
+  execSync(`pnpm i`, { cwd: giteeDir });
+  execSync(`git add .`, { cwd: giteeDir });
+  execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
+    cwd: giteeDir,
+  });
+  execSync(`git push`, { cwd: giteeDir });
 }
-execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
-findFile(dir);
-putFile();
-execSync(`pnpm i`, { cwd: giteeDir });
-execSync(`git add .`, { cwd: giteeDir });
-execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
-  cwd: giteeDir,
-});
-execSync(`git push`, { cwd: giteeDir });

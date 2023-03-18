@@ -1,8 +1,8 @@
-import { columnsConfig } from './columns.config';
-
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
 import { FormTypeEnum, IMusic, ISearch } from '@/interface';
+
+import { columnsConfig } from './columns.config';
 
 export const searchFormConfig: IForm<ISearch<IMusic>> = {
   gridSpan: 8,

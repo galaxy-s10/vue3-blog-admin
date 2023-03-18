@@ -72,6 +72,9 @@ export const ROUTE_SORT = {
   blacklist: 200,
   visitor: 200,
 
+  comment: 199,
+  star: 199,
+
   setting: 180,
   schedule: 180,
 
@@ -80,8 +83,8 @@ export const ROUTE_SORT = {
   role: 110,
   thirdUser: 100,
 
-  comment: 80,
-  star: 80,
+  // comment: 80,
+  // star: 80,
 
   qiniu: 70,
 

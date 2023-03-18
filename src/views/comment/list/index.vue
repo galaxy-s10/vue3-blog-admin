@@ -22,16 +22,16 @@
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
+import { fetchCommentList, fetchUpdateComment } from '@/api/comment';
+import HSearch from '@/components/Base/Search';
+import { usePage } from '@/hooks/use-page';
+import { IComment, IList } from '@/interface';
+
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
 
 import type { DataTableColumns } from 'naive-ui';
 import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
-
-import { fetchCommentList, fetchUpdateComment } from '@/api/comment';
-import HSearch from '@/components/Base/Search';
-import { usePage } from '@/hooks/use-page';
-import { IComment, IList } from '@/interface';
 
 interface ISearch extends IComment, IList {}
 

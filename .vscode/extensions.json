@@ -1,3 +1,4 @@
 {
-  "recommendations": ["vue.volar"]
+  "recommendations": ["vue.volar"],
+  "unwantedRecommendations": ["octref.vetur"]
 }

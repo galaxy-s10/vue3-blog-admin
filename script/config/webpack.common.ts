@@ -23,6 +23,7 @@ import {
 } from '../constant';
 import { chalkINFO, chalkWARN } from '../utils/chalkTip';
 import { resolveApp } from '../utils/path';
+
 import devConfig from './webpack.dev';
 import prodConfig from './webpack.prod';
 

@@ -21,15 +21,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 
-import { columnsConfig } from './config/columns.config';
-import { searchFormConfig } from './config/search.config';
-
-import type { DataTableColumns } from 'naive-ui';
-
 import { fetchEmailUserList } from '@/api/emailUser';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IEmailUser, IList } from '@/interface';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
+
+import type { DataTableColumns } from 'naive-ui';
 
 interface ISearch extends IEmailUser, IList {}
 

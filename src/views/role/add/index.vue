@@ -14,10 +14,10 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref } from 'vue';
 
-import { formConfig } from './config/form.config';
-
 import { fetchCreateRole } from '@/api/role';
 import HForm from '@/components/Base/Form';
+
+import { formConfig } from './config/form.config';
 
 export default defineComponent({
   components: { HForm },

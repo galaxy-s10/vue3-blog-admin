@@ -12,9 +12,9 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import AddArticle from '../add';
-
 import { fetchArticleDetail } from '@/api/article';
+
+import AddArticle from '../add';
 
 export default defineComponent({
   components: { AddArticle },

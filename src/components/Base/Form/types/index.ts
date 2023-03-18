@@ -1,7 +1,7 @@
+import { FormTypeEnum } from '@/interface';
+
 import type { FormItemRule } from 'naive-ui';
 import type { StyleValue } from 'vue';
-
-import { FormTypeEnum } from '@/interface';
 
 export interface IFormItem<T> {
   field: T extends String ? string : keyof T;

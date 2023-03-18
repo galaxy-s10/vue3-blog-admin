@@ -1,11 +1,11 @@
 import { FootstepsOutline } from '@vicons/ionicons5';
 
+import { ROUTE_SORT } from '@/constant';
+import Layout from '@/layout/index.vue';
+
 import { renderIcon } from '../utils';
 
 import type { RouteRecordRaw } from 'vue-router';
-
-import { ROUTE_SORT } from '@/constant';
-import Layout from '@/layout/index.vue';
 
 // 异步路由
 export const routes: RouteRecordRaw[] = [

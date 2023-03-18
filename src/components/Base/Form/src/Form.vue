@@ -175,15 +175,15 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 
-import { IFormItem } from '../types';
-
-import type { PropType } from 'vue';
-
 import { fetchDeleteQiniuDataByQiniuKey } from '@/api/qiniuData';
 import UploadCpt from '@/components/Base/Upload';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import { QINIU_CDN_URL } from '@/constant';
 import { FormTypeEnum } from '@/interface';
+
+import { IFormItem } from '../types';
+
+import type { PropType } from 'vue';
 
 export default defineComponent({
   components: {

@@ -1,6 +1,8 @@
-import type { DataTableColumns } from 'naive-ui';
+import { h } from 'vue';
 
 import { ITag } from '@/interface';
+
+import type { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<ITag> => {
   return [
@@ -21,6 +23,28 @@ export const columnsConfig = (): DataTableColumns<ITag> => {
       key: 'color',
       align: 'center',
       width: 100,
+    },
+    {
+      title: '预览',
+      key: '',
+      align: 'center',
+      width: 100,
+      render(row) {
+        return h(
+          'span',
+          {
+            style: {
+              display: 'inline-block',
+              padding: '5px 10px',
+              background: row.color,
+              fontSize: '12px',
+              color: 'white',
+              borderRadius: '10px',
+            },
+          },
+          row.name
+        );
+      },
     },
     {
       title: '创建时间',

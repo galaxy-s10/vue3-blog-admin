@@ -1,9 +1,9 @@
-import { columnsConfig } from './columns.config';
-
 import { IForm } from '@/components/Base/Form';
 import { MONIT_TYPE_MAP } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
 import { FormTypeEnum, IMonit, ISearch } from '@/interface';
+
+import { columnsConfig } from './columns.config';
 
 export const searchFormConfig: IForm<ISearch<IMonit>> = {
   gridSpan: 8,

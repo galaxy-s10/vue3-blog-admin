@@ -39,6 +39,8 @@
     "./postcss.config.js",
     "windi.config.ts"
   ],
+  // https://github.com/microsoft/TypeScript/wiki/Performance
+  "exclude": ["**/node_modules"],
   // ts-node的时候会读取这里的配置
   "ts-node": {
     "compilerOptions": {

@@ -92,23 +92,34 @@ module.exports = {
     'no-useless-escape': 2, // 禁止不必要的转义字符
 
     // eslint-plugin-import插件
+    // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md
     'import/order': [
       'error',
       {
         groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['sibling', 'parent'],
-          'index',
-          'object',
-          'type',
+          'builtin', // 如:import fs from 'fs';
+          'external', // 如:import _ from 'lodash';
+          'internal', // 如:import foo from 'src/foo';
+          'parent', // 如:import foo from '../foo';
+          'sibling', // 如:import bar from './bar';
+          // ['sibling', 'parent'],
+          // ['parent', 'sibling'],
+          'index', // 如:import main from './';
+          'object', // 如:import log = console.log;
+          'type', // 如:import type { Foo } from 'foo';
         ],
-        'newlines-between': 'always', // 强制或禁止导入组之间的新行：
-        // 根据导入路径按字母顺序对每个组内的顺序进行排序
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'internal',
+          },
+        ],
+        'newlines-between': 'always', // 强制或禁止导入组之间的新行
+        // 根据导入路径以字母顺序排列每个组中的顺序
         alphabetize: {
-          order: 'asc' /* 按升序排序。选项：['ignore', 'asc', 'desc'] */,
-          caseInsensitive: false /* 忽略大小写。选项：[true, false] */,
+          order: 'asc', // 使用asc按升序排序，使用desc按降序排序（默认值：ignore）。
+          caseInsensitive: false, // 使用true忽略大小写，而false考虑大小写（默认值：false）。
+          orderImportKind: 'asc', // 使用asc以升序对各种导入类型进行排序，例如以type或typeof为前缀的导入，具有相同的导入路径。使用desc按降序排序（默认值：忽略）
         },
       },
     ],

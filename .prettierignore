@@ -1,4 +1,5 @@
-/dist/
-/public/
-/node_modules/
+dist
+public
+node_modules
+.eslintcache
 pnpm-lock.yaml

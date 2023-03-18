@@ -34,18 +34,19 @@
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref } from 'vue';
 
-import AddType from '../add/index.vue';
-import { columnsConfig } from './config/columns.config';
-import { searchFormConfig } from './config/search.config';
-
-import type { DataTableColumns } from 'naive-ui';
-import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
-
 import { fetchTypeList, fetchUpdateType, fetchDeleteType } from '@/api/type';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IType, IList } from '@/interface';
+
+import AddType from '../add/index.vue';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
+
+import type { DataTableColumns } from 'naive-ui';
+import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 interface ISearch extends IType, IList {}
 

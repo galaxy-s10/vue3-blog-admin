@@ -1,4 +1,4 @@
-import { getLCP, getFID, getCLS, getFCP, getTTFB } from 'web-vitals';
+import { getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
 
 getCLS(console.log);
 getFID(console.log);

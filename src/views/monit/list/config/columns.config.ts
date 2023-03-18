@@ -1,9 +1,9 @@
 import { h } from 'vue';
 
-import type { DataTableColumns } from 'naive-ui';
-
 import { MONIT_TYPE_MAP } from '@/constant';
 import { IMonit } from '@/interface';
+
+import type { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<IMonit> => {
   return [

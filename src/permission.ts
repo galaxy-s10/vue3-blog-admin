@@ -1,8 +1,8 @@
-import router from './router';
-
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
+
+import router from './router';
 
 // 白名单，不需要登录即可跳转，如登录页
 const whiteList = ['/login', '/oauth/qq_login', '/oauth/github_login'];

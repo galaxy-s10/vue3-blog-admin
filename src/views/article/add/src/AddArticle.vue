@@ -16,13 +16,13 @@
 import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { formConfig } from '../config/form.config';
-
-import type { UploadFileInfo } from 'naive-ui';
-
 import { fetchUpdateArticle, fetchCreateArticle } from '@/api/article';
 import HForm from '@/components/Base/Form';
 import { IArticle } from '@/interface';
+
+import { formConfig } from '../config/form.config';
+
+import type { UploadFileInfo } from 'naive-ui';
 
 export default defineComponent({
   components: { HForm },

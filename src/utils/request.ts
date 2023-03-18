@@ -1,10 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { getCurrEnv } from './localStorage';
-
 import router from '@/router';
 import { useUserStore } from '@/store/user';
 import cache from '@/utils/cache';
+
+import { getCurrEnv } from './localStorage';
 
 const config: AxiosRequestConfig = {
   // baseURL: '/api/', // 本地开发：/api/，线上正式服：/prodapi/，线上测试服：/betaapi/

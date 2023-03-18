@@ -57,11 +57,6 @@ import { TableColumn } from 'naive-ui/lib/data-table/src/interface';
 import { h, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { columnsConfig } from './config/columns.config';
-import { searchFormConfig } from './config/search.config';
-
-import type { DataTableColumns } from 'naive-ui';
-
 import {
   fetchArticleList,
   fetchUpdateArticle,
@@ -74,6 +69,11 @@ import HSearch from '@/components/Base/Search';
 import { QINIU_CDN_URL } from '@/constant';
 import { usePage } from '@/hooks/use-page';
 import { IArticle, IList } from '@/interface';
+
+import { columnsConfig } from './config/columns.config';
+import { searchFormConfig } from './config/search.config';
+
+import type { DataTableColumns } from 'naive-ui';
 
 interface ISearch extends IArticle, IList {}
 

@@ -74,9 +74,9 @@
 import { LockClosedOutline } from '@vicons/ionicons5';
 import { defineComponent, ref } from 'vue';
 
-import type { FormItemRule, FormRules } from 'naive-ui';
-
 import { fetchUpdatePwd } from '@/api/user';
+
+import type { FormItemRule, FormRules } from 'naive-ui';
 
 export default defineComponent({
   components: { LockClosedOutline },

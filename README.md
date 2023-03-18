@@ -10,6 +10,12 @@
 
 ## 安装依赖
 
+更新 billd 依赖：
+
+```sh
+pnpm i billd-utils@latest billd-scss@latest billd-html-webpack-plugin@latest billd-deploy@latest
+```
+
 ```bash
 pnpm install
 ```

@@ -4,47 +4,42 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.6](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.5...v0.0.6) (2022-09-03)
 
-
 ### Features
 
-* 1.优化webpack配置;2.优化文章模块 ([c888fb5](https://github.com/galaxy-s10/vue3-blog-admin/commit/c888fb535b719f721bcaea95f068021a4de8620e))
-* 测试七牛云 ([f8350ed](https://github.com/galaxy-s10/vue3-blog-admin/commit/f8350ed8a6c486133b7818f7ba6288d297f66b5f))
-* 添加七牛云模块50% ([4eb2276](https://github.com/galaxy-s10/vue3-blog-admin/commit/4eb2276065e9569a21bb1eaa8dbe4c8a3347b508))
-* 添加monit模块;优化体验 ([886c952](https://github.com/galaxy-s10/vue3-blog-admin/commit/886c9523347c3418cafa4e11b6e537c32cd771f1))
-* 完善七牛云 ([0d45c7f](https://github.com/galaxy-s10/vue3-blog-admin/commit/0d45c7f698ca16d4e4089f8a06b84b21ca8746ff))
-* 完善七牛云 ([f955a65](https://github.com/galaxy-s10/vue3-blog-admin/commit/f955a6510678389bb4e0f6fcd995e788fcbd2106))
-* 完善七牛云70% ([3fcf24d](https://github.com/galaxy-s10/vue3-blog-admin/commit/3fcf24d624812b08fd30ee193cd11fb70b9a6043))
-* 优化代码 ([322ac34](https://github.com/galaxy-s10/vue3-blog-admin/commit/322ac34bb10ceaa84918d6b56123b1548b190062))
-* 优化代码 ([a5f11f3](https://github.com/galaxy-s10/vue3-blog-admin/commit/a5f11f3d06b795583102ed018a50152bcabcaa2a))
-* 优化体验 ([920e263](https://github.com/galaxy-s10/vue3-blog-admin/commit/920e263e49dc2bd9ac96a2f7e9ffb975a377e3f7))
-
+- 1.优化 webpack 配置;2.优化文章模块 ([c888fb5](https://github.com/galaxy-s10/vue3-blog-admin/commit/c888fb535b719f721bcaea95f068021a4de8620e))
+- 测试七牛云 ([f8350ed](https://github.com/galaxy-s10/vue3-blog-admin/commit/f8350ed8a6c486133b7818f7ba6288d297f66b5f))
+- 添加七牛云模块 50% ([4eb2276](https://github.com/galaxy-s10/vue3-blog-admin/commit/4eb2276065e9569a21bb1eaa8dbe4c8a3347b508))
+- 添加 monit 模块;优化体验 ([886c952](https://github.com/galaxy-s10/vue3-blog-admin/commit/886c9523347c3418cafa4e11b6e537c32cd771f1))
+- 完善七牛云 ([0d45c7f](https://github.com/galaxy-s10/vue3-blog-admin/commit/0d45c7f698ca16d4e4089f8a06b84b21ca8746ff))
+- 完善七牛云 ([f955a65](https://github.com/galaxy-s10/vue3-blog-admin/commit/f955a6510678389bb4e0f6fcd995e788fcbd2106))
+- 完善七牛云 70% ([3fcf24d](https://github.com/galaxy-s10/vue3-blog-admin/commit/3fcf24d624812b08fd30ee193cd11fb70b9a6043))
+- 优化代码 ([322ac34](https://github.com/galaxy-s10/vue3-blog-admin/commit/322ac34bb10ceaa84918d6b56123b1548b190062))
+- 优化代码 ([a5f11f3](https://github.com/galaxy-s10/vue3-blog-admin/commit/a5f11f3d06b795583102ed018a50152bcabcaa2a))
+- 优化体验 ([920e263](https://github.com/galaxy-s10/vue3-blog-admin/commit/920e263e49dc2bd9ac96a2f7e9ffb975a377e3f7))
 
 ### Bug Fixes
 
-* 修复已知问题 ([3387f11](https://github.com/galaxy-s10/vue3-blog-admin/commit/3387f11400030fe56d19fe0e7330af9d9c23bf56))
-* 修改pkg ([e00f161](https://github.com/galaxy-s10/vue3-blog-admin/commit/e00f16111887b53671a48d8abfa5a2858231a06f))
-* 优化代码 ([897d34a](https://github.com/galaxy-s10/vue3-blog-admin/commit/897d34a686b944470927391c50e19b38366bf9e9))
-* 优化代码 ([9cd92da](https://github.com/galaxy-s10/vue3-blog-admin/commit/9cd92da3b5b52e60e8687ac347340388d42ff16b))
-* 优化wbepack配置 ([d5a7bd3](https://github.com/galaxy-s10/vue3-blog-admin/commit/d5a7bd3ccf4e651af4e69053db250a6697f5db6a))
-
+- 修复已知问题 ([3387f11](https://github.com/galaxy-s10/vue3-blog-admin/commit/3387f11400030fe56d19fe0e7330af9d9c23bf56))
+- 修改 pkg ([e00f161](https://github.com/galaxy-s10/vue3-blog-admin/commit/e00f16111887b53671a48d8abfa5a2858231a06f))
+- 优化代码 ([897d34a](https://github.com/galaxy-s10/vue3-blog-admin/commit/897d34a686b944470927391c50e19b38366bf9e9))
+- 优化代码 ([9cd92da](https://github.com/galaxy-s10/vue3-blog-admin/commit/9cd92da3b5b52e60e8687ac347340388d42ff16b))
+- 优化 wbepack 配置 ([d5a7bd3](https://github.com/galaxy-s10/vue3-blog-admin/commit/d5a7bd3ccf4e651af4e69053db250a6697f5db6a))
 
 ### Performance Improvements
 
-* 优化代码 ([f3da5c5](https://github.com/galaxy-s10/vue3-blog-admin/commit/f3da5c555bdc7940711712661ca56990156f3e82))
+- 优化代码 ([f3da5c5](https://github.com/galaxy-s10/vue3-blog-admin/commit/f3da5c555bdc7940711712661ca56990156f3e82))
 
 ### [0.0.5](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.4...v0.0.5) (2022-08-12)
 
-
 ### Features
 
-* 新增内存任务 ([053daf7](https://github.com/galaxy-s10/vue3-blog-admin/commit/053daf7cc9c44f1b28ace885581ccbaefb26ed01))
-* 修改env相关配置 ([e7c542e](https://github.com/galaxy-s10/vue3-blog-admin/commit/e7c542e91dfbe399c3bca1730b6d13efa9a84d67))
-
+- 新增内存任务 ([053daf7](https://github.com/galaxy-s10/vue3-blog-admin/commit/053daf7cc9c44f1b28ace885581ccbaefb26ed01))
+- 修改 env 相关配置 ([e7c542e](https://github.com/galaxy-s10/vue3-blog-admin/commit/e7c542e91dfbe399c3bca1730b6d13efa9a84d67))
 
 ### Bug Fixes
 
-* 修改cdn配置 ([2b39d0f](https://github.com/galaxy-s10/vue3-blog-admin/commit/2b39d0fa9af699f66071a21843ed47003cf83c8f))
-* 重置chagnelog ([d308412](https://github.com/galaxy-s10/vue3-blog-admin/commit/d30841236c9d017b36412bec49c8341756dcc7c0))
+- 修改 cdn 配置 ([2b39d0f](https://github.com/galaxy-s10/vue3-blog-admin/commit/2b39d0fa9af699f66071a21843ed47003cf83c8f))
+- 重置 chagnelog ([d308412](https://github.com/galaxy-s10/vue3-blog-admin/commit/d30841236c9d017b36412bec49c8341756dcc7c0))
 
 ## [0.0.4](https://github.com/galaxy-s10/vue3-blog-admin/compare/v0.0.3...v0.0.4) (2022-05-09)
 

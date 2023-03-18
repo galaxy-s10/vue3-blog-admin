@@ -53,15 +53,15 @@ import { NIcon } from 'naive-ui';
 import { defineComponent, h, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import HeaderCpt from './header/header.vue';
-import openTabCpt from './openTab/openTab.vue';
-
-import type { RouteRecordRaw } from 'vue-router';
-
 import PoweredByCpt from '@/components/PoweredBy/index.vue';
 import { defaultRoutes } from '@/router/index';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
+
+import HeaderCpt from './header/header.vue';
+import openTabCpt from './openTab/openTab.vue';
+
+import type { RouteRecordRaw } from 'vue-router';
 // import { deepCloneExclude } from '@/utils';
 
 export default defineComponent({

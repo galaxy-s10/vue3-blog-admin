@@ -1,9 +1,9 @@
-import { columnsConfig } from './columns.config';
-
 import { IForm } from '@/components/Base/Form';
 import { QINIU_PREFIX } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
 import { IQiniuData, ISearch, FormTypeEnum } from '@/interface';
+
+import { columnsConfig } from './columns.config';
 
 export const searchFormConfig: IForm<ISearch<IQiniuData>> = {
   gridSpan: 8,

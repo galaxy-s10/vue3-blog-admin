@@ -111,8 +111,6 @@
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { h, defineComponent, onMounted, ref, watch } from 'vue';
 
-import type { DataTableColumns, FormInst } from 'naive-ui';
-
 import {
   fetchTreeAuth,
   fetchGetChildAuth,
@@ -127,6 +125,8 @@ import {
 import HModal from '@/components/Base/Modal';
 import { FormTypeEnum, IAuth, modalTypeEnum } from '@/interface';
 import { deepCloneByJson } from '@/utils';
+
+import type { DataTableColumns, FormInst } from 'naive-ui';
 
 const rules = {
   p_id: {

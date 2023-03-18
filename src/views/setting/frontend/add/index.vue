@@ -15,10 +15,10 @@
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { formConfig } from './config/form.config';
-
 import { fetchCreateFrontend, fetchUpdateFrontend } from '@/api/frontend';
 import HForm from '@/components/Base/Form';
+
+import { formConfig } from './config/form.config';
 
 export default defineComponent({
   components: { HForm },

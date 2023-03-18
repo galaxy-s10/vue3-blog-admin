@@ -144,8 +144,6 @@
 import { MailOutline } from '@vicons/ionicons5';
 import { defineComponent, ref, toRef } from 'vue';
 
-import ResetPwdCpt from './cpt/ResetPwd/index.vue';
-
 import {
   fetchSendBindEmailCode,
   fetchCancelSendBindEmailCode,
@@ -157,6 +155,8 @@ import { fetchCancelBindQQ } from '@/api/qqUser';
 import { fetchUserPwd } from '@/api/user';
 import { useGithubLogin, useQQLogin } from '@/hooks/use-login';
 import { useUserStore } from '@/store/user';
+
+import ResetPwdCpt from './cpt/ResetPwd/index.vue';
 
 export default defineComponent({
   components: { MailOutline, ResetPwdCpt },

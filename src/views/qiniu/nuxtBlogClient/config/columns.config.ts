@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { h } from 'vue';
 
-import type { DataTableColumns } from 'naive-ui';
-
 import { IQiniuData } from '@/interface';
 import { formatMemorySize } from '@/utils';
+
+import type { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<IQiniuData> => {
   return [

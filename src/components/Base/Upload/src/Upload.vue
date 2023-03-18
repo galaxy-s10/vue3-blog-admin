@@ -26,8 +26,6 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 
-import type { SelectOption, UploadFileInfo } from 'naive-ui';
-
 import {
   fetchUpload,
   fetchUploadChunk,
@@ -36,6 +34,8 @@ import {
 } from '@/api/qiniuData';
 import { QINIU_PREFIX } from '@/constant';
 import { getHash, splitFile } from '@/utils';
+
+import type { SelectOption, UploadFileInfo } from 'naive-ui';
 
 export interface IQiniuKey {
   prefix: string;

@@ -14,11 +14,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 
-import { formConfig } from './config/form.config';
-
 import { fetchCreateMusic } from '@/api/music';
 import HForm from '@/components/Base/Form';
 import { IMusic } from '@/interface';
+
+import { formConfig } from './config/form.config';
 
 export default defineComponent({
   components: { HForm },

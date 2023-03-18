@@ -1,6 +1,6 @@
-import type { DataTableColumns } from 'naive-ui';
-
 import { IAuth } from '@/interface';
+
+import type { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<IAuth> => {
   return [

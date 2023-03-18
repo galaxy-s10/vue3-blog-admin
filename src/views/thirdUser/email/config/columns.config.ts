@@ -1,6 +1,6 @@
-import type { DataTableColumns } from 'naive-ui';
-
 import { IEmailUser } from '@/interface';
+
+import type { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<IEmailUser> => {
   return [

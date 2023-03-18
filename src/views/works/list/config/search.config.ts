@@ -1,8 +1,8 @@
-import { columnsConfig } from './columns.config';
-
 import { IForm } from '@/components/Base/Form';
 import { useOrder } from '@/hooks/use-order';
 import { FormTypeEnum, ISearch, IWorks } from '@/interface';
+
+import { columnsConfig } from './columns.config';
 
 export const searchFormConfig: IForm<ISearch<IWorks>> = {
   gridSpan: 8,
