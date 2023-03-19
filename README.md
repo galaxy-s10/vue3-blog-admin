@@ -12,7 +12,7 @@
 
 更新 billd 依赖：
 
-```sh
+```bash
 pnpm i billd-utils@latest billd-scss@latest billd-html-webpack-plugin@latest billd-deploy@latest
 ```
 

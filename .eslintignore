@@ -1,5 +1,6 @@
-dist
-public
 node_modules
-.eslintcache
 pnpm-lock.yaml
+dist
+components.d.ts
+.eslintcache
+.DS_Store
