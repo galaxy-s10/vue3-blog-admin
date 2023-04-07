@@ -6,7 +6,7 @@
       :loading="isLoading"
       @click="handleInvoke"
     >
-      重启pm2
+      重启所有pm2任务
     </n-button>
   </div>
 </template>

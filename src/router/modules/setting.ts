@@ -1,5 +1,6 @@
 import {
   BagHandleOutline,
+  CartOutline,
   ColorPaletteOutline,
   KeyOutline,
   SettingsOutline,
@@ -53,6 +54,42 @@ export const routes: RouteRecordRaw[] = [
             name: 'frontendSettingEdit',
             path: '/setting/frontend/edit',
             component: () => import('@/views/setting/frontend/edit/index.vue'),
+            meta: {
+              title: '编辑',
+              hidden: true,
+            },
+          },
+        ],
+      },
+      {
+        name: 'backendSetting',
+        path: '/setting/backend',
+        meta: {
+          title: '后台设置',
+          icon: renderIcon(CartOutline),
+          roles: [ROUTE_ROLES.SUPER_ADMIN],
+        },
+        children: [
+          {
+            name: 'backendSettingList',
+            path: '/setting/backend/list',
+            component: () => import('@/views/setting/backend/list/index.vue'),
+            meta: {
+              title: '概览',
+            },
+          },
+          {
+            name: 'backendSettingAdd',
+            path: '/setting/backend/add',
+            component: () => import('@/views/setting/backend/add/index.vue'),
+            meta: {
+              title: '新增',
+            },
+          },
+          {
+            name: 'backendSettingEdit',
+            path: '/setting/backend/edit',
+            component: () => import('@/views/setting/backend/edit/index.vue'),
             meta: {
               title: '编辑',
               hidden: true,

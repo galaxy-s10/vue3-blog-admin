@@ -1,9 +1,9 @@
 import {
+  ApertureOutline,
   BuildOutline,
   ServerOutline,
   TimeOutline,
   WarningOutline,
-  ApertureOutline,
 } from '@vicons/ionicons5';
 
 import { ROUTE_SORT } from '@/constant';
@@ -48,7 +48,7 @@ export const routes: RouteRecordRaw[] = [
         path: '/schedule/restartPm2',
         component: () => import('@/views/schedule/restartPm2/restartPm2.vue'),
         meta: {
-          title: '重启pm2任务',
+          title: 'pm2任务',
           icon: renderIcon(ApertureOutline),
         },
       },

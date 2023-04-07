@@ -60,6 +60,17 @@ export interface IFrontend {
   deleted_at?: string;
 }
 
+export interface IBackend {
+  id?: number;
+  key?: string;
+  value?: string;
+  desc?: string;
+  type?: FormTypeEnum;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
+
 export interface IComment {
   id?: number;
   from_user_id?: number;
