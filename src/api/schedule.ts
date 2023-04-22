@@ -1,14 +1,5 @@
 import request from '@/utils/request';
 
-// 执行命令
-export function fetchExecCmd(cmd: string) {
-  return request({
-    url: '/schedule/exec_cmd',
-    method: 'post',
-    data: { cmd },
-  });
-}
-
 // 查看当前备份任务
 export function fetchDbJob() {
   return request({

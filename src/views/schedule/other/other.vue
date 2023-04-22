@@ -32,7 +32,7 @@
       <n-button
         type="primary"
         ghost
-        @click="cmd = 'pm2 restart nuxt-blog-client-null-3000'"
+        @click="cmd = 'pm2 start nuxt-blog-client-null-3000'"
       >
         启动博客前台
       </n-button>
@@ -61,7 +61,23 @@
         ghost
         @click="cmd = 'pm2 list'"
       >
-        查看pm2任务
+        查看pm2运行的应用
+      </n-button>
+
+      <n-button
+        type="primary"
+        ghost
+        @click="cmd = 'docker ps'"
+      >
+        查看docker运行的容器
+      </n-button>
+
+      <n-button
+        type="primary"
+        ghost
+        @click="cmd = 'docker images'"
+      >
+        查看docker所有镜像
       </n-button>
 
       <n-button
@@ -133,13 +149,17 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import { fetchExecCmd } from '@/api/schedule';
+import { fetchExecCmd } from '@/api/backend';
 
 const cmd = ref('');
 const cmdRes = ref('');
 
 async function handleClick() {
   try {
+    if (!cmd.value.length) {
+      window.$message.error('执行命令不能为空！');
+      return;
+    }
     const res = await fetchExecCmd(cmd.value);
     cmdRes.value = res.data;
   } catch (error) {

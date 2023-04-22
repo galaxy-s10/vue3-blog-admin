@@ -1,6 +1,15 @@
 import { IBackend } from '@/interface';
 import request, { IResponse } from '@/utils/request';
 
+// 执行命令
+export function fetchExecCmd(cmd: string) {
+  return request({
+    url: '/backend/exec_cmd',
+    method: 'post',
+    data: { cmd },
+  });
+}
+
 export function fetchBackendList(params): Promise<IResponse<IBackend>> {
   return request.get('/backend/list', { params });
 }
