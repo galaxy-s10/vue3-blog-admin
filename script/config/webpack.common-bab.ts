@@ -8,18 +8,18 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import ComponentsPlugin from 'unplugin-vue-components/webpack';
 import { VueLoaderPlugin } from 'vue-loader';
-import { DefinePlugin, Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WindiCSSWebpackPlugin from 'windicss-webpack-plugin';
 
 import {
-  windicssEnable,
-  eslintEnable,
   analyzerEnable,
+  eslintEnable,
+  htmlWebpackPluginTitle,
   outputDir,
   outputStaticUrl,
-  htmlWebpackPluginTitle,
+  windicssEnable,
 } from '../constant';
 import { chalkINFO, chalkWARN } from '../utils/chalkTip';
 import { resolveApp } from '../utils/path';
@@ -312,12 +312,12 @@ const commonConfig = (isProduction) => {
       new ForkTsCheckerWebpackPlugin({
         // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
         typescript: {
-          extensions: {
-            vue: {
-              enabled: true,
-              compiler: resolveApp('./node_modules/vue/compiler-sfc/index.js'),
-            },
-          },
+          // extensions: {
+          //   vue: {
+          //     enabled: true,
+          //     compiler: resolveApp('./node_modules/vue/compiler-sfc/index.js'),
+          //   },
+          // },
           diagnosticOptions: {
             semantic: true,
             syntactic: false,

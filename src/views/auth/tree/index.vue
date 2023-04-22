@@ -243,13 +243,13 @@ export default defineComponent({
         {
           title: 'id',
           key: 'id',
-          width: 200,
+          width: 100,
           align: 'center',
         },
         {
           title: '权限名称',
           key: 'auth_name',
-          width: 200,
+          width: 150,
           align: 'center',
         },
         {

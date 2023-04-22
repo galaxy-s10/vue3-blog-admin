@@ -252,26 +252,26 @@ export default defineComponent({
         {
           title: 'id',
           key: 'id',
-          width: 200,
+          width: 100,
           align: 'center',
         },
         {
           title: '角色名称',
           key: 'role_name',
-          width: 200,
+          width: 150,
           align: 'center',
         },
         {
           title: '角色标识',
           key: 'role_value',
-          width: 200,
+          width: 150,
           align: 'center',
         },
         {
           title: '角色类型',
           key: 'type',
           align: 'center',
-          width: 200,
+          width: 150,
           render(row) {
             return row.type === 1 ? '默认角色' : '自定义';
           },

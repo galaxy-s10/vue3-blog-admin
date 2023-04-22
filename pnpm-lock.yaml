@@ -18,10 +18,10 @@ specifiers:
   '@vue/preload-webpack-plugin': ^2.0.0
   axios: ^0.26.0
   babel-loader: ^8.2.2
-  billd-deploy: ^1.0.13
-  billd-html-webpack-plugin: ^1.0.0
+  billd-deploy: ^1.0.16
+  billd-html-webpack-plugin: ^1.0.1
   billd-scss: ^0.0.6
-  billd-utils: ^0.0.7
+  billd-utils: ^0.0.9
   chalk: ^4
   commitizen: ^4.2.4
   compression-webpack-plugin: ^7.1.2
@@ -38,7 +38,7 @@ specifiers:
   eslint-plugin-vue: ^8.5.0
   eslint-webpack-plugin: ^3.1.1
   file-loader: ^6.2.0
-  fork-ts-checker-webpack-plugin: ^7.2.6
+  fork-ts-checker-webpack-plugin: ^8.0.0
   highlight.js: ^11.6.0
   html-webpack-plugin: ^5.3.1
   html-webpack-tags-plugin: ^3.0.1
@@ -85,10 +85,10 @@ dependencies:
   '@kangc/v-md-editor': 2.3.15_a2ihsjreowava2sm4iorpgwkom
   '@vicons/ionicons5': 0.12.0
   axios: 0.26.1
-  billd-deploy: 1.0.13_impbrwe6haqvraof22ndrnq7lq
-  billd-html-webpack-plugin: 1.0.0_impbrwe6haqvraof22ndrnq7lq
+  billd-deploy: 1.0.16_impbrwe6haqvraof22ndrnq7lq
+  billd-html-webpack-plugin: 1.0.1_impbrwe6haqvraof22ndrnq7lq
   billd-scss: 0.0.6
-  billd-utils: 0.0.7_typescript@4.9.5
+  billd-utils: 0.0.9_typescript@4.9.5
   dayjs: 1.11.7
   highlight.js: 11.7.0
   js-cookie: 3.0.1
@@ -132,7 +132,7 @@ devDependencies:
   eslint-plugin-vue: 8.7.1_eslint@8.36.0
   eslint-webpack-plugin: 3.2.0_c6bstfvn7lmu3jnvygo5gmufvi
   file-loader: 6.2.0_webpack@5.76.2
-  fork-ts-checker-webpack-plugin: 7.3.0_a37q6j7dwawz22saey2vgkpwqm
+  fork-ts-checker-webpack-plugin: 8.0.0_a37q6j7dwawz22saey2vgkpwqm
   html-webpack-plugin: 5.5.0_webpack@5.76.2
   html-webpack-tags-plugin: 3.0.2_evxfmcnm4hrwcmvo67nssroifq
   husky: 7.0.4
@@ -3479,12 +3479,12 @@ packages:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
     dev: true
 
-  /billd-deploy/1.0.13_impbrwe6haqvraof22ndrnq7lq:
-    resolution: {integrity: sha512-XD6dqhvkiZ41QPgZBHbmWBqWB16dtk/jo3jOMASW+81qsgrhtOWWqC2fKVbaDNWH7NQtFoiH4THOyTdRCqUTgA==}
+  /billd-deploy/1.0.16_impbrwe6haqvraof22ndrnq7lq:
+    resolution: {integrity: sha512-T1ZejJOdNUuY6bMjGz6hZl2okoivEVuv1qOaRW45CInypUdWj8LDx21AITcykT0XR/32fJPXhO/eVWhfratQAQ==}
     requiresBuild: true
     dependencies:
       ali-oss: 6.17.1
-      billd-html-webpack-plugin: 1.0.0_impbrwe6haqvraof22ndrnq7lq
+      billd-html-webpack-plugin: 1.0.1_impbrwe6haqvraof22ndrnq7lq
       esdk-obs-nodejs: 3.21.6
       inquirer: 8.2.5
       node-ssh: 13.0.1
@@ -3504,8 +3504,8 @@ packages:
       - webpack-cli
     dev: false
 
-  /billd-html-webpack-plugin/1.0.0_impbrwe6haqvraof22ndrnq7lq:
-    resolution: {integrity: sha512-JbYQ5qKtZlXPSQKxmjhvB668aVGKo7QINfvUeN9m5e57PrtKX/fcuRpYyIPExwymVEMOOLWKEk3OQ1R8tQzE8Q==}
+  /billd-html-webpack-plugin/1.0.1_impbrwe6haqvraof22ndrnq7lq:
+    resolution: {integrity: sha512-ktyHU31TP6VUvCYjy/HdzA6PlYs72VGTHx6Zd8p+cQba7M+pdR5y8lZKQe1JDYf/h1R7TnxrmmiU/tSsC6nLOg==}
     requiresBuild: true
     dependencies:
       vite: 4.2.0_sass@1.59.3+terser@5.16.6
@@ -3528,8 +3528,8 @@ packages:
     requiresBuild: true
     dev: false
 
-  /billd-utils/0.0.7_typescript@4.9.5:
-    resolution: {integrity: sha512-UgXqNeqhTtVugHBopSZlIzEUtsT91OS5aeZifoeoZe1qDnMdiFsoTSpMhMtRzFFsR7XfWSfTyIu96Db558CIYw==}
+  /billd-utils/0.0.9_typescript@4.9.5:
+    resolution: {integrity: sha512-vPGUOtKG725KKK7laSI0oXsfIuZpQsh2z3JSLMW/+V/eKXjQnj99n4ks4Jhh4/u+ub2g4h87+idrN2wmw9D5Cw==}
     requiresBuild: true
     dependencies:
       '@babel/core': 7.21.3
@@ -6435,16 +6435,12 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /fork-ts-checker-webpack-plugin/7.3.0_a37q6j7dwawz22saey2vgkpwqm:
-    resolution: {integrity: sha512-IN+XTzusCjR5VgntYFgxbxVx3WraPRnKehBFrf00cMSrtUuW9MsG9dhL6MWpY6MkjC3wVwoujfCDgZZCQwbswA==}
+  /fork-ts-checker-webpack-plugin/8.0.0_a37q6j7dwawz22saey2vgkpwqm:
+    resolution: {integrity: sha512-mX3qW3idpueT2klaQXBzrIM/pHw+T0B/V9KHEvNrqijTq9NFnMZU6oreVxDYcf33P8a5cW+67PjodNHthGnNVg==}
     engines: {node: '>=12.13.0', yarn: '>=1.0.0'}
     peerDependencies:
       typescript: '>3.6.0'
-      vue-template-compiler: '*'
       webpack: ^5.11.0
-    peerDependenciesMeta:
-      vue-template-compiler:
-        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       chalk: 4.1.2

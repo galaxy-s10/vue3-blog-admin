@@ -8,18 +8,18 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import ComponentsPlugin from 'unplugin-vue-components/webpack';
 import { VueLoaderPlugin } from 'vue-loader';
-import { DefinePlugin, Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import WindiCSSWebpackPlugin from 'windicss-webpack-plugin';
 
 import {
-  windicssEnable,
-  eslintEnable,
   analyzerEnable,
+  eslintEnable,
+  htmlWebpackPluginTitle,
   outputDir,
   outputStaticUrl,
-  htmlWebpackPluginTitle,
+  windicssEnable,
 } from '../constant';
 import { chalkINFO, chalkWARN } from '../utils/chalkTip';
 import { resolveApp } from '../utils/path';
@@ -144,6 +144,20 @@ const commonConfig = (isProduction) => {
        * 此外，output.publicPath还可设置cdn地址。
        */
       publicPath: outputStaticUrl(isProduction),
+    },
+    cache: {
+      type: 'filesystem',
+      allowCollectingMemory: true, // 它在生产模式中默认为false，并且在开发模式下默认为true。https://webpack.js.org/configuration/cache/#cacheallowcollectingmemory
+      buildDependencies: {
+        // 建议cache.buildDependencies.config: [__filename]在您的 webpack 配置中设置以获取最新配置和所有依赖项。
+        config: [
+          resolveApp('./script/config/webpack.common.ts'),
+          resolveApp('./script/config/webpack.dev.ts'),
+          resolveApp('./script/config/webpack.prod.ts'),
+          resolveApp('.browserslistrc'), // 防止修改了.browserslistrc文件后，但没修改webpack配置文件，webpack不读取最新更新后的.browserslistrc
+          resolveApp('babel.config.js'), // 防止修改了babel.config.js文件后，但没修改webpack配置文件，webpack不读取最新更新后的babel.config.js
+        ],
+      },
     },
     resolve: {
       // 解析路径
@@ -321,34 +335,35 @@ const commonConfig = (isProduction) => {
     plugins: [
       // 友好的显示错误信息在终端
       new FriendlyErrorsWebpackPlugin(),
-      new ForkTsCheckerWebpackPlugin({
-        // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
-        typescript: {
-          extensions: {
-            vue: {
-              enabled: true,
-              compiler: resolveApp('./node_modules/vue/compiler-sfc/index.js'),
-            },
-          },
-          diagnosticOptions: {
-            semantic: true,
-            syntactic: false,
-          },
-        },
-        /**
-         * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
-         * 但是控制台还是会打印错误。
-         */
-        devServer: false, // 7.x版本：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
-        // logger: {
-        //   devServer: false, // fork-ts-checker-webpack-plugin6.x版本
-        // },
-        /**
-         * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
-         * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
-         */
-        async: true,
-      }),
+      new ForkTsCheckerWebpackPlugin(),
+      // new ForkTsCheckerWebpackPlugin({
+      //   // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
+      //   typescript: {
+      //     // extensions: {
+      //     //   vue: {
+      //     //     enabled: true,
+      //     //     compiler: resolveApp('./node_modules/vue/compiler-sfc/index.js'),
+      //     //   },
+      //     // },
+      //     diagnosticOptions: {
+      //       semantic: true,
+      //       syntactic: false,
+      //     },
+      //   },
+      //   /**
+      //    * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
+      //    * 但是控制台还是会打印错误。
+      //    */
+      //   devServer: false, // 7.x版本：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
+      //   // logger: {
+      //   //   devServer: false, // fork-ts-checker-webpack-plugin6.x版本
+      //   // },
+      //   /**
+      //    * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
+      //    * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
+      //    */
+      //   async: true,
+      // }),
       // 解析vue
       new VueLoaderPlugin(),
       // eslint-disable-next-line

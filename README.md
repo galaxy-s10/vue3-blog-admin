@@ -6,18 +6,20 @@
 
 线上地址：[https://admin.hsslive.cn](https://admin.hsslive.cn)
 
+# 项目截图
+
 # 本地启动
 
 ## 安装依赖
+
+```bash
+pnpm install
+```
 
 更新 billd 依赖：
 
 ```bash
 pnpm i billd-utils@latest billd-scss@latest billd-html-webpack-plugin@latest billd-deploy@latest
-```
-
-```bash
-pnpm install
 ```
 
 ## 运行在根目录

@@ -24,5 +24,4 @@ const messageEle = document.createElement('div');
 const appEl = document.getElementById('app');
 appEl?.appendChild(messageEle);
 message.mount(messageEle);
-
 app.mount('#app');
