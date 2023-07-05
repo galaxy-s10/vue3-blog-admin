@@ -1,6 +1,10 @@
 import sparkMD5 from 'spark-md5';
 
-// 根据文件内容获取hash，同一个文件不管重命名还是改文件名后缀，hash都一样
+/**
+ * 根据文件内容获取hash，同一个文件不管重命名还是改文件名后缀，hash都一样
+ * @param file
+ * @returns
+ */
 export const getHash = (file: File) => {
   return new Promise<{
     hash: string;
