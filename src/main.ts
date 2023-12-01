@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 
 import Message from '@/components/Message/index.vue';
-// import { naive } from '@/components/registerNaive';
+import { naive } from '@/components/registerNaive';
 import router from '@/router/index';
 import store from '@/store/index';
 
@@ -17,7 +17,7 @@ const app = createApp(App);
 registerDirectives(app);
 app.use(store);
 app.use(router);
-// app.use(naive);
+app.use(naive);
 
 const message = createApp(Message);
 const messageEle = document.createElement('div');

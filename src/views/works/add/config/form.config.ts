@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { FormTypeEnum, IWorks } from '@/interface';
 
 export const formConfig: IForm<IWorks> = {
@@ -29,7 +29,7 @@ export const formConfig: IForm<IWorks> = {
       label: '背景图',
       uploadConfig: {
         max: 1,
-        prefix: QINIU_PREFIX['image/'],
+        prefix: QINIU_BLOG.prefix['image/'],
       },
       rule: { required: true, trigger: 'blur', type: 'array' },
     },

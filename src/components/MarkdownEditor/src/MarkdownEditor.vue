@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
-import '@kangc/v-md-editor/lib/plugins/todo-list/todo-list.css';
-import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 
 import VMdEditor from '@kangc/v-md-editor';
 import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
@@ -26,7 +26,7 @@ import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { defineComponent, ref, watch } from 'vue';
 
-import { QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { useUpload } from '@/hooks/use-upload';
 
 hljs.registerLanguage('typescript', typescript);
@@ -66,7 +66,7 @@ export default defineComponent({
     const handleUploadImage = async (event, insertImage, files) => {
       try {
         const res: any = await useUpload({
-          prefix: QINIU_PREFIX['image/'],
+          prefix: QINIU_BLOG.prefix['image/'],
           file: files[0],
         });
         const img = {

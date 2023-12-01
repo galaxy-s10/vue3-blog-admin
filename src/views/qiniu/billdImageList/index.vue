@@ -6,7 +6,7 @@
         await
         @click="getDiff()"
       >
-        获取image/差异
+        获取billd-live/image/差异
       </n-button>
     </div>
     <div
@@ -138,7 +138,7 @@ export default defineComponent({
       pageSize: 10,
       orderName: 'created_at',
       orderBy: 'desc',
-      prefix: QINIU_BLOG.prefix['image/'],
+      prefix: QINIU_BLOG.prefix['billd-live/image/'],
       bucket: QINIU_BLOG.bucket,
     });
     const createColumns = (): DataTableColumns<IQiniuData> => {

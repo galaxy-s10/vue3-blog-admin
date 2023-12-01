@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { FormTypeEnum, IMusic } from '@/interface';
 
 export const formConfig: IForm<IMusic> = {
@@ -21,7 +21,7 @@ export const formConfig: IForm<IMusic> = {
       label: '封面图',
       uploadConfig: {
         max: 1,
-        prefix: QINIU_PREFIX['image/'],
+        prefix: QINIU_BLOG.prefix['image/'],
       },
       rule: { required: true, trigger: 'blur', type: 'array' },
     },
@@ -38,7 +38,7 @@ export const formConfig: IForm<IMusic> = {
       label: '音频资源',
       uploadConfig: {
         max: 1,
-        prefix: QINIU_PREFIX['media/'],
+        prefix: QINIU_BLOG.prefix['media/'],
       },
       rule: { required: true, trigger: 'blur', type: 'array' },
     },

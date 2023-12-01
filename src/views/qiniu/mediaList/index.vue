@@ -86,7 +86,7 @@
 
 <script lang="ts">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { h, defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, h, onMounted, ref } from 'vue';
 
 import {
   fetchDeleteQiniuData,
@@ -96,9 +96,9 @@ import {
 } from '@/api/qiniuData';
 import HModal from '@/components/Base/Modal';
 import HSearch from '@/components/Base/Search';
-import { QINIU_BUCKET, QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { usePage } from '@/hooks/use-page';
-import { IQiniuData, IList } from '@/interface';
+import { IList, IQiniuData } from '@/interface';
 
 import EditQiniuData from '../edit/index.vue';
 
@@ -129,8 +129,8 @@ export default defineComponent({
       pageSize: 10,
       orderName: 'created_at',
       orderBy: 'desc',
-      prefix: QINIU_PREFIX['media/'],
-      bucket: QINIU_BUCKET,
+      prefix: QINIU_BLOG.prefix['media/'],
+      bucket: QINIU_BLOG.bucket,
     });
     const createColumns = (): DataTableColumns<IQiniuData> => {
       const action: TableColumn<IQiniuData> = {

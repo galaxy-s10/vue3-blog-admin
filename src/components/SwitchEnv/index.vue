@@ -53,7 +53,7 @@ import HModal from '@/components/Base/Modal';
 import { envList } from '@/constant';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import { setCurrEnv, getCurrEnv } from '@/utils/localStorage';
+import { getCurrEnv, setCurrEnv } from '@/utils/localStorage';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -80,13 +80,13 @@ watch(
 );
 
 function handleVConsole() {
-  if (['development', 'beta'].includes(currEnv.value)) {
-    // eslint-disable-next-line
-    import('vconsole').then((vConsole) => {
-      // eslint-disable-next-line
-      new vConsole.default();
-    });
-  }
+  // if (['development', 'beta'].includes(currEnv.value)) {
+  //   // eslint-disable-next-line
+  //   import('vconsole').then((vConsole) => {
+  //     // eslint-disable-next-line
+  //     new vConsole.default();
+  //   });
+  // }
 }
 
 if (hasEnv) {
@@ -100,7 +100,7 @@ handleVConsole();
 const modalConfirm = () => {
   appStore.setEnv(currEnv.value);
   setCurrEnv(currEnv.value);
-  window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
+  // window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
   modalVisiable.value = false;
   userStore.logout();
   // eslint-disable-next-line

@@ -16,11 +16,27 @@ export const BLOG_ADMIN_URL = 'https://admin.hsslive.cn';
 export const POSTMESSAGE_TYPE = ['qq_login', 'github_login', 'login_expired'];
 
 export const QINIU_BUCKET = 'hssblog'; // 七牛云bucket
-export const QINIU_PREFIX = {
-  'image/': 'image/',
-  'backupsDatabase/': 'backupsDatabase/',
-  'media/': 'media/',
-  'nuxt-blog-client/': 'nuxt-blog-client/',
+
+export const QINIU_BLOG = {
+  domain: 'resource.hsslive.cn',
+  url: 'https://resource.hsslive.cn/',
+  bucket: 'hssblog',
+  prefix: {
+    'image/': 'image/',
+    'backupsDatabase/': 'backupsDatabase/',
+    'media/': 'media/',
+    'nuxt-blog-client/': 'nuxt-blog-client/',
+    'billd-live/image/': 'billd-live/image/',
+  },
+};
+
+export const QINIU_BACKUP = {
+  domain: 'backup.hsslive.cn',
+  url: 'http://backup.hsslive.cn/',
+  bucket: 'hss-backup',
+  prefix: {
+    'mysql/': 'mysql/',
+  },
 };
 
 // 全局的localStorage的key
@@ -81,6 +97,7 @@ export const ROUTE_SORT = {
   user: 120,
   auth: 110,
   role: 110,
+  roleAuth: 110,
   thirdUser: 100,
 
   // comment: 80,

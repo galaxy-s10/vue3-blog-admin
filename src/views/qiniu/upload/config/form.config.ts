@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { FormTypeEnum, IQiniuData } from '@/interface';
 
 export const formConfig: IForm<IQiniuData> = {
@@ -20,13 +20,13 @@ export const formConfig: IForm<IQiniuData> = {
     //   rule: { required: true, trigger: 'blur' },
     // },
     {
-      field: 'qiniu_fsize',
+      field: 'prefix',
       type: FormTypeEnum.upload,
-      label: 'qiniu_fsize',
+      label: 'prefix',
       // placeholder: '请选择文件',
       uploadConfig: {
         // max: 2,
-        prefix: QINIU_PREFIX['image/'],
+        prefix: QINIU_BLOG.prefix['image/'],
       },
       rule: { required: true, trigger: 'blur', type: 'array' },
     },

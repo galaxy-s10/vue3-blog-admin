@@ -28,6 +28,14 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'qiniuBilldImageList',
+        path: '/qiniu/billdImageList',
+        component: () => import('@/views/qiniu/billdImageList/index.vue'),
+        meta: {
+          title: '直播图片资源',
+        },
+      },
+      {
         name: 'qiniuMediaList',
         path: '/qiniu/mediaList',
         component: () => import('@/views/qiniu/mediaList/index.vue'),

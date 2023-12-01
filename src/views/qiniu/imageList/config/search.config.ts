@@ -1,5 +1,5 @@
 import { IForm } from '@/components/Base/Form';
-import { QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { useOrder } from '@/hooks/use-order';
 import { FormTypeEnum, IQiniuData, ISearch } from '@/interface';
 
@@ -17,7 +17,7 @@ export const searchFormConfig: IForm<ISearch<IQiniuData>> = {
       type: FormTypeEnum.select,
       label: '前缀',
       placeholder: '请选择前缀',
-      options: Object.keys(QINIU_PREFIX).map((v) => {
+      options: Object.keys(QINIU_BLOG.prefix).map((v) => {
         return { label: v, value: v };
       }),
       disabled: true,

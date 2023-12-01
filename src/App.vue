@@ -7,22 +7,16 @@
   </n-spin>
 </template>
 
-<script lang="ts">
-import { defineComponent, toRef } from 'vue';
+<script lang="ts" setup>
+import { toRef } from 'vue';
 
 import SwitchEnvCpt from '@/components/SwitchEnv/index.vue';
 import { loginMessage } from '@/hooks/use-login';
 import { useAppStore } from '@/store/app';
 
-export default defineComponent({
-  components: { SwitchEnvCpt },
-  setup() {
-    const appStore = useAppStore();
-    const appLoading = toRef(appStore, 'loading');
-    loginMessage();
-    return { appLoading };
-  },
-});
+const appStore = useAppStore();
+const appLoading = toRef(appStore, 'loading');
+loginMessage();
 </script>
 
 <style lang="scss" scoped>

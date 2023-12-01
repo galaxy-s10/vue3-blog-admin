@@ -32,10 +32,10 @@ import {
   fetchUploadMergeChunk,
   fetchUploadProgress,
 } from '@/api/qiniuData';
-import { QINIU_PREFIX } from '@/constant';
+import { QINIU_BLOG } from '@/constant';
 import { getHash, splitFile } from '@/utils';
 
-import type { SelectOption, UploadFileInfo } from 'naive-ui';
+import type { UploadFileInfo } from 'naive-ui';
 
 export interface IQiniuKey {
   prefix: string;
@@ -70,7 +70,7 @@ export default defineComponent({
     },
     prefix: {
       type: String,
-      default: QINIU_PREFIX['image/'],
+      default: QINIU_BLOG.prefix['image/'],
     },
   },
   emits: ['update:value'],
@@ -88,7 +88,7 @@ export default defineComponent({
       })
     );
     const oldList = [...list.value];
-    const prefixOptions = Object.keys(QINIU_PREFIX).map((v) => {
+    const prefixOptions = Object.keys(QINIU_BLOG.prefix).map((v) => {
       return { label: v, value: v };
     });
     const prefixValue = ref(props.prefix);
@@ -105,6 +105,7 @@ export default defineComponent({
     );
 
     const handleUploadChange = (data: { fileList: UploadFileInfo[] }) => {
+      console.log('handleUploadChange', data);
       list.value = data.fileList;
       emit('update:value', list.value);
     };
@@ -114,7 +115,7 @@ export default defineComponent({
       const { data } = await fetchUpload({
         hash,
         ext,
-        prefix: props.prefix,
+        prefix: prefixValue.value,
       });
       list.value.forEach((val) => {
         if (val.id === id) {
@@ -131,7 +132,7 @@ export default defineComponent({
       const id = file.id;
       try {
         const { hash, ext } = await getHash(file.file!);
-        const prefix = props.prefix;
+        const prefix = prefixValue.value;
         const { code } = await fetchUploadProgress({ prefix, hash, ext });
         if (code === 3) {
           const { data } = await fetchUpload({ prefix, hash, ext });
