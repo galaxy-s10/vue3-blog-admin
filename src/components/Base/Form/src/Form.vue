@@ -171,6 +171,8 @@
 </template>
 
 <script lang="ts" setup>
+import { Shortcuts } from 'naive-ui/es/date-picker/src/interface';
+import { LabelPlacement } from 'naive-ui/es/form/src/interface';
 import { ref } from 'vue';
 
 import { fetchDeleteQiniuDataByQiniuKey } from '@/api/qiniuData';
@@ -189,14 +191,14 @@ const props = withDefaults(
     showAction?: boolean;
     confirmLoading?: boolean;
     formStyle?: any;
-    labelPlacement?: string;
+    labelPlacement?: LabelPlacement;
   }>(),
   {
     formItems: () => [],
     showAction: false,
     gridSpan: undefined,
     formStyle: {},
-    labelPlacement: '',
+    labelPlacement: 'left',
   }
 );
 
@@ -228,7 +230,7 @@ function handleValidate() {
   });
 }
 
-const rangeShortcuts = {
+const rangeShortcuts: Shortcuts = {
   近1小时: () => {
     const cur = new Date().getTime();
     return [cur - 1 * 60 * 60 * 1000, cur];
