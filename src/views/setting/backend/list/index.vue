@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { NButton, NPopconfirm, NSpace, DataTableColumns } from 'naive-ui';
+import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -29,9 +30,6 @@ import { IBackend, IList } from '@/interface';
 
 import { columnsConfig } from './config/columns.config';
 import { searchFormConfig } from './config/search.config';
-
-import type { DataTableColumns } from 'naive-ui';
-import type { TableColumn } from 'naive-ui/es/data-table/src/interface';
 
 interface ISearch extends IBackend, IList {}
 

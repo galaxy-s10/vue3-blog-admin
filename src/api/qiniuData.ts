@@ -1,11 +1,5 @@
-import { IQiniuData } from '@/interface';
+import { IQiniuData, IQiniuKey } from '@/interface';
 import request, { IResponse } from '@/utils/request';
-
-export interface IQiniuKey {
-  prefix: string;
-  hash: string;
-  ext: string;
-}
 
 export function fetchQiniuDataList(params) {
   return request({

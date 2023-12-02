@@ -40,119 +40,102 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ChevronDownOutline, CloseOutline } from '@vicons/ionicons5';
-import { defineComponent, ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import router from '@/router';
 import { useAppStore } from '@/store/app';
 
-export default defineComponent({
-  components: {
-    CloseOutline,
-    ChevronDownOutline,
-  },
-  setup() {
-    const appStore = useAppStore();
-    const route = useRoute();
-    const { tabList, path } = toRefs(appStore);
-    const list1: any = ref([]);
-    const listRef = ref<HTMLElement>();
-    const res: { key: string; value: string }[] = [];
-    Object.keys(tabList.value).forEach((v) => {
-      res.push({ key: v, value: tabList.value[v] });
-    });
-    const options = [
-      {
-        label: '关闭左侧标签',
-        key: '1',
-      },
-      {
-        label: '关闭右侧标签',
-        key: '2',
-      },
-      {
-        label: '关闭其他标签',
-        key: '3',
-      },
-    ];
-    list1.value = res;
-
-    watch(
-      () => tabList.value,
-      (newVal) => {
-        const val: any[] = [];
-        Object.keys(newVal).forEach((v) => {
-          val.push({ key: v, value: newVal[v] });
-        });
-        list1.value = val;
-      }
-    );
-    watch(
-      () => route.path,
-      () => {
-        const dom = listRef.value!;
-        const halfOfWindowWidth = Math.ceil(dom.clientWidth / 2); // 父容器宽度的一半（即父容器的居中位置）
-        list1.value.forEach((v, i) => {
-          if (v.key === route.path) {
-            const parentEle = dom;
-            const currentEle = dom.children[i];
-            // @ts-ignore
-            const currentEleOffsetLeft = dom.children[i].offsetLeft;
-            parentEle.scrollTo({
-              left:
-                currentEleOffsetLeft -
-                halfOfWindowWidth +
-                // @ts-ignore
-                currentEle.offsetWidth / 2,
-              behavior: 'smooth',
-            });
-          }
-        });
-      }
-    );
-    const close = (item) => {
-      const list = { ...tabList.value };
-      if (Object.keys(list).length <= 1) {
-        window.$message.warning('不能删了');
-        return;
-      }
-      let index = 0;
-      list1.value.forEach((v, i) => {
-        if (v.key === item.key) {
-          index = i;
-        }
-      });
-      if (item.key === route.path) {
-        router.push({
-          path: list1.value[
-            index + 1 >= list1.value.length ? list1.value.length - 2 : index + 1
-          ].key,
-        });
-      }
-
-      delete list[item.key];
-      appStore.setTabList(list);
-    };
-    const pushPath = (item) => {
-      router.push(item.key);
-    };
-    const closeTag = () => {};
-    const scrollFn = () => {};
-    return {
-      route,
-      path,
-      list: list1,
-      close,
-      pushPath,
-      options,
-      closeTag,
-      scrollFn,
-      listRef,
-    };
-  },
+const appStore = useAppStore();
+const route = useRoute();
+const { tabList, path } = toRefs(appStore);
+const list: any = ref([]);
+const listRef = ref<HTMLElement>();
+const res: { key: string; value: string }[] = [];
+Object.keys(tabList.value).forEach((v) => {
+  res.push({ key: v, value: tabList.value[v] });
 });
+const options = [
+  {
+    label: '关闭左侧标签',
+    key: '1',
+  },
+  {
+    label: '关闭右侧标签',
+    key: '2',
+  },
+  {
+    label: '关闭其他标签',
+    key: '3',
+  },
+];
+list.value = res;
+
+watch(
+  () => tabList.value,
+  (newVal) => {
+    const val: any[] = [];
+    Object.keys(newVal).forEach((v) => {
+      val.push({ key: v, value: newVal[v] });
+    });
+    list.value = val;
+  }
+);
+watch(
+  () => route.path,
+  () => {
+    const dom = listRef.value!;
+    const halfOfWindowWidth = Math.ceil(dom.clientWidth / 2); // 父容器宽度的一半（即父容器的居中位置）
+    list.value.forEach((v, i) => {
+      if (v.key === route.path) {
+        const parentEle = dom;
+        const currentEle = dom.children[i];
+        // @ts-ignore
+        const currentEleOffsetLeft = dom.children[i].offsetLeft;
+        parentEle.scrollTo({
+          left:
+            currentEleOffsetLeft -
+            halfOfWindowWidth +
+            // @ts-ignore
+            currentEle.offsetWidth / 2,
+          behavior: 'smooth',
+        });
+      }
+    });
+  }
+);
+const close = (item) => {
+  const list: any = { ...tabList.value };
+  if (Object.keys(list).length <= 1) {
+    window.$message.warning('不能删了');
+    return;
+  }
+  let index = 0;
+  list.value.forEach((v, i) => {
+    if (v.key === item.key) {
+      index = i;
+    }
+  });
+  if (item.key === route.path) {
+    // eslint-disable-next-line
+    router.push({
+      path: list.value[
+        index + 1 >= list.value.length ? list.value.length - 2 : index + 1
+      ].key,
+    });
+  }
+
+  delete list[item.key];
+  appStore.setTabList(list);
+};
+const pushPath = (item) => {
+  router.push(item.key);
+};
+const closeTag = () => {
+  window.$message.info('敬请期待！');
+};
 </script>
 
 <style lang="scss" scoped>

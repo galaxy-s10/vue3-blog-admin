@@ -91,7 +91,7 @@ const handleSelect = (v) => {
 };
 
 function handleClick() {
-  window.$message.info('敬请期待!');
+  window.$message.info('敬请期待！');
 }
 const userInfo = userStore.userInfo;
 </script>

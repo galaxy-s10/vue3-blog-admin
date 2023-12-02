@@ -1,6 +1,6 @@
-import { routes as notFoundRoutes } from './notFound';
+import { RouteRecordRaw } from 'vue-router';
 
-import type { RouteRecordRaw } from 'vue-router';
+import { routes as notFoundRoutes } from './notFound';
 
 const allModules: any = [];
 

@@ -22,8 +22,11 @@ module.exports = {
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier',
   ],
+  // https://eslint.vuejs.org/user-guide/
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    ecmaVersion: 2020,
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 'latest',
     tsconfigRootDir: __dirname, // https://typescript-eslint.io/docs/linting/typed-linting
     project: ['./tsconfig.json'], // https://typescript-eslint.io/docs/linting/typed-linting
   },

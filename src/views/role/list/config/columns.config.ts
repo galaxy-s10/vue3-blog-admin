@@ -1,6 +1,6 @@
-import { IRole } from '@/interface';
+import { DataTableColumns } from 'naive-ui';
 
-import type { DataTableColumns } from 'naive-ui';
+import { IRole } from '@/interface';
 
 export const columnsConfig = (): DataTableColumns<IRole> => {
   return [

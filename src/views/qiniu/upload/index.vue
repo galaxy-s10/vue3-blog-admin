@@ -1,12 +1,11 @@
 <template>
   <div>
-    <h-form
-      ref="formRef"
+    <HForm
       v-bind="formConfig"
       v-model="formData"
       :show-action="showAction"
       :confirm-loading="confirmLoading"
-    ></h-form>
+    ></HForm>
     <div v-if="uploadRes?.success.length">
       <h3>success:</h3>
       <div
@@ -29,46 +28,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
 
 import HForm from '@/components/Base/Form';
 
 import { formConfig } from './config/form.config';
 
-export default defineComponent({
-  components: { HForm },
-  props: {
-    modelValue: {
-      type: Object,
-      default: () => {},
-    },
-    showAction: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  setup(props) {
-    const formData = ref({ ...props.modelValue });
-    const confirmLoading = ref(false);
-    const formRef = ref<any>(null);
-    const uploadRes = ref();
-
-    const validateForm = async () => {
-      const res = await formRef.value.handleValidate();
-      return res;
-    };
-
-    return {
-      formRef,
-      formConfig,
-      formData,
-      confirmLoading,
-      validateForm,
-      uploadRes,
-    };
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: any;
+    showAction?: boolean;
+  }>(),
+  {
+    modelValue: {},
+    showAction: true,
+  }
+);
+const formData = ref({ ...props.modelValue });
+const confirmLoading = ref(false);
+const uploadRes = ref();
 </script>
 
 <style lang="scss" scoped></style>

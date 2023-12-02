@@ -1,6 +1,6 @@
-import { IBlacklist } from '@/interface';
+import { DataTableColumns } from 'naive-ui';
 
-import type { DataTableColumns } from 'naive-ui';
+import { IBlacklist } from '@/interface';
 
 export const columnsConfig = (): DataTableColumns<IBlacklist> => {
   return [

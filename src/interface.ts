@@ -1,3 +1,9 @@
+export interface IQiniuKey {
+  prefix: string;
+  hash: string;
+  ext: string;
+}
+
 export interface ISearchBase {
   keyWord?: string;
   nowPage?: string;

@@ -1,22 +1,7 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
-<script>
-export default {
-  components: {},
-  props: [],
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {},
-};
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped></style>

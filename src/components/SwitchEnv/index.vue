@@ -79,6 +79,14 @@ watch(
   }
 );
 
+if (hasEnv) {
+  appStore.setEnv(hasEnv);
+} else {
+  appStore.setEnv('prod');
+  setCurrEnv('prod');
+}
+handleVConsole();
+
 function handleVConsole() {
   // if (['development', 'beta'].includes(currEnv.value)) {
   //   // eslint-disable-next-line
@@ -88,14 +96,6 @@ function handleVConsole() {
   //   });
   // }
 }
-
-if (hasEnv) {
-  appStore.setEnv(hasEnv);
-} else {
-  appStore.setEnv('prod');
-  setCurrEnv('prod');
-}
-handleVConsole();
 
 const modalConfirm = () => {
   appStore.setEnv(currEnv.value);

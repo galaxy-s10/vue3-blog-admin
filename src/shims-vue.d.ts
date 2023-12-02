@@ -5,16 +5,7 @@ declare module '*.vue' {
   export default component;
 }
 interface Window {
-  $message: {
-    info: any;
-    success: any;
-    warning: any;
-    error: any;
-    loading: any;
-    default: any;
-  };
+  $message: import('naive-ui/es/message/src/MessageProvider').MessageApiInjection;
 }
 
-declare global {
-  import utils from 'billd-utils';
-}
+declare global {}

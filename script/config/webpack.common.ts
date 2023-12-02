@@ -16,6 +16,7 @@ import WindiCSSWebpackPlugin from 'windicss-webpack-plugin';
 import {
   analyzerEnable,
   eslintEnable,
+  forkTsCheckerEnable,
   htmlWebpackPluginTitle,
   outputDir,
   outputStaticUrl,
@@ -335,35 +336,36 @@ const commonConfig = (isProduction) => {
     plugins: [
       // 友好的显示错误信息在终端
       new FriendlyErrorsWebpackPlugin(),
-      new ForkTsCheckerWebpackPlugin({
-        // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
-        typescript: {
-          // extensions: {
-          //   vue: {
-          //     enabled: true,
-          //     compiler: resolveApp('./node_modules/vue/compiler-sfc/index.js'),
-          //   },
-          // },
-          memoryLimit: 1024 * 3,
-          diagnosticOptions: {
-            semantic: true,
-            syntactic: false,
+      forkTsCheckerEnable &&
+        new ForkTsCheckerWebpackPlugin({
+          // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin
+          typescript: {
+            // extensions: {
+            //   vue: {
+            //     enabled: true,
+            //     compiler: resolveApp('./node_modules/vue/compiler-sfc/index.js'),
+            //   },
+            // },
+            memoryLimit: 1024 * 3,
+            diagnosticOptions: {
+              semantic: true,
+              syntactic: false,
+            },
           },
-        },
-        /**
-         * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
-         * 但是控制台还是会打印错误。
-         */
-        devServer: false, // 7.x版本：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
-        // logger: {
-        //   devServer: false, // fork-ts-checker-webpack-plugin6.x版本
-        // },
-        /**
-         * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
-         * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
-         */
-        async: true,
-      }),
+          /**
+           * devServer如果设置为false，则不会向 Webpack Dev Server 报告错误。
+           * 但是控制台还是会打印错误。
+           */
+          devServer: false, // 7.x版本：https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/723
+          // logger: {
+          //   devServer: false, // fork-ts-checker-webpack-plugin6.x版本
+          // },
+          /**
+           * async 为 false，同步的将错误信息反馈给 webpack，如果报错了，webpack 就会编译失败
+           * async 默认为 true，异步的将错误信息反馈给 webpack，如果报错了，不影响 webpack 的编译
+           */
+          async: true,
+        }),
       // 解析vue
       new VueLoaderPlugin(),
       // eslint-disable-next-line
@@ -374,6 +376,7 @@ const commonConfig = (isProduction) => {
       // eslint
       eslintEnable &&
         new ESLintPlugin({
+          // fix: true,
           extensions: ['js', 'jsx', 'ts', 'tsx', 'vue'],
           emitError: false, // 发现的错误将始终发出，禁用设置为false.
           emitWarning: false, // 找到的警告将始终发出，禁用设置为false.

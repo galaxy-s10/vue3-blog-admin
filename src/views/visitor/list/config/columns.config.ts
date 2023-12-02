@@ -1,6 +1,6 @@
-import { ITag } from '@/interface';
+import { DataTableColumns } from 'naive-ui';
 
-import type { DataTableColumns } from 'naive-ui';
+import { ITag } from '@/interface';
 
 export const columnsConfig = (): DataTableColumns<ITag> => {
   return [

@@ -1,8 +1,7 @@
+import { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 
 import { IArticle } from '@/interface';
-
-import type { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<IArticle> => {
   return [

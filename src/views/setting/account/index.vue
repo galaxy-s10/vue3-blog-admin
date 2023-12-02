@@ -140,15 +140,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { MailOutline } from '@vicons/ionicons5';
-import { defineComponent, ref, toRef } from 'vue';
+import { ref, toRef } from 'vue';
 
 import {
-  fetchSendBindEmailCode,
-  fetchCancelSendBindEmailCode,
   fetchBindEmail,
   fetchCancelBindEmail,
+  fetchCancelSendBindEmailCode,
+  fetchSendBindEmailCode,
 } from '@/api/emailUser';
 import { fetchCancelBindGithub } from '@/api/githubUser';
 import { fetchCancelBindQQ } from '@/api/qqUser';
@@ -156,180 +156,150 @@ import { fetchUserPwd } from '@/api/user';
 import { useGithubLogin, useQQLogin } from '@/hooks/use-login';
 import { useUserStore } from '@/store/user';
 
-import ResetPwdCpt from './cpt/ResetPwd/index.vue';
-
-export default defineComponent({
-  components: { MailOutline, ResetPwdCpt },
-  setup() {
-    const bindEmailRules = {
-      email: { required: true, message: '请输入邮箱', trigger: 'blur' },
-      code: { required: true, message: '请输入验证码', trigger: 'blur' },
-    };
-    const userStore = useUserStore();
-    const userInfo: any = toRef(userStore, 'userInfo');
-    const password = ref('');
-    const currCpt = ref('');
-    const loading = ref(false);
-    const showModal = ref(false);
-    const downCount = ref(0);
-    const bindEmailFormRef = ref(null);
-    const bindEmailForm = ref({
-      email: '',
-      code: '',
-    });
-    /** 发送绑定/取消绑定邮箱验证码 */
-    const sendBindEmailCode = async () => {
-      if (bindEmailForm.value.email === '')
-        return window.$message.warning('请输入邮箱!');
-      try {
-        loading.value = true;
-        let message = '';
-        if (userInfo.value.email_users[0]) {
-          const res: any = await fetchCancelSendBindEmailCode(
-            bindEmailForm.value.email
-          );
-          message = res.message;
-        } else {
-          const res: any = await fetchSendBindEmailCode(
-            bindEmailForm.value.email
-          );
-          message = res.message;
-        }
-        loading.value = false;
-        window.$message.success(message);
-        downCount.value = 60;
-        const timer = setInterval(() => {
-          downCount.value -= 1;
-          if (downCount.value === 0) {
-            clearInterval(timer);
-          }
-        }, 1000);
-      } catch (error: any) {
-        loading.value = false;
-        window.$message.error(error.message);
+const bindEmailRules = {
+  email: { required: true, message: '请输入邮箱', trigger: 'blur' },
+  code: { required: true, message: '请输入验证码', trigger: 'blur' },
+};
+const userStore = useUserStore();
+const userInfo: any = toRef(userStore, 'userInfo');
+const password = ref('');
+const currCpt = ref('');
+const loading = ref(false);
+const showModal = ref(false);
+const downCount = ref(0);
+const bindEmailFormRef = ref(null);
+const bindEmailForm = ref({
+  email: '',
+  code: '',
+});
+/** 发送绑定/取消绑定邮箱验证码 */
+const sendBindEmailCode = async () => {
+  if (bindEmailForm.value.email === '')
+    return window.$message.warning('请输入邮箱!');
+  try {
+    loading.value = true;
+    let message = '';
+    if (userInfo.value.email_users[0]) {
+      const res: any = await fetchCancelSendBindEmailCode(
+        bindEmailForm.value.email
+      );
+      message = res.message;
+    } else {
+      const res: any = await fetchSendBindEmailCode(bindEmailForm.value.email);
+      message = res.message;
+    }
+    loading.value = false;
+    window.$message.success(message);
+    downCount.value = 60;
+    const timer = setInterval(() => {
+      downCount.value -= 1;
+      if (downCount.value === 0) {
+        clearInterval(timer);
       }
-    };
+    }, 1000);
+  } catch (error: any) {
+    loading.value = false;
+    window.$message.error(error.message);
+  }
+};
 
-    /** platform: github, qq */
-    const handleBindThird = async (platform) => {
-      // const devUrl =
-      //   `http://localhost:8000/?client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
-      //   `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
-      if (platform === 'qq') {
-        if (userInfo.value.qq_users[0]) {
-          console.log('解绑qq');
-          const res: any = await fetchCancelBindQQ();
-          window.$message.success(res.message);
-        } else {
-          useQQLogin();
+/** platform: github, qq */
+const handleBindThird = async (platform) => {
+  // const devUrl =
+  //   `http://localhost:8000/?client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
+  //   `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
+  if (platform === 'qq') {
+    if (userInfo.value.qq_users[0]) {
+      console.log('解绑qq');
+      const res: any = await fetchCancelBindQQ();
+      window.$message.success(res.message);
+    } else {
+      useQQLogin();
+    }
+  } else {
+    if (userInfo.value.github_users[0]) {
+      console.log('解绑github');
+      const res: any = await fetchCancelBindGithub();
+      window.$message.success(res.message);
+    } else {
+      useGithubLogin();
+    }
+  }
+  userStore.getUserInfo();
+};
+
+const ajaxBindEmailForm = async () => {
+  const res: any = await fetchBindEmail(bindEmailForm.value);
+  window.$message.success(res.message);
+  bindEmailForm.value = {
+    email: '',
+    code: '',
+  };
+};
+
+const ajaxCancelBindEmailForm = async () => {
+  const res: any = await fetchCancelBindEmail(bindEmailForm.value.code);
+  window.$message.success(res.message);
+  bindEmailForm.value = {
+    email: '',
+    code: '',
+  };
+};
+const resetPwd = () => {
+  currCpt.value = 'ResetPwdCpt';
+};
+const getPwd = async () => {
+  const res = await fetchUserPwd();
+  password.value = res.data.password;
+  window.$message.success('获取密码成功！');
+};
+
+const submitCallback = () => {
+  return new Promise((res, rej) => {
+    // @ts-ignore
+    bindEmailFormRef.value.validate(async (errors) => {
+      if (!errors) {
+        try {
+          // @ts-ignore
+          if (userStore.userInfo.email_users[0]) {
+            await ajaxCancelBindEmailForm();
+          } else {
+            await ajaxBindEmailForm();
+          }
+          await userStore.getUserInfo();
+          res(1);
+        } catch (error) {
+          console.log(error);
+          rej();
         }
       } else {
-        if (userInfo.value.github_users[0]) {
-          console.log('解绑github');
-          const res: any = await fetchCancelBindGithub();
-          window.$message.success(res.message);
-        } else {
-          useGithubLogin();
-        }
+        rej();
       }
-      userStore.getUserInfo();
-    };
+    });
+  });
+};
 
-    const ajaxBindEmailForm = async () => {
-      const res: any = await fetchBindEmail(bindEmailForm.value);
-      window.$message.success(res.message);
-      bindEmailForm.value = {
-        email: '',
-        code: '',
-      };
-    };
+const handleBindEmail = () => {
+  // @ts-ignore
+  if (userInfo.value.email_users[0]) {
+    // @ts-ignore
+    bindEmailForm.value.email = userInfo.value.email_users[0].email;
+  }
+  showModal.value = true;
+};
 
-    const ajaxCancelBindEmailForm = async () => {
-      const res: any = await fetchCancelBindEmail(bindEmailForm.value.code);
-      window.$message.success(res.message);
-      bindEmailForm.value = {
-        email: '',
-        code: '',
-      };
-    };
-    const resetPwd = () => {
-      currCpt.value = 'ResetPwdCpt';
-    };
-    const getPwd = async () => {
-      const res = await fetchUserPwd();
-      password.value = res.data.password;
-      window.$message.success('获取密码成功！');
-    };
-
-    const submitCallback = () => {
-      return new Promise((res, rej) => {
-        // @ts-ignore
-        bindEmailFormRef.value.validate(async (errors) => {
-          if (!errors) {
-            try {
-              // @ts-ignore
-              if (userStore.userInfo.email_users[0]) {
-                await ajaxCancelBindEmailForm();
-              } else {
-                await ajaxBindEmailForm();
-              }
-              await userStore.getUserInfo();
-              res(1);
-            } catch (error) {
-              console.log(error);
-              rej();
-            }
-          } else {
-            rej();
-          }
-        });
-      });
-    };
-
-    const handleBindEmail = () => {
-      // @ts-ignore
-      if (userInfo.value.email_users[0]) {
-        // @ts-ignore
-        bindEmailForm.value.email = userInfo.value.email_users[0].email;
-      }
-      showModal.value = true;
-    };
-
-    const handlePositiveClick = () => {
-      // @ts-ignore
-      if (userInfo.value.email_users[0]) {
-        // @ts-ignore
-        bindEmailForm.value.email = userInfo.value.email_users[0].email;
-      }
-      showModal.value = true;
-    };
-    const handleNegativeClick = () => {};
-    const negativeClick = () => {
-      currCpt.value = '';
-    };
-
-    return {
-      password,
-      currCpt,
-      userInfo,
-      bindEmailRules,
-      bindEmailForm,
-      bindEmailFormRef,
-      showModal,
-      downCount,
-      loading,
-      sendBindEmailCode,
-      submitCallback,
-      handleBindEmail,
-      handleBindThird,
-      handlePositiveClick,
-      handleNegativeClick,
-      negativeClick,
-      resetPwd,
-      getPwd,
-    };
-  },
-});
+const handlePositiveClick = () => {
+  // @ts-ignore
+  if (userInfo.value.email_users[0]) {
+    // @ts-ignore
+    bindEmailForm.value.email = userInfo.value.email_users[0].email;
+  }
+  showModal.value = true;
+};
+const handleNegativeClick = () => {};
+const negativeClick = () => {
+  currCpt.value = '';
+};
 </script>
 
 <style lang="scss" scoped>

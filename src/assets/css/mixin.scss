@@ -109,7 +109,9 @@
 
 // 阴影
 @mixin shadow($color) {
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0 10px 10px #{$color};
+  box-shadow:
+    0 10px 10px rgba(0, 0, 0, 0.1),
+    0 10px 10px #{$color};
   // position: relative;
   // &::after {
   //   position: absolute;

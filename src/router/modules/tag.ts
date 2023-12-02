@@ -1,11 +1,10 @@
 import { PricetagsOutline } from '@vicons/ionicons5';
+import { RouteRecordRaw } from 'vue-router';
 
 import { ROUTE_ROLES, ROUTE_SORT } from '@/constant';
 import Layout from '@/layout/index.vue';
 
 import { renderIcon } from '../utils';
-
-import type { RouteRecordRaw } from 'vue-router';
 
 // 异步路由
 export const routes: RouteRecordRaw[] = [

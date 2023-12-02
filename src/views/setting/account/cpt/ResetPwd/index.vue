@@ -70,85 +70,66 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { LockClosedOutline } from '@vicons/ionicons5';
-import { defineComponent, ref } from 'vue';
+import { FormItemRule, FormRules } from 'naive-ui';
+import { ref } from 'vue';
 
 import { fetchUpdatePwd } from '@/api/user';
 
-import type { FormItemRule, FormRules } from 'naive-ui';
+const emits = defineEmits(['negativeClick']);
 
-export default defineComponent({
-  components: { LockClosedOutline },
-  emits: ['negativeClick'],
-  setup(props, { emit }) {
-    function validatePasswordStartWith(
-      rule: FormItemRule,
-      value: string
-    ): boolean {
-      return (
-        !!bindEmailForm.value.newpwd &&
-        bindEmailForm.value.newpwd.startsWith(value) &&
-        bindEmailForm.value.newpwd.length === value.length
-      );
-    }
-    const bindEmailRules: FormRules = {
-      oldpwd: { required: true, message: '请输入旧密码', trigger: 'blur' },
-      newpwd: { required: true, message: '请输入新密码', trigger: 'blur' },
-      newpwd2: {
-        required: true,
-        message: '请再次输入新密码',
-        trigger: 'blur',
-        validator: validatePasswordStartWith,
-      },
-    };
-    const loading = ref(false);
-    const showModal = ref(true);
-    const bindEmailFormRef = ref(null);
-    const bindEmailForm = ref({
-      oldpwd: '',
-      newpwd: '',
-      newpwd2: '',
-    });
-
-    const submitCallback = () => {
-      // @ts-ignore
-      bindEmailFormRef.value!.validate(async (errors) => {
-        if (!errors) {
-          try {
-            loading.value = true;
-            const res: any = await fetchUpdatePwd({
-              oldpwd: bindEmailForm.value.oldpwd,
-              newpwd: bindEmailForm.value.newpwd,
-            });
-            window.$message.success(res.message);
-            emit('negativeClick', false);
-          } catch (error) {
-            console.log(error);
-          }
-          loading.value = false;
-        }
-      });
-    };
-
-    const negativeClick = () => {
-      emit('negativeClick', false);
-    };
-
-    const afterLeave = () => {};
-
-    return {
-      loading,
-      bindEmailRules,
-      bindEmailFormRef,
-      bindEmailForm,
-      showModal,
-      submitCallback,
-      negativeClick,
-      afterLeave,
-    };
+function validatePasswordStartWith(rule: FormItemRule, value: string): boolean {
+  return (
+    !!bindEmailForm.value.newpwd &&
+    bindEmailForm.value.newpwd.startsWith(value) &&
+    bindEmailForm.value.newpwd.length === value.length
+  );
+}
+const bindEmailRules: FormRules = {
+  oldpwd: { required: true, message: '请输入旧密码', trigger: 'blur' },
+  newpwd: { required: true, message: '请输入新密码', trigger: 'blur' },
+  newpwd2: {
+    required: true,
+    message: '请再次输入新密码',
+    trigger: 'blur',
+    validator: validatePasswordStartWith,
   },
+};
+const loading = ref(false);
+const showModal = ref(true);
+const bindEmailFormRef = ref(null);
+const bindEmailForm = ref({
+  oldpwd: '',
+  newpwd: '',
+  newpwd2: '',
 });
+
+const submitCallback = () => {
+  // @ts-ignore
+  bindEmailFormRef.value!.validate(async (errors) => {
+    if (!errors) {
+      try {
+        loading.value = true;
+        const res: any = await fetchUpdatePwd({
+          oldpwd: bindEmailForm.value.oldpwd,
+          newpwd: bindEmailForm.value.newpwd,
+        });
+        window.$message.success(res.message);
+        emits('negativeClick', false);
+      } catch (error) {
+        console.log(error);
+      }
+      loading.value = false;
+    }
+  });
+};
+
+const negativeClick = () => {
+  emits('negativeClick', false);
+};
+
+const afterLeave = () => {};
 </script>
 
 <style lang="scss" scoped></style>

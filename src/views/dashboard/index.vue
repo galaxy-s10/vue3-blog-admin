@@ -19,19 +19,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
+<script lang="ts" setup>
 import { useUserStore } from '@/store/user';
 
-export default defineComponent({
-  components: {},
-  setup() {
-    const userStore = useUserStore();
-    const { userInfo, token } = userStore;
-    return { userInfo, token };
-  },
-});
+const userStore = useUserStore();
+const { userInfo } = userStore;
 </script>
 
 <style lang="scss" scoped>

@@ -8,29 +8,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { fetchFindBackend } from '@/api/backend';
 
 import AddBackend from '../add/index.vue';
 
-export default defineComponent({
-  components: { AddBackend },
-  props: {},
-  setup() {
-    const formData = ref({});
-    const route = useRoute();
+const formData = ref({});
+const route = useRoute();
 
-    onMounted(async () => {
-      if (!route.query.id) return;
-      const { data } = await fetchFindBackend(+route.query.id!);
-      formData.value = data;
-    });
-
-    return { route, formData };
-  },
+onMounted(async () => {
+  if (!route.query.id) return;
+  const { data } = await fetchFindBackend(+route.query.id!);
+  formData.value = data;
 });
 </script>
 

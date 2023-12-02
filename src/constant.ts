@@ -97,7 +97,6 @@ export const ROUTE_SORT = {
   user: 120,
   auth: 110,
   role: 110,
-  roleAuth: 110,
   thirdUser: 100,
 
   // comment: 80,

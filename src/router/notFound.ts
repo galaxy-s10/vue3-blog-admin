@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 
 // 异步路由
 export const routes: RouteRecordRaw[] = [

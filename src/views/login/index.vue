@@ -216,14 +216,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {
   LockClosedOutline,
   MailOutline,
   PersonOutline,
 } from '@vicons/ionicons5';
-import { defineComponent, ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import { fetchSendLoginCode, fetchSendRegisterCode } from '@/api/emailUser';
 import PoweredByCpt from '@/components/PoweredBy/index.vue';
@@ -239,153 +239,123 @@ const registerRules = {
   email: { required: true, message: '请输入邮箱', trigger: 'blur' },
   code: { required: true, message: '请输入验证码', trigger: 'blur' },
 };
-export default defineComponent({
-  components: {
-    MailOutline,
-    LockClosedOutline,
-    PersonOutline,
-    PoweredByCpt,
-  },
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const userStore = useUserStore();
-    const appStore = useAppStore();
 
-    /** qq登录 */
-    const qqLogin = () => {
-      useQQLogin();
-      appStore.setLoading(true);
-    };
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+const appStore = useAppStore();
 
-    /** github登录 */
-    const githubLogin = () => {
-      useGithubLogin();
-      appStore.setLoading(true);
-    };
+/** qq登录 */
+const qqLogin = () => {
+  useQQLogin();
+  appStore.setLoading(true);
+};
 
-    const loginForm = ref({
-      id: '',
-      password: '',
-    });
-    const registerForm = ref({
-      email: '',
-      code: '',
-    });
-    const loginFormRef = ref(null);
-    const registerFormRef = ref(null);
-    const currentTab = ref('pwdlogin');
-    const sendCodeLoading = ref(false);
-    const downCount = ref(0);
+/** github登录 */
+const githubLogin = () => {
+  useGithubLogin();
+  appStore.setLoading(true);
+};
 
-    const handleLogin = async () => {
-      let token = null;
-      if (currentTab.value === 'codelogin') {
-        token = await userStore.codeLogin({
-          email: registerForm.value.email,
-          code: registerForm.value.code,
-        });
-      } else {
-        token = await userStore.pwdLogin({
-          id: +loginForm.value.id,
-          password: loginForm.value.password,
-        });
-      }
-      if (token) {
-        window.$message.success('登录成功!');
-        router.push((route.query.redirect as '') || '/');
-      }
-    };
-    const handleRegister = async () => {
-      const { token } = await userStore.register({
-        email: registerForm.value.email,
-        code: registerForm.value.code,
-      });
-      if (token) {
-        window.$message.success('注册成功!');
-        router.push((route.query.redirect as '') || '/');
-      }
-    };
-    const handleLoginSubmit = (e) => {
-      e.preventDefault();
-      // @ts-ignore
-      loginFormRef.value.validate((errors) => {
-        if (!errors) {
-          handleLogin();
-        }
-      });
-    };
-    const handleRegisterSubmit = (e) => {
-      e.preventDefault();
-      // @ts-ignore
-      registerFormRef.value.validate((errors) => {
-        if (!errors) {
-          if (currentTab.value === 'register') {
-            handleRegister();
-          } else {
-            handleLogin();
-          }
-        }
-      });
-    };
-    /** 发送验证码 */
-    const sendCode = async () => {
-      if (registerForm.value.email === '')
-        return window.$message.warning('请输入邮箱!');
-      try {
-        sendCodeLoading.value = true;
-        if (currentTab.value === 'codelogin') {
-          await fetchSendLoginCode(registerForm.value.email);
-        } else {
-          await fetchSendRegisterCode(registerForm.value.email);
-        }
-        sendCodeLoading.value = false;
-        window.$message.success('发送成功!');
-        downCount.value = 60;
-        const timer = setInterval(() => {
-          downCount.value -= 1;
-          if (downCount.value === 0) {
-            clearInterval(timer);
-          }
-        }, 1000);
-      } catch (error: any) {
-        sendCodeLoading.value = false;
-        console.log(error);
-      }
-    };
-    const tabChange = (v) => {
-      currentTab.value = v;
-    };
-    const focus = ref(false);
-    const onFocus = () => {
-      focus.value = true;
-    };
-    const onBlur = () => {
-      focus.value = false;
-    };
-
-    return {
-      qqLogin,
-      githubLogin,
-      loginRules,
-      registerRules,
-      loginForm,
-      registerForm,
-      handleLoginSubmit,
-      handleRegisterSubmit,
-      loginFormRef,
-      registerFormRef,
-      sendCode,
-      downCount,
-      currentTab,
-      tabChange,
-      sendCodeLoading,
-      onFocus,
-      onBlur,
-      focus,
-    };
-  },
+const loginForm = ref({
+  id: '',
+  password: '',
 });
+const registerForm = ref({
+  email: '',
+  code: '',
+});
+const loginFormRef = ref(null);
+const registerFormRef = ref(null);
+const currentTab = ref('pwdlogin');
+const sendCodeLoading = ref(false);
+const downCount = ref(0);
+
+const handleLogin = async () => {
+  let token = null;
+  if (currentTab.value === 'codelogin') {
+    token = await userStore.codeLogin({
+      email: registerForm.value.email,
+      code: registerForm.value.code,
+    });
+  } else {
+    token = await userStore.pwdLogin({
+      id: +loginForm.value.id,
+      password: loginForm.value.password,
+    });
+  }
+  if (token) {
+    window.$message.success('登录成功!');
+    router.push((route.query.redirect as '') || '/');
+  }
+};
+const handleRegister = async () => {
+  const { token } = await userStore.register({
+    email: registerForm.value.email,
+    code: registerForm.value.code,
+  });
+  if (token) {
+    window.$message.success('注册成功!');
+    router.push((route.query.redirect as '') || '/');
+  }
+};
+const handleLoginSubmit = (e) => {
+  e.preventDefault();
+  // @ts-ignore
+  loginFormRef.value.validate((errors) => {
+    if (!errors) {
+      handleLogin();
+    }
+  });
+};
+const handleRegisterSubmit = (e) => {
+  e.preventDefault();
+  // @ts-ignore
+  registerFormRef.value.validate((errors) => {
+    if (!errors) {
+      if (currentTab.value === 'register') {
+        handleRegister();
+      } else {
+        handleLogin();
+      }
+    }
+  });
+};
+/** 发送验证码 */
+const sendCode = async () => {
+  if (registerForm.value.email === '')
+    return window.$message.warning('请输入邮箱!');
+  try {
+    sendCodeLoading.value = true;
+    if (currentTab.value === 'codelogin') {
+      await fetchSendLoginCode(registerForm.value.email);
+    } else {
+      await fetchSendRegisterCode(registerForm.value.email);
+    }
+    sendCodeLoading.value = false;
+    window.$message.success('发送成功!');
+    downCount.value = 60;
+    const timer = setInterval(() => {
+      downCount.value -= 1;
+      if (downCount.value === 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  } catch (error: any) {
+    sendCodeLoading.value = false;
+    console.log(error);
+  }
+};
+const tabChange = (v) => {
+  currentTab.value = v;
+};
+const focus = ref(false);
+const onFocus = () => {
+  focus.value = true;
+};
+const onBlur = () => {
+  focus.value = false;
+};
 </script>
 
 <style lang="scss">

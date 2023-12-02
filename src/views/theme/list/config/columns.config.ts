@@ -1,6 +1,6 @@
-import { ILink } from '@/interface';
+import { DataTableColumns } from 'naive-ui';
 
-import type { DataTableColumns } from 'naive-ui';
+import { ILink } from '@/interface';
 
 export const columnsConfig = (): DataTableColumns<ILink> => {
   return [

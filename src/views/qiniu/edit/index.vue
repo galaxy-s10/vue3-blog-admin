@@ -1,50 +1,29 @@
 <template>
-  <div>
-    <h-form
-      ref="formRef"
-      v-bind="formConfig"
-      v-model="formData"
-      :show-action="showAction"
-    ></h-form>
-  </div>
+  <HForm
+    v-bind="formConfig"
+    v-model="formData"
+    :show-action="showAction"
+  ></HForm>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
 
 import HForm from '@/components/Base/Form';
 
 import { formConfig } from './config/form.config';
 
-export default defineComponent({
-  components: { HForm },
-  props: {
-    modelValue: {
-      type: Object,
-      default: () => {},
-    },
-    showAction: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  setup(props) {
-    const formData = ref({ ...props.modelValue });
-    const formRef = ref<any>(null);
-
-    const validateForm = async () => {
-      const res = await formRef.value.handleValidate();
-      return res;
-    };
-
-    return {
-      formRef,
-      formConfig,
-      formData,
-      validateForm,
-    };
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: any;
+    showAction?: boolean;
+  }>(),
+  {
+    modelValue: {},
+    showAction: true,
+  }
+);
+const formData = ref({ ...props.modelValue });
 </script>
 
 <style lang="scss" scoped></style>
