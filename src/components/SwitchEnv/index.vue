@@ -100,7 +100,7 @@ function handleVConsole() {
 const modalConfirm = () => {
   appStore.setEnv(currEnv.value);
   setCurrEnv(currEnv.value);
-  // window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
+  window.$message.success(`切换${parseEnv(currEnv.value)}环境成功！`);
   modalVisiable.value = false;
   userStore.logout();
   // eslint-disable-next-line
