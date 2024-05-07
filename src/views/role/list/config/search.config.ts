@@ -39,6 +39,6 @@ export const searchFormConfig: IForm<ISearch<IRole>> = {
       label: '时间范围',
       placeholder: '请选择时间范围',
     },
-    ...useOrder(columnsConfig()),
+    ...useOrder(columnsConfig),
   ],
 };

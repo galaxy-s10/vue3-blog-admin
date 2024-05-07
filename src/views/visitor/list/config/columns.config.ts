@@ -26,6 +26,12 @@ export const columnsConfig = (): DataTableColumns<ITag> => {
       width: 400,
     },
     {
+      title: '页面路径',
+      key: 'page_url',
+      align: 'center',
+      width: 400,
+    },
+    {
       title: '创建时间',
       key: 'created_at',
       align: 'center',
