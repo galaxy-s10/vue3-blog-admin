@@ -17,7 +17,7 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       align: 'center',
       width: 200,
       render(row) {
-        return h('div', {}, row.email || '-');
+        return h('div', {}, row.email || '暂无');
       },
     },
     {

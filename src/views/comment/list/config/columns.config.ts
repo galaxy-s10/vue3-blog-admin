@@ -46,7 +46,7 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       key: 'to_user_id',
       align: 'center',
       render(row) {
-        return h('div', {}, row.to_user?.username || '-');
+        return h('div', {}, row.to_user?.username || '暂无');
       },
     },
     {

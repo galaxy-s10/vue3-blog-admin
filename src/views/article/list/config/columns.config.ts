@@ -17,7 +17,7 @@ export const columnsConfig = (): DataTableColumns<IArticle> => {
       align: 'center',
       width: 100,
       render(row) {
-        return h('div', {}, row.priority || '-');
+        return h('div', {}, row.priority || '暂无');
       },
     },
     {
@@ -32,7 +32,7 @@ export const columnsConfig = (): DataTableColumns<IArticle> => {
       align: 'center',
       width: 100,
       render(row) {
-        return h('div', {}, row.desc || '-');
+        return h('div', {}, row.desc || '暂无');
       },
     },
     {
@@ -47,7 +47,7 @@ export const columnsConfig = (): DataTableColumns<IArticle> => {
             width: 120,
           });
         }
-        return h('span', {}, '-');
+        return h('span', {}, '暂无');
       },
     },
     {

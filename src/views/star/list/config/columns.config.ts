@@ -38,7 +38,7 @@ export const columnsConfig = (): DataTableColumns<IStar> => {
       align: 'center',
       width: 150,
       render(row) {
-        return h('div', {}, row.to_user?.username || '-');
+        return h('div', {}, row.to_user?.username || '暂无');
       },
     },
     {
