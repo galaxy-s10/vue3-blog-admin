@@ -39,6 +39,12 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       },
     },
     {
+      title: '权重',
+      key: 'priority',
+      align: 'center',
+      width: 200,
+    },
+    {
       title: '简介',
       key: 'desc',
       align: 'center',

@@ -2,8 +2,8 @@ import portfinder from 'portfinder';
 import { Configuration } from 'webpack';
 import WebpackBar from 'webpackbar';
 
-import TerminalPrintPlugin from '../TerminalPrintPlugin';
 import { outputStaticUrl, webpackBarEnable } from '../constant';
+import TerminalPrintPlugin from '../TerminalPrintPlugin';
 import { chalkINFO } from '../utils/chalkTip';
 import { resolveApp } from '../utils/path';
 

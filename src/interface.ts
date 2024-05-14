@@ -34,7 +34,7 @@ export interface IStar {
   to_user_id?: number;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
   from_user?: IUser;
   to_user?: IUser;
   article?: any;
@@ -82,7 +82,7 @@ export interface IComment {
   from_user_id?: number;
   content?: string;
   children_comment_total?: number;
-  ua?: string;
+  user_agent?: string;
   ip?: string;
   ip_data?: string;
   parent_comment_id?: number;
@@ -189,8 +189,13 @@ export interface IVisitorLog {
   id?: number;
   user_id?: number;
   ip?: string;
-  status?: number;
   ip_data?: string;
+  page_url?: string;
+  user_agent?: string;
+  total?: number; // 获取当天访客访问数据的时候添加了一个total字段
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
 }
 
 export interface IBlacklist {
@@ -199,10 +204,12 @@ export interface IBlacklist {
   user_id?: number;
   type?: number;
   msg?: string;
+  user_agent?: string;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;
 }
+
 export interface IMonit {
   id?: number;
   type?: number;
@@ -214,7 +221,7 @@ export interface IEmailUser {
   email?: string;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
 }
 export interface IGithubUser {
   id?: number;
@@ -250,7 +257,7 @@ export interface IGithubUser {
   two_factor_authentication?: string;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
 }
 export interface IUser {
   id?: number;
@@ -286,7 +293,7 @@ export interface IQqUser {
   year?: string;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
 }
 
 export interface ILink {
@@ -297,9 +304,10 @@ export interface ILink {
   desc?: string;
   url?: string;
   status?: number;
+  priority?: number;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
 }
 export interface IMusic {
   id?: number;
@@ -310,7 +318,7 @@ export interface IMusic {
   status?: number;
   created_at?: string;
   updated_at?: string;
-  deleted_at?: any;
+  deleted_at?: string;
 }
 export interface IList {
   nowPage?: number;

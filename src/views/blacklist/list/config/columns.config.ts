@@ -29,6 +29,12 @@ export const columnsConfig = (): DataTableColumns<IBlacklist> => {
       width: 200,
     },
     {
+      title: 'user_agent',
+      key: 'user_agent',
+      align: 'center',
+      width: 300,
+    },
+    {
       title: 'msg',
       key: 'msg',
       align: 'center',

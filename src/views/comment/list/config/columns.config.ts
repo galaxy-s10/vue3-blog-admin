@@ -66,8 +66,8 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       align: 'center',
     },
     {
-      title: 'ua',
-      key: 'ua',
+      title: 'user_agent',
+      key: 'user_agent',
       align: 'center',
       width: 200,
       ellipsis: {
