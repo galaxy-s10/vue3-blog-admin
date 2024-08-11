@@ -9,11 +9,13 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       title: 'id',
       key: 'id',
       align: 'center',
+      width: 100,
     },
     {
       title: '名称',
       key: 'name',
       align: 'center',
+      width: 150,
     },
     {
       title: '简介',
@@ -28,6 +30,7 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       title: '背景图',
       key: 'bg_url',
       align: 'center',
+      width: 100,
       render(row) {
         return h('img', {
           src: row.bg_url,
@@ -48,11 +51,13 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       title: '权重',
       key: 'priority',
       align: 'center',
+      width: 100,
     },
     {
       title: '状态',
       key: 'status',
       align: 'center',
+      width: 100,
       render(row) {
         return row.status === 1 ? '已发布' : '未发布';
       },
@@ -62,12 +67,14 @@ export const columnsConfig = (): DataTableColumns<IWorks> => {
       key: 'created_at',
       align: 'center',
       width: 200,
+      fixed: 'right',
     },
     {
       title: '最后更新',
       key: 'updated_at',
       align: 'center',
       width: 200,
+      fixed: 'right',
     },
   ];
 };

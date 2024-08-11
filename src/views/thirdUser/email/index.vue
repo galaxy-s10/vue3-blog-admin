@@ -7,7 +7,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1500"
+      :scroll-x="scrollX"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -69,7 +69,12 @@ const createColumns = (): DataTableColumns<IEmailUser> => {
 };
 
 const columns = createColumns();
-
+const scrollX = ref(0);
+columns.forEach((item) => {
+  if (item.width) {
+    scrollX.value += Number(item.width);
+  }
+});
 onMounted(async () => {
   await ajaxFetchList(params.value);
 });

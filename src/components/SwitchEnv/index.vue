@@ -88,13 +88,10 @@ if (hasEnv) {
 handleVConsole();
 
 function handleVConsole() {
-  // if (['development', 'beta'].includes(currEnv.value)) {
+  // import('vconsole').then((vConsole) => {
   //   // eslint-disable-next-line
-  //   import('vconsole').then((vConsole) => {
-  //     // eslint-disable-next-line
-  //     new vConsole.default();
-  //   });
-  // }
+  //   new vConsole.default();
+  // });
 }
 
 const modalConfirm = () => {

@@ -42,6 +42,7 @@ export const columnsConfig = (): DataTableColumns<IGithubUser> => {
       title: 'avatar_url',
       key: 'avatar_url',
       align: 'center',
+      width: 100,
       render(row) {
         return h('img', {
           src: row.avatar_url,

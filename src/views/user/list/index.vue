@@ -7,7 +7,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1800"
+      :scroll-x="scrollX"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -139,6 +139,7 @@ const createColumns = (): DataTableColumns<IUser> => {
     key: 'actions',
     fixed: 'right',
     align: 'center',
+    width: 200,
     render(row) {
       return h(NSpace, { justify: 'center' }, () => [
         h(
@@ -192,7 +193,12 @@ const createColumns = (): DataTableColumns<IUser> => {
 };
 
 const columns = createColumns();
-
+const scrollX = ref(0);
+columns.forEach((item) => {
+  if (item.width) {
+    scrollX.value += Number(item.width);
+  }
+});
 const ajaxFetchList = async (args) => {
   try {
     tableListLoading.value = true;

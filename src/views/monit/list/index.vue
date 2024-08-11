@@ -7,7 +7,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1000"
+      :scroll-x="scrollX"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -48,7 +48,12 @@ const createColumns = (): DataTableColumns<IMonit> => {
 };
 
 const columns = createColumns();
-
+const scrollX = ref(0);
+columns.forEach((item) => {
+  if (item.width) {
+    scrollX.value += Number(item.width);
+  }
+});
 const ajaxFetchList = async (args) => {
   try {
     tableListLoading.value = true;

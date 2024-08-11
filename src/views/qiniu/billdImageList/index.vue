@@ -67,7 +67,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="2500"
+      :scroll-x="scrollX"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NButton, NPopconfirm, NSpace, DataTableColumns } from 'naive-ui';
+import { DataTableColumns, NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { TableColumn } from 'naive-ui/es/data-table/src/interface';
 import { h, onMounted, ref } from 'vue';
 
@@ -200,7 +200,12 @@ const createColumns = (): DataTableColumns<IQiniuData> => {
 };
 
 const columns = createColumns();
-
+const scrollX = ref(0);
+columns.forEach((item) => {
+  if (item.width) {
+    scrollX.value += Number(item.width);
+  }
+});
 const getDiff = async () => {
   try {
     const res: any = await fetchDiff({ prefix: params.value.prefix });

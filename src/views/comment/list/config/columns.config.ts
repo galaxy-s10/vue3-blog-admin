@@ -9,6 +9,13 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       title: 'id',
       key: 'id',
       align: 'center',
+      width: 150,
+    },
+    {
+      title: '文章id',
+      key: 'article_id',
+      align: 'center',
+      width: 150,
     },
     {
       title: '状态',
@@ -17,21 +24,19 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       render(row) {
         return row.status === 1 ? '显示' : '隐藏';
       },
-    },
-    {
-      title: '文章id',
-      key: 'article_id',
-      align: 'center',
+      width: 150,
     },
     {
       title: '父评论id',
       key: 'parent_comment_id',
       align: 'center',
+      width: 150,
     },
     {
       title: '回复id',
       key: 'reply_comment_id',
       align: 'center',
+      width: 150,
     },
     {
       title: '留言的用户',
@@ -40,6 +45,7 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       render(row) {
         return h('div', {}, row.from_user!.username);
       },
+      width: 200,
     },
     {
       title: '被回复的用户',
@@ -48,6 +54,7 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       render(row) {
         return h('div', {}, row.to_user?.username || '暂无');
       },
+      width: 200,
     },
     {
       title: '内容',
@@ -59,11 +66,13 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       title: '子评论数',
       key: 'children_comment_total',
       align: 'center',
+      width: 100,
     },
     {
       title: '获赞数',
       key: 'star_total',
       align: 'center',
+      width: 100,
     },
     {
       title: 'user_agent',
@@ -93,14 +102,14 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       title: '创建时间',
       key: 'created_at',
       align: 'center',
-      width: 180,
+      width: 200,
       fixed: 'right',
     },
     {
       title: '最后更新',
       key: 'updated_at',
       align: 'center',
-      width: 180,
+      width: 200,
       fixed: 'right',
     },
   ];

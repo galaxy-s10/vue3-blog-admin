@@ -21,7 +21,7 @@ export const searchFormConfig: IForm<ISearch<IVisitorLog>> = {
       field: 'keyWord',
       type: FormTypeEnum.input,
       label: '关键字',
-      placeholder: '访客ip/用户id/ip信息',
+      placeholder: '访客ip/用户id/ip信息/user_agent',
     },
     {
       field: 'rangTimeType',

@@ -83,13 +83,19 @@ service.interceptors.response.use(
         userStore.logout();
         router.push('/login');
         window.close();
-        window.opener?.postMessage(
-          {
-            type: 'login_expired',
-            data: null,
-          },
-          '*'
-        );
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              type: 'login_expired',
+              data: null,
+            },
+            '*'
+          );
+        } else {
+          console.error('no window.opener login_expired');
+          alert('no window.opener login_expired');
+        }
+
         return Promise.reject(errorResponseData);
       }
       if (statusCode === 403) {

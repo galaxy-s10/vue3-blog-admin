@@ -6,7 +6,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1800"
+      :scroll-x="scrollX"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -33,10 +33,10 @@
 
 <script lang="ts" setup>
 import {
+  DataTableColumns,
   NButton,
   NPopconfirm,
   NSpace,
-  DataTableColumns,
   UploadFileInfo,
 } from 'naive-ui';
 import { TableColumn } from 'naive-ui/es/data-table/src/interface';
@@ -161,7 +161,12 @@ const createColumns = (): DataTableColumns<IMusic> => {
 };
 
 const columns = createColumns();
-
+const scrollX = ref(0);
+columns.forEach((item) => {
+  if (item.width) {
+    scrollX.value += Number(item.width);
+  }
+});
 const ajaxFetchList = async (args) => {
   try {
     tableListLoading.value = true;
@@ -210,7 +215,6 @@ const modalCancel = () => {
 const modalConfirm = async () => {
   try {
     modalConfirmLoading.value = true;
-    console.log('.......', addMusicRef.value.validateForm, addMusicRef.value);
     const res = await addMusicRef.value.validateForm();
     await fetchUpdateMusic({
       id: res.id,

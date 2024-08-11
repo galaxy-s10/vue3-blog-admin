@@ -100,13 +100,13 @@ export const columnsConfig = (): DataTableColumns<IQiniuData> => {
       title: '创建时间',
       key: 'created_at',
       align: 'center',
-      width: 180,
+      width: 200,
     },
     {
       title: '最后更新',
       key: 'updated_at',
       align: 'center',
-      width: 180,
+      width: 200,
     },
   ];
 };

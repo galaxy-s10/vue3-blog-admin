@@ -7,7 +7,7 @@
     ></HSearch>
     <n-data-table
       remote
-      :scroll-x="1800"
+      :scroll-x="scrollX"
       :loading="tableListLoading"
       :columns="columns"
       :data="tableListData"
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NButton, NPopconfirm, NSpace, DataTableColumns } from 'naive-ui';
+import { DataTableColumns, NButton, NPopconfirm, NSpace } from 'naive-ui';
 import { TableColumn } from 'naive-ui/lib/data-table/src/interface';
 import { h, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -179,7 +179,12 @@ const createColumns = (): DataTableColumns<IArticle> => {
 };
 
 const columns = createColumns();
-
+const scrollX = ref(0);
+columns.forEach((item) => {
+  if (item.width) {
+    scrollX.value += Number(item.width);
+  }
+});
 const deleteImg = async (url) => {
   const key = url.replace(QINIU_CDN_URL, '');
   const res = await fetchDeleteQiniuDataByQiniuKey(key);

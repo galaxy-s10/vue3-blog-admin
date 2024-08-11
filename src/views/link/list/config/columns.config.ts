@@ -24,7 +24,7 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       title: '名称',
       key: 'name',
       align: 'center',
-      width: 200,
+      width: 150,
     },
     {
       title: '头像',
@@ -42,13 +42,13 @@ export const columnsConfig = (): DataTableColumns<ILink> => {
       title: '权重',
       key: 'priority',
       align: 'center',
-      width: 200,
+      width: 100,
     },
     {
       title: '简介',
       key: 'desc',
       align: 'center',
-      width: 200,
+      width: 100,
       ellipsis: {
         tooltip: true,
       },

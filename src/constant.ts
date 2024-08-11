@@ -90,6 +90,7 @@ export const ROUTE_SORT = {
 
   comment: 199,
   star: 199,
+  buryingPoint: 199,
 
   setting: 180,
   schedule: 180,
