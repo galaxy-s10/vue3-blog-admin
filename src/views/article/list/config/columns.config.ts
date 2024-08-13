@@ -66,6 +66,12 @@ export const columnsConfig = (): DataTableColumns<IArticle> => {
       width: 100,
     },
     {
+      title: '访问量',
+      key: 'visit',
+      align: 'center',
+      width: 100,
+    },
+    {
       title: '获赞数',
       key: 'star_total',
       align: 'center',
