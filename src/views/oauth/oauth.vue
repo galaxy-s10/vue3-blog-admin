@@ -8,7 +8,7 @@ import { hrefToTarget } from 'billd-utils';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { BLOG_ADMIN_URL, BLOG_CLIENT_URL } from '@/constant';
+import { BLOG_CLIENT_URL } from '@/constant';
 import { handleLogin } from '@/hooks/use-login';
 import { clearLoginEnv, getLoginEnv } from '@/utils/cookie';
 
@@ -17,10 +17,9 @@ const route = useRoute();
 const currentOauth = ref('非法');
 const errMsg = ref('');
 
-function handleMsg({ stateJson, authCode, method }) {
+function handleMsg({ state, stateJson, authCode, method }) {
   try {
     const { isMobile, isAdmin, env } = stateJson;
-    const loginEnv = JSON.stringify(stateJson);
     if (isMobile && env === 'qq') {
       // 移动端的前后台qq登录，重定向后地址栏(也就是https://admin.hsslive.cn/oauth/)只有code，没有state（应该是qq互联的问题。）额外处理
       // 因为登录前记录了登录环境信息，因此这里直接将登录信息和code都带到地址栏
@@ -28,9 +27,7 @@ function handleMsg({ stateJson, authCode, method }) {
         handleLogin({ data: { type: 'qq_login', data: authCode } });
       } else {
         hrefToTarget(
-          `${isAdmin ? BLOG_ADMIN_URL : BLOG_CLIENT_URL}?code=${
-            authCode as string
-          }&loginEnv=${loginEnv as string}`
+          `${BLOG_CLIENT_URL}?code=${authCode as string}&state=${state}`
         );
       }
 
@@ -46,9 +43,7 @@ function handleMsg({ stateJson, authCode, method }) {
         }
       } else {
         hrefToTarget(
-          `${BLOG_CLIENT_URL}?code=${authCode as string}&loginEnv=${
-            loginEnv as string
-          }`
+          `${BLOG_CLIENT_URL}?code=${authCode as string}&state=${state}`
         );
       }
     } else {
@@ -96,7 +91,7 @@ onMounted(() => {
   if (!stateJson) return;
 
   if (stateJson.isDev) {
-    handleMsg({ stateJson, authCode, method });
+    handleMsg({ state, stateJson, authCode, method });
     return;
   }
 
@@ -114,7 +109,7 @@ onMounted(() => {
     console.log(window.decodeURIComponent(loginEnv));
     return;
   }
-  handleMsg({ stateJson, authCode, method });
+  handleMsg({ state, stateJson, authCode, method });
 });
 </script>
 
