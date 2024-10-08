@@ -75,7 +75,6 @@ watch(
   () => appStore.env,
   () => {
     currEnv.value = appStore.env;
-    handleVConsole();
   }
 );
 
@@ -84,14 +83,6 @@ if (hasEnv) {
 } else {
   appStore.setEnv('prod');
   setCurrEnv('prod');
-}
-handleVConsole();
-
-function handleVConsole() {
-  // import('vconsole').then((vConsole) => {
-  //   // eslint-disable-next-line
-  //   new vConsole.default();
-  // });
 }
 
 const modalConfirm = () => {

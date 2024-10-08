@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts" setup>
+import VConsole from 'vconsole';
 import { toRef } from 'vue';
 
 import SwitchEnvCpt from '@/components/SwitchEnv/index.vue';
@@ -17,6 +18,12 @@ import { useAppStore } from '@/store/app';
 const appStore = useAppStore();
 const appLoading = toRef(appStore, 'loading');
 loginMessage();
+function handleVConsole() {
+  const vConsole = new VConsole();
+  console.log(vConsole);
+}
+handleVConsole();
+console.log(window.location.href);
 </script>
 
 <style lang="scss" scoped>

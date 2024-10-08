@@ -205,9 +205,6 @@ const sendBindEmailCode = async () => {
 
 /** platform: github, qq */
 const handleBindThird = async (platform) => {
-  // const devUrl =
-  //   `http://localhost:8000/?client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
-  //   `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
   if (platform === 'qq') {
     if (userInfo.value.qq_users[0]) {
       console.log('解绑qq');

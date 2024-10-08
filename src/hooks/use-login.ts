@@ -70,7 +70,9 @@ export const loginMessage = () => {
 
 export const useQQLogin = () => {
   const url = (state: string) =>
-    `${QQ_OAUTH_URL}client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login&scope=get_user_info,get_vip_info,get_vip_rich_info&state=${state}`;
+    `${QQ_OAUTH_URL}/authorize?response_type=code&client_id=${QQ_CLIENT_ID}&redirect_uri=${encodeURI(
+      `${REDIRECT_URI}qq_login`
+    )}&scope=get_user_info,get_vip_info,get_vip_rich_info&state=${state}`;
   let loginEnv = JSON.stringify({
     isMobile: false,
     isAdmin: true,
@@ -79,11 +81,11 @@ export const useQQLogin = () => {
   if (isMobile()) {
     loginEnv = JSON.stringify({ ...JSON.parse(loginEnv), isMobile: true });
     setLoginEnv(loginEnv);
-    hrefToTarget(url(window.btoa(loginEnv)));
+    hrefToTarget(url(loginEnv));
   } else {
     setLoginEnv(loginEnv);
     window.open(
-      url(window.btoa(loginEnv)),
+      url(loginEnv),
       'qq_login_window',
       'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
     );
@@ -101,11 +103,11 @@ export const useGithubLogin = () => {
   if (isMobile()) {
     loginEnv = JSON.stringify({ ...JSON.parse(loginEnv), isMobile: true });
     setLoginEnv(loginEnv);
-    hrefToTarget(url(window.btoa(loginEnv)));
+    hrefToTarget(url(loginEnv));
   } else {
     setLoginEnv(loginEnv);
     window.open(
-      url(window.btoa(loginEnv)),
+      url(loginEnv),
       'github_login_window',
       'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
     );

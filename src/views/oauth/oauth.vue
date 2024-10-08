@@ -1,5 +1,6 @@
 <template>
-  <div>{{ currentOauth }}登录{{ currentOauth === '非法' ? '' : '...' }}</div>
+  <div v-if="!errMsg.length">{{ currentOauth }}登录...</div>
+  <div v-else>非法登录！{{ errMsg }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -14,6 +15,7 @@ import { clearLoginEnv, getLoginEnv } from '@/utils/cookie';
 const route = useRoute();
 
 const currentOauth = ref('非法');
+const errMsg = ref('');
 
 function handleMsg({ stateJson, authCode, method }) {
   try {
@@ -84,7 +86,7 @@ onMounted(() => {
 
   let stateJson;
   try {
-    stateJson = JSON.parse(window.atob(state as string));
+    stateJson = JSON.parse(state as string);
     console.log('解密state');
     console.log(stateJson);
   } catch (error) {
@@ -105,11 +107,11 @@ onMounted(() => {
     console.error('getLoginEnv为空');
     return;
   }
-  if (state !== window.btoa(window.decodeURIComponent(loginEnv))) {
+  if (state !== window.decodeURIComponent(loginEnv)) {
     console.error('非法回调');
     console.log(state);
     console.log(loginEnv);
-    console.log(window.btoa(window.decodeURIComponent(loginEnv)));
+    console.log(window.decodeURIComponent(loginEnv));
     return;
   }
   handleMsg({ stateJson, authCode, method });
