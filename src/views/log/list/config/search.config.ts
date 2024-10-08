@@ -18,11 +18,17 @@ export const searchFormConfig: IForm<ISearch<ILog>> = {
       placeholder: '请输入id',
     },
     {
+      field: 'user_id',
+      type: FormTypeEnum.input,
+      label: '用户id',
+      placeholder: '请输入用户id',
+    },
+    {
       field: 'keyWord',
       type: FormTypeEnum.input,
       label: '关键字',
       placeholder:
-        'user_id/api_user_agent/api_real_ip/api_host/api_hostname/api_method/api_path',
+        'api_user_agent/api_real_ip/api_host/api_hostname/api_method/api_path',
     },
     {
       field: 'rangTimeType',

@@ -18,10 +18,16 @@ export const searchFormConfig: IForm<ISearch<IBlacklist>> = {
       placeholder: '请输入id',
     },
     {
+      field: 'user_id',
+      type: FormTypeEnum.input,
+      label: '用户id',
+      placeholder: '请输入用户id',
+    },
+    {
       field: 'keyWord',
       type: FormTypeEnum.input,
       label: '关键字',
-      placeholder: 'ip/user_id/msg',
+      placeholder: 'ip/msg',
     },
     {
       field: 'rangTimeType',

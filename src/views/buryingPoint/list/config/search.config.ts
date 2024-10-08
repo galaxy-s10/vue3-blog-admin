@@ -18,16 +18,16 @@ export const searchFormConfig: IForm<ISearch<IBuryingPoint>> = {
       placeholder: '请输入id',
     },
     {
-      field: 'article_id',
-      type: FormTypeEnum.input,
-      label: '文章id',
-      placeholder: '请输入文章id',
-    },
-    {
       field: 'user_id',
       type: FormTypeEnum.input,
       label: '用户id',
       placeholder: '请输入用户id',
+    },
+    {
+      field: 'article_id',
+      type: FormTypeEnum.input,
+      label: '文章id',
+      placeholder: '请输入文章id',
     },
     {
       field: 'field_a',
@@ -76,6 +76,12 @@ export const searchFormConfig: IForm<ISearch<IBuryingPoint>> = {
       type: FormTypeEnum.input,
       label: '关键字',
       placeholder: 'ip/user_agent/备注',
+    },
+    {
+      field: 'rangTimeType',
+      type: FormTypeEnum.datePicker,
+      label: '时间范围',
+      placeholder: '请选择时间范围',
     },
     ...useOrder(columnsConfig),
   ],

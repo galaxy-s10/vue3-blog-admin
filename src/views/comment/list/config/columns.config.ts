@@ -39,7 +39,7 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       width: 150,
     },
     {
-      title: '留言的用户',
+      title: '留言用户',
       key: 'from_user_id',
       align: 'center',
       render(row) {
@@ -48,7 +48,7 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       width: 200,
     },
     {
-      title: '被回复的用户',
+      title: '被留言用户',
       key: 'to_user_id',
       align: 'center',
       render(row) {
@@ -90,13 +90,10 @@ export const columnsConfig = (): DataTableColumns<IComment> => {
       width: 200,
     },
     {
-      title: 'ip_data',
+      title: 'ip信息',
       key: 'ip_data',
       align: 'center',
-      width: 200,
-      ellipsis: {
-        tooltip: true,
-      },
+      width: 300,
     },
     {
       title: '创建时间',

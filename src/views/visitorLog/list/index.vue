@@ -22,7 +22,7 @@
 import { DataTableColumns } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 
-import { fetchVisitorList } from '@/api/visitor';
+import { fetchVisitorList } from '@/api/visitorLog';
 import HSearch from '@/components/Base/Search';
 import { usePage } from '@/hooks/use-page';
 import { IList, IVisitorLog } from '@/interface';

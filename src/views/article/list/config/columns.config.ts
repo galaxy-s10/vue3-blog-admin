@@ -84,7 +84,7 @@ export const columnsConfig = (): DataTableColumns<IArticle> => {
       width: 100,
     },
     {
-      title: '是否开启评论',
+      title: '评论开关',
       key: 'is_comment',
       align: 'center',
       width: 100,

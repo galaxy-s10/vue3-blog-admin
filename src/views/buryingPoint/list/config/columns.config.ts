@@ -23,7 +23,7 @@ export const columnsConfig = (): DataTableColumns<IBuryingPoint> => {
       width: 100,
     },
     {
-      title: '用户用户',
+      title: '用户id',
       key: 'user_id',
       align: 'center',
       width: 100,

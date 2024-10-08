@@ -17,7 +17,7 @@ export const columnsConfig = (): DataTableColumns<IBlacklist> => {
       width: 200,
     },
     {
-      title: 'user_id',
+      title: '用户id',
       key: 'user_id',
       align: 'center',
       width: 200,

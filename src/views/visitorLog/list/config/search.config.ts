@@ -18,6 +18,12 @@ export const searchFormConfig: IForm<ISearch<IVisitorLog>> = {
       placeholder: '请输入id',
     },
     {
+      field: 'user_id',
+      type: FormTypeEnum.input,
+      label: '用户id',
+      placeholder: '请输入用户id',
+    },
+    {
       field: 'keyWord',
       type: FormTypeEnum.input,
       label: '关键字',

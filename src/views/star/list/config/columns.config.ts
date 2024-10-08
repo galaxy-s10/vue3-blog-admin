@@ -24,7 +24,7 @@ export const columnsConfig = (): DataTableColumns<IStar> => {
       width: 100,
     },
     {
-      title: '点赞的用户',
+      title: '点赞用户',
       key: 'from_user_id',
       align: 'center',
       width: 150,
@@ -33,7 +33,7 @@ export const columnsConfig = (): DataTableColumns<IStar> => {
       },
     },
     {
-      title: '被点赞的用户',
+      title: '被点赞用户',
       key: 'to_user_id',
       align: 'center',
       width: 150,

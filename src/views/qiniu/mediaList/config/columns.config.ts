@@ -15,7 +15,7 @@ export const columnsConfig = (): DataTableColumns<IQiniuData> => {
       width: 100,
     },
     {
-      title: 'user_id',
+      title: '用户id',
       key: 'user_id',
       align: 'center',
       width: 100,

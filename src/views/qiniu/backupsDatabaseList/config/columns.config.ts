@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
+import { DataTableColumns } from 'naive-ui';
 import { h } from 'vue';
 
 import { IQiniuData } from '@/interface';
 import { formatMemorySize } from '@/utils';
-
-import { DataTableColumns } from 'naive-ui';
 
 export const columnsConfig = (): DataTableColumns<IQiniuData> => {
   return [
@@ -15,7 +14,7 @@ export const columnsConfig = (): DataTableColumns<IQiniuData> => {
       width: 100,
     },
     {
-      title: 'user_id',
+      title: '用户id',
       key: 'user_id',
       align: 'center',
       width: 100,

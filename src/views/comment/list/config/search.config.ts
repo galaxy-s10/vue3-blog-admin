@@ -18,6 +18,24 @@ export const searchFormConfig: IForm<ISearch<IComment>> = {
       placeholder: '请输入id',
     },
     {
+      field: 'article_id',
+      type: FormTypeEnum.input,
+      label: '文章id',
+      placeholder: '请输入文章id',
+    },
+    {
+      field: 'from_user_id',
+      type: FormTypeEnum.input,
+      label: '留言用户id',
+      placeholder: '请输入留言用户id',
+    },
+    {
+      field: 'to_user_id',
+      type: FormTypeEnum.input,
+      label: '被留言用户id',
+      placeholder: '请输入被留言用户id',
+    },
+    {
       field: 'status',
       type: FormTypeEnum.radio,
       label: '状态',
@@ -31,7 +49,7 @@ export const searchFormConfig: IForm<ISearch<IComment>> = {
       field: 'keyWord',
       type: FormTypeEnum.input,
       label: '关键字',
-      placeholder: '评论内容',
+      placeholder: '评论内容/user_agent/ip/ip信息',
     },
     {
       field: 'rangTimeType',

@@ -17,6 +17,24 @@ export const searchFormConfig: IForm<ISearch<IStar>> = {
       label: 'id',
       placeholder: '请输入id',
     },
+    {
+      field: 'article_id',
+      type: FormTypeEnum.input,
+      label: '文章id',
+      placeholder: '请输入文章id',
+    },
+    {
+      field: 'from_user_id',
+      type: FormTypeEnum.input,
+      label: '点赞用户id',
+      placeholder: '请输入点赞用户id',
+    },
+    {
+      field: 'to_user_id',
+      type: FormTypeEnum.input,
+      label: '被点赞用户id',
+      placeholder: '请输入被点赞用户id',
+    },
     ...useOrder(columnsConfig),
   ],
 };

@@ -86,7 +86,7 @@ export const ROUTE_SORT = {
   log: 200,
   monit: 200,
   blacklist: 200,
-  visitor: 200,
+  visitorLog: 200,
 
   comment: 199,
   star: 199,
