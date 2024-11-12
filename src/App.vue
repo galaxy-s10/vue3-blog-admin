@@ -22,7 +22,7 @@ function handleVConsole() {
   const vConsole = new VConsole();
   console.log(vConsole);
 }
-handleVConsole();
+// handleVConsole();
 console.log(window.location.href);
 </script>
 
