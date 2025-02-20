@@ -22,10 +22,7 @@ export const QINIU_BLOG = {
   bucket: 'hssblog',
   prefix: {
     'image/': 'image/',
-    'backupsDatabase/': 'backupsDatabase/',
     'media/': 'media/',
-    'nuxt-blog-client/': 'nuxt-blog-client/',
-    'billd-live/image/': 'billd-live/image/',
   },
 };
 
