@@ -22,13 +22,13 @@ export const outputStaticUrl = (isProduction: boolean) => {
   if (isProduction) {
     // 如果是jenkins里面构建，会执行build.sh，一定会有APP_NAME，APP_ENV可能是：'null'|'beta'|'preview'|'prod'
     if (APP_ENV === 'null') {
-      return 'https://tencentcos-res.hsslive.cn/vue3-blog-admin/dist/';
+      return 'https://tencentcos-res.hsslive.cn/billd-blog-admin/dist/';
       // eslint-disable-next-line
       // return `/${APP_NAME}/`;
     } else {
       // eslint-disable-next-line
       // return `/${APP_NAME}/${APP_ENV}/`;
-      return 'https://tencentcos-res.hsslive.cn/vue3-blog-admin/dist/';
+      return 'https://tencentcos-res.hsslive.cn/billd-blog-admin/dist/';
     }
   } else {
     if (APP_NAME === undefined) {

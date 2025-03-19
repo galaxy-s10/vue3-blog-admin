@@ -6,9 +6,9 @@ import path from 'node:path';
 import trash from 'trash';
 
 const allFile = [];
-const ignore = ['.DS_Store', '.git', 'node_modules', 'dist'];
+const ignore = ['.DS_Store', '.git', '.gitignore', 'node_modules', 'dist'];
 const localDir = '/Users/huangshuisheng/Desktop/hss/galaxy-s10/vue3-blog-admin';
-const giteeDir = '/Users/huangshuisheng/Desktop/hss/jenkins/vue3-blog-admin';
+const targetDir = '/Users/huangshuisheng/Desktop/hss/codeup/billd-blog-admin';
 
 const dir = fs.readdirSync(localDir).filter((item) => {
   if (ignore.includes(item)) {
@@ -41,7 +41,7 @@ function putFile() {
       if (arr.length) {
         arr.push(path.resolve(arr[arr.length - 1], item));
       } else {
-        arr.push(path.resolve(giteeDir, item));
+        arr.push(path.resolve(targetDir, item));
       }
     });
     arr.forEach((item, index) => {
@@ -54,16 +54,16 @@ function putFile() {
     });
     fs.copyFileSync(
       file,
-      path.join(giteeDir, './', file.replace(localDir, ''))
+      path.join(targetDir, './', file.replace(localDir, ''))
     );
   }
 }
 
 async function clearOld() {
-  const giteeDirAllFile = fs.readdirSync(giteeDir);
+  const targetDirAllFile = fs.readdirSync(targetDir);
   const queue = [];
-  giteeDirAllFile.forEach((url) => {
-    const fullurl = `${giteeDir}/${url}`;
+  targetDirAllFile.forEach((url) => {
+    const fullurl = `${targetDir}/${url}`;
     if (!['node_modules', '.git'].includes(url)) {
       queue.push(trash(fullurl));
     }
@@ -71,19 +71,27 @@ async function clearOld() {
   await Promise.all(queue);
 }
 
-if (process.cwd().indexOf('jenkins') !== -1) {
+if (process.cwd().indexOf('codeup') !== -1) {
   console.log('当前目录错误');
 } else {
   clearOld().then(() => {
     findFile(dir);
     putFile();
-    const gitignoreTxt = 'node_modules\ndist\ncomponents.d.ts\n.DS_Store\n';
-    fs.writeFileSync(path.resolve(giteeDir, './.gitignore'), gitignoreTxt);
-    execSync(`pnpm i`, { cwd: giteeDir });
-    execSync(`git add .`, { cwd: giteeDir });
+    const gitignoreArr = [
+      'node_modules',
+      'dist',
+      'components.d.ts',
+      '.eslintcache',
+      '.DS_Store',
+    ];
+    const gitignoreTxt = gitignoreArr.join('\n');
+    fs.writeFileSync(path.resolve(targetDir, './.gitignore'), gitignoreTxt);
+    execSync(`pnpm i`, { cwd: targetDir });
+    execSync(`git rm -r --cached .`, { cwd: targetDir });
+    execSync(`git add .`, { cwd: targetDir });
     execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
-      cwd: giteeDir,
+      cwd: targetDir,
     });
-    execSync(`git push`, { cwd: giteeDir });
+    execSync(`git push`, { cwd: targetDir });
   });
 }
